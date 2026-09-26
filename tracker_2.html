@@ -344,6 +344,20 @@
   .theme-toggle{width:34px;height:34px;flex-shrink:0;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;transition:border-color .15s,transform .15s;}
   .theme-toggle:hover{border-color:var(--accent);}
   .theme-toggle:active{transform:scale(.92);}
+  #resetProgressBtn{font-size:17px;}
+  #resetProgressBtn:hover{border-color:var(--warn);color:var(--warn);}
+
+  /* reset-progress confirm overlay */
+  .confirm-overlay{position:fixed;inset:0;z-index:100;background:rgba(10,12,18,.5);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .confirm-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow);max-width:380px;width:100%;padding:22px;}
+  .confirm-card h3{margin:0 0 10px;font-size:17px;}
+  .confirm-card p{margin:0 0 18px;font-size:13.5px;color:var(--muted);line-height:1.5;}
+  .confirm-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;}
+  .confirm-btn{border-radius:999px;padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;border:1px solid var(--border-strong);}
+  .confirm-btn--ghost{background:var(--surface);color:var(--ink);}
+  .confirm-btn--ghost:hover{border-color:var(--accent);}
+  .confirm-btn--danger{background:var(--warn);border-color:var(--warn);color:#fff;}
+  .confirm-btn--danger:hover{filter:brightness(1.06);}
 
   [hidden]{display:none!important;}
 
@@ -389,9 +403,21 @@
     </div>
     <button class="checkup-btn" id="openCheckup">⚙ Мой Check-Up</button>
     <button class="theme-toggle" id="themeToggle" type="button" title="Тема оформления" aria-label="Переключить тему">🌙</button>
+    <button class="theme-toggle" id="resetProgressBtn" type="button" title="Сбросить весь прогресс и начать заново" aria-label="Сбросить прогресс">↺</button>
     <div class="start-field">
       Старт протокола
       <input type="date" id="startDateInput">
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="resetOverlay" hidden>
+  <div class="confirm-card">
+    <h3>Сбросить весь прогресс?</h3>
+    <p>Все дни, Check-Up и дата старта протокола удалятся без возможности восстановить — и на этом устройстве, и в облаке Telegram. Ты начнёшь путь заново, как новый пользователь.</p>
+    <div class="confirm-actions">
+      <button type="button" class="confirm-btn confirm-btn--ghost" id="resetCancelBtn">Отмена</button>
+      <button type="button" class="confirm-btn confirm-btn--danger" id="resetConfirmBtn">Сбросить</button>
     </div>
   </div>
 </div>
@@ -1917,6 +1943,55 @@ document.getElementById("themeToggle").addEventListener("click", ()=>{
   try{ localStorage.setItem(THEME_KEY, next); }catch(e){}
   applyTheme(next);
 });
+
+/* ---------- reset progress ("go through the client path again") ----------
+   Wipes the saved protocol state both locally (localStorage) and in
+   Telegram CloudStorage (so a reopen elsewhere doesn't just pull the old
+   progress back in via hydrateFromCloud), then lands back on Check-Up as
+   if this were a brand-new install. */
+function wipeCloudThenReset(){
+  const tg = getTg();
+  const finish = ()=>{
+    STATE = emptyState();
+    STATE.currentDay = 1;
+    dashDayPick = null;
+    dashPeriod = "day";
+    trendMetric = "energy";
+    periodMetricsCache = null;
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    saveState();
+    const si = document.getElementById("startDateInput");
+    if(si) si.value = "";
+    switchTab("checkup");
+  };
+  if(tg && tg.CloudStorage && tg.CloudStorage.getItem){
+    try{
+      tg.CloudStorage.getItem(CLOUD_META_KEY, function(err, metaVal){
+        const count = parseInt(metaVal,10)||0;
+        const keys = [CLOUD_META_KEY];
+        for(let i=0;i<count;i++) keys.push(STORE_KEY+"_c"+i);
+        if(tg.CloudStorage.removeItems){ tg.CloudStorage.removeItems(keys, function(){ finish(); }); }
+        else if(tg.CloudStorage.removeItem){ keys.forEach(k=>tg.CloudStorage.removeItem(k, function(){})); finish(); }
+        else finish();
+      });
+    }catch(e){ finish(); }
+  } else {
+    finish();
+  }
+}
+function openResetConfirm(){ document.getElementById("resetOverlay").hidden = false; }
+function closeResetConfirm(){ document.getElementById("resetOverlay").hidden = true; }
+document.getElementById("resetProgressBtn").addEventListener("click", ()=>{
+  const tg = getTg();
+  if(tg && tg.showConfirm){
+    tg.showConfirm("Сбросить весь прогресс? Все дни, Check-Up и дата старта удалятся без возможности восстановить.", (ok)=>{ if(ok) wipeCloudThenReset(); });
+  } else {
+    openResetConfirm();
+  }
+});
+document.getElementById("resetCancelBtn").addEventListener("click", closeResetConfirm);
+document.getElementById("resetConfirmBtn").addEventListener("click", ()=>{ closeResetConfirm(); wipeCloudThenReset(); });
+document.getElementById("resetOverlay").addEventListener("click", (e)=>{ if(e.target.id==="resetOverlay") closeResetConfirm(); });
 
 /* ============================== INIT ============================== */
 switchTab(protocolReady() ? "dash" : "checkup");
