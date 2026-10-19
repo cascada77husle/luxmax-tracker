@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Счета и активы</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*TOKENS*/
+:root{--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--shadow:none;--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;
+--ink2:color-mix(in srgb,var(--ink) 80%,var(--card));--muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+--line:color-mix(in srgb,var(--ink) 10%,var(--card));--line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+--field:color-mix(in srgb,var(--ink) 3%,var(--card));--soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+--accent-text:#FFFFFF;--accent-soft:color-mix(in srgb,var(--accent) 9%,var(--card));--accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+--ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));--ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+--bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));--bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+--warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));--warn-line:color-mix(in srgb,var(--warn) 32%,var(--card))}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+
+  <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:19px;font-weight:700">Мои активы</b>
+        <span style="font-size:12.5px;color:var(--muted)">{{countText}}</span>
+      </div>
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:38px;font-weight:800;letter-spacing:-.02em">{{total}}</b>
+      <div style="display:flex;height:14px;border-radius:999px;overflow:hidden;background:var(--line);gap:2px">
+        <sc-for list="{{bar}}" as="b" hint-placeholder-count="4"><div style="height:100%;background:{{b.color}};width:{{b.w}}%"></div></sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:10px">
+        <sc-for list="{{kinds}}" as="k" hint-placeholder-count="3">
+          <div style="background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">{{k.name}}</span>
+            <b style="font-family:'Archivo',system-ui,sans-serif;font-size:19px;font-weight:800">{{k.value}}</b>
+            <span style="font-size:12px;color:var(--muted)">{{k.pct}}% всех активов</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:14px">
+      <sc-for list="{{cards}}" as="a" hint-placeholder-count="4">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="width:40px;height:40px;border-radius:12px;background:{{a.color}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:'Archivo',system-ui,sans-serif;font-weight:800;font-size:17px;flex-shrink:0">{{a.letter}}</span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14.5px;font-weight:700">{{a.bank}}</b><span style="font-size:12px;color:var(--muted)">{{a.name}}</span></span>
+            <sc-if value="{{a.canEdit}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{a.remove}}" style="cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:4px 10px;font-weight:600;font-size:11.5px">Удалить</button></sc-if>
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em">{{a.value}}</b><span style="font-size:12px;color:var(--muted)">{{a.pct}}%</span></div>
+          <div style="height:6px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{a.color}};width:{{a.pct}}%"></div></div>
+          <sc-if value="{{a.canEdit}}" hint-placeholder-val="{{true}}">
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+              <input type="text" inputmode="decimal" placeholder="{{a.ph}}" value="{{a.edit}}" onInput="{{a.onEdit}}" aria-label="Новое значение" style="flex:1 1 110px;min-width:0;border:1px solid var(--line2);border-radius:10px;padding:8px 10px;font-size:13px;background:var(--field);color:var(--ink)">
+              <button type="button" onClick="{{a.save}}" style="cursor:pointer;border:0;border-radius:10px;background:{{a.saveBg}};color:{{a.saveFg}};font-weight:700;font-size:12.5px;padding:9px 14px">Обновить</button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <sc-if value="{{noAcc}}" hint-placeholder-val="{{false}}"><div style="background:var(--card);border:1px dashed var(--line2);border-radius:16px;padding:28px;text-align:center;color:var(--muted);font-size:14px">Счетов пока нет. Добавь первый.</div></sc-if>
+  </div>
+
+  <sc-if value="{{canEdit}}" hint-placeholder-val="{{true}}">
+  <div style="flex:0 1 380px;width:100%;max-width:380px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:12px">
+    <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Добавить счёт</b>
+    <span style="font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase">Где лежат деньги</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <sc-for list="{{banks}}" as="b" hint-placeholder-count="9">
+        <button type="button" onClick="{{b.pick}}" style="cursor:pointer;border:1.5px solid {{b.border}};background:{{b.bg}};color:{{b.fg}};font-weight:600;font-size:12.5px;padding:7px 12px;border-radius:999px;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:{{b.color}}"></span>{{b.name}}</button>
+      </sc-for>
+    </div>
+    <input type="text" placeholder="Название, например: Зарплатная карта" value="{{name}}" onInput="{{onName}}" aria-label="Название счёта" style="border:1px solid var(--line2);border-radius:12px;padding:12px 14px;font-size:14px;background:var(--field);color:var(--ink)">
+      <div style="display:flex;align-items:center;gap:8px;border:1.5px solid var(--line2);border-radius:14px;padding:6px 14px;background:var(--field)">
+        <input type="text" inputmode="numeric" placeholder="Остаток" value="{{bal}}" onInput="{{onBal}}" aria-label="Остаток на счёте" style="flex:1;min-width:0;border:0;background:transparent;font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:800;color:var(--ink);padding:6px 0;outline:none">
+        <span style="font-size:20px;font-weight:600;color:var(--muted)">₽</span>
+      </div>
+    <button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:14px;padding:14px;font-weight:700;font-size:15px;background:{{addBg}};color:{{addFg}}">{{addText}}</button>
+    <span style="font-size:12px;color:var(--muted)">Остаток вносишь сам (для Bybit сумму в рублях по текущему курсу). Его можно обновить в любой момент, а выписка из банка помогает сверить цифры (вкладка «Выписка»).</span>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accounts":{"editor":null},"compact":{"editor":null},"fnAdd":{"editor":null},"fnUpd":{"editor":null},"fnDel":{"editor":null},"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, bank: 'Сбербанк', name: '', bal: '', coin: 'BTC', amount: '', rate: '', edits: {} }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const P = this.props, L = this.L;
+    const accs = P.accounts || [];
+    const canEdit = !P.compact;
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const num = (s) => parseFloat(String(s).replace(',', '.').replace(/\s/g, '')) || 0;
+    const BANKS = [['Сбербанк', '#1E9E6B'], ['Альфа-Банк', '#C8384B'], ['Т-Банк', '#B58A00'], ['ВТБ', '#2F6FED'], ['Райффайзен', '#7A869A'], ['Газпромбанк', '#4F8BFF'], ['Другой банк', '#6B7484'], ['Наличные', '#C97A16'], ['Bybit', '#8A93A5']];
+    const COLOR = {}; BANKS.forEach(b => { COLOR[b[0]] = b[1]; });
+    const valueOf = (a) => a.bal;
+    const total = accs.reduce((s, a) => s + valueOf(a), 0);
+    const pct = (v) => total > 0 ? Math.round(v / total * 100) : 0;
+    const kindOf = { bank: 'Банки', cash: 'Наличные', crypto: 'Биржа Bybit' };
+    const kinds = ['bank', 'cash', 'crypto'].map(k => { const v = accs.filter(a => a.type === k).reduce((s, a) => s + valueOf(a), 0); return { name: kindOf[k], value: fmt(v) + ' ₽', pct: pct(v) }; });
+    const bar = accs.map(a => ({ color: COLOR[a.bank] || 'var(--muted)', w: total > 0 ? (valueOf(a) / total * 100).toFixed(1) : 0 }));
+    const cards = accs.map(a => {
+      const v = valueOf(a), e = L.edits[a.id] || '';
+      return {
+        bank: a.bank, name: a.name, letter: a.bank.slice(0, 1), color: COLOR[a.bank] || 'var(--muted)', value: fmt(v) + ' ₽', pct: pct(v), canEdit,
+        ph: 'Новый остаток, ₽', edit: e, onEdit: (ev) => this.set({ edits: Object.assign({}, this.L.edits, { [a.id]: ev.target.value.replace(/[^0-9.,]/g, '') }) }),
+        saveBg: e ? 'var(--accent)' : 'var(--line)', saveFg: e ? 'var(--on-accent)' : 'var(--muted)',
+        save: () => { const x = num(this.L.edits[a.id]); if (!x) return; if (P.fnUpd) P.fnUpd(a.id, { bal: x }); this.set({ edits: Object.assign({}, this.L.edits, { [a.id]: '' }) }); },
+        remove: () => { if (P.fnDel) P.fnDel(a.id); }
+      };
+    });
+    const banks = BANKS.map(b => ({ name: b[0], color: b[1], border: L.bank === b[0] ? 'var(--accent)' : 'var(--line)', bg: L.bank === b[0] ? 'var(--accent-soft)' : 'var(--card)', fg: L.bank === b[0] ? 'var(--accent-text)' : 'var(--ink)', pick: () => this.set({ bank: b[0] }) }));
+    const ok = num(L.bal) > 0;
+    return {
+      canEdit, total: fmt(total) + ' ₽', countText: accs.length + ' счетов', kinds, bar, cards, noAcc: accs.length === 0,
+      banks, name: L.name, bal: L.bal,
+      onName: (e) => this.set({ name: e.target.value }), onBal: (e) => this.set({ bal: e.target.value.replace(/[^0-9]/g, '') }),
+      addBg: ok ? 'var(--accent)' : 'var(--line)', addFg: ok ? 'var(--on-accent)' : 'var(--muted)', addText: ok ? 'Добавить счёт' : 'Введи остаток',
+      add: () => {
+        const l = this.L; if (!ok) return;
+        const type = l.bank === 'Наличные' ? 'cash' : (l.bank === 'Bybit' ? 'crypto' : 'bank');
+        const acc = { type, bank: l.bank, name: l.name.trim() || (type === 'cash' ? 'Наличные' : (type === 'crypto' ? 'Торговый счёт' : 'Счёт')), bal: num(l.bal) };
+        if (P.fnAdd) P.fnAdd(acc); this.set({ name: '', bal: '' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

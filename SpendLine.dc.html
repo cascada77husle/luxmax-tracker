@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Линия трат по дням</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Линия трат по дням</b>
+      <span style="font-size:12px;color:var(--muted);max-width:560px">Зелёный участок: в этот день потратил в пределах нормы. Красный: перебрал, здесь ты «просел». Пунктир это твоя дневная норма.</span>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px">
+        <sc-for list="{{modes}}" as="m" hint-placeholder-count="2"><button type="button" onClick="{{m.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px;background:{{m.bg}};color:{{m.fg}}">{{m.name}}</button></sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)">Норма дня
+        <button type="button" onClick="{{normMinus}}" aria-label="Уменьшить норму" style="cursor:pointer;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px;font-weight:700" title="Уменьшить норму">−</button>
+        <b style="color:var(--ink);min-width:70px;text-align:center">{{normText}}</b>
+        <button type="button" onClick="{{normPlus}}" aria-label="Увеличить норму" style="cursor:pointer;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px;font-weight:700" title="Увеличить норму">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));gap:10px">
+    <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+      <div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:11px 14px;display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">{{s.label}}</span>
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:800;color:{{s.color}}">{{s.value}}</b>
+      </div>
+    </sc-for>
+  </div>
+
+  <svg viewBox="0 0 1200 300" width="100%" style="display:block" role="img" aria-label="Линия дневных трат: зелёная в пределах нормы, красная при превышении">
+    <sc-for list="{{grid}}" as="g" hint-placeholder-count="4">
+      <line x1="30" x2="1170" y1="{{g.y}}" y2="{{g.y}}" stroke="var(--line)" stroke-width="1"/>
+      <text x="26" y="{{g.ty}}" text-anchor="end" font-size="11" fill="var(--muted)">{{g.label}}</text>
+    </sc-for>
+    <line x1="30" x2="1170" y1="{{normY}}" y2="{{normY}}" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <sc-for list="{{segs}}" as="s" hint-placeholder-count="17">
+      <line x1="{{s.x1}}" y1="{{s.y1}}" x2="{{s.x2}}" y2="{{s.y2}}" stroke="{{s.c}}" stroke-width="4" stroke-linecap="round"/>
+    </sc-for>
+    <sc-for list="{{dots}}" as="d" hint-placeholder-count="18">
+      <circle cx="{{d.x}}" cy="{{d.y}}" r="{{d.r}}" fill="{{d.fill}}" stroke="{{d.c}}" stroke-width="3"/>
+    </sc-for>
+  </svg>
+  <div style="display:flex;padding:0 2.5%;margin-top:-6px">
+    <sc-for list="{{days}}" as="d" hint-placeholder-count="18">
+      <button type="button" onClick="{{d.pick}}" style="flex:1;min-width:0;cursor:pointer;border:0;background:{{d.bg}};border-radius:8px;padding:5px 0;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;color:{{d.fg}};font-weight:700">{{d.n}}<span style="font-size:11px;font-weight:600;opacity:.8">{{d.wd}}</span></button>
+    </sc-for>
+  </div>
+
+  <div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:6px">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b style="font-size:14px">{{selTitle}}</b><b style="font-size:14px;color:{{selColor}}">{{selTotal}}</b></div>
+    <sc-for list="{{selRows}}" as="r" hint-placeholder-count="2">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:9px;height:9px;border-radius:3px;background:{{r.color}};flex-shrink:0"></span><span style="flex:1;min-width:0">{{r.note}}</span><span style="color:var(--muted)">{{r.cat}}</span><b style="width:84px;text-align:right">{{r.sum}}</b></div>
+    </sc-for>
+    <sc-if value="{{selEmpty}}" hint-placeholder-val="{{false}}"><span style="font-size:13px;color:var(--muted)">В этот день расходов не было.</span></sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"$preview":{"width":1280,"height":760}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, withBills: false, norm: 2500, sel: 18 }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const P = this.props, L = this.L;
+    const ops = (P.ops || []).filter(o => o.kind === 'out' && (L.withBills || !o.planId));
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const WD = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
+    const N = 18, RED = 'var(--bad)', GREEN = 'var(--ok)';
+    const sp = []; for (let d = 1; d <= N; d++) sp.push(ops.filter(o => o.d === d).reduce((a, o) => a + o.sum, 0));
+    const max = Math.max(Math.max.apply(null, sp), L.norm) * 1.12;
+    const Y = (v) => 270 - (v / max) * 240;
+    const X = (i) => 30 + (i + 0.5) / N * 1140;
+    const col = (v) => v > L.norm ? RED : GREEN;
+    const segs = []; for (let i = 1; i < N; i++) segs.push({ x1: X(i - 1), y1: Y(sp[i - 1]), x2: X(i), y2: Y(sp[i]), c: col(sp[i]) });
+    const dots = sp.map((v, i) => ({ x: X(i), y: Y(v), r: i + 1 === L.sel ? 8 : 5.5, c: col(v), fill: i + 1 === L.sel ? col(v) : 'var(--card)' }));
+    const grid = [0, 0.5, 1].map(f => ({ y: Y(max * f / 1.12 * 1.0), ty: Y(max * f / 1.12) + 4, label: fmt(max / 1.12 * f) }));
+    const red = sp.filter(v => v > L.norm).length, tot = sp.reduce((a, b) => a + b, 0);
+    const worstI = sp.indexOf(Math.max.apply(null, sp));
+    const stats = [
+      { label: 'Средний день', value: fmt(tot / N) + ' ₽', color: 'var(--ink)' },
+      { label: 'Красных дней', value: red + ' из ' + N, color: red > N / 2 ? RED : 'var(--warn)' },
+      { label: 'Зелёных дней', value: (N - red) + ' из ' + N, color: GREEN },
+      { label: 'Самый дорогой', value: worstI + 1 + ' окт · ' + fmt(sp[worstI]) + ' ₽', color: RED }
+    ];
+    const days = sp.map((v, i) => ({ n: i + 1, wd: WD[(i + 3) % 7], bg: i + 1 === L.sel ? 'var(--accent-soft)' : 'transparent', fg: i + 1 === L.sel ? 'var(--accent-text)' : 'var(--muted)', pick: () => this.set({ sel: i + 1 }) }));
+    const selRows = ops.filter(o => o.d === L.sel).map(o => ({ note: o.note, cat: o.cat, sum: fmt(o.sum) + ' ₽', color: o.color }));
+    const selV = sp[L.sel - 1];
+    const modes = [[false, 'Без обязательных платежей'], [true, 'Все расходы']].map(m => ({ name: m[1], bg: L.withBills === m[0] ? 'var(--accent)' : 'transparent', fg: L.withBills === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ withBills: m[0] }) }));
+    return {
+      modes, normText: fmt(L.norm) + ' ₽', normMinus: () => this.set({ norm: Math.max(500, this.L.norm - 500) }), normPlus: () => this.set({ norm: this.L.norm + 500 }),
+      stats, grid, normY: Y(L.norm), segs, dots, days, selTitle: L.sel + ' октября · ' + (selV > L.norm ? 'выше нормы на ' + fmt(selV - L.norm) + ' ₽' : 'в пределах нормы'),
+      selTotal: fmt(selV) + ' ₽', selColor: col(selV), selRows, selEmpty: selRows.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

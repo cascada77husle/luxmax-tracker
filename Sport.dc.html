@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Спорт и тренировки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+
+  <div style="flex:1 1 580px;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Мои тренировочные дни</b><span style="font-size:13px;color:var(--muted)">Нажмите на день, чтобы поставить или снять галочку.</span></div>
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+        <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
+          <button type="button" onClick="{{d.pick}}" aria-pressed="{{d.pressed}}" aria-label="{{d.label}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0 10px;border-radius:12px;background:{{d.bg}};border:1.5px solid {{d.border}};color:var(--ink);min-width:0">
+            <span style="font-size:11px;font-weight:700;color:var(--muted)">{{d.wd}}</span>
+            <b style="font-family:'Archivo',system-ui,sans-serif;font-size:16px">{{d.num}}</b>
+            <span style="width:24px;height:24px;border-radius:50%;background:{{d.dotBg}};border:1.5px solid {{d.dotBorder}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;box-sizing:border-box">{{d.dotText}}</span>
+            <span style="font-size:11px;color:var(--muted);min-height:12px">{{d.time}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:12px;background:var(--field)">
+        <span style="font-size:14px;font-weight:700;flex:1 1 140px">{{selTitle}}</span>
+        <sc-if value="{{selOn}}" hint-placeholder-val="{{true}}"><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink2)">Время<input type="time" value="{{selTime}}" onInput="{{setTime}}" aria-label="Время тренировки" style="border:1.5px solid var(--line2);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px;padding:6px 8px;outline:none"></label></sc-if>
+        <sc-if value="{{selOff}}" hint-placeholder-val="{{false}}"><span style="font-size:13px;color:var(--muted)">День отдыха</span></sc-if>
+      </div>
+      <span style="font-size:13px;color:var(--ink2)">{{planText}}</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+        <sc-for list="{{stats}}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:var(--muted);font-weight:600">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em;color:{{s.color}}">{{s.value}}</b><span style="font-size:12px;color:var(--muted)">{{s.sub}}</span></div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Тренировка сегодня</b><span style="font-size:13px;color:var(--muted)">Подходов выполнено: <b style="color:var(--cat-violet)">{{setsDone}}</b> из {{setsTotal}}</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{templates}}" as="t" hint-placeholder-count="4">
+          <button type="button" onClick="{{t.pick}}" style="cursor:pointer;border:1.5px solid {{t.border}};background:{{t.bg}};color:{{t.fg}};font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px">{{t.name}}</button>
+        </sc-for>
+      </div>
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+        <div style="display:{{r.exDisplay}};align-items:center;justify-content:space-between;gap:10px;padding:14px 0 4px;border-top:1px solid var(--soft)">
+          <span style="display:flex;flex-direction:column"><b style="font-size:14px;font-weight:700">{{r.name}}</b><span style="font-size:12px;color:var(--muted)">{{r.sub}}</span></span>
+          <button type="button" onClick="{{r.removeEx}}" aria-label="Убрать упражнение" style="cursor:pointer;border:0;background:transparent;color:var(--line2);font-size:18px;line-height:1;padding:2px 6px" title="Убрать упражнение">×</button>
+        </div>
+        <div style="display:{{r.setDisplay}};align-items:center;gap:8px;padding:6px 10px;border-radius:12px;background:{{r.setBg}}">
+          <span style="width:18px;font-size:12px;color:var(--muted);font-weight:700">{{r.n}}</span>
+          <button type="button" onClick="{{r.kgMinus}}" aria-label="Меньше вес" title="−2,5 кг" style="cursor:pointer;width:30px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;padding:0;flex-shrink:0">−</button>
+          <input type="text" inputmode="decimal" value="{{r.kg}}" onInput="{{r.kgType}}" aria-label="Вес, кг" placeholder="кг" style="border:1.5px solid var(--line2);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px;font-weight:700;text-align:center;padding:6px 2px;outline:none;box-sizing:border-box;height:34px;width:58px">
+          <button type="button" onClick="{{r.kgPlus}}" aria-label="Больше вес" title="+2,5 кг" style="cursor:pointer;width:30px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;padding:0;flex-shrink:0">+</button>
+          <span style="color:var(--muted);font-size:12px">кг ×</span>
+          <input type="text" inputmode="numeric" value="{{r.reps}}" onInput="{{r.repType}}" aria-label="Повторы" placeholder="повт." style="border:1.5px solid var(--line2);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px;font-weight:700;text-align:center;padding:6px 2px;outline:none;box-sizing:border-box;height:34px;width:44px">
+          <span style="flex:1"></span>
+          <button type="button" onClick="{{r.toggle}}" aria-label="Подход выполнен" style="cursor:pointer;width:34px;height:34px;border-radius:50%;border:1.5px solid {{r.doneBorder}};background:{{r.doneBg}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;padding:0" title="Подход выполнен"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{r.tick}}"><path d="M5 12l4 4L19 7"/></svg></button>
+        </div>
+        <div style="display:{{r.addDisplay}};padding:2px 0 6px"><button type="button" onClick="{{r.addSet}}" style="cursor:pointer;border:1.5px dashed var(--line2);background:var(--card);color:var(--ink2);font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px">+ Подход</button></div>
+      </sc-for>
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--soft);padding-top:14px">
+        <span style="font-size:12px;color:var(--muted);font-weight:600">Добавить упражнение</span>
+        <div style="display:flex;gap:8px"><input type="text" value="{{newEx}}" onInput="{{typeEx}}" placeholder="Своё упражнение, например «Тяга гантели»" aria-label="Название упражнения" style="flex:1;min-width:0;border:1.5px solid var(--line2);border-radius:12px;background:var(--field);color:var(--ink);font-size:16px;padding:10px 12px;outline:none"><button type="button" onClick="{{addEx}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--cat-violet);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 16px">Добавить</button></div>
+        <span style="font-size:12px;color:var(--muted)">Или выберите из списка. Свои упражнения сохраняются в нём.</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{library}}" as="e" hint-placeholder-count="8">
+            <button type="button" onClick="{{e.pick}}" style="cursor:pointer;border:1.5px solid var(--line);background:var(--field);color:var(--ink);font-weight:600;font-size:12px;padding:7px 12px;border-radius:999px">+ {{e.name}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:0 1 400px;width:100%;max-width:400px;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Кардио</b>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{cardioTypes}}" as="c" hint-placeholder-count="4">
+          <button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px">{{c.name}}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span style="width:70px;font-size:13px;font-weight:600">Минуты</span>
+        <button type="button" onClick="{{minMinus}}" aria-label="Меньше минут" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px" title="Меньше минут">−</button><b style="min-width:54px;text-align:center">{{minutes}}</b><button type="button" onClick="{{minPlus}}" aria-label="Больше минут" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px" title="Больше минут">+</button></div>
+      <div style="display:flex;align-items:center;gap:10px"><span style="width:70px;font-size:13px;font-weight:600">Километры</span>
+        <button type="button" onClick="{{kmMinus}}" aria-label="Меньше километров" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px" title="Меньше километров">−</button><b style="min-width:54px;text-align:center">{{km}}</b><button type="button" onClick="{{kmPlus}}" aria-label="Больше километров" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px" title="Больше километров">+</button></div>
+      <button type="button" onClick="{{logCardio}}" style="cursor:pointer;border:0;border-radius:12px;padding:13px;font-weight:700;font-size:14px;background:var(--cat-violet);color:var(--on-accent)">Записать кардио</button>
+      <sc-for list="{{cardioLog}}" as="l" hint-placeholder-count="2">
+        <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--cat-violet) 13%,var(--card));font-size:13px"><b style="color:var(--cat-violet-ink)">{{l.name}}</b><span>{{l.text}}</span></div>
+      </sc-for>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Объём по неделям</b>
+      <div style="display:flex;align-items:flex-end;gap:12px;height:130px">
+        <sc-for list="{{volumes}}" as="v" hint-placeholder-count="4">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%"><span style="font-size:11px;color:var(--muted)">{{v.label}}</span><div style="width:100%;border-radius:12px 10px 4px 4px;background:{{v.color}};height:{{v.h}}px"></div><span style="font-size:11px;font-weight:600">{{v.name}}</span></div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:8px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Личные рекорды</b>
+      <sc-for list="{{records}}" as="p" hint-placeholder-count="3">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--soft)"><span style="font-size:14px;font-weight:600">{{p.name}}</span><span style="display:flex;align-items:baseline;gap:8px"><b style="font-size:14px">{{p.value}}</b><span style="font-size:11px;color:var(--ok);font-weight:700">{{p.delta}}</span></span></div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1200}}'>
+class Component extends DCLogic {
+  init() {
+    const mk = (name, sets) => ({ name, sets });
+    return { ready: false, days: [0, 0, 0, 0, 0, 0, 0], times: ['18:00', '18:00', '18:00', '18:00', '18:00', '10:00', '10:00'], sel: (new Date().getDay() + 6) % 7, newEx: '', myEx: [], last: {}, nid: 20, tpl: '', cardio: 'Бег', minutes: 0, km: 0, cardioLog: [],
+      ex: [] };
+  }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const L = this.L;
+    const TPL = { 'Грудь и трицепс': [['Жим лёжа', 70, 8], ['Отжимания на брусьях', 0, 12]], 'Спина и бицепс': [['Тяга штанги', 60, 8], ['Подтягивания', 0, 8], ['Сгибания на бицепс', 16, 10]], 'Ноги': [['Присед', 90, 6], ['Румынская тяга', 70, 8], ['Выпады', 20, 10]], 'Дом, без железа': [['Отжимания', 0, 15], ['Приседания', 0, 20], ['Планка, сек', 0, 45]] };
+    const LIB = ['Жим лёжа', 'Присед', 'Становая тяга', 'Подтягивания', 'Жим стоя', 'Тяга штанги', 'Отжимания', 'Выпады'];
+    const mkSets = (kg, reps) => [0, 1, 2].map(() => ({ kg, reps, done: false }));
+    const upd = (id, fn) => this.set({ ex: this.L.ex.map(e => e.id === id ? Object.assign({}, e, { sets: fn(e.sets.map(s => Object.assign({}, s))) }) : e) });
+    const vol = (sets) => sets.filter(s => s.done).reduce((a, s) => a + s.kg * s.reps, 0);
+    const rows = [];
+    const num = (v) => parseFloat(String(v).replace(',', '.'));
+    L.ex.forEach(e => {
+      const done = e.sets.filter(s => s.done).length;
+      const E0 = { exDisplay: 'none', setDisplay: 'none', addDisplay: 'none', name: '', sub: '', removeEx: () => {}, n: '', kg: '', reps: '', setBg: 'transparent', doneBg: 'transparent', doneBorder: 'transparent', kgMinus: () => {}, kgPlus: () => {}, kgType: () => {}, repType: () => {}, toggle: () => {}, addSet: () => {} };
+      rows.push(Object.assign({}, E0, { exDisplay: 'flex', name: e.name, sub: done + ' из ' + e.sets.length + ' подходов', removeEx: () => this.set({ ex: this.L.ex.filter(x => x.id !== e.id) }) }));
+      e.sets.forEach((s, i) => rows.push(Object.assign({}, E0, { setDisplay: 'flex', n: i + 1, kg: String(s.kg).replace('.', ','), reps: String(s.reps), setBg: s.done ? 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))' : 'var(--field)', doneBg: s.done ? 'var(--cat-violet)' : 'var(--card)', doneBorder: s.done ? 'var(--cat-violet)' : 'var(--line2)',
+        kgMinus: () => upd(e.id, a => { a[i].kg = Math.max(0, a[i].kg - 2.5); return a; }), kgPlus: () => upd(e.id, a => { a[i].kg = a[i].kg + 2.5; return a; }),
+        kgType: (ev) => { const v = num(ev.target.value); upd(e.id, a => { a[i].kg = isNaN(v) ? 0 : Math.max(0, v); return a; }); }, repType: (ev) => { const v = parseInt(ev.target.value, 10); upd(e.id, a => { a[i].reps = isNaN(v) ? 0 : Math.max(0, v); return a; }); },
+        toggle: () => this.set({ last: Object.assign({}, this.L.last, { [e.name]: s.kg }), ex: this.L.ex.map(x => x.id === e.id ? Object.assign({}, x, { sets: x.sets.map((q, z) => z === i ? Object.assign({}, q, { done: !q.done }) : q) }) : x) }) })));
+      rows.push(Object.assign({}, E0, { addDisplay: 'block', addSet: () => upd(e.id, a => a.concat([Object.assign({}, a[a.length - 1] || { kg: 0, reps: 10 }, { done: false })])) }));
+    });
+    const setsAll = L.ex.reduce((a, e) => a.concat(e.sets), []), todayVol = Math.round(vol(setsAll)), done = setsAll.filter(s => s.done).length;
+    const WD = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], WDL = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'], MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const now = new Date(), tIdx = (now.getDay() + 6) % 7, dt = (i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - tIdx + i);
+    const week = WD.map((w, i) => { const t = i === tIdx, on = !!L.days[i], sel = L.sel === i, past = i < tIdx; return { wd: w, num: dt(i).getDate(), label: WDL[i] + (on ? ', тренировка' : ', отдых'), pressed: on ? 'true' : 'false', bg: sel ? 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))' : 'var(--field)', border: sel ? 'var(--cat-violet)' : (t ? 'var(--line2)' : 'var(--line)'), dotBg: on ? 'var(--cat-violet)' : 'transparent', dotBorder: on ? 'var(--cat-violet)' : 'var(--line2)', dotText: on ? '✓' : '', time: on ? L.times[i] : '',
+      pick: () => this.set({ sel: i, days: this.L.days.map((x, z) => z === i ? (x ? 0 : 1) : x) }) }; });
+    const selD = dt(L.sel), selTitle = (L.sel === tIdx ? 'Сегодня' : WDL[L.sel][0].toUpperCase() + WDL[L.sel].slice(1)) + ', ' + selD.getDate() + ' ' + MON[selD.getMonth()];
+    const planned = L.days.map((x, i) => x ? WD[i] + ' ' + L.times[i] : '').filter(Boolean), nPlan = planned.length;
+    const baseVol = 0;
+    const stats = [{ label: 'Тренировок в неделю', value: String(nPlan), color: 'var(--cat-violet)', sub: nPlan ? 'в плане на неделе' : 'отметьте дни выше' }, { label: 'Объём недели', value: Math.round((baseVol + todayVol) / 100) / 10 + ' т', color: 'var(--ink)', sub: 'сегодня ' + todayVol + ' кг' }, { label: 'Время', value: '—', color: 'var(--ink)', sub: 'пока нет данных' }];
+    const pill = (on) => ({ bg: on ? 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))' : 'var(--card)', border: on ? 'var(--cat-violet)' : 'var(--line)', fg: on ? 'var(--cat-violet-ink)' : 'var(--ink2)' });
+    const templates = Object.keys(TPL).map(n => Object.assign({ name: n, pick: () => this.set({ tpl: n, nid: this.L.nid + 10, ex: TPL[n].map((e, i) => ({ id: this.L.nid + i, name: e[0], sets: mkSets(e[1], e[2]) })) }) }, pill(L.tpl === n)));
+    const addNamed = (n) => this.set({ nid: this.L.nid + 1, ex: this.L.ex.concat([{ id: this.L.nid, name: n, sets: mkSets(this.L.last[n] || 0, 10) }]) });
+    const library = LIB.concat(L.myEx.filter(x => LIB.indexOf(x) < 0)).map(n => ({ name: n, pick: () => addNamed(n) }));
+    const cardioTypes = ['Бег', 'Велосипед', 'Плавание', 'Ходьба'].map(n => Object.assign({ name: n, pick: () => this.set({ cardio: n }) }, pill(L.cardio === n)));
+    const volumes = [['Нед. 1', 0], ['Нед. 2', 0], ['Нед. 3', 0], ['Эта', (baseVol + todayVol) / 1000]].map((v, i) => ({ name: v[0], label: v[1].toFixed(1) + ' т', h: Math.max(4, Math.round(v[1] / 17 * 90)), color: i === 3 ? 'var(--cat-violet)' : 'var(--line2)' }));
+    return {
+      week, stats, rows, templates, library, selTitle, selOn: !!L.days[L.sel], selOff: !L.days[L.sel], selTime: L.times[L.sel], planText: nPlan ? 'Тренировки: ' + planned.join(' · ') : 'Дни тренировок пока не выбраны.', setTime: (ev) => { const v = ev.target.value; if (v) this.set({ times: this.L.times.map((x, z) => z === this.L.sel ? v : x) }); },
+      newEx: L.newEx, typeEx: (ev) => this.set({ newEx: ev.target.value }), addEx: () => { const n = (this.L.newEx || '').trim(); if (!n) return; this.set({ newEx: '', myEx: this.L.myEx.indexOf(n) < 0 ? this.L.myEx.concat([n]) : this.L.myEx, nid: this.L.nid + 1, ex: this.L.ex.concat([{ id: this.L.nid, name: n, sets: mkSets(this.L.last[n] || 0, 10) }]) }); }, setsDone: done, setsTotal: setsAll.length, cardioTypes, minutes: L.minutes, km: L.km.toFixed(1).replace('.', ','), cardioLog: L.cardioLog,
+      minMinus: () => this.set({ minutes: Math.max(0, this.L.minutes - 5) }), minPlus: () => this.set({ minutes: this.L.minutes + 5 }), kmMinus: () => this.set({ km: Math.max(0, this.L.km - 0.5) }), kmPlus: () => this.set({ km: this.L.km + 0.5 }),
+      logCardio: () => { const l = this.L; if (!l.minutes) return; this.set({ cardioLog: [{ name: l.cardio, text: l.minutes + ' мин · ' + l.km.toFixed(1).replace('.', ',') + ' км · сегодня' }].concat(l.cardioLog).slice(0, 3) }); },
+      volumes, records: []
+    };
+  }
+}
+</script>
+</body>
+</html>

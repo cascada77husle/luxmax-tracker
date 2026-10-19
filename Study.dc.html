@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Обучение по файлу</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
+<sc-if value="{{isLib}}" hint-placeholder-val="{{true}}">
+  <div style="border:1.5px dashed var(--accent-line);border-radius:22px;background:var(--field);padding:24px 22px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+      <span style="width:64px;height:64px;border-radius:20px;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg></span>
+      <span style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:6px">
+        <span style="align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:4px 10px">Курсы</span>
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:700;line-height:1.15">Загрузите курс любого формата</b>
+        <span style="font-size:14px;line-height:1.5;color:var(--muted);max-width:40em">Файл, видео, аудио, ссылка или скриншоты. Трекер разложит материал на уроки и поведёт по плану: описание курса, как всё выглядит, фото-примеры, конспекты, карточки, проверка знаний и учёт времени.</span>
+      </span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Формат материала</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{formats}}" as="f" hint-placeholder-count="8"><button type="button" onClick="{{f.pick}}" style="cursor:pointer;min-height:44px;border:1.5px solid {{f.border}};background:{{f.bg}};color:{{f.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{f.name}}</button></sc-for></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <input type="text" value="{{titleVal}}" onInput="{{onTitle}}" placeholder="Название курса, например: Менталистика" aria-label="Название курса" style="flex:1 1 260px;min-width:0;min-height:48px;box-sizing:border-box;border:1.5px solid var(--line2);border-radius:999px;padding:12px 18px;font-size:14px;background:var(--card);color:var(--ink)">
+      <button type="button" onClick="{{upload}}" style="cursor:pointer;min-height:48px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:12px 28px">Загрузить курс</button>
+    </div>
+    <span style="display:{{upNoteDisplay}};font-size:13px;line-height:1.45;color:var(--ok);background:var(--ok-soft);border-radius:12px;padding:10px 14px">{{upNote}}</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Публичные курсы</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok)">Для всех</span><span style="font-size:13px;color:var(--muted)">{{publicCount}}</span></div>
+    <span style="font-size:13px;color:var(--muted);margin-top:-4px">Готовые курсы, доступны каждому. Откройте и начните учиться.</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <sc-for list="{{publicCards}}" as="c" hint-placeholder-count="3">
+        <button type="button" onClick="{{c.open}}" style="cursor:pointer;text-align:left;min-height:120px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;color:var(--ink)">
+          <span style="display:flex;align-items:center;gap:12px"><span style="width:46px;height:46px;border-radius:12px;background:{{c.tagBg}};color:{{c.tagFg}};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">{{c.tag}}</span><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:15px;font-weight:600">{{c.name}}</b><span style="font-size:12px;color:var(--muted)">{{c.fmt}}</span></span></span>
+          <span style="height:6px;border-radius:999px;background:var(--line);overflow:hidden;display:block"><span style="display:block;height:100%;border-radius:999px;background:var(--ok);width:{{c.pct}}%"></span></span>
+          <span style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>{{c.sub}}</span><span style="color:var(--ink2);font-weight:600">Открыть</span></span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="height:1px;background:var(--line);margin:8px 0"></div>
+    <div style="display:flex;align-items:baseline;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Мои курсы</b><span style="font-size:13px;color:var(--muted)">{{courseCount}}</span></div>
+    <sc-if value="{{noMine}}" hint-placeholder-val="{{false}}"><div style="padding:22px 16px;text-align:center;border:1.5px dashed var(--line2);border-radius:16px;color:var(--muted);font-size:14px;line-height:1.5">Здесь появятся курсы, которые вы загрузите сами. Нажмите «Загрузить» выше и выберите файл.</div></sc-if>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <sc-for list="{{courseCards}}" as="c" hint-placeholder-count="3">
+        <button type="button" onClick="{{c.open}}" style="cursor:pointer;text-align:left;min-height:120px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;color:var(--ink)">
+          <span style="display:flex;align-items:center;gap:12px"><span style="width:46px;height:46px;border-radius:12px;background:{{c.tagBg}};color:{{c.tagFg}};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">{{c.tag}}</span><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:15px;font-weight:600">{{c.name}}</b><span style="font-size:12px;color:var(--muted)">{{c.fmt}}</span></span></span>
+          <span style="height:6px;border-radius:999px;background:var(--line);overflow:hidden;display:block"><span style="display:block;height:100%;border-radius:999px;background:var(--ok);width:{{c.pct}}%"></span></span>
+          <span style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>{{c.sub}}</span><span style="color:var(--ink2);font-weight:600">Открыть</span></span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{isCourse}}" hint-placeholder-val="{{false}}">
+  <button type="button" onClick="{{back}}" style="cursor:pointer;align-self:flex-start;min-height:44px;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line2);border-radius:999px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 18px 8px 12px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>К курсам</button>
+  <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:20px;background:var(--field);border:1px solid var(--accent-line);flex-wrap:wrap">
+    <span style="width:48px;height:48px;border-radius:12px;background:{{courseTagBg}};color:{{courseTagFg}};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">{{courseTag}}</span>
+    <span style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">{{courseName}}</b><span style="font-size:13px;color:var(--muted)">{{courseSub}}</span></span>
+    <button type="button" onClick="{{toggleLive}}" style="cursor:pointer;min-height:48px;border:{{liveBorder}};border-radius:999px;background:{{liveBg}};color:{{liveFg}};font-weight:700;font-size:14px;padding:0 22px">{{liveText}}</button>
+  </div>
+  <span style="display:{{liveHintDisplay}};font-size:13px;line-height:1.5;color:var(--ok);background:var(--ok-soft);border:1px solid var(--ok-line);border-radius:12px;padding:10px 14px">План этого курса теперь виден во вкладке «Моя волна», режим «По курсу»: там сегодняшний урок и ближайшие дни. Отметки синхронизируются.</span>
+  <span style="display:{{demoDisplay}};font-size:13px;line-height:1.5;color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn-line);border-radius:12px;padding:10px 14px">В макете структура курса показана на примере. В рабочей версии уроки строятся из вашего материала на сервере, а пока файл разбирается, курс помечен «обрабатывается».</span>
+  <div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{tabs}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>  <sc-if value="{{v.about}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:12px">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">О курсе</b>
+          <span style="font-size:14px;line-height:1.6;color:var(--ink2);max-width:62ch">{{aboutDesc}}</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{aboutChips}}" as="c" hint-placeholder-count="3"><span style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:5px 12px">{{c.t}}</span></sc-for></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:12px">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Как это выглядит</b>
+          <span style="font-size:13px;color:var(--muted)">Один день занятий по курсу</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px"><sc-for list="{{howSteps}}" as="h" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:16px;background:var(--field);border:1px solid var(--line)"><span style="width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink2)">{{h.n}}</span><span style="font-size:13px;line-height:1.5;color:var(--ink2)">{{h.text}}</span></div></sc-for></div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Фото-примеры</b><button type="button" onClick="{{addPhoto}}" style="cursor:pointer;min-height:44px;border:1.5px solid var(--line2);border-radius:999px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 18px">Добавить своё фото</button></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px"><sc-for list="{{photos}}" as="p" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px"><div style="aspect-ratio:4/3;border-radius:16px;border:1px solid var(--line2);background:{{p.bg}};display:flex;align-items:center;justify-content:center;color:var(--muted)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg></div><span style="font-size:12px;line-height:1.4;color:var(--ink2)">{{p.cap}}</span></div></sc-for></div>
+          <span style="font-size:12px;color:var(--muted)">Серые рамки это места под фото и кадры из курса. Свои фото можно добавлять сюда же.</span>
+        </div>
+      </div>
+      <div style="flex:0 1 340px;width:100%;max-width:340px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:10px">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Чему научитесь</b>
+          <sc-for list="{{outcomes}}" as="o" hint-placeholder-count="4"><div style="display:flex;gap:10px;align-items:flex-start"><span style="width:20px;height:20px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4L19 7"/></svg></span><span style="font-size:14px;line-height:1.45;color:var(--ink2)">{{o.text}}</span></div></sc-for>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:8px">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Программа</b>
+          <sc-for list="{{program}}" as="r" hint-placeholder-count="12"><div style="display:flex;gap:10px;align-items:baseline;padding-top:{{r.pt}}"><span style="width:22px;color:var(--muted);font-weight:700;font-size:12px;display:{{r.numDisplay}}">{{r.num}}</span><span style="flex:1;min-width:0;font-size:{{r.fs}};font-weight:{{r.fw}};color:{{r.fg}};line-height:1.4">{{r.text}}</span><span style="font-size:12px;color:var(--muted);white-space:nowrap">{{r.mins}}</span></div></sc-for>
+        </div>
+        <button type="button" onClick="{{toPlan}}" style="cursor:pointer;min-height:52px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:14px 24px">Открыть план по дням</button>
+      </div>
+    </div>
+  </sc-if>
+
+
+  <sc-if value="{{v.plan}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:0 1 280px;width:100%;box-sizing:border-box;padding:16px;gap:16px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Ваш темп</b>
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13px;font-weight:600;color:var(--ink2)">Минут в день</span><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{minOpts}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13px;font-weight:600;color:var(--ink2)">Дней в неделю</span><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{dayOpts}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div></div>
+        <div style="border-radius:12px;background:var(--ok-soft);padding:10px 14px;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px;color:var(--ok)">{{finishText}}</b><span style="font-size:12px;color:var(--ok)">{{daysText}}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>Пройдено</b><b style="color:var(--ok)">{{doneCount}} из {{dayTotal}} дн.</b></div><div style="height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--ok);width:{{pct}}%"></div></div></div>
+        <button type="button" onClick="{{toTasks}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px;padding:13px">Добавить в мои задачи</button>
+        <button type="button" onClick="{{toRemind}}" style="cursor:pointer;border:1.5px solid var(--accent);border-radius:12px;padding:12px;font-weight:700;font-size:14px;background:var(--card);color:var(--accent-text)">Напоминать каждый день</button>
+        <span style="display:{{noteDisplay}};font-size:12px;line-height:1.45;color:var(--ok);background:var(--ok-soft);border-radius:12px;padding:10px 12px">{{note}}</span>
+      </div>
+      <div style="flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:8px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Рабочий план по дням</b>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="10"><div style="display:flex;flex-direction:column;gap:8px"><div style="display:{{r.hdrDisplay}};margin-top:8px;font-size:13px;font-weight:700;color:var(--accent-text)">{{r.hdr}}</div><button type="button" onClick="{{r.toggle}}" style="display:flex;cursor:pointer;text-align:left;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:20px;border:1px solid {{r.border}};background:{{r.bg}}"><span style="width:26px;height:26px;border-radius:8px;border:1.5px solid {{r.boxBorder}};background:{{r.box}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{r.tick}}"><path d="M5 12l4 4L19 7"/></svg></span><span style="width:84px;flex-shrink:0;font-size:13px;font-weight:700;color:var(--ink2)">{{r.date}}</span><span style="flex:1;min-width:0;font-size:14px;line-height:1.45;font-weight:500;color:{{r.fg}};text-decoration:{{r.deco}}">{{r.text}}</span><span style="font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap">{{r.mins}}</span></button></div></sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{v.progress}}" hint-placeholder-val="{{false}}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px"><sc-for list="{{stats}}" as="s" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--muted)">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em;color:{{s.color}}">{{s.value}}</b><span style="font-size:12px;color:var(--muted)">{{s.sub}}</span></div></sc-for></div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:1 1 340px;min-width:0"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Минуты учёбы по дням недели</b><div style="display:flex;align-items:flex-end;gap:10px;height:150px"><sc-for list="{{bars}}" as="b" hint-placeholder-count="7"><div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%"><span style="font-size:11px;color:var(--muted)">{{b.val}}</span><div style="width:100%;max-width:34px;height:{{b.h}}%;min-height:4px;border-radius:8px 8px 4px 4px;background:{{b.color}}"></div><span style="font-size:12px;font-weight:600;color:var(--ink2)">{{b.wd}}</span></div></sc-for></div></div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:1 1 300px;min-width:0"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Прогресс по модулям</b><sc-for list="{{modRows}}" as="m" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:14px"><b style="font-weight:600">{{m.name}}</b><span style="color:var(--ink2)">{{m.sub}}</span></div><div style="height:9px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--accent);width:{{m.pct}}%"></div></div></div></sc-for></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{v.notes}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:0 1 300px;width:100%;box-sizing:border-box;padding:16px;gap:8px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Уроки</b><sc-for list="{{lessonRows}}" as="l" hint-placeholder-count="12"><button type="button" onClick="{{l.pick}}" style="cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1.5px solid {{l.border}};background:{{l.bg}};font-size:13px;font-weight:600;color:var(--ink)"><span style="width:22px;color:var(--muted);font-weight:700">{{l.num}}</span><span style="flex:1;min-width:0">{{l.name}}</span><span style="font-size:11px;color:var(--ok);font-weight:700">{{l.has}}</span></button></sc-for></div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:1 1 340px;min-width:0"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">{{curLesson}}</b><span style="font-size:13px;color:var(--muted)">Запишите главное своими словами. Конспект сохранится рядом с уроком.</span><input type="text" value="{{noteText}}" onInput="{{typeNote}}" placeholder="Главная мысль урока" aria-label="Конспект" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink)"><button type="button" onClick="{{saveNote}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px;align-self:flex-start">Сохранить конспект</button>
+        <b style="font-size:14px;margin-top:6px">Мои конспекты · {{noteCount}}</b><sc-for list="{{savedNotes}}" as="n" hint-placeholder-count="2"><div style="display:flex;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--field)"><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:13px;color:var(--accent-text)">{{n.lesson}}</b><span style="font-size:14px;line-height:1.5">{{n.text}}</span></span><button type="button" onClick="{{n.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px;align-self:flex-start" title="Убрать">×</button></div></sc-for><span style="display:{{noNotesDisplay}};font-size:13px;color:var(--muted)">Конспектов пока нет.</span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{v.cards}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;gap:16px;max-width:560px;width:100%;box-sizing:border-box;align-self:center">
+      <span style="font-size:13px;color:var(--muted)">Карточка {{cardNum}} из {{cardTotal}}. Выучено: {{knownCount}}. На повтор: {{repeatCount}}.</span>
+      <button type="button" onClick="{{flip}}" style="cursor:pointer;width:100%;min-height:180px;border-radius:20px;border:1.5px solid {{cardBorder}};background:{{cardBg}};padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><span style="font-size:12px;font-weight:700;color:{{cardTagFg}}">{{cardTag}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700;line-height:1.3;color:var(--ink)">{{cardText}}</b></button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button type="button" onClick="{{again}}" style="cursor:pointer;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 16px;border-color:var(--bad-line);background:var(--bad-soft);color:var(--bad);font-weight:700">Повторить позже</button><button type="button" onClick="{{know}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px;background:var(--ok)">Знаю</button></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{v.quiz}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;max-width:640px;width:100%;box-sizing:border-box;align-self:center">
+      <sc-if value="{{quizOpen}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px"><span style="font-size:13px;color:var(--muted)">Вопрос {{qNum}} из {{qTotal}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700;line-height:1.3">{{qText}}</b>
+        <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{qOpts}}" as="o" hint-placeholder-count="3"><button type="button" onClick="{{o.pick}}" style="cursor:pointer;text-align:left;padding:13px 16px;border-radius:12px;border:1.5px solid {{o.border}};background:{{o.bg}};font-size:14px;font-weight:600;color:{{o.fg}}">{{o.text}}</button></sc-for></div>
+        <div style="display:{{qNextDisplay}};justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:13px;font-weight:700;color:{{qResColor}}">{{qRes}}</span><button type="button" onClick="{{qNext}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">{{qNextText}}</button></div></div></sc-if>
+      <sc-if value="{{quizDone}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;color:var(--accent-text)">{{score}} из {{qTotal}}</b><span style="font-size:14px;color:var(--ink2);max-width:30em;line-height:1.5">{{scoreText}}</span><button type="button" onClick="{{qRestart}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Пройти ещё раз</button></div></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{v.focus}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:1 1 300px;min-width:0"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Записать занятие</b><span style="font-size:13px;color:var(--muted)">Позанимались по курсу? Выберите длительность и запишите. Минуты попадут в «Прогресс».</span><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{fmOpts}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div><button type="button" onClick="{{logSession}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px;align-self:flex-start">Записать {{fm}} мин</button>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>Сегодня</b><b style="color:var(--ok)">{{todayMin}} из 30 мин</b></div><div style="height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--ok);width:{{todayPct}}%"></div></div></div></div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex:1 1 300px;min-width:0"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Журнал занятий</b><sc-for list="{{sessRows}}" as="s" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--field)"><b style="flex:1;font-size:14px">{{s.text}}</b><span style="font-size:12px;color:var(--muted)">{{s.when}}</span><button type="button" onClick="{{s.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for><span style="display:{{noSessDisplay}};font-size:13px;color:var(--muted)">Занятий пока нет.</span></div>
+    </div>
+  </sc-if>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"live":{"editor":null},"fnLive":{"editor":null},"$preview":{"width":1000,"height":1300}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, step: 'lib', course: 'change', tab: 'about', fmt: 'PDF', title: '', upNote: '', extra: [], by: {}, photoAdd: {}, mins: 30, dpw: 5, done: {}, note: '', notes: {}, nl: 0, nt: '', ci: 0, flipped: false, known: {}, qi: 0, qa: {}, qd: false, fm: 25, sess: [] }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const L = this.L, P = this.props || {};
+    const liveOn = !!(P.live && P.live.id === L.course), doneMap = liveOn ? (P.live.done || {}) : L.done;
+    const setDone = (m) => { if (liveOn) { if (P.fnLive) P.fnLive(Object.assign({}, P.live, { done: m })); } else this.set({ done: m }); };
+    const CH = [['Запишите, кем хотите стать через 30 дней, и свою точку А по сну, телу, деньгам и работе', 'Напишите одному близкому человеку о своей цели'], ['Выберите время отбоя и подъёма и поставьте два будильника', 'Предупредите близких о новом режиме'], ['Соберите утро из 4 шагов: вода, свет, движение, план дня', 'Поздоровайтесь первым с тремя людьми'], ['Рассчитайте норму воды и белка, уберите сладкие напитки', 'Позовите кого-то на совместный обед'], ['Короткая тренировка на всё тело по видео или по плану', 'Расскажите другу о тренировке'], ['Проверьте осанку у стены, 5 минут дыхания животом', 'Держите прямую спину в разговоре'], ['Обзор недели: сон, тренировки, питание, фокус', 'Попросите обратную связь у близкого'], ['Белок в каждый приём пищи, порции по ладони', 'Обсудите с кем-то рецепт или продукт'], ['Один блок 50 минут над самым важным делом без телефона', 'Скажите коллеге, когда вы недоступны для связи'], ['Запишите веса и повторы, добавьте в силовой чуть больше', 'Позанимайтесь с партнёром или в зале рядом с людьми'], ['Удалите лишние приложения, отключите уведомления, режим «Не беспокоить» на ночь', 'Один разговор без телефона в руках'], ['Умывание, крем с SPF, чистая одежда, ногти, причёска', 'Спросите знакомого честно про ваш образ'], ['Походка, плечи, взгляд: 10 минут перед зеркалом', 'Держите зрительный контакт в трёх разговорах'], ['Обзор недели 2: тело, питание, привычки', 'Поблагодарите одного человека лично'], ['Задайте 5 открытых вопросов в разговорах', 'Пересказывайте услышанное своими словами'], ['Читайте вслух 5 минут, замедлите речь, делайте паузы', 'Запишите свой голос и послушайте'], ['Изучите открытую позу, руки, дистанцию', 'Сравните закрытую и открытую позу в разговоре'], ['Придумайте 3 вводные фразы для знакомства', 'Заговорите с одним новым человеком'], ['Дыхание 4-6, прогулка без телефона, отключение вечером', 'Назначьте встречу с тем, кто восстанавливает'], ['Запишите доходы и расходы, определите «подушку» на 3 месяца', 'Обсудите бюджет с партнёром или другом'], ['Обзор недели 3: общение, деньги, энергия', 'Напишите тому, с кем давно не общались'], ['Разберите гардероб: оставьте то, что сидит и нравится', 'Попросите оценку образа у человека со вкусом'], ['Потренируйте вежливый отказ вслух', 'Скажите «нет» одному ненужному предложению'], ['Выпишите свой круг общения: кто даёт энергию, кто забирает', 'Пригласите одного человека на встречу'], ['Сформулируйте дело на 90 дней и первый шаг', 'Расскажите о деле одному человеку'], ['Утренний свет, кофеин до 14:00, экран выключить за час до сна', 'Тихая беседа вечером без экранов'], ['Подготовьте разговор: факт, чувство, просьба', 'Проведите один сложный разговор спокойно'], ['Обзор недели 4: что работает, что убрать', 'Поделитесь итогами с близким'], ['Соберите свою систему: утро, работа, тело, вечер на одной странице', 'Попросите близкого помогать вам по системе'], ['Итоги 30 дней: цифры, фото, выводы, следующий цикл', 'Поблагодарите тех, кто вас поддержал']];
+    const mkChange = (i) => {
+      const wd = i % 7, wk = Math.floor(i / 7), c = CH[i] || CH[0];
+      const body = [['Силовая А: ноги и спина, 40 минут'], ['Ходьба 8000 шагов, растяжка 10 минут'], ['Силовая Б: грудь и плечи, 40 минут'], ['Кардио 30 минут в комфортном темпе'], ['Силовая В: всё тело, 40 минут'], ['Долгая прогулка или спорт с людьми, 60 минут'], ['Лёгкая мобилити 15 минут, отдых']][wd];
+      const food = ['Записывайте всё, что едите', 'Белок в каждый приём пищи, 2 л воды', 'Минимум сахара, 2 л воды, овощи в обед и ужин', 'Составьте меню на неделю и купите продукты'][Math.min(wk, 3)];
+      const bed = ['23:30', '23:00', '22:45', '22:30', '22:30'][Math.min(wk, 4)];
+      return [
+        { b: 'Утро', items: ['Стакан воды после пробуждения', 'Свет и движение 10 минут', 'Записать главное дело дня'] },
+        { b: 'Тело', items: body.concat([food]) },
+        { b: 'Фокус', items: [c[0], 'Один блок работы 50 минут без телефона'] },
+        { b: 'Общение', items: [c[1]] },
+        { b: 'Вечер', items: ['Итог дня: что получилось, что нет', 'План на завтра', 'Экраны выключить за час до сна'] },
+        { b: 'Сон', items: ['Отбой в ' + bed, 'Подъём в одно и то же время'] }
+      ];
+    };
+    const DC = [['Перестать ждать мотивации', 'Выпишите 3 дела, которые вы делаете всегда, как чистку зубов'], ['Выбрать главный результат', 'Определите главное дело и поставьте на первое место'], ['Составить план на завтра', 'Три главных дела, время и место для каждого'], ['Закрепить правило двух минут', 'Сделайте сразу всё, что занимает до двух минут'], ['Привязать привычку к якорю', 'Выберите якорь: после кофе, после душа, после работы'], ['Утро по таймеру', 'Опишите утро по минутам и проведите по таймеру'], ['Обзор недели', 'Сделано, сорвалось, помешало, что исправить'], ['Блоки фокуса', 'Два блока по 50 минут и перерыв 10 минут'], ['Без телефона в первый час', 'Телефон в другой комнате до конца утреннего блока'], ['Приоритеты', 'Разложите дела по важности и срочности'], ['Входящие', 'Две проверки почты и мессенджеров за день'], ['Правило возврата', 'Если сорвались, сделайте минимальную версию сегодня'], ['Окружение и триггеры', 'Уберите из виду то, что отвлекает, поставьте на видное место нужное'], ['Обзор недели', 'Что работает, что убрать, что добавить'], ['Сон и движение', 'Отбой вовремя и 30 минут движения'], ['Учёт денег', 'Запишите расходы дня за 5 минут'], ['Подготовка с вечера', 'Одежда, сумка, вода, план — всё готово до сна'], ['Цепочка дней', 'Отметьте день в цепочке и не рвите её'], ['Награды и штрафы', 'Придумайте награду за неделю и честный штраф за срыв'], ['Недельный обзор по шаблону', 'Заполните шаблон обзора целиком'], ['Свой регламент', 'Сведите правила на утро, работу, вечер и неделю в одну страницу']];
+    const mkDisc = (i) => {
+      const c = DC[i] || DC[0], wd = i % 7;
+      return [
+        { b: 'Утро', items: ['Стакан воды и умывание', 'Открыть план дня', 'Запустить утренний таймер'] },
+        { b: 'Главное', items: ['Главный результат дня: сделать первым', c[0] + ': ' + c[1]] },
+        { b: 'Дела', items: ['Два блока фокуса по 50 минут', 'Разобрать входящие 2 раза за день', 'Мелкие дела до двух минут: сразу'] },
+        { b: 'Привычки', items: ['Привычка на якоре', 'Вода и движение 30 минут', wd === 6 ? 'Обзор недели: сделано и сорвалось' : 'Трекер: отметить сделанное'] },
+        { b: 'Вечер', items: ['Итог дня за 5 минут', 'План на завтра: 3 дела, время, место', 'Подготовка с вечера', 'Отбой вовремя'] }
+      ];
+    };
+    const COURSES = {
+      mental: {
+        name: 'Менталистика: чтение людей', tag: 'PDF', fmt: 'PDF и видео-уроки',
+        desc: 'Курс о наблюдательности и внимании. Вы учитесь замечать мелкие сигналы: мимику, жесты, паузы и интонации, строить из них осторожные предположения и проверять их в разговоре. Теории немного, основное время занимают упражнения и практика в паре.',
+        how: ['Короткий урок на 20–45 минут: идея и разбор примера.', 'Одно упражнение на день: применить в реальной беседе.', 'Конспект своими словами и карточки на повторение.', 'Проверка знаний в конце модуля, затем следующий модуль.'],
+        outcomes: ['Замечать мимику и жесты и не путать их с догадками', 'Задавать вопросы, которые раскрывают собеседника', 'Строить холодное чтение шаг за шагом', 'Тренировать память и внимание каждый день', 'Работать этично и в понятных рамках'],
+        photos: ['Пример: базовые выражения лица', 'Пример: жесты и поза при разговоре', 'Схема холодного чтения по шагам', 'Упражнение в паре, как выглядит'],
+        LES: [['Что такое менталистика и чего в ней нет', 20], ['Внимание и наблюдательность', 30], ['Мимика: базовые сигналы', 45], ['Жесты и поза', 40], ['Голос, темп и паузы', 35], ['Холодное чтение: структура', 45], ['Вопросы, которые раскрывают', 40], ['Память: приёмы запоминания', 35], ['Внушаемость и рамки этики', 25], ['Практика в паре', 50], ['Разбор ошибок', 30], ['Итоговый показ', 60]],
+        MODS: [['Основы', 0, 2], ['Наблюдение', 2, 5], ['Разговор и вопросы', 5, 9], ['Практика', 9, 12]],
+        CARDS: [['Чем наблюдение отличается от догадки?', 'Наблюдение это факт, который видно. Догадка это вывод, который ещё надо проверить.'], ['Зачем смотреть на базовое поведение человека?', 'Чтобы отличать его обычное от изменений в моменте.'], ['Что такое холодное чтение?', 'Серия осторожных предположений, которые уточняются по реакции человека.'], ['Почему важны паузы?', 'В паузах человек раскрывается и дополняет сказанное.'], ['Как тренировать внимание?', 'Каждый день описывать детали увиденного: люди, предметы, порядок.'], ['Что значит этичная практика?', 'Не вводить в заблуждение во вред и не давить на человека.'], ['Зачем разбирать ошибки?', 'Они показывают, какие сигналы вы читаете неверно.'], ['Как запоминать списки?', 'Связывать пункты в образы и размещать их по знакомому маршруту.']],
+        QZ: [['С чего начинается наблюдение?', ['С вывода о человеке', 'С фактов, которые видно', 'С первого впечатления'], 1], ['Что нужно знать до оценки реакции?', ['Базовое поведение человека', 'Его возраст', 'Его профессию'], 0], ['Как строят холодное чтение?', ['Одной уверенной догадкой', 'Серией осторожных предположений', 'Случайными фактами'], 1], ['Зачем нужны паузы в разговоре?', ['Чтобы человек дополнил сказанное', 'Чтобы закончить беседу', 'Они не нужны'], 0], ['Какой должна быть практика?', ['Любой ценой', 'Этичной и в рамках', 'Без обратной связи'], 1]],
+        seed: { done: { 0: true }, notes: { 1: 'Наблюдение начинается с того, что вы замечаете, а не с догадок.' }, sess: [{ m: 25, w: 'Пн' }] }
+      },
+      avatar: {
+        name: 'ИИ-аватар с нуля', tag: 'PDF', fmt: 'PDF, 12 уроков',
+        desc: 'Пошаговый курс по созданию ИИ-аватара для коротких роликов: персонаж, озвучка, сценарий, генерация видео, монтаж и публикация. В конце вы запускаете свой первый канал и смотрите аналитику.',
+        how: ['Урок с готовым шаблоном: что сделать и в каком инструменте.', 'Задание на день: собрать часть ролика.', 'Конспект, карточки на термины и повторение.', 'Проверка знаний и итоговый ролик.'],
+        outcomes: ['Создать персонажа и единый стиль', 'Написать сценарий с сильным хуком', 'Сгенерировать, озвучить и смонтировать ролик', 'Опубликовать и прогреть аккаунт', 'Читать аналитику и улучшать удержание'],
+        photos: ['Пример персонажа', 'Кадр из готового ролика', 'Экран монтажа', 'Экран аналитики'],
+        LES: [['Введение и цель курса', 20], ['Установка инструментов', 30], ['Создание персонажа', 45], ['Озвучка', 35], ['Сценарий ролика', 40], ['Генерация видео', 50], ['Монтаж', 45], ['Подпись и хештеги', 20], ['Публикация', 25], ['Прогрев аккаунта', 30], ['Аналитика', 30], ['Итоговый проект', 60]],
+        MODS: [['Основы', 0, 2], ['Персонаж и голос', 2, 4], ['Ролик', 4, 8], ['Запуск и рост', 8, 12]],
+        CARDS: [['Зачем нужен сценарий до генерации видео?', 'Чтобы озвучка и картинка шли по одной структуре и не приходилось переделывать.'], ['Что такое хук?', 'Первые 2–3 секунды ролика, которые удерживают зрителя.'], ['Какой длины лучший короткий ролик?', '20–40 секунд.'], ['Зачем прогревать аккаунт?', 'Чтобы платформа видела обычное поведение и не ограничила охваты.'], ['Что смотреть в аналитике в первую очередь?', 'Удержание в первые секунды и досмотры до конца.'], ['Что даёт единый стиль персонажа?', 'Узнаваемость и доверие аудитории.'], ['Почему озвучку записывают после сценария?', 'Текст уже готов, правок почти нет.'], ['Как часто выкладывать ролики?', 'Регулярно, лучше 3–5 в неделю.']],
+        QZ: [['Что делать первым при создании ролика?', ['Смонтировать', 'Написать сценарий', 'Выложить'], 1], ['Сколько секунд на хук?', ['2–3 секунды', '15 секунд', 'Минута'], 0], ['Что важнее всего в аналитике?', ['Лайки', 'Удержание в первые секунды', 'Время публикации'], 1], ['Зачем нужен прогрев аккаунта?', ['Чтобы получить больше подписчиков сразу', 'Чтобы охваты не ограничили', 'Это необязательно'], 1], ['Лучшая длина короткого ролика?', ['20–40 секунд', '3 минуты', '10 секунд'], 0]],
+        seed: { done: { 0: true, 1: true }, notes: { 0: 'Курс строится от цели: что человек должен уметь в конце.' }, sess: [{ m: 25, w: 'Пн' }] }
+      },
+      self: {
+        name: 'Саморазвитие: 20 дней', tag: 'DOC', fmt: 'Word, 20 практик',
+        desc: 'Шаблон курса по саморазвитию: по одной понятной практике в день. Цель, утренний и вечерний ритуал, сон и энергия, движение, питание, фокус на работе, эмоции, общение и деньги. Нажмите «Жить по курсу», и «Моя волна» будет собирать по нему ваши дни.',
+        how: ['Одна практика на день, 20–35 минут.', 'Задание на сегодня появляется в «Моей волне».', 'Отметили, и день засчитан, серия растёт.', 'Раз в неделю обзор: что получилось, что поменять.'],
+        outcomes: ['Собрать свой утренний и вечерний ритуал', 'Наладить сон, движение и питание без жёстких правил', 'Держать фокус на работе и меньше отвлекаться', 'Понимать свои эмоции и границы', 'Вести простую систему денег и целей'],
+        photos: ['Пример утреннего ритуала', 'Пример недельного обзора', 'Шаблон трекера привычек', 'Схема дня с фокус-блоками'],
+        LES: [['Цель и «зачем»', 20], ['Утренний ритуал', 25], ['Сон и энергия', 25], ['Привычка на 2 минуты', 20], ['Фокус и дела', 30], ['Движение каждый день', 30], ['Питание без жёстких правил', 25], ['Цифровая гигиена', 20], ['Эмоции: замечать и называть', 30], ['Общение и границы', 30], ['Деньги: простая система', 30], ['Недельный обзор', 25], ['Страхи и действия', 30], ['Окружение', 25], ['Чтение и конспект', 30], ['Вечерний ритуал', 20], ['Неделя без отмазок', 35], ['Разбор срывов', 25], ['Новая привычка на месяц', 30], ['Итоговый обзор', 35]],
+        MODS: [['Основа', 0, 4], ['Энергия и тело', 4, 9], ['Люди и деньги', 9, 14], ['Устойчивость', 14, 20]],
+        CARDS: [['Почему привычка на 2 минуты работает?', 'Её легко начать, а повторение важнее объёма.'], ['Что входит в утренний ритуал?', 'Вода, движение, цель дня и 5 минут без телефона.'], ['Как держать фокус?', 'Один блок 25–50 минут, без уведомлений, потом короткий отдых.'], ['Зачем недельный обзор?', 'Видно, что работает, и можно поменять план.']],
+        QZ: [['Что важнее для привычки?', ['Большой объём', 'Регулярность', 'Мотивация'], 1], ['Как начать фокус-блок?', ['С уведомлениями', 'Выключив отвлекающее', 'С многозадачности'], 1], ['Зачем нужен недельный обзор?', ['Для отчёта', 'Чтобы корректировать план', 'Он не нужен'], 1]],
+        seed: { done: {}, notes: {}, sess: [] }
+      },
+      sales: {
+        name: 'ИИ в продажах', tag: 'VID', fmt: 'Видео и таблицы, 8 уроков',
+        desc: 'Практический курс: как использовать ИИ для поиска клиентов, скриптов, ответов на возражения и разбора звонков. Подходит для работы в разделе «Бизнес»: уроки можно привязать к продажам и рекламе проекта.',
+        how: ['Видео-урок с разбором на реальном примере.', 'Задание: собрать скрипт или таблицу для своего проекта.', 'Конспект и карточки по приёмам.', 'Проверка и запуск в бизнесе.'],
+        outcomes: ['Собрать список клиентов с помощью ИИ', 'Писать скрипты и ответы на возражения', 'Разбирать звонки и находить слабые места', 'Автоматизировать первые касания'],
+        photos: ['Пример воронки продаж', 'Пример скрипта', 'Таблица клиентов', 'Разбор звонка'],
+        LES: [['Как ИИ меняет продажи', 20], ['Портрет клиента', 30], ['Поиск клиентов', 40], ['Первое касание', 30], ['Скрипты и возражения', 45], ['Разбор звонков', 35], ['Автоматизация', 40], ['Запуск в проекте', 50]],
+        MODS: [['Основа', 0, 2], ['Клиенты', 2, 4], ['Продажа', 4, 6], ['Рост', 6, 8]],
+        CARDS: [['Зачем нужен портрет клиента?', 'Чтобы писать и искать под конкретных людей, а не всем сразу.'], ['Что должно быть в первом касании?', 'Короткая польза и один понятный вопрос.'], ['Как работать с возражением?', 'Уточнить причину, ответить фактом, предложить следующий шаг.'], ['Что проверять в разборе звонка?', 'Вопросы клиента и моменты, где разговор остановился.']],
+        QZ: [['С чего начинают продажи с ИИ?', ['С массовой рассылки', 'С портрета клиента', 'С презентации'], 1], ['Каким должно быть первое касание?', ['Длинным', 'Коротким и с одним вопросом', 'Без вопроса'], 1], ['Что делать с возражением?', ['Игнорировать', 'Уточнить причину', 'Снизить цену сразу'], 1]],
+        seed: { done: {}, notes: {}, sess: [] }
+      },
+      change: {
+        name: 'Полная смена жизни', tag: 'DOC', fmt: 'Шаблон курса',
+        desc: 'Большой курс-перезагрузка на 30 дней: спорт, сон, питание, внешний вид, фокус в работе, общение, деньги и опора на себя. Каждый день в «Моей волне» раскладывается на блоки: утро, тело, фокус, общение, вечер и сон. Нагрузка растёт понемногу, по воскресеньям обзор недели.',
+        how: ['Один день курса равен одному дню в «Моей волне»: утро, тело, фокус, общение, вечер.', 'Каждый блок это короткий чек-лист. Отметили пункты, день засчитан.', 'Раз в неделю обзор: что получилось, что убрать, что усилить.', 'После 30 дней вы собираете свою систему и запускаете следующий цикл.'],
+        outcomes: ['Стабильный сон и утренний ритуал', 'Тренировки 3 раза в неделю и ежедневное движение', 'Питание с белком, водой и без хаоса', 'Фокус-блоки в работе и меньше отвлечений', 'Навыки общения: слушать, говорить, ставить границы', 'Свой бюджет, стиль и план на 90 дней'],
+        photos: ['Пример дня по блокам', 'Шаблон недельного обзора', 'План тренировок на месяц', 'Схема сна и режима'],
+        LES: [['День 1. Цель и точка А', 35], ['День 2. Сон: отбой и подъём', 35], ['День 3. Утренний ритуал', 35], ['День 4. Вода и базовое питание', 35], ['День 5. Первая тренировка', 35], ['День 6. Осанка и дыхание', 35], ['День 7. Обзор недели 1', 35], ['День 8. Питание: белок и порции', 35], ['День 9. Глубокий фокус', 35], ['День 10. Сила и прогрессия', 35], ['День 11. Цифровая гигиена', 35], ['День 12. Кожа, уход, внешний вид', 35], ['День 13. Уверенность в движении', 35], ['День 14. Обзор недели 2', 35], ['День 15. Слушать и спрашивать', 35], ['День 16. Голос и речь', 35], ['День 17. Язык тела', 35], ['День 18. Знакомство без страха', 35], ['День 19. Стресс и восстановление', 35], ['День 20. Деньги: бюджет и подушка', 35], ['День 21. Обзор недели 3', 35], ['День 22. Стиль и гардероб', 35], ['День 23. Границы и отказ', 35], ['День 24. Дружба и круг общения', 35], ['День 25. Дело на 90 дней', 35], ['День 26. Энергия: свет, кофеин, сон', 35], ['День 27. Сложный разговор', 35], ['День 28. Обзор недели 4', 35], ['День 29. Система на каждый день', 35], ['День 30. Итог и следующий цикл', 35]],
+        MODS: [['Основа: цель, сон, утро', 0, 7], ['Тело и питание', 7, 14], ['Люди и речь', 14, 21], ['Внешний вид и деньги', 21, 25], ['Энергия и дело', 25, 28], ['Система и итог', 28, 30]],
+        CARDS: [['Зачем начинать с сна?', 'От сна зависят энергия, настроение, аппетит и сила воли. Без него остальное держится плохо.'], ['Сколько тренировок в неделю в начале?', 'Три силовые и ежедневная ходьба. Лучше стабильно, чем редко и тяжело.'], ['Что такое блок фокуса?', '50 минут работы над одной задачей без телефона, затем 10 минут отдыха.'], ['Как слушать собеседника?', 'Задавать открытые вопросы, не перебивать, пересказывать суть своими словами.'], ['Зачем обзор недели?', 'Он показывает, что работает, и не даёт системе развалиться незаметно.'], ['Как ставить границу?', 'Спокойно, коротко и без оправданий: «Не смогу, спасибо, что предложил».']],
+        QZ: [['С чего начинается смена жизни по курсу?', ['С покупок и планов', 'С цели и режима сна', 'С диеты'], 1], ['Сколько силовых тренировок в неделю на старте?', ['Семь', 'Три', 'Ни одной'], 1], ['Что делать при срыве дня?', ['Бросить курс', 'Вернуться на следующий день', 'Ждать понедельника'], 1]],
+        DT: (i) => mkChange(i),
+        seed: { done: {}, notes: {}, sess: [] }
+      },
+      discipline: {
+        name: 'Дисциплина и контроль жизни', tag: 'DOC', fmt: 'Шаблон регламента',
+        desc: 'Курс-шаблон о том, как держать всю жизнь под контролем и ничего не забывать. Вы собираете свой регламент: главный результат дня, список дел с приоритетами, привычки с якорями, вечерний план на завтра и недельный обзор. К концу курса у вас готова система, которая работает без мотивации.',
+        how: ['Каждый день курса даёт один инструмент и одно действие.', 'В «Моей волне» день разложен на блоки: утро, главное, дела, привычки, вечер.', 'Отметили пункты, день засчитан, цепочка дней растёт.', 'На 21-й день вы получаете свой регламент: правила на утро, работу, вечер и неделю.'],
+        outcomes: ['Один главный результат на каждый день', 'План на завтра, который готов с вечера', 'Привычки на якорях и правило возврата после срыва', 'Фокус-блоки без отвлечений', 'Список дел с приоритетами и разбор входящих', 'Свой регламент жизни на одной странице'],
+        photos: ['Шаблон дня: главное, дела, привычки', 'Шаблон вечернего плана', 'Шаблон недельного обзора', 'Регламент на одной странице'],
+        LES: [['День 1. Система вместо мотивации', 30], ['День 2. Один главный результат дня', 30], ['День 3. План на завтра вечером', 30], ['День 4. Правило двух минут', 30], ['День 5. Привычка на якоре', 30], ['День 6. Утро по таймеру', 30], ['День 7. Обзор недели 1', 30], ['День 8. Блоки фокуса 50 на 10', 30], ['День 9. Первый час без телефона', 30], ['День 10. Список дел и приоритеты', 30], ['День 11. Входящие: письма и сообщения', 30], ['День 12. Сорвался: правило возврата', 30], ['День 13. Окружение и триггеры', 30], ['День 14. Обзор недели 2', 30], ['День 15. Тело: сон и движение', 30], ['День 16. Деньги: учёт за 5 минут', 30], ['День 17. Подготовка с вечера', 30], ['День 18. Цепочка дней', 30], ['День 19. Награды и штрафы', 30], ['День 20. Недельный обзор по шаблону', 30], ['День 21. Свой регламент жизни', 30]],
+        MODS: [['Основа системы', 0, 7], ['Фокус и порядок', 7, 14], ['Устойчивость', 14, 20], ['Регламент', 20, 21]],
+        CARDS: [['Почему система лучше мотивации?', 'Мотивация приходит и уходит, а система работает в любое состояние.'], ['Что такое главный результат дня?', 'Одно дело, после которого день не зря. Его делают первым.'], ['Как работает правило двух минут?', 'Если дело занимает до двух минут, делаем сразу. Большое дело начинаем с двух минут.'], ['Что делать после срыва?', 'Не наказывать себя, а сделать минимальную версию привычки в тот же день.'], ['Зачем план на завтра вечером?', 'Утром не тратится воля на выбор, вы просто начинаете.'], ['Что входит в недельный обзор?', 'Что сделано, что сорвалось, чему помешало, что сделать в следующей неделе.']],
+        QZ: [['Что делать первым в течение дня?', ['Почту', 'Главный результат дня', 'Мелкие дела'], 1], ['Когда составлять план на завтра?', ['Утром', 'Вечером', 'В обед'], 1], ['Что делать при срыве привычки?', ['Бросить', 'Минимальная версия в тот же день', 'Ждать месяц'], 1]],
+        DT: (i) => mkDisc(i),
+        seed: { done: {}, notes: {}, sess: [] }
+      }
+    };
+    const FM = [['PDF', 'PDF'], ['DOC', 'Word'], ['TXT', 'TXT, MD'], ['VID', 'Видео'], ['AUD', 'Аудио'], ['URL', 'Ссылка'], ['IMG', 'Фото'], ['ZIP', 'Архив']];
+    const TAGC = { PDF: ['var(--bad-soft)', 'var(--bad)'], DOC: ['var(--accent-soft)', 'var(--accent-text)'], TXT: ['var(--ok-soft)', 'var(--ok)'], VID: ['var(--warn-soft)', 'var(--warn)'], AUD: ['var(--warn-soft)', 'var(--warn)'], URL: ['var(--accent-soft)', 'var(--accent-text)'], IMG: ['var(--ok-soft)', 'var(--ok)'], ZIP: ['var(--accent-soft)', 'var(--accent-text)'] };
+    const all = { change: COURSES.change, discipline: COURSES.discipline };
+    L.extra.forEach(c => { all[c.id] = Object.assign({}, COURSES.mental, { desc: 'Описание появится после разбора файла. Пока показан пример структуры: описание курса, как он выглядит, программа, план по дням, конспекты, карточки и проверка.', outcomes: ['План по дням под ваш темп', 'Конспект и карточки по каждому уроку', 'Проверка знаний в конце модуля', 'Учёт времени и серия дней'], photos: ['Сюда попадут кадры из вашего курса', 'Схемы и таблицы из материала', 'Скриншоты упражнений', 'Ваши фото-примеры'], seed: { done: {}, notes: {}, sess: [] } }, c); });
+    const C = all[L.course] || all.change, LES = C.LES, MODS = C.MODS, CARDS = C.CARDS, QZ = C.QZ;
+    const fmtM = (m) => m >= 60 ? Math.floor(m / 60) + ' ч' + (m % 60 ? ' ' + (m % 60) + ' м' : '') : m + ' м';
+    const group = (les, cap) => { const ds = []; let cu = [], sm = 0, li = 0; les.forEach((l, i) => { if (cu.length && sm + l[1] > cap * 1.15) { ds.push({ items: cu, sum: sm, from: li, to: i }); cu = []; sm = 0; li = i; } cu.push(l); sm += l[1]; }); if (cu.length) ds.push({ items: cu, sum: sm, from: li, to: les.length }); return ds; };
+    const doneLes = (ds, done) => { const s = {}; ds.forEach((dy, i) => { if (done[i]) for (let q = dy.from; q < dy.to; q++) s[q] = true; }); return s; };
+    const progOf = (id) => id === L.course ? Object.assign({}, L, { done: doneMap }) : (L.by[id] || Object.assign({ mins: 30, dpw: 5, done: {}, notes: {}, sess: [] }, (all[id] || {}).seed || {}));
+    const tagOf = (c) => TAGC[c.tag] || TAGC.PDF;
+
+    // --- данные текущего курса (как раньше)
+    const DN = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'], MN = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    const planInfo = (les, mins, dpw) => { const WD = dpw === 3 ? [1, 3, 5] : dpw === 5 ? [1, 2, 3, 4, 5] : [0, 1, 2, 3, 4, 5, 6]; const ds = group(les, mins); let d = new Date(2026, 9, 19); return ds.map((dy, i) => { while (WD.indexOf(d.getDay()) < 0) d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1); const dt = new Date(d.getTime()); d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1); return { dt, dy, i }; }); };
+    const liveRows = (inf) => inf.map(x => ({ date: DN[x.dt.getDay()] + ', ' + x.dt.getDate() + ' ' + MN[x.dt.getMonth()], text: x.dy.items.map(l => l[0]).join(' · '), mins: x.dy.sum, blocks: C.DT ? C.DT(x.dy.from) : null }));
+    const days = group(LES, L.mins);
+    const totalMin = LES.reduce((s, l) => s + l[1], 0);
+    const info = planInfo(LES, L.mins, L.dpw);
+    const monday = (dt) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() - ((dt.getDay() + 6) % 7)).getTime();
+    const wc = {}; info.forEach(x => { const k = monday(x.dt); wc[k] = (wc[k] || 0) + 1; });
+    const rows = []; let wn = 0, last = -1;
+    info.forEach(x => { const k = monday(x.dt), isDone = !!doneMap[x.i], first = k !== last; if (first) { wn++; last = k; }
+      rows.push({ hdrDisplay: first ? 'block' : 'none', hdr: first ? 'Неделя ' + wn + ' · ' + wc[k] + ' ' + (wc[k] === 1 ? 'день' : wc[k] < 5 ? 'дня' : 'дней') : '', date: DN[x.dt.getDay()] + ', ' + x.dt.getDate() + ' ' + MN[x.dt.getMonth()], text: x.dy.items.map(l => l[0]).join(' · '), mins: fmtM(x.dy.sum), bg: isDone ? 'color-mix(in srgb,var(--ok) 6%,var(--card))' : 'var(--card)', border: isDone ? 'var(--ok-line)' : 'var(--line)', box: isDone ? 'var(--ok)' : 'var(--card)', boxBorder: isDone ? 'var(--ok)' : 'var(--line2)', tick: isDone ? 1 : 0, fg: isDone ? 'var(--muted)' : 'var(--ink)', deco: isDone ? 'line-through' : 'none', toggle: () => { const m = Object.assign({}, doneMap); m[x.i] = !m[x.i]; setDone(m); } }); });
+    const lastDt = info[info.length - 1].dt;
+    const dn = Object.keys(doneMap).filter(k => doneMap[k]).length;
+    const lessonDone = doneLes(days, doneMap);
+    const lessonsDone = Object.keys(lessonDone).length;
+    const studyMin = days.reduce((s, dy, i) => s + (doneMap[i] ? dy.sum : 0), 0) + L.sess.reduce((s, x) => s + x.m, 0);
+    let streak = 0; for (let i = 0; i < days.length && doneMap[i]; i++) streak++;
+    const perWd = [0, 0, 0, 0, 0, 0, 0]; info.forEach(x => { if (doneMap[x.i]) perWd[(x.dt.getDay() + 6) % 7] += x.dy.sum; }); L.sess.forEach(x => { const w = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].indexOf(x.w); if (w >= 0) perWd[w] += x.m; });
+    const mx = Math.max.apply(null, perWd.concat([30]));
+    const bars = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((w, i) => ({ wd: w, val: perWd[i] || '', h: Math.round(perWd[i] / mx * 100), color: perWd[i] ? 'var(--accent)' : 'var(--line)' }));
+    const modRows = MODS.map(m => { let n = 0; for (let q = m[1]; q < m[2]; q++) if (lessonDone[q]) n++; const t = m[2] - m[1]; return { name: m[0], sub: n + ' из ' + t + ' уроков', pct: Math.round(n / t * 100) }; });
+    const opts = (arr, key, f) => arr.map(v => ({ name: f(v), bg: L[key] === v ? 'var(--accent-soft)' : 'var(--card)', fg: L[key] === v ? 'var(--accent-text)' : 'var(--ink2)', border: L[key] === v ? 'var(--accent)' : 'var(--line)', pick: () => { const p = {}; p[key] = v; if (key !== 'fm') { p.done = {}; p.note = ''; if (liveOn && P.fnLive) { const nm = key === 'mins' ? v : this.L.mins, nd = key === 'dpw' ? v : this.L.dpw; P.fnLive({ id: this.L.course, name: C.name, done: {}, rows: liveRows(planInfo(LES, nm, nd)) }); } } this.set(p); } }));
+    const TABS = [['about', 'О курсе'], ['plan', 'План'], ['progress', 'Прогресс'], ['notes', 'Конспекты'], ['cards', 'Карточки'], ['quiz', 'Проверка'], ['focus', 'Занятия']];
+    const lessonRows = LES.map((l, i) => ({ num: i + 1, name: l[0], bg: L.nl === i ? 'var(--accent-soft)' : 'var(--card)', border: L.nl === i ? 'var(--accent)' : 'var(--line)', has: L.notes[i] ? 'есть' : '', pick: () => this.set({ nl: i, nt: this.L.notes[i] || '' }) }));
+    const nlIdx = Math.min(L.nl, LES.length - 1);
+    const savedNotes = Object.keys(L.notes).filter(k => L.notes[k] && LES[k]).map(k => ({ lesson: (+k + 1) + '. ' + LES[k][0], text: L.notes[k], remove: () => { const m = Object.assign({}, this.L.notes); delete m[k]; this.set({ notes: m }); } }));
+    const ci = L.ci % CARDS.length, kc = Object.keys(L.known).filter(k => L.known[k]).length;
+    const nextCard = (known) => { const m = Object.assign({}, this.L.known); m[ci] = known; this.set({ known: m, ci: (this.L.ci + 1) % CARDS.length, flipped: false }); };
+    const q = QZ[Math.min(L.qi, QZ.length - 1)], ans = L.qa[L.qi], answered = ans !== undefined;
+    const score = QZ.reduce((s, x, i) => s + (L.qa[i] === x[2] ? 1 : 0), 0);
+    const qOpts = q[1].map((t, i) => { const right = i === q[2], chosen = ans === i; return { text: t, bg: answered ? (right ? 'var(--ok-soft)' : chosen ? 'var(--bad-soft)' : 'var(--card)') : 'var(--card)', border: answered ? (right ? 'var(--ok)' : chosen ? 'var(--bad)' : 'var(--line)') : 'var(--line)', fg: 'var(--ink)', pick: () => { if (this.L.qa[this.L.qi] !== undefined) return; const m = Object.assign({}, this.L.qa); m[this.L.qi] = i; this.set({ qa: m }); } }; });
+    const todayMin = L.sess.filter(x => x.w === 'Пн').reduce((s, x) => s + x.m, 0);
+    const v = {}; TABS.forEach(t => { v[t[0]] = L.tab === t[0]; });
+
+    // --- библиотека курсов
+    const saveCur = () => { const by = Object.assign({}, this.L.by); by[this.L.course] = { mins: this.L.mins, dpw: this.L.dpw, done: this.L.done, note: '', notes: this.L.notes, nl: this.L.nl, nt: '', ci: this.L.ci, flipped: false, known: this.L.known, qi: this.L.qi, qa: this.L.qa, qd: this.L.qd, fm: this.L.fm, sess: this.L.sess }; return by; };
+    const openCourse = (id) => () => { const by = saveCur(); const base = { mins: 30, dpw: 5, done: {}, note: '', notes: {}, nl: 0, nt: '', ci: 0, flipped: false, known: {}, qi: 0, qa: {}, qd: false, fm: 25, sess: [] }; const nx = Object.assign(base, (all[id] || {}).seed || {}, by[id] || {}); this.set(Object.assign({}, nx, { by, course: id, step: 'course', tab: 'about' })); };
+    const PUBIDS = ['change', 'discipline'];
+    const courseCardsAll = Object.keys(all).map(id => { const c = all[id], pr = progOf(id), ds = group(c.LES, pr.mins || 30), n = Object.keys(doneLes(ds, pr.done || {})).length, tc = tagOf(c); return { name: c.name, tag: c.tag, fmt: c.fmt, tagBg: tc[0], tagFg: tc[1], pct: Math.round(n / c.LES.length * 100), sub: 'Уроков ' + n + ' из ' + c.LES.length + (c.demo ? ' · обрабатывается' : ''), open: openCourse(id) }; });
+    const publicCards = courseCardsAll.filter((c, k) => PUBIDS.indexOf(Object.keys(all)[k]) >= 0), courseCards = courseCardsAll.filter((c, k) => PUBIDS.indexOf(Object.keys(all)[k]) < 0);
+    const extraPh = L.photoAdd[L.course] || 0;
+    const GR = ['linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.01))', 'linear-gradient(200deg,rgba(255,255,255,.09),rgba(255,255,255,.01))', 'linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.02))', 'linear-gradient(120deg,rgba(255,255,255,.08),rgba(255,255,255,.01))'];
+    const photos = C.photos.map((cap, i) => ({ cap, bg: GR[i % 4] })).concat(Array.from({ length: extraPh }, (_, i) => ({ cap: 'Моё фото ' + (i + 1), bg: GR[(i + 1) % 4] })));
+    const program = []; MODS.forEach((m, mi) => { program.push({ pt: mi ? '8px' : '0', numDisplay: 'none', num: '', fs: '12px', fw: 700, fg: 'var(--accent-text)', text: 'Модуль ' + (mi + 1) + ' · ' + m[0], mins: '' }); for (let k = m[1]; k < m[2]; k++) program.push({ pt: '0', numDisplay: 'block', num: k + 1, fs: '13px', fw: 500, fg: 'var(--ink2)', text: LES[k][0], mins: LES[k][1] + ' м' }); });
+
+    return {
+      isLib: L.step === 'lib', isCourse: L.step === 'course', v,
+      liveBg: liveOn ? 'rgba(255,255,255,.06)' : 'var(--accent)', liveFg: liveOn ? 'var(--ink)' : 'var(--on-accent)', liveBorder: liveOn ? '1.5px solid var(--ok)' : '0', liveText: liveOn ? 'Курс идёт в «Моей волне»' : 'Жить по курсу в «Моей волне»', liveHintDisplay: liveOn ? 'block' : 'none',
+      toggleLive: () => { if (!P.fnLive) return; if (liveOn) P.fnLive(null); else P.fnLive({ id: L.course, name: C.name, done: L.done, rows: liveRows(info) }); },
+      back: () => this.set({ step: 'lib', by: saveCur() }),
+      formats: FM.map(f => ({ name: f[1], bg: L.fmt === f[0] ? 'var(--accent-soft)' : 'var(--card)', fg: L.fmt === f[0] ? 'var(--accent-text)' : 'var(--ink2)', border: L.fmt === f[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ fmt: f[0] }) })),
+      titleVal: L.title, onTitle: (e) => this.set({ title: e.target.value }),
+      upload: () => { const n = this.L.extra.length + 1, t = (this.L.title || '').trim() || ('Новый курс ' + n), f = FM.find(x => x[0] === this.L.fmt); this.set({ extra: this.L.extra.concat([{ id: 'up' + n, name: t, tag: this.L.fmt, fmt: f[1] + ', ждёт разбора', demo: true }]), title: '', upNote: 'Курс «' + t + '» добавлен в список. Формат: ' + f[1] + '. Откройте его, чтобы увидеть, как он будет выглядеть.' }); },
+      upNote: L.upNote, upNoteDisplay: L.upNote ? 'block' : 'none',
+      courseCards, publicCards, publicCount: publicCards.length + ' шт.', noMine: courseCards.length === 0, courseCount: courseCards.length + ' шт.',
+      courseName: C.name, courseTag: C.tag, courseTagBg: tagOf(C)[0], courseTagFg: tagOf(C)[1], demoDisplay: C.demo ? 'block' : 'none',
+      courseSub: LES.length + ' уроков, ' + MODS.length + ' модуля, примерно ' + fmtM(totalMin) + '. Пройдено ' + lessonsDone + ' из ' + LES.length + '.',
+      aboutDesc: C.desc, aboutChips: [{ t: C.fmt }, { t: LES.length + ' уроков' }, { t: fmtM(totalMin) }], howSteps: C.how.map((t, i) => ({ n: i + 1, text: t })), outcomes: C.outcomes.map(t => ({ text: t })), photos, program,
+      addPhoto: () => { const m = Object.assign({}, this.L.photoAdd); m[this.L.course] = (m[this.L.course] || 0) + 1; this.set({ photoAdd: m }); }, toPlan: () => this.set({ tab: 'plan' }),
+      tabs: TABS.map(t => ({ name: t[1], bg: L.tab === t[0] ? 'var(--accent)' : 'transparent', fg: L.tab === t[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ tab: t[0] }) })),
+      lessonsDone, minOpts: opts([15, 30, 60, 90], 'mins', x => x + ' мин'), dayOpts: opts([3, 5, 7], 'dpw', x => x + ' дн.'), fmOpts: opts([15, 25, 45, 60], 'fm', x => x + ' мин'), fm: L.fm,
+      finishText: 'Закончите до ' + lastDt.getDate() + ' ' + MN[lastDt.getMonth()], daysText: days.length + ' ' + (days.length < 5 ? 'дня' : 'дней') + ' занятий, всего ' + fmtM(totalMin),
+      rows, doneCount: dn, dayTotal: days.length, pct: Math.round(dn / days.length * 100), note: L.note, noteDisplay: L.note ? 'block' : 'none',
+      toTasks: () => this.set({ note: 'Готово: ' + days.length + ' задач разложено по дням. Они появятся в «Сегодня» и в расписании.' }), toRemind: () => this.set({ note: 'Каждый день придёт напоминание с уроками на сегодня.' }),
+      stats: [{ label: 'Уроков пройдено', value: lessonsDone + ' из ' + LES.length, color: 'var(--ink)', sub: Math.round(lessonsDone / LES.length * 100) + '% курса' }, { label: 'Время учёбы', value: fmtM(studyMin), color: 'var(--ok)', sub: 'по плану и занятиям' }, { label: 'Серия дней', value: String(streak), color: 'var(--warn)', sub: streak ? 'подряд по плану' : 'начните сегодня' }, { label: 'Финиш', value: lastDt.getDate() + ' ' + MN[lastDt.getMonth()], color: 'var(--ink)', sub: 'осталось ' + (days.length - dn) + ' дн. занятий' }],
+      bars, modRows, lessonRows, curLesson: (nlIdx + 1) + '. ' + LES[nlIdx][0], noteText: L.nt, typeNote: (e) => this.set({ nt: e.target.value }),
+      saveNote: () => { const t = (this.L.nt || '').trim(); if (!t) return; const m = Object.assign({}, this.L.notes); m[nlIdx] = t; this.set({ notes: m }); },
+      savedNotes, noteCount: savedNotes.length, noNotesDisplay: savedNotes.length ? 'none' : 'block',
+      cardNum: ci + 1, cardTotal: CARDS.length, knownCount: kc, repeatCount: CARDS.length - kc, cardText: L.flipped ? CARDS[ci][1] : CARDS[ci][0], cardTag: L.flipped ? 'ОТВЕТ' : 'ВОПРОС', cardTagFg: L.flipped ? 'var(--ok)' : 'var(--accent-text)', cardBg: L.flipped ? 'color-mix(in srgb,var(--ok) 6%,var(--card))' : 'var(--card)', cardBorder: L.flipped ? 'var(--ok-line)' : 'var(--line)',
+      flip: () => this.set({ flipped: !this.L.flipped }), know: () => nextCard(true), again: () => nextCard(false),
+      quizOpen: !L.qd, quizDone: L.qd, qNum: Math.min(L.qi, QZ.length - 1) + 1, qTotal: QZ.length, qText: q[0], qOpts, qNextDisplay: answered ? 'flex' : 'none', qRes: answered ? (ans === q[2] ? 'Верно' : 'Неверно, правильный ответ подсвечен') : '', qResColor: answered && ans === q[2] ? 'var(--ok)' : 'var(--bad)', qNextText: L.qi >= QZ.length - 1 ? 'Показать результат' : 'Дальше',
+      qNext: () => { if (this.L.qi >= QZ.length - 1) this.set({ qd: true }); else this.set({ qi: this.L.qi + 1 }); }, qRestart: () => this.set({ qi: 0, qa: {}, qd: false }),
+      score, scoreText: score >= 4 ? 'Отлично, материал усвоен. Можно двигаться дальше по плану.' : score >= 2 ? 'Неплохо. Повторите карточки по ошибкам и пройдите проверку ещё раз.' : 'Стоит вернуться к урокам и карточкам, затем повторить проверку.',
+      logSession: () => this.set({ sess: [{ m: this.L.fm, w: 'Пн' }].concat(this.L.sess) }), todayMin, todayPct: Math.min(100, Math.round(todayMin / 30 * 100)),
+      sessRows: L.sess.map((s, i) => ({ text: s.m + ' мин занятий', when: 'сегодня', remove: () => this.set({ sess: this.L.sess.filter((_, j) => j !== i) }) })), noSessDisplay: L.sess.length ? 'none' : 'block'
+    };
+  }
+}
+
+</script>
+</body>
+</html>

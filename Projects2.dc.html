@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Бизнесы</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+button,input:not([type=checkbox]){min-height:44px}
+.noscroll{scrollbar-width:none;-ms-overflow-style:none;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}.noscroll::-webkit-scrollbar{display:none}.noscroll>*{scroll-snap-align:start}
+.sw{min-height:0 !important}
+.swrow{display:flex;align-items:center;gap:14px;width:100%;min-height:52px;padding:6px 14px;border:1px solid var(--line);border-radius:14px;background:var(--field);color:var(--ink);text-align:left;font-size:15px;font-weight:600}
+@media (max-width:560px){.bz-row{flex-wrap:wrap !important}.bz-step{flex:1 1 100% !important}}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes secIn0{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn1{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn2{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn3{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn4{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn5{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn6{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn7{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn8{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn9{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn10{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn11{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn12{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}@keyframes secIn13{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}.bz-row .bz-pk{height:34px;overflow:hidden;opacity:.5;-webkit-mask-image:linear-gradient(#000 20%,transparent);mask-image:linear-gradient(#000 20%,transparent);transition:height .45s cubic-bezier(.22,.8,.3,1),opacity .35s ease,padding .3s ease}.bz-row:hover .bz-pk,.bz-row:focus-visible .bz-pk{height:96px;opacity:1;-webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);padding-bottom:12px}.bz-row:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.3);box-shadow:0 0 0 1px rgba(255,255,255,.1),0 18px 40px -20px rgba(255,255,255,.18)}@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)">
+
+<sc-if value="{{isList}}" hint-placeholder-val="{{true}}">
+  <div style="display:{{noProjDisplay}};flex-direction:column;align-items:center;gap:6px;padding:28px 20px;text-align:center;border:1.5px dashed var(--line2);border-radius:20px;background:var(--card)"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Бизнесов пока нет</b><span style="font-size:14px;color:var(--muted);max-width:30em">Нажмите «Создать» вверху и выберите «Бизнес». Разделы подберутся под его тип.</span></div>
+  <sc-if value="{{showNew}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;border:1.5px solid var(--accent)">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Какой это бизнес?</b>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px"><sc-for list="{{typeCards}}" as="t" hint-placeholder-count="10"><button type="button" onClick="{{t.pick}}" style="cursor:pointer;text-align:left;border:1.5px solid {{t.border}};background:{{t.bg}};border-radius:20px;padding:10px 14px;display:flex;flex-direction:column;gap:3px"><b style="font-size:14px;font-weight:700;color:var(--ink)">{{t.name}}</b><span style="font-size:12px;line-height:1.4;color:var(--muted)">{{t.desc}}</span></button></sc-for></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{newName}}" onInput="{{typeName}}" placeholder="Название бизнеса" aria-label="Название бизнеса" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 240px;min-width:0"><button type="button" onClick="{{closeNew}}" style="cursor:pointer;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:700;font-size:14px;padding:10px 20px">Отмена</button><button type="button" onClick="{{createProject}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Создать бизнес</button></div>
+      <span style="font-size:12px;color:var(--muted)">Разделы подберутся под тип бизнеса. Лишние можно убрать, нужные добавить внутри бизнеса.</span>
+    </div>
+  </sc-if>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Мои бизнесы</b><span style="font-size:13px;color:var(--muted)">{{bizCount}}</span></div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{projCards}}" as="p" hint-placeholder-count="3"><button type="button" onClick="{{p.open}}" class="bz-row" style="cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:0;width:100%;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid var(--line2);border-radius:20px;padding:12px 16px 0;box-shadow:var(--shadow);box-sizing:border-box;overflow:hidden;transition:transform .35s cubic-bezier(.22,.8,.3,1),border-color .3s ease,box-shadow .35s ease">
+      <span style="display:flex;align-items:center;gap:12px;width:100%"><span style="width:44px;height:44px;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 0 22px rgba(255,255,255,.1);background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:800;flex-shrink:0">{{p.ini}}</span>
+      <b style="flex:1 1 120px;min-width:0;font-size:15px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{p.name}}</b>
+      <span style="display:{{p.badgeD}};font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:#fff;box-shadow:0 0 14px rgba(255,255,255,.18);white-space:nowrap">Пример</span>
+      <span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:{{p.stBg}};color:{{p.stFg}};white-space:nowrap">{{p.stage}}</span>
+      <b style="font-size:13px;color:var(--ink);white-space:nowrap">{{p.figure}}</b>
+      <span class="bz-step" style="flex:2 1 160px;min-width:0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{p.next}}</span>
+      </span>
+      <span class="bz-pk" style="display:flex;flex-direction:column;gap:8px;width:100%;margin-top:10px;padding-top:8px;border-top:1px solid var(--line)"><span style="display:flex;align-items:center;gap:10px"><span style="flex:1;height:6px;border-radius:999px;background:color-mix(in srgb,var(--ink) 10%,transparent);overflow:hidden"><span style="display:block;height:100%;width:{{p.pct}}%;background:var(--ok);border-radius:999px"></span></span><span style="font-size:12px;font-weight:700;color:var(--ink2)">{{p.pct}}%</span></span><span style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:11px;padding:3px 10px;border-radius:999px;background:var(--field);border:1px solid var(--line);color:var(--muted)">{{p.type}}</span><span style="font-size:11px;padding:3px 10px;border-radius:999px;background:var(--field);border:1px solid var(--line);color:var(--muted)">{{p.sub}}</span><span style="font-size:11px;padding:3px 10px;border-radius:999px;background:var(--field);border:1px solid var(--line);color:var(--muted)">{{p.status}}</span></span><span style="font-size:12px;font-weight:700;color:var(--ink)">{{p.openText}}</span></span>
+    </button></sc-for>
+  </div>
+  <div style="position:sticky;bottom:calc(88px + env(safe-area-inset-bottom));z-index:6;display:flex;justify-content:flex-end;pointer-events:none;padding-top:8px"><button type="button" onClick="{{toggleNew}}" style="pointer-events:auto;cursor:pointer;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:0 22px;min-height:52px;box-shadow:0 6px 18px rgba(0,0,0,.18)">+ Новый бизнес</button></div>
+</sc-if>
+
+<sc-if value="{{isDetail}}" hint-placeholder-val="{{false}}">
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0"><button type="button" onClick="{{back}}" style="cursor:pointer;min-height:44px;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line2);border-radius:999px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 18px 8px 12px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Бизнесы</button><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">{{projName}}</b><span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;border:1px solid var(--line2);color:var(--ink2)">{{projType}}</span></div>
+    <button type="button" onClick="{{toggleSet}}" aria-expanded="{{showSet}}" aria-label="Этап бизнеса" style="pointer-events:{{roPe}};opacity:{{roOp}};cursor:pointer;min-height:44px;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line2);border-radius:999px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 14px 8px 18px"><span style="color:var(--muted)">Этап</span><b style="font-size:13px;font-weight:700">{{stageName}}</b><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+  </div>
+  <div class="noscroll" style="display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px"><sc-for list="{{switchRows}}" as="w" hint-placeholder-count="2"><button type="button" onClick="{{w.pick}}" style="flex-shrink:0;cursor:pointer;border:1.5px solid {{w.border}};background:{{w.bg}};color:{{w.fg}};border-radius:999px;font-weight:600;font-size:13px;padding:0 14px;min-height:44px;white-space:nowrap">{{w.name}}</button></sc-for></div>
+  <sc-if value="{{showSet}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;animation:dc-open .2s ease-out"><b style="font-size:14px;font-weight:700">Этап бизнеса</b><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{stageChips}}" as="c" hint-placeholder-count="3"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};border-radius:999px;font-weight:600;font-size:13px;padding:0 16px;min-height:44px">{{c.name}}</button></sc-for></div></div>
+  </sc-if>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <sc-for list="{{headStats}}" as="h" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:12px;background:{{h.bg}}"><span style="font-size:12px;color:{{h.fg}};opacity:.85">{{h.label}}</span><b style="font-size:14px;color:{{h.fg}}">{{h.value}}</b></div></sc-for>
+  </div>
+  <sc-if value="{{isDemo}}" hint-placeholder-val="{{true}}"><div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.05);box-shadow:0 0 28px rgba(255,255,255,.08);animation:dc-open .3s ease-out"><span style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.4);color:#fff">Пример</span><span style="font-size:13px;line-height:1.45;color:var(--ink2)">Это пример бизнеса: так выглядят разделы, когда они заполнены. Вписывать и редактировать здесь ничего нельзя. Чтобы вести свой бизнес, создайте новый.</span></div></sc-if>
+  <div style="display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;align-items:center;gap:8px">
+    <button type="button" onClick="{{navLeft}}" aria-label="Назад" style="flex-shrink:0;cursor:pointer;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;padding:0;transition:transform .2s ease,background .2s ease"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <div class="noscroll" style="scroll-behavior:smooth;flex:1 1 0;min-width:0;display:flex;align-items:center;gap:4px;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px">
+      <sc-for list="{{navRows}}" as="n" hint-placeholder-count="5"><button type="button" onClick="{{n.pick}}" style="cursor:pointer;display:flex;align-items:center;gap:8px;border:0;background:{{n.bg}};border-radius:999px;padding:0 18px;min-height:44px;white-space:nowrap;flex-shrink:0"><b style="font-size:14px;font-weight:600;color:{{n.fg}}">{{n.name}}</b><span style="display:{{n.badgeDisplay}};font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:{{n.badgeBg}};color:{{n.badgeFg}}">{{n.badge}}</span></button></sc-for>
+      <button type="button" onClick="{{moreToggle}}" style="display:{{moreDisplay}};cursor:pointer;border:0;background:transparent;color:var(--muted);border-radius:999px;padding:0 16px;min-height:44px;white-space:nowrap;flex-shrink:0;font-size:13px;font-weight:600">{{moreBtn}}</button>
+    </div>
+    <button type="button" onClick="{{navRight}}" aria-label="Вперёд" style="flex-shrink:0;cursor:pointer;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;padding:0;transition:transform .2s ease,background .2s ease"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button type="button" onClick="{{toggleSecs}}" aria-label="Добавить раздел" aria-expanded="{{showSecs}}" title="Добавить раздел" style="pointer-events:{{roPe}};opacity:{{roOp}};flex-shrink:0;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1.5px solid var(--line2);border-radius:999px;background:var(--card);color:var(--ink);font-weight:600;font-size:14px;padding:0 18px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Раздел</button>
+  </div>
+  <div style="display:grid;grid-template-rows:{{secsRows}};opacity:{{secsOp}};transform:translateY({{secsTy}}px);pointer-events:{{secsPe}};transition:grid-template-rows .5s cubic-bezier(.22,.8,.3,1),opacity .35s ease,transform .45s cubic-bezier(.22,.8,.3,1)"><div style="overflow:hidden;min-height:0">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-size:14px;font-weight:700">Добавить раздел</b><span style="font-size:13px;color:var(--muted)">Включите то, что нужно именно вам. Данные убранных разделов не пропадают.</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{secChips}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div></div>
+  </div></div>
+  <sc-if value="{{moreOpen}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{moreRows}}" as="m" hint-placeholder-count="4"><button type="button" onClick="{{m.pick}}" style="cursor:pointer;border:1.5px solid var(--line2);background:var(--card);color:var(--ink2);font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{m.name}}</button></sc-for></div></sc-if>
+  <div style="pointer-events:{{roPe}};min-width:0;display:flex;flex-direction:column;gap:12px;animation:{{secAnim}} .55s cubic-bezier(.22,.8,.3,1) both">
+
+  <sc-if value="{{v.overview}}" hint-placeholder-val="{{true}}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--muted)">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em;color:{{s.color}}">{{s.value}}</b><span style="font-size:12px;color:var(--muted)">{{s.sub}}</span></div></sc-for>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Деньги бизнеса</b><span style="font-size:13px;color:var(--muted);line-height:1.5">{{finNote}}</span><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{linkSw}}" as="x" hint-placeholder-count="2"><button type="button" class="swrow" onClick="{{x.tog}}" role="switch" aria-label="{{x.name}}"><span class="sw" style="width:52px;height:30px;border-radius:999px;padding:3px;display:flex;align-items:center;flex-shrink:0;box-sizing:border-box;background:{{x.bg}};justify-content:{{x.pos}}"><i style="width:24px;height:24px;border-radius:50%;background:var(--card);display:block;box-shadow:0 1px 3px rgba(0,0,0,.3)"></i></span><span style="flex:1;min-width:0">{{x.name}}</span></button></sc-for></div><button type="button" onClick="{{goFin}}" style="cursor:pointer;align-self:flex-start;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-size:14px;padding:10px 16px">Открыть финансы бизнеса</button></div>
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Ближайшие шаги</b><sc-for list="{{nextRows}}" as="n" hint-placeholder-count="3"><div style="display:flex;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--field);font-size:14px;font-weight:600"><span style="flex:1;min-width:0">{{n.text}}</span><span style="font-size:12px;font-weight:600;color:var(--accent-text)">{{n.tag}}</span></div></sc-for><span style="display:{{nextEmptyDisplay}};font-size:13px;color:var(--muted)">Пока нет шагов. Добавьте задачи или этапы.</span></div>
+  </sc-if>
+
+  <sc-if value="{{v.tasks}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><span style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Задачи бизнеса</b><span style="font-size:13px;color:var(--muted)">{{tasksSub}}</span></span><b style="font-size:22px;color:var(--ok)">{{tasksPct}}%</b></div>
+      <div style="height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--ok);width:{{tasksPct}}%"></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{ia}}" onInput="{{typeA}}" placeholder="Новая задача" aria-label="Новая задача" style="flex:1 1 240px;min-width:0;min-height:48px;box-sizing:border-box;border:1.5px solid var(--line2);border-radius:999px;padding:12px 18px;font-size:14px;background:var(--field);color:var(--ink)"><button type="button" onClick="{{add}}" style="cursor:pointer;min-height:48px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:0 24px">Добавить задачу</button></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;align-items:start">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:50%;background:var(--muted)"></span><b style="font-size:15px;font-weight:600;flex:1">Сделать</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--ink2)">{{n0}}</span></div>
+        <sc-for list="{{tk0}}" as="k" hint-placeholder-count="2"><div style="background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px"><span style="font-size:14px;font-weight:500;line-height:1.4">{{k.t}}</span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><button type="button" onClick="{{k.right}}" style="cursor:pointer;min-height:40px;border:0;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-weight:700;font-size:13px;padding:0 16px">В работу</button><button type="button" onClick="{{k.remove}}" aria-label="Удалить задачу" title="Удалить" style="cursor:pointer;margin-left:auto;width:40px;min-height:40px;height:40px;border-radius:999px;border:1.5px solid var(--line2);background:transparent;color:var(--muted);font-size:16px;padding:0">×</button></span></div></sc-for>
+        <span style="display:{{empty0}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:13px">Пусто</span>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:50%;background:var(--warn)"></span><b style="font-size:15px;font-weight:600;flex:1">В работе</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--ink2)">{{n1}}</span></div>
+        <sc-for list="{{tk1}}" as="k" hint-placeholder-count="2"><div style="background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px"><span style="font-size:14px;font-weight:500;line-height:1.4">{{k.t}}</span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><button type="button" onClick="{{k.left}}" aria-label="Вернуть в очередь" style="cursor:pointer;min-height:40px;width:40px;border-radius:999px;border:1.5px solid var(--line2);background:transparent;color:var(--ink);font-weight:700;font-size:14px;padding:0">←</button><button type="button" onClick="{{k.right}}" style="cursor:pointer;min-height:40px;border:0;border-radius:999px;background:var(--ok-soft);color:var(--ok);font-weight:700;font-size:13px;padding:0 16px">Готово</button></span></div></sc-for>
+        <span style="display:{{empty1}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:13px">Пусто</span>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:50%;background:var(--ok)"></span><b style="font-size:15px;font-weight:600;flex:1">Готово</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--ink2)">{{n2}}</span></div>
+        <sc-for list="{{tk2}}" as="k" hint-placeholder-count="2"><div style="background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px"><span style="font-size:14px;font-weight:500;line-height:1.4;text-decoration:line-through;color:var(--muted)">{{k.t}}</span><span style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><button type="button" onClick="{{k.left}}" style="cursor:pointer;min-height:40px;border:1.5px solid var(--line2);border-radius:999px;background:transparent;color:var(--ink2);font-weight:600;font-size:13px;padding:0 16px">Вернуть</button></span></div></sc-for>
+        <span style="display:{{empty2}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:13px">Пусто</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{v.road}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Этапы бизнеса</b><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{roadRows}}" as="r" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid {{r.border}};background:{{r.bg}}"><button type="button" onClick="{{r.toggle}}" aria-label="Отметить этап" style="cursor:pointer;width:26px;height:26px;border-radius:8px;border:1.5px solid {{r.border}};background:{{r.box}};color:var(--on-accent);padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0" title="Отметить этап"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{r.tick}}"><path d="M5 12l4 4L19 7"/></svg></button><span style="flex:1;min-width:0;font-size:14px;font-weight:600;color:{{r.fg}};text-decoration:{{r.deco}}">{{r.n}}</span><span style="font-size:13px;font-weight:600;color:var(--muted)">{{r.date}}</span><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for></div></div>
+  </sc-if>
+
+  <sc-if value="{{v.fin}}" hint-placeholder-val="{{false}}"><dc-import name="ProjectFinance" data="{{pfData}}" seed="{{pfSeed}}" pname="{{projName}}" fn-set="{{pfSet}}" queue="{{invQueue}}" fn-queue="{{setQueue}}" deals="{{dealsArr}}" ads-sum="{{adsSum}}" hint-size="100%,1500px"></dc-import></sc-if>
+
+  <sc-if value="{{v.crm}}" hint-placeholder-val="{{false}}">
+    <dc-import name="BizTools" kind="sales" adding="{{adding}}" deals="{{dealsArr}}" biz="{{bizObj}}" pname="{{projName}}" fn-deals="{{fnDeals}}" fn-biz="{{fnBiz}}" fn-both="{{fnBoth}}" fn-task="{{fnTask}}" fn-adding="{{fnAdding}}" fn-doc="{{fnDoc}}" fn-sec="{{fnSec}}" hint-size="100%,1800px"></dc-import>
+    <button type="button" onClick="{{toggleOldCrm}}" style="cursor:pointer;align-self:flex-start;border:1.5px solid var(--line2);background:var(--card);color:var(--ink2);border-radius:12px;font-weight:600;font-size:13px;padding:0 16px;min-height:44px">{{oldCrmBtn}}</button>
+    <sc-if value="{{oldCrmOpen}}" hint-placeholder-val="{{false}}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px"><sc-for list="{{stages}}" as="s" hint-placeholder-count="4"><div style="background:{{s.bg}};border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;font-weight:600;color:{{s.fg}}">{{s.name}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;color:{{s.fg}}">{{s.sum}}</b><span style="font-size:12px;color:{{s.fg}};opacity:.85">{{s.count}}</span></div></sc-for></div>
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Клиенты и сделки</b><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{dealRows}}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--field);flex-wrap:wrap"><span style="flex:1 1 140px;min-width:0;font-size:14px;font-weight:600">{{r.n}}</span><b style="font-size:14px">{{r.sum}}</b><span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:{{r.bg}};color:{{r.fg}}">{{r.stage}}</span><button type="button" onClick="{{r.next}}" style="display:{{r.nextDisplay}};cursor:pointer;border:0;border-radius:8px;background:var(--accent-soft);color:var(--accent-text);font-weight:700;font-size:12px;padding:7px 12px">Дальше →</button><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{ia}}" onInput="{{typeA}}" placeholder="Клиент или сделка" aria-label="Клиент" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 200px;min-width:0"><input type="text" value="{{ib}}" onInput="{{typeB}}" placeholder="Сумма, ₽" aria-label="Сумма" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);width:130px;min-width:0"><button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить сделку</button></div></div>
+  </sc-if>
+  </sc-if>
+  <sc-if value="{{v.ads}}" hint-placeholder-val="{{false}}"><dc-import name="BizTools" kind="ads" adding="{{adding}}" deals="{{dealsArr}}" biz="{{bizObj}}" pname="{{projName}}" fn-deals="{{fnDeals}}" fn-biz="{{fnBiz}}" fn-both="{{fnBoth}}" fn-task="{{fnTask}}" fn-adding="{{fnAdding}}" fn-doc="{{fnDoc}}" fn-sec="{{fnSec}}" hint-size="100%,1200px"></dc-import></sc-if>
+  <sc-if value="{{v.course}}" hint-placeholder-val="{{false}}"><dc-import name="BizTools" kind="course" adding="{{adding}}" deals="{{dealsArr}}" biz="{{bizObj}}" pname="{{projName}}" fn-deals="{{fnDeals}}" fn-biz="{{fnBiz}}" fn-both="{{fnBoth}}" fn-task="{{fnTask}}" fn-adding="{{fnAdding}}" fn-doc="{{fnDoc}}" fn-sec="{{fnSec}}" hint-size="100%,1400px"></dc-import></sc-if>
+  <sc-if value="{{v.time}}" hint-placeholder-val="{{false}}"><dc-import name="BizTools" kind="time" adding="{{adding}}" deals="{{dealsArr}}" biz="{{bizObj}}" pname="{{projName}}" fn-deals="{{fnDeals}}" fn-biz="{{fnBiz}}" fn-both="{{fnBoth}}" fn-task="{{fnTask}}" fn-adding="{{fnAdding}}" fn-doc="{{fnDoc}}" fn-sec="{{fnSec}}" hint-size="100%,1000px"></dc-import></sc-if>
+  <sc-if value="{{v.docs}}" hint-placeholder-val="{{false}}"><dc-import name="BizTools" kind="docs" adding="{{adding}}" deals="{{dealsArr}}" biz="{{bizObj}}" pname="{{projName}}" fn-deals="{{fnDeals}}" fn-biz="{{fnBiz}}" fn-both="{{fnBoth}}" fn-task="{{fnTask}}" fn-adding="{{fnAdding}}" fn-doc="{{fnDoc}}" fn-sec="{{fnSec}}" hint-size="100%,900px"></dc-import></sc-if>
+
+
+  <sc-if value="{{v.team}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Команда</b><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px"><sc-for list="{{teamRows}}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:20px;border:1px solid var(--line);background:var(--field)"><span style="width:40px;height:40px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0">{{r.ini}}</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px">{{r.n}}</b><span style="font-size:12px;color:var(--muted)">{{r.role}}</span></span><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{ia}}" onInput="{{typeA}}" placeholder="Имя" aria-label="Имя" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 160px;min-width:0"><input type="text" value="{{ib}}" onInput="{{typeB}}" placeholder="Роль" aria-label="Роль" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 160px;min-width:0"><button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить человека</button></div></div>
+  </sc-if>
+
+  <sc-if value="{{v.kpi}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Цели и показатели</b><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px"><sc-for list="{{kpiRows}}" as="r" hint-placeholder-count="3"><div style="border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--field)"><div style="display:flex;justify-content:space-between;gap:8px"><b style="font-size:14px">{{r.n}}</b><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div><div style="display:flex;align-items:center;gap:10px"><button type="button" onClick="{{r.minus}}" aria-label="Меньше" style="cursor:pointer;width:36px;height:36px;border-radius:12px;border:1.5px solid var(--line2);background:var(--card);font-size:18px;font-weight:700;padding:0" title="Меньше">−</button><span style="flex:1;text-align:center"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800">{{r.v}}</b> <span style="font-size:13px;color:var(--muted)">из {{r.goal}}</span></span><button type="button" onClick="{{r.plus}}" aria-label="Больше" style="cursor:pointer;width:36px;height:36px;border-radius:12px;border:0;background:var(--accent);color:var(--on-accent);font-size:18px;font-weight:700;padding:0" title="Больше">+</button></div><div style="height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--ok);width:{{r.pct}}%"></div></div></div></sc-for></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{ia}}" onInput="{{typeA}}" placeholder="Показатель, например: подписчики" aria-label="Показатель" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 200px;min-width:0"><input type="text" value="{{ib}}" onInput="{{typeB}}" placeholder="Цель, число" aria-label="Цель" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);width:130px;min-width:0"><button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить</button></div></div>
+  </sc-if>
+
+  <sc-if value="{{v.stock}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Склад и закупки</b><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{stockRows}}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid {{r.border}};background:{{r.bg}};flex-wrap:wrap"><span style="flex:1 1 140px;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px">{{r.n}}</b><span style="font-size:12px;color:{{r.fg}}">{{r.note}}</span></span><button type="button" onClick="{{r.minus}}" aria-label="Меньше" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line2);background:var(--card);font-weight:700;padding:0" title="Меньше">−</button><b style="min-width:32px;text-align:center;font-size:16px">{{r.q}}</b><button type="button" onClick="{{r.plus}}" aria-label="Больше" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:0;background:var(--accent);color:var(--on-accent);font-weight:700;padding:0" title="Больше">+</button><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{ia}}" onInput="{{typeA}}" placeholder="Позиция" aria-label="Позиция" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 200px;min-width:0"><input type="text" value="{{ib}}" onInput="{{typeB}}" placeholder="Остаток" aria-label="Остаток" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);width:130px;min-width:0"><button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить</button></div></div>
+  </sc-if>
+
+  <sc-if value="{{v.generic}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">{{genTitle}}</b><span style="font-size:13px;color:var(--muted)">{{genHint}}</span><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{genRows}}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:{{r.bg}}"><button type="button" onClick="{{r.toggle}}" aria-label="Отметить" style="cursor:pointer;width:26px;height:26px;border-radius:8px;border:1.5px solid {{r.border}};background:{{r.box}};color:var(--on-accent);padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0" title="Отметить"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{r.tick}}"><path d="M5 12l4 4L19 7"/></svg></button><span style="flex:1;min-width:0;font-size:14px;font-weight:600;color:{{r.fg}};text-decoration:{{r.deco}}">{{r.text}}</span><span style="font-size:12px;font-weight:600;color:var(--muted)">{{r.tag}}</span><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for><span style="display:{{genEmptyDisplay}};font-size:13px;color:var(--muted);padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:12px">Пока пусто</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{ia}}" onInput="{{typeA}}" placeholder="{{ph1}}" aria-label="Запись" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:2 1 220px;min-width:0"><input type="text" value="{{ib}}" onInput="{{typeB}}" placeholder="{{ph2}}" aria-label="Метка" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 150px;min-width:0"><button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить</button></div></div>
+  </sc-if>
+
+  <sc-if value="{{v.board}}" hint-placeholder-val="{{false}}"><dc-import name="Board" board-key="{{boardKey}}" hint-size="100%,760px"></dc-import></sc-if>
+
+  <sc-if value="{{v.report}}" hint-placeholder-val="{{false}}">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Отчёт по бизнесу</b><button type="button" onClick="{{copyReport}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Скопировать отчёт</button></div><span style="display:{{copiedDisplay}};font-size:13px;color:var(--ok);background:var(--ok-soft);border-radius:8px;padding:8px 12px">Скопировано. Вставьте в сообщение или документ.</span>
+      <div style="display:flex;flex-direction:column;gap:8px;background:var(--field);border:1px solid var(--line);border-radius:20px;padding:16px"><sc-for list="{{reportRows}}" as="r" hint-placeholder-count="6"><span style="font-size:14px;line-height:1.55;color:var(--ink2)"><b>{{r.head}}</b> {{r.text}}</span></sc-for></div></div>
+  </sc-if>
+  </div></div>
+  <sc-if value="{{hasPrimary}}" hint-placeholder-val="{{false}}"><div style="position:sticky;bottom:calc(88px + env(safe-area-inset-bottom));z-index:6;display:flex;justify-content:flex-end;pointer-events:none;padding-top:8px"><button type="button" onClick="{{doPrimary}}" style="pointer-events:auto;cursor:pointer;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:0 22px;min-height:52px;box-shadow:0 6px 18px rgba(0,0,0,.18)">{{primaryText}}</button></div></sc-if>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"showNewExt":{"editor":null},"fnNewDone":{"editor":null},"pf":{"editor":null},"pfSum":{"editor":null},"linked":{"editor":null},"fnPfSet":{"editor":null},"fnReport":{"editor":null},"fnLink":{"editor":null},"$preview":{"width":1000,"height":1400}}'>
+class Component extends DCLogic {
+  norm(ps) { const DEF = ['overview', 'fin', 'crm', 'ads', 'tasks', 'course', 'board']; return (ps || []).map(p => { const secs = DEF.concat(p.type === 'service' ? ['time'] : []).concat(p.secs || []).filter((x, i, a) => a.indexOf(x) === i); return Object.assign({}, p, { secs, stage: p.stage || 'Идея' }); }); }
+  withDemo(ps) { const init = this.init(), list = (ps || []).filter(p => !p.demo); return this.norm([init.projects[0]].concat(list)); }
+  mergeD(d) { const init = this.init(), o = Object.assign({}, d || {}); Object.keys(o).forEach(k => { if (k.indexOf('0:') === 0) delete o[k]; }); return Object.assign(o, init.d); }
+  init() { return { ready: false, view: 'list', cur: 0, sec: 'overview', showSecs: false, showSet: false, showNew: false, newType: 'biz', newName: '', ia: '', ib: '', inc: true, copied: false,
+    projects: this.norm([{ name: 'Кофейня на Лесной', type: 'store', seed: 'store', stage: 'Работает', demo: true, secs: ['overview', 'board', 'stock', 'sup', 'order', 'fin', 'crm', 'ads', 'check', 'kpi', 'team', 'legal', 'report'] }]),
+    d: {
+      '0:tasks': [{ t: 'Согласовать меню', c: 2 }, { t: 'Закупить оборудование', c: 1 }, { t: 'Найти бариста', c: 0 }],
+      '0:fin': [{ n: 'Выручка за неделю', s: 184000, inc: true }, { n: 'Аренда', s: 70000, inc: false }, { n: 'Зерно и молоко', s: 46000, inc: false }, { n: 'Зарплаты', s: 60000, inc: false }],
+      '0:crm': [{ n: 'Кофе для офиса «Север»', s: 36000, st: 2, src: 'Сайт', contact: '+7 900 000-00-01', next: '2026-10-19' }, { n: 'Кейтеринг на свадьбу', s: 52000, st: 1, src: 'Instagram', contact: '@wedding_anna', next: '2026-10-20' }, { n: 'Подписка для коворкинга', s: 18000, st: 3, src: 'Рекомендация', contact: 'Игорь', next: '' }, { n: 'Корпоратив, заявка', s: 24000, st: 0, src: 'Авито', contact: '+7 900 000-00-02', next: '2026-10-18' }],
+      '0:biz': { ads: [{ id: 'a1', ch: 'Instagram', sum: 9000, note: 'Таргет на кейтеринг' }, { id: 'a2', ch: 'Авито', sum: 3500, note: 'Продвижение объявления' }], inbox: [{ id: 'i1', ch: 'Telegram', who: 'Мария', text: 'Сколько стоит кофе-станция на 30 человек?', d: '2026-10-19', done: false }], fees: { 'Авито': 5 } },
+      '0:team': [{ n: 'Алина', role: 'Управляющая' }, { n: 'Тимур', role: 'Бариста' }],
+      '0:kpi': [{ n: 'Чеков в день', v: 86, goal: 120 }, { n: 'Средний чек, ₽', v: 340, goal: 400 }],
+      '0:sup': [{ t: 'Зерно, «Арабика Опт»', tag: '+7 900 000-00-00', d: true }, { t: 'Молочная ферма', tag: 'поставка по вторникам', d: true }],
+      '0:order': [{ t: 'Стаканы 500 шт', tag: '4 200 ₽', d: false }],
+      '0:check': [{ t: 'Включить кофемашину и прогреть', tag: 'Открытие смены', d: true }, { t: 'Проверить остатки молока', tag: 'Открытие смены', d: false }, { t: 'Сверить кассу', tag: 'Закрытие смены', d: false }],
+      '0:ads': [{ t: 'Карты и отзывы', tag: '12 клиентов за месяц', d: true }],
+      '0:legal': [{ t: 'Налог за квартал', tag: 'до 25 ноября', d: false }, { t: 'Санитарная книжка бариста', tag: 'до 1 декабря', d: false }],
+      '0:stock': [{ n: 'Зерно, кг', q: 6, min: 10 }, { n: 'Молоко, л', q: 38, min: 20 }, { n: 'Стаканы, шт', q: 240, min: 200 }]
+    } }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); if (p.projects || p.d) this.saveSoon(); }
+  pkey(p) { if (p.id) return p.id; let h = 5381; const n = String(p.name); for (let k = 0; k < n.length; k++) h = ((h * 33) ^ n.charCodeAt(k)) >>> 0; return 'p' + h.toString(36); }
+  report() { const XP = this.props || {}; if (!XP.fnReport) return; const list = this.L.projects.map(p => ({ key: this.pkey(p), name: p.name, type: p.type, seed: p.seed || 'empty', demo: !!p.demo })); const js = JSON.stringify(list); if (js !== this.lastRep) { this.lastRep = js; XP.fnReport(list); } }
+  componentDidMount() {
+    let ls = null; try { ls = JSON.parse(localStorage.getItem('projects:v2') || 'null'); } catch (e) { ls = null; }
+    if (ls && ls.projects) this.setState(Object.assign({}, this.L, { projects: this.withDemo(ls.projects), d: this.mergeD(ls.d), ready: true }));
+    this.loaded = true; this.loadedAt = ls ? (ls.at || 0) : 0; this.report();
+    const c = (typeof window !== 'undefined') ? window.claude : null;
+    if (c && c.use) c.use('db').then((db) => { if (!db) return; this.db = db; db.doc('app/projects2').get().then((snap) => { const d = snap && snap.exists ? snap.data() : null; if (!d || !d.json) return; let o = null; try { o = JSON.parse(d.json); } catch (e) { o = null; } if (o && o.projects && (o.at || 0) > this.loadedAt) { this.setState(Object.assign({}, this.L, { projects: this.withDemo(o.projects), d: this.mergeD(o.d), ready: true })); this.loadedAt = o.at; this.report(); } }).catch(() => {}); }).catch(() => {});
+  }
+  componentDidUpdate() { this.report(); }
+  componentWillUnmount() { clearTimeout(this.tm); if (this.dirty) this.flush(); }
+  saveSoon() { if (!this.loaded) return; this.dirty = true; clearTimeout(this.tm); this.tm = setTimeout(() => this.flush(), 700); }
+  flush() { this.dirty = false; const o = { v: 1, at: Date.now(), projects: this.L.projects, d: this.L.d }; let js = ''; try { js = JSON.stringify(o); } catch (e) { return; } try { localStorage.setItem('projects:v2', js); } catch (e) {} if (this.db && js.length < 240000) this.db.doc('app/projects2').set({ json: js, at: o.at }).catch(() => {}); }
+
+  renderVals() {
+    const L = this.L, XP = this.props || {};
+    const TYPES = [
+      ['biz', 'Бизнес', 'Свой бизнес: продажи, деньги, клиенты', ['overview', 'goals', 'tasks', 'deadline', 'fin', 'crm', 'ads', 'team', 'kpi', 'legal', 'report']],
+      ['prod', 'Предприятие и производство', 'Цех, склад, смены, закупки', ['overview', 'tasks', 'order', 'stock', 'sup', 'check', 'team', 'fin', 'budget', 'risk', 'legal', 'report']],
+      ['store', 'Магазин и общепит', 'Торговля, склад, ежедневная выручка', ['overview', 'stock', 'sup', 'order', 'fin', 'crm', 'ads', 'check', 'kpi', 'team', 'legal', 'report']],
+      ['content', 'Блог и контент', 'Контент-план, охваты, подписчики', ['overview', 'fin', 'content', 'ideas', 'tasks', 'deadline', 'kpi', 'ads', 'time', 'retro', 'report']],
+      ['startup', 'Стартап и продукт', 'Этапы, задачи, показатели, команда', ['overview', 'goals', 'road', 'tasks', 'kpi', 'team', 'fin', 'ads', 'ideas', 'retro', 'report']],
+      ['service', 'Услуги и фриланс', 'Клиенты, заказы, доходы, учёт времени', ['overview', 'crm', 'tasks', 'fin', 'time', 'report']],
+      ['build', 'Ремонт и стройка', 'Этапы, бюджет, материалы, документы', ['overview', 'road', 'deadline', 'budget', 'fin', 'stock', 'sup', 'docs', 'risk', 'report']],
+      ['event', 'Событие и мероприятие', 'Свадьба, конференция, поездка', ['overview', 'tasks', 'fin', 'team', 'docs', 'meet']],
+      ['study', 'Учёба и исследование', 'Диплом, экзамен, большое исследование', ['overview', 'fin', 'road', 'tasks', 'docs', 'report']],
+      ['personal', 'Личная цель', 'Любая цель на месяцы вперёд', ['overview', 'fin', 'goals', 'tasks', 'deadline', 'kpi', 'time', 'ideas', 'retro', 'report']]
+    ];
+    const SECS = [['overview', 'Обзор'], ['fin', 'Деньги'], ['crm', 'Продажи'], ['ads', 'Реклама'], ['tasks', 'Задачи'], ['course', 'Курс'], ['board', 'Доска'], ['road', 'Этапы'], ['team', 'Команда'], ['kpi', 'Цели и показатели'], ['stock', 'Склад и закупки'], ['content', 'Контент-план'], ['docs', 'Документы'], ['risk', 'Риски'], ['meet', 'Встречи'], ['goals', 'Цели бизнеса'], ['deadline', 'Сроки и дедлайны'], ['sup', 'Поставщики и подрядчики'], ['order', 'Заказы'], ['check', 'Чек-листы и процессы'], ['time', 'Учёт времени'], ['budget', 'Бюджет и сметы'], ['legal', 'Налоги и документы'], ['links', 'Ссылки и доступы'], ['ideas', 'Идеи и заметки'], ['retro', 'Итоги и выводы'], ['report', 'Отчёт']];
+    const GEN = { docs: ['Документы и заметки', 'Договоры, ссылки, инструкции, важные записи.', 'Документ или заметка', 'Метка'], risk: ['Риски', 'Что может пойти не так и как это предупредить.', 'Что может пойти не так', 'Уровень'], meet: ['Встречи и решения', 'Темы встреч, договорённости и дата следующего шага.', 'Тема или решение', 'Дата'], content: ['Контент-план', 'Идеи и посты по площадкам. Отмечайте то, что уже вышло.', 'Идея или пост', 'Площадка'],
+      goals: ['Цели бизнеса', 'Чего бизнес должен достичь за месяц, квартал, год. Отмечайте достигнутое.', 'Цель, например «10 клиентов до декабря»', 'Срок'],
+      deadline: ['Сроки и дедлайны', 'Всё, что нужно сделать к определённой дате. Ближайшие сверху, пишите дату в поле справа.', 'Что нужно успеть', 'Дата'],
+      sup: ['Поставщики и подрядчики', 'Кто что поставляет или делает, контакты и условия. Отмечайте, с кем уже договорились.', 'Название или имя', 'Телефон или условия'],
+      order: ['Заказы', 'Заказы клиентов и закупки. Отмечайте выполненные.', 'Заказ или закупка', 'Сумма или клиент'],
+      check: ['Чек-листы и процессы', 'Повторяющиеся шаги: открытие смены, запуск рекламы, выпуск ролика. Составьте один раз, отмечайте каждый раз.', 'Шаг процесса', 'Процесс'],
+      ads: ['Реклама и каналы', 'Где вы привлекаете клиентов, сколько это стоит и что принесло.', 'Канал или кампания', 'Бюджет или результат'],
+      time: ['Учёт времени', 'На что ушло время по бизнесу. Пишите дело и сколько часов.', 'Над чем работали', 'Часы'],
+      budget: ['Бюджет и сметы', 'Плановые расходы по статьям. Отмечайте, что уже оплачено.', 'Статья расходов', 'Сумма'],
+      legal: ['Налоги и документы', 'Отчётность, платежи в бюджет, договоры, лицензии. Не пропустите сроки.', 'Документ или платёж', 'Срок'],
+      links: ['Ссылки и доступы', 'Папки, таблицы, сервисы и где что лежит. Пароли не храните, только где их искать.', 'Название и ссылка', 'Где используется'],
+      ideas: ['Идеи и заметки', 'Всё, что пришло в голову по бизнесу, пока не разобрано.', 'Идея или заметка', 'Метка'],
+      retro: ['Итоги и выводы', 'Что получилось, что нет и что изменим. Заполняйте раз в неделю или месяц.', 'Вывод', 'Период'] };
+    const STG = ['Лид', 'Переговоры', 'Счёт выставлен', 'Оплачено'], STC = [['var(--soft)', 'var(--ink2)'], ['var(--accent-soft)', 'var(--accent-text)'], ['var(--warn-soft)', 'var(--warn)'], ['var(--ok-soft)', 'var(--ok)']];
+    const money = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+$)/g, ' ') + ' ₽';
+    const TN = {}; TYPES.forEach(t => { TN[t[0]] = t; });
+    const pr = L.projects[L.cur], isDetail = L.view === 'detail' && !!pr;
+    const key = (s) => L.cur + ':' + s, lst = (s) => L.d[key(s)] || [];
+    const put = (s, arr, extra) => { const d = Object.assign({}, this.L.d); d[this.L.cur + ':' + s] = arr; this.set(Object.assign({ d }, extra || {})); };
+    const cur = (s) => this.L.d[this.L.cur + ':' + s] || [];
+    const sec = isDetail && pr.secs.indexOf(L.sec) >= 0 ? L.sec : 'overview';
+    const num = (x) => { const n = parseFloat(String(x).replace(/\s/g, '').replace(',', '.')); return isNaN(n) ? null : n; };
+    const pct = (i) => { const k = i + ':tasks', a = L.d[k] || []; return a.length ? Math.round(a.filter(x => x.c === 2).length / a.length * 100) : 0; };
+    const PC = ['var(--accent)', 'var(--ok)', 'var(--warn)', 'var(--cat-violet)', 'var(--cat-pink)', 'var(--ink)'];
+    const nextOf = (i) => { const r = (L.d[i + ':road'] || []).find(x => !x.d), t = (L.d[i + ':tasks'] || []).find(x => x.c !== 2); return r ? 'Дальше: ' + r.n : t ? 'Дальше: ' + t.t : 'Добавьте первую задачу'; };
+    const figOf = (p, i) => { const sm0 = (XP.pfSum || {})[this.pkey(p)]; if (sm0 && (sm0.income || sm0.expense)) return 'Прибыль ' + money(sm0.profit); const dl = (L.d[i + ':crm'] || []).filter(x => x.st < 3); if (dl.length) return dl.length + ' в продажах'; return 'Задачи ' + pct(i) + '%'; };
+    const projCards = L.projects.map((p, i) => ({ name: p.name, ini: p.name.charAt(0).toUpperCase(), color: 'var(--accent)', next: nextOf(i), type: TN[p.type][1], pct: pct(i), status: pct(i) >= 100 ? 'Готов' : pct(i) > 0 ? 'В работе' : 'Старт', stBg: (p.stage || 'Идея') === 'Работает' ? 'var(--ok-soft)' : (p.stage || 'Идея') === 'Запуск' ? 'var(--warn-soft)' : 'var(--soft)', stFg: (p.stage || 'Идея') === 'Работает' ? 'var(--ok)' : (p.stage || 'Идея') === 'Запуск' ? 'var(--warn)' : 'var(--ink2)', sub: p.secs.length + ' разделов', stage: p.stage || 'Идея', demo: !!p.demo, badgeD: p.demo ? 'inline-block' : 'none', openText: p.demo ? 'Пример: только просмотр' : 'Открыть →', figure: figOf(p, i), open: () => this.set({ view: 'detail', cur: i, sec: 'overview', ia: '', ib: '', showSecs: false, showSet: false, adding: '' }) }));
+    const typeCards = TYPES.map(t => ({ name: t[1], desc: t[2], bg: L.newType === t[0] ? 'var(--accent-soft)' : 'var(--card)', border: L.newType === t[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ newType: t[0] }) }));
+    const tabs = isDetail ? SECS.filter(s => pr.secs.indexOf(s[0]) >= 0).map(s => ({ name: s[1], bg: sec === s[0] ? 'var(--accent)' : 'transparent', fg: sec === s[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ sec: s[0], ia: '', ib: '', copied: false }) })) : [];
+    const secChips = isDetail ? SECS.map(s => { const on = pr.secs.indexOf(s[0]) >= 0; return { name: (on ? '✓ ' : '+ ') + s[1], bg: on ? 'var(--accent-soft)' : 'var(--card)', fg: on ? 'var(--accent-text)' : 'var(--ink2)', border: on ? 'var(--accent)' : 'var(--line)', pick: () => { const ps = this.L.projects.map((p, i) => i === this.L.cur ? Object.assign({}, p, { secs: on ? p.secs.filter(x => x !== s[0]) : p.secs.concat([s[0]]) }) : p); this.set({ projects: ps, sec: on && this.L.sec === s[0] ? 'overview' : this.L.sec }); } }; }) : [];
+    const tasks = lst('tasks'), fin = lst('fin'), deals = lst('crm'), road = lst('road'), kpis = lst('kpi');
+    const inc = fin.filter(x => x.inc).reduce((s, x) => s + x.s, 0), exp = fin.filter(x => !x.inc).reduce((s, x) => s + x.s, 0);
+    const done = tasks.filter(x => x.c === 2).length;
+    const paid = deals.filter(x => x.st === 3).reduce((s, x) => s + x.s, 0);
+    const cnt = { tasks: tasks.filter(x => x.c !== 2).length, crm: deals.filter(x => x.st < 3).length, stock: lst('stock').filter(x => x.q < x.min).length, road: road.filter(x => !x.d).length, team: lst('team').length, kpi: kpis.length, docs: lst('docs').length, risk: lst('risk').length, meet: lst('meet').length, content: lst('content').filter(x => !x.d).length };
+    const DEFV = ['overview', 'fin', 'crm', 'ads', 'tasks', 'course', 'board']; const shownSec = (k) => pr.secs.indexOf(k) >= 0 && (DEFV.indexOf(k) >= 0 || k === sec || (cnt[k] || 0) > 0); const hiddenSecs = isDetail ? SECS.filter(s => pr.secs.indexOf(s[0]) >= 0 && !shownSec(s[0])) : []; const moreRows = hiddenSecs.map(s => ({ name: s[1], pick: () => this.set({ sec: s[0], ia: '', ib: '', copied: false, showMoreP: false }) })); const navRows = isDetail ? SECS.filter(s => shownSec(s[0])).map(s => { const on = sec === s[0], b = cnt[s[0]] || 0, warn = s[0] === 'stock' && b > 0; return { name: s[1], dot: on ? 'var(--on-accent)' : 'var(--line2)', bg: on ? 'var(--accent)' : 'transparent', fg: on ? 'var(--on-accent)' : 'var(--ink)', badge: b, badgeDisplay: b ? 'inline-block' : 'none', badgeBg: on ? 'rgba(255,255,255,.25)' : warn ? 'var(--bad-soft)' : 'var(--soft)', badgeFg: on ? 'var(--on-accent)' : warn ? 'var(--bad)' : 'var(--ink2)', pick: () => this.set({ sec: s[0], ia: '', ib: '', copied: false }) }; }) : [];
+    // ---- данные бизнеса: источники, реклама, курс, время ----
+    const TODAYI = '2026-10-19';
+    const biz = isDetail ? (L.d[L.cur + ':biz'] || {}) : {};
+    const bAds = biz.ads || [], bFees = biz.fees || {};
+    const bBy = {}; const bget = (k) => bBy[k] || (bBy[k] = { leads: 0, paid: 0, rev: 0, spend: 0 });
+    deals.forEach(d => { const r = bget(d.src || 'Без источника'); r.leads++; if (d.st === 3) { r.paid++; r.rev += d.s || 0; } });
+    bAds.forEach(a => { bget(a.ch).spend += a.sum || 0; });
+    const adRowsC = Object.keys(bBy).map(k => bBy[k]).filter(r => r.spend > 0);
+    const adSpend = adRowsC.reduce((a, r) => a + r.spend, 0), adPaid = adRowsC.reduce((a, r) => a + r.paid, 0), adRev = adRowsC.reduce((a, r) => a + r.rev, 0);
+    const todayN = deals.filter(d => d.st < 3 && (!d.next || d.next <= TODAYI)).length;
+    const adsSum = { spend: adSpend, revenue: adRev, clients: adPaid };
+    const setD = (extra, close) => this.set(Object.assign({}, extra, close ? { adding: '' } : {}));
+    const bizProps = {
+      adding: L.adding || '',
+      fnDeals: (arr, close) => { const d = Object.assign({}, this.L.d); d[this.L.cur + ':crm'] = arr; this.set(Object.assign({ d }, close ? { adding: '' } : {})); },
+      fnBiz: (obj, close) => { const d = Object.assign({}, this.L.d); d[this.L.cur + ':biz'] = obj; this.set(Object.assign({ d }, close ? { adding: '' } : {})); },
+      fnBoth: (arr, obj) => { const d = Object.assign({}, this.L.d); d[this.L.cur + ':crm'] = arr; d[this.L.cur + ':biz'] = obj; this.set({ d }); },
+      fnTask: (texts, bizNext) => { const d = Object.assign({}, this.L.d), k = this.L.cur; const arr = Array.isArray(texts) ? texts : [texts]; d[k + ':tasks'] = (d[k + ':tasks'] || []).concat(arr.map(t => ({ t, c: 0 }))); if (bizNext) d[k + ':biz'] = Object.assign({}, d[k + ':biz'] || {}, bizNext); this.set({ d }); },
+      fnAdding: (k) => this.set({ adding: k }),
+      fnDoc: (i) => { const d = Object.assign({}, this.L.d), k = this.L.cur; d[k + ':biz'] = Object.assign({}, d[k + ':biz'] || {}, { docDeal: i }); this.set({ d, sec: 'docs', projects: this.L.projects.map((q, i) => i === k && q.secs.indexOf('docs') < 0 ? Object.assign({}, q, { secs: q.secs.concat(['docs']) }) : q) }); },
+      fnSec: (x) => this.set({ sec: x, adding: '' })
+    };
+    const pk = isDetail ? this.pkey(pr) : '', sm = (XP.pfSum || {})[pk] || { income: 0, expense: 0, profit: 0, balance: 0, receivable: 0, payable: 0 }, lk = (XP.linked || {})[pk] || {};
+    const stats = [{ label: 'Задачи', value: tasks.length ? Math.round(done / tasks.length * 100) + '%' : '—', color: 'var(--ok)', sub: 'сделано ' + done + ' из ' + tasks.length }, { label: 'Доход, октябрь', value: money(sm.income), color: 'var(--ok)', sub: 'оплаченные поступления' }, { label: 'Прибыль', value: (sm.profit < 0 ? '− ' : '') + money(Math.abs(sm.profit)), color: sm.profit >= 0 ? 'var(--accent)' : 'var(--bad)', sub: sm.income ? 'маржа ' + Math.round(sm.profit / sm.income * 100) + '%' : 'нет доходов' }, { label: 'На счетах', value: money(sm.balance), color: 'var(--ink)', sub: 'нам должны ' + money(sm.receivable) }].concat(adSpend ? [{ label: 'Реклама, расход', value: money(adSpend), color: 'var(--ink)', sub: 'клиентов с рекламы: ' + adPaid }, { label: 'Стоимость клиента', value: adPaid ? money(adSpend / adPaid) : '—', color: 'var(--accent)', sub: 'расход на одного платящего' }, { label: 'Окупаемость рекламы', value: Math.round((adRev - adSpend) / adSpend * 100) + '%', color: adRev >= adSpend ? 'var(--ok)' : 'var(--bad)', sub: 'выручка ' + money(adRev) }] : []).concat(deals.length ? [{ label: 'Написать сегодня', value: String(todayN), color: todayN ? 'var(--warn)' : 'var(--ok)', sub: todayN ? 'открытые сделки без касания' : 'все касания сделаны' }] : []);
+    const swState = (on) => ({ bg: on ? 'var(--accent)' : 'var(--line2)', pos: on ? 'flex-end' : 'flex-start' });
+    const linkSw = [['money', 'Показывать в «Деньги»'], ['analytics', 'Показывать в аналитике кабинета']].map(x => { const st = swState(!!lk[x[0]]); return { name: x[1], bg: st.bg, pos: st.pos, tog: () => { if (XP.fnLink) XP.fnLink(pk, { [x[0]]: !lk[x[0]] }); } }; });
+    const finNote = 'Остаток на счетах ' + money(sm.balance) + ', платежей впереди ' + money(sm.payable) + ', клиенты должны ' + money(sm.receivable) + '.';
+    const nextRows = road.filter(r => !r.d).slice(0, 3).map(r => ({ text: r.n, tag: r.date || 'этап' })).concat(tasks.filter(x => x.c !== 2).slice(0, 4).map(x => ({ text: x.t, tag: x.c === 1 ? 'в работе' : 'задача' }))).slice(0, 5);
+    const col = (c) => tasks.map((x, i) => ({ x, i })).filter(o => o.x.c === c).map(o => ({ t: o.x.t, left: () => put('tasks', cur('tasks').map((y, j) => j === o.i ? { t: y.t, c: Math.max(0, y.c - 1) } : y)), right: () => put('tasks', cur('tasks').map((y, j) => j === o.i ? { t: y.t, c: Math.min(2, y.c + 1) } : y)), remove: () => put('tasks', cur('tasks').filter((_, j) => j !== o.i)) }));
+    const tk0 = col(0), tk1 = col(1), tk2 = col(2);
+    const chk = (d) => ({ bg: d ? 'color-mix(in srgb,var(--ok) 6%,var(--card))' : 'var(--card)', border: d ? 'var(--ok)' : 'var(--line2)', box: d ? 'var(--ok)' : 'var(--card)', tick: d ? 1 : 0, fg: d ? 'var(--muted)' : 'var(--accent)', deco: d ? 'line-through' : 'none' });
+    const roadRows = road.map((r, i) => Object.assign({ n: r.n, date: r.date, toggle: () => put('road', cur('road').map((y, j) => j === i ? { n: y.n, date: y.date, d: !y.d } : y)), remove: () => put('road', cur('road').filter((_, j) => j !== i)) }, chk(r.d)));
+    const finRows = fin.map((r, i) => ({ n: r.n, sum: (r.inc ? '+ ' : '− ') + money(r.s), color: r.inc ? 'var(--ok)' : 'var(--bad)', remove: () => put('fin', cur('fin').filter((_, j) => j !== i)) }));
+    const finStats = [{ label: 'Доходы', value: money(inc), color: 'var(--ok)' }, { label: 'Расходы', value: money(exp), color: 'var(--bad)' }, { label: 'Прибыль', value: money(inc - exp), color: inc - exp >= 0 ? 'var(--accent)' : 'var(--bad)' }];
+    const stages = STG.map((n, k) => { const a = deals.filter(x => x.st === k); return { name: n, sum: money(a.reduce((s, x) => s + x.s, 0)), count: a.length + ' сделок', bg: STC[k][0], fg: STC[k][1] }; });
+    const dealRows = deals.map((r, i) => ({ n: r.n, sum: money(r.s), stage: STG[r.st], bg: STC[r.st][0], fg: STC[r.st][1], nextDisplay: r.st < 3 ? 'inline-block' : 'none', next: () => put('crm', cur('crm').map((y, j) => j === i ? Object.assign({}, y, { st: Math.min(3, y.st + 1) }) : y)), remove: () => put('crm', cur('crm').filter((_, j) => j !== i)) }));
+    const teamRows = lst('team').map((r, i) => ({ n: r.n, role: r.role || 'участник', ini: (r.n || '?').charAt(0).toUpperCase(), remove: () => put('team', cur('team').filter((_, j) => j !== i)) }));
+    const kpiRows = kpis.map((r, i) => { const st = Math.max(1, Math.round(r.goal / 40)); return { n: r.n, v: r.v, goal: r.goal, pct: r.goal ? Math.min(100, Math.round(r.v / r.goal * 100)) : 0, minus: () => put('kpi', cur('kpi').map((y, j) => j === i ? { n: y.n, v: Math.max(0, y.v - st), goal: y.goal } : y)), plus: () => put('kpi', cur('kpi').map((y, j) => j === i ? { n: y.n, v: y.v + st, goal: y.goal } : y)), remove: () => put('kpi', cur('kpi').filter((_, j) => j !== i)) }; });
+    const stockRows = lst('stock').map((r, i) => { const low = r.q < r.min; return { n: r.n, q: r.q, note: low ? 'Мало. Нужно докупить, минимум ' + r.min : 'В норме, минимум ' + r.min, bg: low ? 'var(--bad-soft)' : 'var(--field)', border: low ? 'var(--bad-line)' : 'var(--line)', fg: low ? 'var(--bad)' : 'var(--muted)', minus: () => put('stock', cur('stock').map((y, j) => j === i ? { n: y.n, q: Math.max(0, y.q - 1), min: y.min } : y)), plus: () => put('stock', cur('stock').map((y, j) => j === i ? { n: y.n, q: y.q + 1, min: y.min } : y)), remove: () => put('stock', cur('stock').filter((_, j) => j !== i)) }; });
+    const gm = GEN[sec] || ['', '', '', ''], gl = GEN[sec] ? lst(sec) : [];
+    const genRows = gl.map((r, i) => Object.assign({ text: r.t, tag: r.tag, toggle: () => put(sec, cur(sec).map((y, j) => j === i ? { t: y.t, tag: y.tag, d: !y.d } : y)), remove: () => put(sec, cur(sec).filter((_, j) => j !== i)) }, chk(r.d)));
+    const ptype = isDetail ? TN[pr.type][1] : '';
+    const rep = []; if (isDetail) { rep.push({ head: 'Бизнес:', text: pr.name + ' (' + ptype + '). Отчёт на 19 октября.' }); if (tasks.length) rep.push({ head: 'Задачи:', text: 'сделано ' + done + ' из ' + tasks.length + ', в работе ' + tasks.filter(x => x.c === 1).length + '.' }); if (road.length) rep.push({ head: 'Этапы:', text: 'пройдено ' + road.filter(x => x.d).length + ' из ' + road.length + '.' }); if (fin.length) rep.push({ head: 'Финансы:', text: 'доход ' + money(inc) + ', расход ' + money(exp) + ', прибыль ' + money(inc - exp) + '.' }); if (deals.length) rep.push({ head: 'Продажи:', text: deals.length + ' сделок, оплачено на ' + money(paid) + '.' }); if (kpis.length) rep.push({ head: 'Показатели:', text: kpis.map(k => k.n + ' ' + k.v + ' из ' + k.goal).join('; ') + '.' }); if (lst('team').length) rep.push({ head: 'Команда:', text: lst('team').length + ' чел.' }); const nx = nextRows.slice(0, 3).map(n => n.text); if (nx.length) rep.push({ head: 'Дальше:', text: nx.join('; ') + '.' }); }
+    const v = {}; ['overview', 'board', 'tasks', 'road', 'fin', 'crm', 'team', 'kpi', 'stock', 'report', 'ads', 'course', 'docs'].forEach(k => { v[k] = isDetail && sec === k; }); v.generic = isDetail && !!GEN[sec]; v.time = isDetail && sec === 'time' && pr.type === 'service';
+
+    const A = () => (this.L.ia || '').trim(), B = () => (this.L.ib || '').trim();
+    const add = () => {
+      const a = A(), b = B(), s = sec; if (!a) return; const reset = { ia: '', ib: '' };
+      if (s === 'tasks') put('tasks', cur('tasks').concat([{ t: a, c: 0 }]), reset);
+      else if (s === 'road') put('road', cur('road').concat([{ n: a, date: b, d: false }]), reset);
+      else if (s === 'fin') { const n = num(b); if (n === null) return; put('fin', cur('fin').concat([{ n: a, s: n, inc: this.L.inc }]), reset); }
+      else if (s === 'crm') { const n = num(b); put('crm', cur('crm').concat([{ n: a, s: n || 0, st: 0, src: '', contact: '', next: '' }]), reset); }
+      else if (s === 'team') put('team', cur('team').concat([{ n: a, role: b }]), reset);
+      else if (s === 'kpi') { const n = num(b); if (!n) return; put('kpi', cur('kpi').concat([{ n: a, v: 0, goal: n }]), reset); }
+      else if (s === 'stock') put('stock', cur('stock').concat([{ n: a, q: num(b) || 0, min: 5 }]), reset);
+      else if (GEN[s]) put(s, cur(s).concat([{ t: a, tag: b, d: false }]), reset);
+    };
+    const STGS = ['Идея', 'Запуск', 'Работает'];
+    const stageChips = isDetail ? STGS.map(x => ({ name: x, bg: (pr.stage || 'Идея') === x ? 'var(--accent-soft)' : 'var(--card)', border: (pr.stage || 'Идея') === x ? 'var(--accent)' : 'var(--line)', fg: (pr.stage || 'Идея') === x ? 'var(--accent-text)' : 'var(--ink2)', pick: () => this.set({ projects: this.L.projects.map((q, i) => i === this.L.cur ? Object.assign({}, q, { stage: x }) : q) }) })) : [];
+    const switchRows = L.projects.map((q, i) => ({ name: q.name, bg: i === L.cur ? 'var(--accent-soft)' : 'var(--card)', border: i === L.cur ? 'var(--accent)' : 'var(--line)', fg: i === L.cur ? 'var(--accent-text)' : 'var(--ink2)', pick: () => this.set({ cur: i, sec: 'overview', adding: '', ia: '', ib: '', showSecs: false }) }));
+    const focusTask = () => { try { const el = document.querySelector('[aria-label="Новая задача"]'); if (el) { el.scrollIntoView({ block: 'center' }); el.focus(); } } catch (e) {} };
+    const crs = biz.course;
+    let prim = null;
+    if (isDetail) { if (sec === 'crm') prim = ['Добавить сделку', () => this.set({ adding: 'deal' })]; else if (sec === 'ads') prim = ['Добавить расход на рекламу', () => this.set({ adding: 'ad' })]; else if (sec === 'tasks') prim = ['Новая задача', focusTask]; else if (sec === 'course' && crs) prim = ['Добавить урок', () => this.set({ adding: 'lesson' })]; else if (sec === 'time' && pr.type === 'service') prim = ['Записать время', () => this.set({ adding: 'time' })]; else if (sec === 'overview') prim = ['Новая задача', () => { this.set({ sec: 'tasks' }); setTimeout(focusTask, 150); }]; }
+    return {
+      stageChips, switchRows, hasPrimary: !!prim && !(pr && pr.demo), primaryText: prim ? prim[0] : '', doPrimary: () => { if (prim) prim[1](); },
+      dealsArr: deals, bizObj: biz, adsSum, invQueue: biz.invQueue || [], setQueue: (arr) => { const d = Object.assign({}, this.L.d), k = this.L.cur; d[k + ':biz'] = Object.assign({}, d[k + ':biz'] || {}, { invQueue: arr }); this.set({ d }); },
+      adding: bizProps.adding, fnDeals: bizProps.fnDeals, fnBiz: bizProps.fnBiz, fnBoth: bizProps.fnBoth, fnTask: bizProps.fnTask, fnAdding: bizProps.fnAdding, fnDoc: bizProps.fnDoc, fnSec: bizProps.fnSec,
+      oldCrmOpen: !!L.oldCrm, oldCrmBtn: L.oldCrm ? 'Скрыть простой список' : 'Простой список сделок (как раньше)', toggleOldCrm: () => this.set({ oldCrm: !this.L.oldCrm }),
+      isList: L.view === 'list' || !isDetail, isDetail, projCards, typeCards, showNew: L.showNew || !!XP.showNewExt, toggleNew: () => this.set({ showNew: !this.L.showNew }), closeNew: () => { this.set({ showNew: false }); if (XP.fnNewDone) XP.fnNewDone(); }, noProjDisplay: L.projects.length ? 'none' : 'flex', bizCount: L.projects.length + ' ' + (L.projects.length % 10 === 1 && L.projects.length % 100 !== 11 ? 'бизнес' : (L.projects.length % 10 > 1 && L.projects.length % 10 < 5 && (L.projects.length % 100 < 10 || L.projects.length % 100 > 20)) ? 'бизнеса' : 'бизнесов'),
+      newName: L.newName, typeName: (e) => this.set({ newName: e.target.value }),
+      createProject: () => { const n = (this.L.newName || '').trim() || 'Новый бизнес'; const t = TN[this.L.newType]; this.set({ projects: this.L.projects.concat(this.norm([{ id: 'p' + Date.now().toString(36), name: n, type: t[0], stage: 'Идея', secs: t[3].slice() }])), newName: '', showNew: false, view: 'detail', cur: this.L.projects.length, sec: 'overview' }); if (XP.fnNewDone) XP.fnNewDone(); },
+      back: () => this.set({ view: 'list' }), projName: isDetail ? pr.name : '', projType: ptype, showSecs: L.showSecs, showSet: !!L.showSet, toggleSet: () => this.set({ showSet: !this.L.showSet }), stageName: isDetail ? (pr.stage || 'Идея') : '', secsBtn: L.showSecs ? 'Готово' : 'Настроить разделы', toggleSecs: () => this.set({ showSecs: !this.L.showSecs }),
+      isDemo: isDetail && !!pr.demo, roPe: isDetail && pr.demo ? 'none' : 'auto', roOp: isDetail && pr.demo ? .45 : 1,
+      secsRows: L.showSecs ? '1fr' : '0fr', secsOp: L.showSecs ? 1 : 0, secsTy: L.showSecs ? 0 : -10, secsPe: L.showSecs ? 'auto' : 'none',
+      secAnim: 'secIn' + Math.max(0, ['overview', 'board', 'tasks', 'road', 'fin', 'crm', 'team', 'kpi', 'stock', 'report', 'ads', 'course', 'docs', 'time'].indexOf(sec)), navLeft: (e) => { const sc = e.currentTarget.parentElement.querySelector('.noscroll'); if (sc) sc.scrollBy({ left: -260, behavior: 'smooth' }); }, navRight: (e) => { const sc = e.currentTarget.parentElement.querySelector('.noscroll'); if (sc) sc.scrollBy({ left: 260, behavior: 'smooth' }); },
+      boardKey: isDetail ? this.pkey(pr) : 'p0', pfData: isDetail ? ((XP.pf || {})[this.pkey(pr)] || null) : null, pfSeed: isDetail ? (pr.seed || 'empty') : 'empty', pfSet: (next) => { if (XP.fnPfSet) XP.fnPfSet(this.pkey(pr), next); }, navRows, moreRows, moreBtn: 'Ещё ' + hiddenSecs.length, moreDisplay: hiddenSecs.length ? 'inline-flex' : 'none', moreOpen: !!L.showMoreP && hiddenSecs.length > 0, moreToggle: () => this.set({ showMoreP: !this.L.showMoreP }), headStats: [{ label: 'Задачи', value: tasks.length ? Math.round(done / tasks.length * 100) + '%' : '—', bg: 'var(--ok-soft)', fg: 'var(--ok)' }, { label: 'Прибыль', value: sm.income || sm.expense ? (sm.profit < 0 ? '− ' : '') + money(Math.abs(sm.profit)) : '—', bg: 'var(--accent-soft)', fg: 'var(--accent-text)' }, { label: 'Сделок в работе', value: deals.length ? String(cnt.crm) : '—', bg: 'var(--warn-soft)', fg: 'var(--warn)' }, { label: 'Этапов впереди', value: road.length ? String(cnt.road) : '—', bg: 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))', fg: '#5B4DB8' }], tabs, secChips, v, stats, linkSw, finNote, goFin: () => this.set({ sec: 'fin', ia: '', ib: '' }), nextRows, nextEmptyDisplay: nextRows.length ? 'none' : 'block',
+      tk0, tk1, tk2, n0: tk0.length, n1: tk1.length, n2: tk2.length, empty0: tk0.length ? 'none' : 'block', empty1: tk1.length ? 'none' : 'block', empty2: tk2.length ? 'none' : 'block', tasksPct: tasks.length ? Math.round(tk2.length / tasks.length * 100) : 0, tasksSub: tk2.length + ' из ' + tasks.length + ' сделано, в работе ' + tk1.length, roadRows, finRows, finStats, stages, dealRows, teamRows, kpiRows, stockRows,
+      ia: L.ia, ib: L.ib, typeA: (e) => this.set({ ia: e.target.value }), typeB: (e) => this.set({ ib: e.target.value }), add,
+      incBg: L.inc ? 'var(--ok-soft)' : 'var(--card)', incFg: L.inc ? 'var(--ok)' : 'var(--ink2)', incBorder: L.inc ? 'var(--ok)' : 'var(--line2)', expBg: !L.inc ? 'var(--bad-soft)' : 'var(--card)', expFg: !L.inc ? 'var(--bad)' : 'var(--ink2)', expBorder: !L.inc ? 'var(--bad)' : 'var(--line2)', setInc: () => this.set({ inc: true }), setExp: () => this.set({ inc: false }),
+      genTitle: gm[0], genHint: gm[1], ph1: gm[2], ph2: gm[3], genRows, genEmptyDisplay: genRows.length ? 'none' : 'block',
+      reportRows: rep, copied: L.copied, copiedDisplay: L.copied ? 'block' : 'none', copyReport: () => this.set({ copied: true })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

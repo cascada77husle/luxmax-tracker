@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Свечи денег</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink)">
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <span style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Свечи денег</b><span style="font-size:13px;color:var(--muted);line-height:1.45">Как график в трейдинге: зелёная свеча, если деньги за период прибавились, красная, если убавились.</span></span>
+      <div style="display:inline-flex;gap:3px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--card)"><sc-for list="{{tfs}}" as="t" hint-placeholder-count="3"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:0 16px;min-height:40px;border-radius:999px;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>
+    </div>
+    <sc-if value="{{hasData}}" hint-placeholder-val="{{true}}">
+      <div style="display:flex;gap:8px;align-items:stretch">
+        <div style="width:58px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between;height:220px;text-align:right"><sc-for list="{{yAxis}}" as="y" hint-placeholder-count="3"><span style="font-size:11px;color:var(--muted)">{{y.t}}</span></sc-for></div>
+        <div style="position:relative;flex:1;min-width:0;height:220px;border-left:1px solid var(--line2);border-bottom:1px solid var(--line2)">
+          <sc-for list="{{grid}}" as="g" hint-placeholder-count="3"><span style="position:absolute;left:0;right:0;top:{{g.top}}%;border-top:1px dashed rgba(255,255,255,.08)"></span></sc-for>
+          <span style="position:absolute;left:0;right:0;top:{{lastTop}}%;border-top:1px dashed {{lastCol}};opacity:.7"></span>
+          <div style="position:absolute;inset:0;display:flex;align-items:stretch">
+            <sc-for list="{{candles}}" as="c" hint-placeholder-count="12"><button type="button" onClick="{{c.pick}}" aria-label="{{c.aria}}" title="{{c.aria}}" style="flex:1 1 0;min-width:0;min-height:0;height:100%;position:relative;border:0;background:{{c.sel}};padding:0;border-radius:6px;cursor:pointer"><span style="position:absolute;left:50%;width:2px;margin-left:-1px;top:{{c.wt}}%;height:{{c.wh}}%;background:{{c.col}};border-radius:2px"></span><span style="position:absolute;left:26%;right:26%;top:{{c.bt}}%;height:{{c.bh}}%;min-height:3px;background:{{c.col}};border-radius:2px;box-shadow:0 0 10px -3px {{c.col}}"></span></button></sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;padding-left:67px"><div style="display:flex"><sc-for list="{{xAxis}}" as="x" hint-placeholder-count="12"><span style="flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;opacity:{{x.op}}"><b style="font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap">{{x.t}}</b><span style="font-size:10px;font-weight:700;color:{{x.col}};white-space:nowrap">{{x.d}}</span></span></sc-for></div><div style="display:flex"><sc-for list="{{xAxis}}" as="x" hint-placeholder-count="12"><span style="flex:1 1 0;min-width:0;position:relative;height:16px"><span style="position:absolute;left:0;top:0;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-text);white-space:nowrap;border-left:2px solid var(--accent-text);padding-left:5px;line-height:13px">{{x.mon}}</span></span></sc-for></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--field)">
+        <span style="grid-column:1/-1;font-size:13px;font-weight:700">{{selTitle}}</span>
+        <sc-for list="{{selStats}}" as="s" hint-placeholder-count="5"><span style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">{{s.k}}</span><b style="font-size:14px;color:{{s.col}}">{{s.v}}</b></span></sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{noData}}" hint-placeholder-val="{{false}}"><div style="padding:30px 16px;text-align:center;border:1.5px dashed var(--line2);border-radius:16px;color:var(--muted);font-size:14px;line-height:1.5">Свечи появятся после первых оплаченных операций. Добавьте доход или расход во вкладке «Операции».</div></sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tx":{"editor":null},"open":{"editor":null},"$preview":{"width":1000,"height":520}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, tf: 'day', sel: -1 }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+  renderVals() {
+    const P = this.props, L = this.L;
+    const TODAY = '2026-10-19';
+    const fmt = (n) => String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const rub = (n) => (n < 0 ? '−' : '') + fmt(n) + ' ₽';
+    const short = (n) => { const a = Math.abs(n); return (n < 0 ? '−' : '') + (a >= 1e6 ? (a / 1e6).toFixed(1).replace('.', ',') + ' млн' : a >= 1000 ? Math.round(a / 1000) + ' т' : Math.round(a)); };
+    const MON = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    const dt = (s) => { const p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); };
+    const iso = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const tx = (P.tx || []).filter(t => (t.kind === 'in' || t.kind === 'out') && t.d <= TODAY).slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
+    const open = +P.open || 0;
+    const tfs = [['day', 'Дни'], ['week', 'Недели'], ['month', 'Месяцы']].map(x => ({ name: x[1], bg: L.tf === x[0] ? 'var(--accent)' : 'transparent', fg: L.tf === x[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ tf: x[0], sel: -1 }) }));
+    if (!tx.length) return { tfs, hasData: false, noData: true, yAxis: [], grid: [], candles: [], xAxis: [], selTitle: '', selStats: [], lastTop: 0, lastCol: 'transparent' };
+    const keyOf = (s) => { const d = dt(s); if (L.tf === 'month') return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); if (L.tf === 'week') { const m = new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)); return iso(m); } return s; };
+    const labelOf = (k) => { if (L.tf === 'month') { const p = k.split('-'); return MON[+p[1] - 1]; } const d = dt(k); return d.getDate() + ' ' + MON[d.getMonth()]; };
+    // список ключей от первой операции до сегодня
+    const keys = []; const first = dt(tx[0].d), last = dt(TODAY);
+    let cur = dt(keyOf(tx[0].d) + (L.tf === 'month' ? '-01' : ''));
+    const step = (d) => L.tf === 'month' ? new Date(d.getFullYear(), d.getMonth() + 1, 1) : new Date(d.getFullYear(), d.getMonth(), d.getDate() + (L.tf === 'week' ? 7 : 1));
+    while (cur <= last) { keys.push(L.tf === 'month' ? cur.getFullYear() + '-' + String(cur.getMonth() + 1).padStart(2, '0') : iso(cur)); cur = step(cur); }
+    let bal = open; const cs = [];
+    keys.forEach(k => { const o = bal; let hi = o, lo = o, inc = 0, exp = 0, n = 0; tx.filter(t => keyOf(t.d) === k).forEach(t => { if (t.kind === 'in') { bal += t.amount; inc += t.amount; } else { bal -= t.amount; exp += t.amount; } n++; hi = Math.max(hi, bal); lo = Math.min(lo, bal); }); hi = Math.max(hi, o + inc); lo = Math.min(lo, o - exp); cs.push({ k, o, c: bal, hi, lo, inc, exp, n }); });
+    const view = cs.slice(-24);
+    const mx0 = Math.max.apply(null, view.map(c => c.hi)), mn0 = Math.min.apply(null, view.map(c => c.lo));
+    const pad = Math.max((mx0 - mn0) * 0.1, 1), mx = mx0 + pad, mn = mn0 - pad, rng = mx - mn;
+    const pos = (v) => (mx - v) / rng * 100;
+    const selIdx = L.sel >= 0 && L.sel < view.length ? L.sel : view.length - 1;
+    const candles = view.map((c, i) => { const up = c.c >= c.o, col = c.n === 0 ? 'var(--muted)' : up ? 'var(--ok)' : 'var(--bad)'; const top = pos(Math.max(c.o, c.c)), bot = pos(Math.min(c.o, c.c)); return { aria: labelOf(c.k) + ': закрытие ' + rub(c.c), col, wt: pos(c.hi), wh: Math.max(pos(c.lo) - pos(c.hi), 0.5), bt: top, bh: Math.max(bot - top, 0.6), sel: i === selIdx ? 'rgba(255,255,255,.07)' : 'transparent', pick: () => this.set({ sel: i }) }; });
+    const every = view.length > 14 ? 2 : 1;
+    const MF = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+    const shd = (n) => { const a = Math.abs(n); return (n >= 0 ? '+' : '−') + (a >= 1000 ? (a / 1000).toFixed(a >= 10000 ? 0 : 1).replace('.', ',') + 'к' : Math.round(a)); };
+    const xAxis = view.map((c, i) => { const d0 = dt(c.k.length === 7 ? c.k + '-01' : c.k), prevD = i > 0 ? dt(view[i - 1].k.length === 7 ? view[i - 1].k + '-01' : view[i - 1].k) : null, newMon = i === 0 || d0.getMonth() !== prevD.getMonth(); return { t: L.tf === 'day' ? String(d0.getDate()) : labelOf(c.k), op: (view.length - 1 - i) % every === 0 ? 1 : 0, d: shd(c.c - c.o), col: c.c - c.o >= 0 ? 'var(--ok)' : 'var(--bad)', mon: (L.tf !== 'month' && newMon) ? MF[d0.getMonth()] + (d0.getFullYear() !== 2026 ? ' ' + d0.getFullYear() : '') : '' }; });
+    const yAxis = [mx, (mx + mn) / 2, mn].map(v => ({ t: short(v) }));
+    const grid = [{ top: 0 }, { top: 50 }, { top: 100 }];
+    const lastC = view[view.length - 1], s = view[selIdx], d = s.c - s.o;
+    const sTitle = (L.tf === 'day' ? 'День ' : L.tf === 'week' ? 'Неделя с ' : 'Месяц ') + labelOf(s.k) + (d > 0 ? ', деньги выросли' : d < 0 ? ', деньги уменьшились' : ', без движения');
+    return { tfs, hasData: true, noData: false, yAxis, grid, candles, xAxis, lastTop: pos(lastC.c), lastCol: lastC.c >= lastC.o ? 'var(--ok)' : 'var(--bad)', selTitle: sTitle,
+      selStats: [{ k: 'Открытие', v: rub(s.o), col: 'var(--ink)' }, { k: 'Закрытие', v: rub(s.c), col: d >= 0 ? 'var(--ok)' : 'var(--bad)' }, { k: 'Максимум', v: rub(s.hi), col: 'var(--ink)' }, { k: 'Минимум', v: rub(s.lo), col: 'var(--ink)' }, { k: 'Итог периода', v: (d >= 0 ? '+' : '') + rub(d), col: d >= 0 ? 'var(--ok)' : 'var(--bad)' }] };
+  }
+}
+</script>
+</body>
+</html>

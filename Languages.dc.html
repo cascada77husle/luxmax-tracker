@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Языки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
+
+<div style="display:flex;flex-direction:column;gap:4px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Языки</b><span style="font-size:14px;color:var(--muted)">Слова, карточки, грамматика и практика по каждому языку. Выберите язык и занимайтесь по цели на день.</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+  <sc-for list="{{langs}}" as="l" hint-placeholder-count="6"><button type="button" onClick="{{l.pick}}" style="cursor:pointer;display:flex;align-items:center;gap:10px;border:1.5px solid {{l.border}};background:{{l.bg}};border-radius:20px;padding:9px 14px 9px 10px"><span style="width:30px;height:30px;border-radius:8px;background:{{l.color}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">{{l.ini}}</span><span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.2"><b style="font-size:14px;color:var(--ink)">{{l.name}}</b><span style="font-size:12px;color:var(--muted)">{{l.level}}</span></span></button></sc-for>
+  <input type="text" value="{{newLang}}" onInput="{{typeLang}}" placeholder="Другой язык" aria-label="Добавить язык" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);width:150px;min-width:0"><button type="button" onClick="{{addLang}}" style="cursor:pointer;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 16px">+ Добавить</button>
+</div>
+<div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{tabs}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>
+
+<sc-if value="{{v.today}}" hint-placeholder-val="{{true}}">
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:16px">
+    <span style="width:72px;height:72px;border-radius:20px;background:{{curColor}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800">{{curLevel}}</span>
+    <div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:8px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">{{curName}}: уровень {{curLevel}}, дальше {{nextLevel}}</b><div style="height:10px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{curColor}};width:{{levelPct}}%"></div></div><span style="font-size:13px;color:var(--muted)">{{levelText}}</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 18px;border-radius:20px;background:var(--warn-soft)"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;color:var(--warn)">{{streak}}</b><span style="font-size:12px;color:var(--warn);font-weight:600">дней подряд</span></div>
+  </div>
+  <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Цели на сегодня</b>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px"><sc-for list="{{goals}}" as="g" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px">{{g.name}}</b><span style="font-size:12px;color:var(--muted)">цель {{g.goal}}</span></div><div style="display:flex;align-items:center;gap:10px"><button type="button" onClick="{{g.minus}}" aria-label="Меньше" style="cursor:pointer;width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line2);background:var(--card);font-size:20px;font-weight:700;padding:0" title="Меньше">−</button><span style="flex:1;text-align:center"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800">{{g.value}}</b> <span style="font-size:13px;color:var(--muted)">{{g.unit}}</span></span><button type="button" onClick="{{g.plus}}" aria-label="Больше" style="cursor:pointer;width:38px;height:38px;border-radius:12px;border:0;background:{{curColor}};color:var(--on-accent);font-size:20px;font-weight:700;padding:0" title="Больше">+</button></div><div style="height:7px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{g.color}};width:{{g.pct}}%"></div></div></div></sc-for></div>
+</sc-if>
+
+<sc-if value="{{v.words}}" hint-placeholder-val="{{false}}">
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Мой словарь · {{wordCount}}</b><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{filters}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{nw}}" onInput="{{typeW}}" placeholder="Слово" aria-label="Слово" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 150px;min-width:0"><input type="text" value="{{nt}}" onInput="{{typeT}}" placeholder="Перевод" aria-label="Перевод" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);flex:1 1 150px;min-width:0"><button type="button" onClick="{{addWord}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить слово</button></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"><sc-for list="{{wordRows}}" as="w" hint-placeholder-count="6"><div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;border:1px solid {{w.border}};background:{{w.bg}}"><button type="button" onClick="{{w.toggle}}" aria-label="Выучено" style="cursor:pointer;width:24px;height:24px;border-radius:8px;border:1.5px solid {{w.border}};background:{{w.box}};color:var(--on-accent);padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0" title="Выучено"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{w.tick}}"><path d="M5 12l4 4L19 7"/></svg></button><span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px">{{w.word}}</b><span style="font-size:12px;color:var(--muted)">{{w.tr}}</span></span><button type="button" onClick="{{w.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div></sc-for></div>
+    <span style="display:{{noWordsDisplay}};font-size:13px;color:var(--muted);text-align:center;padding:16px;border:1.5px dashed var(--line2);border-radius:12px">Здесь пока нет слов. Добавьте первое выше.</span>
+  </div>
+</sc-if>
+
+<sc-if value="{{v.cards}}" hint-placeholder-val="{{false}}">
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;gap:16px;max-width:560px;width:100%;box-sizing:border-box;align-self:center">
+    <span style="font-size:13px;color:var(--muted)">На повторении: {{dueCount}} слов. Нажмите на карточку, чтобы увидеть перевод.</span>
+    <button type="button" onClick="{{flip}}" style="cursor:pointer;width:100%;min-height:180px;border-radius:20px;border:1.5px solid {{cBorder}};background:{{cBg}};padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px"><span style="font-size:12px;font-weight:700;color:{{cTagFg}}">{{cTag}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:700;color:var(--ink)">{{cText}}</b></button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button type="button" onClick="{{again}}" style="cursor:pointer;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-size:13px;padding:8px 16px;border-color:var(--bad-line);background:var(--bad-soft);color:var(--bad);font-weight:700">Ещё не помню</button><button type="button" onClick="{{know}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px;background:var(--ok)">Помню</button></div>
+  </div>
+</sc-if>
+
+<sc-if value="{{v.grammar}}" hint-placeholder-val="{{false}}">
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Грамматика по уровням</b><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{grLevels}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><b>Пройдено на уровне</b><b style="color:var(--ok)">{{grDone}} из {{grTotal}}</b></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px"><sc-for list="{{grRows}}" as="g" hint-placeholder-count="6"><button type="button" onClick="{{g.toggle}}" style="cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid {{g.border}};background:{{g.bg}}"><span style="width:24px;height:24px;border-radius:8px;border:1.5px solid {{g.border}};background:{{g.box}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{g.tick}}"><path d="M5 12l4 4L19 7"/></svg></span><span style="flex:1;font-size:14px;font-weight:600;color:{{g.fg}};text-decoration:{{g.deco}}">{{g.name}}</span></button></sc-for></div></div>
+</sc-if>
+
+<sc-if value="{{v.practice}}" hint-placeholder-val="{{false}}">
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Практика по навыкам</b><span style="font-size:13px;color:var(--muted)">Запишите минуты за сегодня. Сбалансированный язык растёт по всем четырём навыкам.</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px"><sc-for list="{{skills}}" as="s" hint-placeholder-count="4"><div style="border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--field)"><b style="font-size:14px">{{s.name}}</b><div style="display:flex;align-items:center;gap:10px"><button type="button" onClick="{{s.minus}}" aria-label="Меньше" style="cursor:pointer;width:36px;height:36px;border-radius:12px;border:1.5px solid var(--line2);background:var(--card);font-size:18px;font-weight:700;padding:0" title="Меньше">−</button><span style="flex:1;text-align:center"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800">{{s.value}}</b> <span style="font-size:13px;color:var(--muted)">мин</span></span><button type="button" onClick="{{s.plus}}" aria-label="Больше" style="cursor:pointer;width:36px;height:36px;border-radius:12px;border:0;background:{{curColor}};color:var(--on-accent);font-size:18px;font-weight:700;padding:0" title="Больше">+</button></div><span style="font-size:12px;color:var(--muted)">{{s.idea}}</span></div></sc-for></div></div>
+</sc-if>
+
+<sc-if value="{{v.progress}}" hint-placeholder-val="{{false}}">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px"><sc-for list="{{stats}}" as="s" hint-placeholder-count="4"><div style="background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:var(--muted)">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;color:{{s.color}}">{{s.value}}</b><span style="font-size:12px;color:var(--muted)">{{s.sub}}</span></div></sc-for></div>
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Минуты за последние 7 дней</b><div style="display:flex;align-items:flex-end;gap:10px;height:150px"><sc-for list="{{bars}}" as="b" hint-placeholder-count="7"><div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%"><span style="font-size:11px;color:var(--muted)">{{b.val}}</span><div style="width:100%;max-width:34px;height:{{b.h}}%;min-height:4px;border-radius:8px 8px 4px 4px;background:{{b.color}}"></div><span style="font-size:12px;font-weight:600;color:var(--ink2)">{{b.wd}}</span></div></sc-for></div></div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":1200}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, cur: 'en', tab: 'today', extra: [], newLang: '', nw: '', nt: '', filter: 'all', ci: 0, flipped: false, grLv: 0,
+    t: {}, w: {}, g: {}, week: {} }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const L = this.L;
+    const LV = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'], TARGET = [500, 1000, 2000, 3500, 5000, 8000];
+    const BASE = [['en', 'Английский', 'EN', 'var(--accent)', 2, 1480], ['zh', 'Китайский', '中', 'var(--bad)', 0, 120], ['es', 'Испанский', 'ES', 'var(--warn)', 0, 60], ['de', 'Немецкий', 'DE', 'var(--ink2)', 1, 350], ['fr', 'Французский', 'FR', 'var(--cat-violet)', 0, 40], ['ja', 'Японский', '日', 'var(--cat-pink)', 0, 20], ['ko', 'Корейский', '한', 'var(--ok)', 0, 30], ['it', 'Итальянский', 'IT', '#3FA796', 0, 25]];
+    const COLS = ['var(--accent)', 'var(--ok)', 'var(--warn)', 'var(--cat-violet)', 'var(--cat-pink)'];
+    const all = BASE.concat(L.extra.map((n, i) => ['x' + i, n, n.charAt(0).toUpperCase(), COLS[i % COLS.length], 0, 0]));
+    const cur = all.find(x => x[0] === L.cur) || all[0], id = cur[0];
+    const T = L.t[id] || { words: 0, min: 0, les: 0, spk: 0 }, G = { words: 20, min: 30, les: 1, spk: 10 };
+    const words = L.w[id] || [], learnedWords = words.filter(x => x.k).length, lvl = cur[4], total = cur[5] + learnedWords, tg = TARGET[Math.min(5, lvl)];
+    const setT = (k, d) => () => { const t = Object.assign({}, this.L.t), c = Object.assign({ words: 0, min: 0, les: 0, spk: 0 }, t[id]); c[k] = Math.max(0, c[k] + d); t[id] = c; this.set({ t }); };
+    const wk = L.week[id] || [0, 0, 0, 0, 0, 0, 0];
+    const setW = (a) => { const w = Object.assign({}, this.L.w); w[id] = a; this.set({ w }); };
+    const GOALS = [['words', 'Слова', 'слов', 1, 'var(--accent)'], ['min', 'Время занятий', 'мин', 5, 'var(--ok)'], ['les', 'Урок грамматики', 'урок', 1, 'var(--cat-violet)'], ['spk', 'Разговорная практика', 'мин', 5, 'var(--warn)']];
+    const goals = GOALS.map(g => ({ name: g[1], unit: g[2], value: T[g[0]], goal: G[g[0]], pct: Math.min(100, Math.round(T[g[0]] / G[g[0]] * 100)), color: g[4], minus: setT(g[0], -g[3]), plus: setT(g[0], g[3]) }));
+    const GR = [['Глагол to be', 'Артикли', 'Множественное число', 'Притяжательные местоимения', 'Предлоги места'], ['Настоящее продолженное', 'Прошедшее простое', 'Сравнение прилагательных', 'Будущее время', 'Количественные слова'], ['Настоящее совершенное', 'Условные предложения, тип 1', 'Модальные глаголы', 'Страдательный залог', 'Относительные придаточные'], ['Условные предложения, тип 2 и 3', 'Косвенная речь', 'Герундий и инфинитив', 'Смешанные времена', 'Фразовые глаголы'], ['Инверсия', 'Сложные условия', 'Связки и оттенки смысла', 'Идиомы', 'Формальный стиль'], ['Тонкая стилистика', 'Редкие конструкции', 'Академическая речь', 'Диалекты и регистры', 'Тонкости перевода']];
+    const gl = GR[L.grLv], gd = L.g[id] || {};
+    const grRows = gl.map((n, i) => { const d = !!gd[L.grLv + ':' + i]; return { name: n, bg: d ? 'color-mix(in srgb,var(--ok) 6%,var(--card))' : 'var(--card)', border: d ? 'var(--ok)' : 'var(--line)', box: d ? 'var(--ok)' : 'var(--card)', tick: d ? 1 : 0, fg: d ? 'var(--muted)' : 'var(--accent)', deco: d ? 'line-through' : 'none', toggle: () => { const g = Object.assign({}, this.L.g), c = Object.assign({}, g[id] || {}); c[this.L.grLv + ':' + i] = !c[this.L.grLv + ':' + i]; g[id] = c; this.set({ g }); } }; });
+    const grDone = gl.filter((n, i) => gd[L.grLv + ':' + i]).length;
+    const flt = L.filter, shown = words.map((x, i) => ({ x, i })).filter(o => flt === 'all' || (flt === 'new' ? !o.x.k : o.x.k));
+    const wordRows = shown.map(o => ({ word: o.x.a, tr: o.x.b, bg: o.x.k ? 'color-mix(in srgb,var(--ok) 6%,var(--card))' : 'var(--card)', border: o.x.k ? 'var(--ok-line)' : 'var(--line)', box: o.x.k ? 'var(--ok)' : 'var(--card)', tick: o.x.k ? 1 : 0, toggle: () => setW(this.L.w[id].map((y, j) => j === o.i ? { a: y.a, b: y.b, k: !y.k } : y)), remove: () => setW(this.L.w[id].filter((_, j) => j !== o.i)) }));
+    const due = words.map((x, i) => ({ x, i })).filter(o => !o.x.k), cd = due.length ? due[L.ci % due.length] : null;
+    const SK = [['Говорение', 'Скажите вслух 10 фраз или поговорите с партнёром.'], ['Аудирование', 'Подкаст или видео на языке, 10 минут.'], ['Чтение', 'Статья или страница книги на языке.'], ['Письмо', 'Три предложения о своём дне.']];
+    const sk = (L.t[id] && L.t[id].sk) || [0, 0, 0, 0];
+    const skills = SK.map((s, i) => ({ name: s[0], idea: s[1], value: sk[i], minus: () => { const t = Object.assign({}, this.L.t), c = Object.assign({ words: 0, min: 0, les: 0, spk: 0 }, t[id]), a = (c.sk || [0, 0, 0, 0]).slice(); a[i] = Math.max(0, a[i] - 5); c.sk = a; t[id] = c; this.set({ t }); }, plus: () => { const t = Object.assign({}, this.L.t), c = Object.assign({ words: 0, min: 0, les: 0, spk: 0 }, t[id]), a = (c.sk || [0, 0, 0, 0]).slice(); a[i] += 5; c.sk = a; t[id] = c; this.set({ t }); } }));
+    const mx = Math.max.apply(null, wk.concat([30])), wkTotal = wk.reduce((a, b) => a + b, 0);
+    const TABS = [['today', 'Сегодня'], ['words', 'Словарь'], ['cards', 'Карточки'], ['grammar', 'Грамматика'], ['practice', 'Практика'], ['progress', 'Прогресс']];
+    const v = {}; TABS.forEach(t => { v[t[0]] = L.tab === t[0]; });
+    return {
+      v, tabs: TABS.map(t => ({ name: t[1], bg: L.tab === t[0] ? cur[3] : 'transparent', fg: L.tab === t[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ tab: t[0] }) })),
+      langs: all.map(x => ({ name: x[1], ini: x[2], color: x[3], level: LV[x[4]], bg: x[0] === id ? 'var(--field)' : 'var(--card)', border: x[0] === id ? x[3] : 'var(--line)', pick: () => this.set({ cur: x[0], ci: 0, flipped: false, grLv: x[4] }) })),
+      newLang: L.newLang, typeLang: (e) => this.set({ newLang: e.target.value }), addLang: () => { const n = (this.L.newLang || '').trim(); if (n) this.set({ extra: this.L.extra.concat([n]), newLang: '', cur: 'x' + this.L.extra.length }); },
+      curColor: cur[3], curName: cur[1], curLevel: LV[lvl], nextLevel: LV[Math.min(5, lvl + 1)], levelPct: Math.min(100, Math.round(total / tg * 100)), levelText: 'Выучено примерно ' + total + ' из ' + tg + ' слов для уровня ' + LV[Math.min(5, lvl + 1)] + '.', streak: id === 'en' ? 12 : id === 'zh' ? 3 : 0, goals,
+      filters: [['all', 'Все'], ['new', 'Новые'], ['done', 'Выучено']].map(f => ({ name: f[1], bg: flt === f[0] ? 'var(--accent)' : 'var(--card)', fg: flt === f[0] ? 'var(--on-accent)' : 'var(--ink2)', border: flt === f[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ filter: f[0] }) })),
+      wordCount: words.length, wordRows, noWordsDisplay: wordRows.length ? 'none' : 'block', nw: L.nw, nt: L.nt, typeW: (e) => this.set({ nw: e.target.value }), typeT: (e) => this.set({ nt: e.target.value }),
+      addWord: () => { const a = (this.L.nw || '').trim(), b = (this.L.nt || '').trim(); if (!a) return; setW((this.L.w[id] || []).concat([{ a, b, k: false }])); this.set({ nw: '', nt: '' }); },
+      dueCount: due.length, cText: cd ? (L.flipped ? cd.x.b : cd.x.a) : 'Все слова выучены', cTag: cd ? (L.flipped ? 'ПЕРЕВОД' : 'СЛОВО') : '', cTagFg: L.flipped ? 'var(--ok)' : cur[3], cBg: L.flipped ? 'color-mix(in srgb,var(--ok) 6%,var(--card))' : 'var(--card)', cBorder: L.flipped ? 'var(--ok-line)' : 'var(--line)',
+      flip: () => this.set({ flipped: !this.L.flipped }), again: () => this.set({ ci: this.L.ci + 1, flipped: false }),
+      know: () => { if (!cd) return; const w = Object.assign({}, this.L.w); w[id] = this.L.w[id].map((y, j) => j === cd.i ? { a: y.a, b: y.b, k: true } : y); const t = Object.assign({}, this.L.t), c = Object.assign({ words: 0, min: 0, les: 0, spk: 0 }, t[id]); c.words += 1; t[id] = c; this.set({ w, t, flipped: false }); },
+      grLevels: LV.map((n, i) => ({ name: n, bg: L.grLv === i ? 'var(--accent)' : 'var(--card)', fg: L.grLv === i ? 'var(--on-accent)' : 'var(--ink2)', border: L.grLv === i ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ grLv: i }) })), grRows, grDone, grTotal: gl.length,
+      skills, stats: [{ label: 'Выучено слов', value: String(total), color: cur[3], sub: 'вместе с тем, что знали раньше' }, { label: 'Минут за неделю', value: String(wkTotal), color: 'var(--ok)', sub: 'всего занятий' }, { label: 'В словаре', value: String(words.length), color: 'var(--ink)', sub: learnedWords + ' выучено' }, { label: 'Уровень', value: LV[lvl], color: 'var(--warn)', sub: 'до ' + LV[Math.min(5, lvl + 1)] + ' ' + Math.min(100, Math.round(total / tg * 100)) + '%' }],
+      bars: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((w, i) => ({ wd: w, val: wk[i] || '', h: Math.round(wk[i] / mx * 100), color: wk[i] ? cur[3] : 'var(--line)' }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

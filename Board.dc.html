@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Доска бизнеса</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bd-note{box-shadow:0 2px 6px rgba(16,24,40,.18)}
+.bd textarea{font-family:inherit}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+
+<div class="bd" style="{{rootStyle}}">
+  <div style="display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:2px">
+    <sc-for list="{{addTools}}" as="t" hint-placeholder-count="4"><button type="button" onClick="{{t.pick}}" aria-label="{{t.name}}" title="{{t.hint}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;min-height:0;padding:6px 8px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-size:11px;font-weight:600;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><span>{{t.name}}</span></button></sc-for>
+    <span style="width:1px;align-self:stretch;background:var(--line2);flex-shrink:0;margin:2px 4px" aria-hidden="true"></span>
+    <sc-for list="{{modeTools}}" as="t" hint-placeholder-count="4"><button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" aria-label="{{t.name}}" title="{{t.hint}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;min-height:0;padding:6px 8px;border:1.5px solid {{t.border}};border-radius:12px;background:{{t.bg}};color:{{t.fg}};font-size:11px;font-weight:600;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><span>{{t.name}}</span></button></sc-for>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+    <sc-for list="{{viewTools}}" as="t" hint-placeholder-count="5"><button type="button" onClick="{{t.pick}}" aria-label="{{t.name}}" title="{{t.name}}" style="cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;min-height:0;padding:0 8px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-size:12px;font-weight:700;opacity:{{t.op}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:{{t.iconD}}"><path d="{{t.icon}}"></path></svg><span style="display:{{t.textD}}">{{t.text}}</span></button></sc-for>
+    <span style="margin-left:auto;font-size:12px;font-weight:600;color:{{statusColor}}" role="status">{{statusText}}</span>
+  </div>
+
+  <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px">
+      <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><textarea value="{{selText}}" onInput="{{typeText}}" rows="2" placeholder="{{selHint}}" aria-label="Текст на доске" style="width:100%;box-sizing:border-box;border:1.5px solid var(--line2);border-radius:12px;background:var(--field);color:var(--ink);font-size:16px;padding:8px 10px;outline:none;resize:vertical"></textarea></sc-if>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><div style="display:flex;gap:6px" role="group" aria-label="Цвет"><sc-for list="{{swatches}}" as="c" hint-placeholder-count="6"><button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" title="{{c.name}}" style="cursor:pointer;width:28px;height:28px;min-height:0;padding:0;border-radius:50%;background:{{c.bg}};border:2px solid {{c.border}}"></button></sc-for></div></sc-if>
+        <span style="flex:1"></span>
+        <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{dupSel}}" style="cursor:pointer;min-height:0;height:36px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:700;font-size:13px;padding:0 14px">Копия</button></sc-if>
+        <button type="button" onClick="{{delSel}}" style="cursor:pointer;min-height:0;height:36px;border:1.5px solid var(--bad-line);border-radius:12px;background:var(--card);color:var(--bad);font-weight:700;font-size:13px;padding:0 14px">{{delText}}</button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{penPalette}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px"><span style="font-size:13px;color:var(--muted);font-weight:600">Цвет линии</span><sc-for list="{{penColors}}" as="c" hint-placeholder-count="6"><button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" title="{{c.name}}" style="cursor:pointer;width:28px;height:28px;min-height:0;padding:0;border-radius:50%;background:{{c.bg}};border:2px solid {{c.border}}"></button></sc-for></div>
+  </sc-if>
+  <sc-if value="{{arrowHint}}" hint-placeholder-val="{{false}}"><div style="background:var(--accent-soft);border-radius:12px;padding:8px 12px;font-size:13px;color:var(--accent-text)">{{arrowHintText}}</div></sc-if>
+
+  <div onPointerDown="{{bgDown}}" onPointerMove="{{bgMove}}" onPointerUp="{{bgUp}}" onPointerCancel="{{bgUp}}" onWheel="{{wheel}}" style="{{canvasStyle}}">
+    <svg width="100%" height="100%" style="position:absolute;left:0;top:0;pointer-events:none" aria-hidden="true"><defs><pattern id="bdgrid" width="{{gridS}}" height="{{gridS}}" x="{{gridX}}" y="{{gridY}}" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.2" fill="var(--line2)"></circle></pattern></defs><rect width="100%" height="100%" fill="url(#bdgrid)"></rect></svg>
+    <div style="position:absolute;left:0;top:0;width:0;height:0;transform:{{worldT}};transform-origin:0 0">
+      <svg width="1" height="1" style="position:absolute;left:0;top:0;overflow:visible;pointer-events:none"><defs><marker id="bdah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="context-stroke"></path></marker></defs>
+        <sc-for list="{{strokeList}}" as="s" hint-placeholder-count="2"><path d="{{s.d}}" fill="none" stroke="{{s.color}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" onPointerDown="{{s.down}}" style="pointer-events:stroke"></path></sc-for>
+        <sc-for list="{{arrowList}}" as="a" hint-placeholder-count="2"><path d="{{a.d}}" fill="none" stroke="{{a.color}}" stroke-width="{{a.w}}" stroke-linecap="round" marker-end="url(#bdah)"></path><path d="{{a.d}}" fill="none" stroke="transparent" stroke-width="18" onPointerDown="{{a.down}}" style="pointer-events:stroke;cursor:pointer"></path></sc-for>
+      </svg>
+      <sc-for list="{{itemList}}" as="it" hint-placeholder-count="3">
+        <button type="button" class="{{it.cls}}" onPointerDown="{{it.down}}" onPointerMove="{{it.move}}" onPointerUp="{{it.up}}" onPointerCancel="{{it.up}}" aria-label="{{it.label}}" style="{{it.style}}">{{it.show}}</button>
+        <sc-if value="{{it.isSel}}" hint-placeholder-val="{{false}}"><button type="button" onPointerDown="{{it.rdown}}" onPointerMove="{{it.rmove}}" onPointerUp="{{it.rup}}" onPointerCancel="{{it.rup}}" aria-label="Изменить размер" title="Потяните, чтобы изменить размер" style="{{it.hStyle}}"></button></sc-if>
+      </sc-for>
+    </div>
+    <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+      <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;pointer-events:none">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Доска бизнеса пока пустая</b>
+        <span style="font-size:14px;color:var(--muted);max-width:30em">Добавляйте стикеры, текст и фигуры, соединяйте их стрелками, рисуйте от руки. Всё сохраняется само и будет здесь при следующем открытии.</span>
+        <button type="button" onClick="{{firstNote}}" style="pointer-events:auto;cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить первый стикер</button>
+      </div>
+    </sc-if>
+  </div>
+  <span style="font-size:12px;color:var(--muted)">Перетаскивайте пустое место, чтобы двигать доску, двумя пальцами или кнопками масштабировать. Нажмите на объект, чтобы изменить текст и цвет.</span>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"boardKey":{"editor":"text","default":"demo"},"$preview":{"width":1000,"height":760}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, items: [], arrows: [], strokes: [], view: { x: 40, y: 40, z: 1 }, sel: '', selKind: '', tool: 'select', arrowFrom: '', full: false, status: 'loading', hist: [], loaded: false, nid: 1, swatch: 0, pen: 0 }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+  key() { return String((this.props && this.props.boardKey) || 'demo'); }
+  componentDidMount() { this.load(); }
+  componentDidUpdate(prev) { if (prev && prev.boardKey !== (this.props && this.props.boardKey)) { this.flush(); this.load(); } }
+  componentWillUnmount() { clearTimeout(this.tm); if (this.dirty) this.flush(); }
+
+  load() {
+    const k = this.key(); this.curKey = k; this.db = null; this.dirty = false;
+    let local = null; try { local = JSON.parse(localStorage.getItem('board:' + k) || 'null'); } catch (e) { local = null; }
+    const apply = (d, status) => { if (this.curKey !== k) return; d = d || {}; this.set({ loaded: true, status, items: d.items || [], arrows: d.arrows || [], strokes: d.strokes || [], view: d.view || { x: 40, y: 40, z: 1 }, sel: '', selKind: '', hist: [], arrowFrom: '', nid: d.nid || (1000 + (d.items || []).length + (d.arrows || []).length + (d.strokes || []).length) }); };
+    this.set({ loaded: false, status: 'loading', items: [], arrows: [], strokes: [], sel: '', selKind: '', hist: [], view: { x: 40, y: 40, z: 1 } });
+    if (local) apply(local, 'local');
+    const c = (typeof window !== 'undefined') ? window.claude : null;
+    if (!c || !c.use) { if (!local) apply({}, 'local'); return; }
+    c.use('db').then((db) => {
+      if (this.curKey !== k) return;
+      if (!db) { if (!local) apply({}, 'local'); else this.set({ status: 'local' }); return; }
+      this.db = db;
+      db.doc('boards/' + k).get().then((snap) => {
+        if (this.curKey !== k) return;
+        const d = snap && snap.exists ? snap.data() : null;
+        if (d && (!local || (d.at || 0) >= (local.at || 0))) apply(d, 'saved');
+        else if (local) { apply(local, 'saved'); this.dirty = true; this.flush(); }
+        else apply({}, 'saved');
+      }).catch(() => { if (!local) apply({}, 'local'); else this.set({ status: 'local' }); });
+    }).catch(() => { if (!local) apply({}, 'local'); });
+  }
+  touch() {
+    this.dirty = true; clearTimeout(this.tm);
+    this.tm = setTimeout(() => this.flush(), 600);
+    if (this.L.status !== 'saving') this.set({ status: 'saving' });
+  }
+  flush() {
+    const L = this.L; if (!L.loaded || !this.dirty) return; this.dirty = false;
+    const k = this.curKey || this.key();
+    const payload = { v: 1, at: Date.now(), nid: L.nid, items: L.items, arrows: L.arrows, strokes: L.strokes, view: L.view };
+    let size = 0; try { size = JSON.stringify(payload).length; } catch (e) { size = 0; }
+    try { localStorage.setItem('board:' + k, JSON.stringify(payload)); } catch (e) { /* без локального хранилища */ }
+    if (size > 240000) { this.set({ status: 'big' }); return; }
+    if (!this.db) { this.set({ status: 'local' }); return; }
+    this.db.doc('boards/' + k).set(payload).then(() => { if (this.curKey === k && !this.dirty) this.set({ status: 'saved' }); }).catch(() => { this.set({ status: 'error' }); });
+  }
+  mut(patch, noSnap) {
+    const L = this.L, p = Object.assign({}, patch);
+    if (!noSnap) p.hist = L.hist.concat([{ items: L.items, arrows: L.arrows, strokes: L.strokes }]).slice(-30);
+    this.set(p); this.touch();
+  }
+  toWorld(e) { const r = this.rect || e.currentTarget.getBoundingClientRect(), v = this.L.view; return { x: (e.clientX - r.left - v.x) / v.z, y: (e.clientY - r.top - v.y) / v.z }; }
+  size() { return { w: this.cw || Math.min(1100, (typeof window !== 'undefined' ? window.innerWidth : 600) - 28), h: this.ch || 560 }; }
+
+  addItem(t) {
+    const L = this.L, s = this.size(), v = L.view, n = L.items.length;
+    const DEF = { note: [180, 150], text: [220, 56], rect: [200, 120], ellipse: [180, 130] }[t];
+    const col = L.swatch;
+    const it = { id: 'i' + L.nid, t, x: Math.round((s.w / 2 - v.x) / v.z - DEF[0] / 2 + (n % 5) * 18), y: Math.round((s.h / 2 - v.y) / v.z - DEF[1] / 2 + (n % 5) * 18), w: DEF[0], h: DEF[1], text: '', c: col };
+    this.mut({ items: L.items.concat([it]), nid: L.nid + 1, sel: it.id, selKind: 'item', tool: 'select', arrowFrom: '' });
+  }
+  setView(view) { this.set({ view }); this.touch(); }
+  zoomBy(f) { const L = this.L, s = this.size(), v = L.view, z = Math.max(0.2, Math.min(3, v.z * f)), cx = s.w / 2, cy = s.h / 2, wx = (cx - v.x) / v.z, wy = (cy - v.y) / v.z; this.setView({ x: cx - wx * z, y: cy - wy * z, z }); }
+  fit() {
+    const L = this.L, s = this.size(); let a = 1e9, b = 1e9, c = -1e9, d = -1e9;
+    L.items.forEach(i => { a = Math.min(a, i.x); b = Math.min(b, i.y); c = Math.max(c, i.x + i.w); d = Math.max(d, i.y + i.h); });
+    L.strokes.forEach(st => { for (let j = 0; j < st.pts.length; j += 2) { a = Math.min(a, st.pts[j]); c = Math.max(c, st.pts[j]); b = Math.min(b, st.pts[j + 1]); d = Math.max(d, st.pts[j + 1]); } });
+    if (a > c) { this.setView({ x: 40, y: 40, z: 1 }); return; }
+    const pad = 40, z = Math.max(0.2, Math.min(1.5, Math.min((s.w - pad * 2) / Math.max(1, c - a), (s.h - pad * 2) / Math.max(1, d - b))));
+    this.setView({ x: (s.w - (c - a) * z) / 2 - a * z, y: (s.h - (d - b) * z) / 2 - b * z, z });
+  }
+
+  renderVals() {
+    const L = this.L, v = L.view;
+    const COL = [['#FFE98A', 'Жёлтый'], ['#FFC2D4', 'Розовый'], ['#BFEAC9', 'Зелёный'], ['#BFDDFF', 'Голубой'], ['#D9CCFF', 'Сиреневый'], ['#E4E7EC', 'Серый']];
+    const PEN = [['#F4F5F7', 'Белый'], ['#2F6FED', 'Синий'], ['#17A06B', 'Зелёный'], ['#D63A4F', 'Красный'], ['#C97A16', 'Оранжевый'], ['#7C6FD6', 'Фиолетовый']];
+    const ink = '#1B2230';
+    const selItem = L.selKind === 'item' ? L.items.find(i => i.id === L.sel) : null;
+    const selArrow = L.selKind === 'arrow' ? L.arrows.find(a => a.id === L.sel) : null;
+    const byId = {}; L.items.forEach(i => { byId[i.id] = i; });
+    const KIND = { note: 'Стикер', text: 'Текст', rect: 'Фигура', ellipse: 'Круг' };
+
+    const itemList = L.items.map(it => {
+      const isSel = L.sel === it.id && L.selKind === 'item', col = COL[it.c || 0][0], from = L.arrowFrom === it.id;
+      const base = 'position:absolute;left:' + it.x + 'px;top:' + it.y + 'px;width:' + it.w + 'px;height:' + it.h + 'px;box-sizing:border-box;margin:0;min-height:0;transform:none;touch-action:none;cursor:grab;overflow:hidden;white-space:pre-wrap;word-break:break-word;text-align:left;font-family:inherit;display:flex;';
+      let st;
+      if (it.t === 'note') st = base + 'padding:12px;align-items:flex-start;font-size:15px;line-height:1.35;border:0;border-radius:4px;background:' + col + ';color:' + ink;
+      else if (it.t === 'text') st = base + 'padding:6px 8px;align-items:center;font-size:20px;font-weight:700;border:1.5px dashed ' + (isSel ? 'var(--accent)' : 'transparent') + ';border-radius:8px;background:transparent;color:var(--ink)';
+      else if (it.t === 'rect') st = base + 'padding:10px;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:600;border:2px solid ' + ink + ';border-radius:8px;background:' + col + ';color:' + ink;
+      else st = base + 'padding:10px;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:600;border:2px solid ' + ink + ';border-radius:50%;background:' + col + ';color:' + ink;
+      if (isSel || from) st += ';outline:2px solid var(--accent);outline-offset:3px';
+      const empty = !it.text;
+      return {
+        id: it.id, isSel, style: st + (empty ? ';opacity:.78' : ''), cls: it.t === 'note' ? 'bd-note' : '', label: KIND[it.t] + (it.text ? ': ' + it.text : ', пустой'), show: it.text || (it.t === 'text' ? 'Текст' : it.t === 'note' ? 'Новый стикер' : ''),
+        hStyle: 'position:absolute;left:' + (it.x + it.w - 10) + 'px;top:' + (it.y + it.h - 10) + 'px;width:20px;height:20px;min-height:0;padding:0;border-radius:50%;border:2px solid var(--accent);background:var(--card);cursor:nwse-resize;touch-action:none;transform:none',
+        down: (e) => {
+          const L2 = this.L;
+          if (L2.tool === 'pen') return;
+          e.stopPropagation();
+          if (L2.tool === 'eraser') { this.mut({ items: L2.items.filter(x => x.id !== it.id), arrows: L2.arrows.filter(a => a.a !== it.id && a.b !== it.id), sel: '', selKind: '' }); return; }
+          if (L2.tool === 'arrow') {
+            if (!L2.arrowFrom) this.set({ arrowFrom: it.id, sel: it.id, selKind: 'item' });
+            else if (L2.arrowFrom !== it.id) this.mut({ arrows: L2.arrows.concat([{ id: 'a' + L2.nid, a: L2.arrowFrom, b: it.id }]), arrowFrom: '', nid: L2.nid + 1, sel: '', selKind: '' });
+            else this.set({ arrowFrom: '' });
+            return;
+          }
+          try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) { /* ok */ }
+          this.drag = { id: it.id, sx: e.clientX, sy: e.clientY, ox: it.x, oy: it.y, moved: false, z: L2.view.z, snap: { items: L2.items, arrows: L2.arrows, strokes: L2.strokes } };
+          if (L2.sel !== it.id || L2.selKind !== 'item') this.set({ sel: it.id, selKind: 'item' });
+        },
+        move: (e) => {
+          const d = this.drag; if (!d || d.id !== it.id) return;
+          const dx = (e.clientX - d.sx) / d.z, dy = (e.clientY - d.sy) / d.z;
+          if (!d.moved && Math.abs(dx) + Math.abs(dy) < 3 / d.z) return;
+          const L2 = this.L, p = { items: L2.items.map(x => x.id === it.id ? Object.assign({}, x, { x: Math.round(d.ox + dx), y: Math.round(d.oy + dy) }) : x) };
+          if (!d.moved) { d.moved = true; p.hist = L2.hist.concat([d.snap]).slice(-30); }
+          this.set(p);
+        },
+        up: (e) => { const d = this.drag; if (d && d.id === it.id) { if (d.moved) this.touch(); this.drag = null; } },
+        rdown: (e) => { e.stopPropagation(); const L2 = this.L; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) { /* ok */ } this.rs = { id: it.id, sx: e.clientX, sy: e.clientY, ow: it.w, oh: it.h, z: L2.view.z, moved: false, snap: { items: L2.items, arrows: L2.arrows, strokes: L2.strokes } }; },
+        rmove: (e) => {
+          const d = this.rs; if (!d || d.id !== it.id) return;
+          const w = Math.max(60, Math.round(d.ow + (e.clientX - d.sx) / d.z)), h = Math.max(40, Math.round(d.oh + (e.clientY - d.sy) / d.z));
+          const L2 = this.L, p = { items: L2.items.map(x => x.id === it.id ? Object.assign({}, x, { w, h }) : x) };
+          if (!d.moved) { d.moved = true; p.hist = L2.hist.concat([d.snap]).slice(-30); }
+          this.set(p);
+        },
+        rup: () => { const d = this.rs; if (d && d.moved) this.touch(); this.rs = null; }
+      };
+    });
+
+    const edge = (it, tx, ty) => {
+      const cx = it.x + it.w / 2, cy = it.y + it.h / 2, dx = tx - cx, dy = ty - cy;
+      if (!dx && !dy) return { x: cx, y: cy };
+      const sx = dx ? (it.w / 2 + 6) / Math.abs(dx) : 1e9, sy = dy ? (it.h / 2 + 6) / Math.abs(dy) : 1e9, s = Math.min(sx, sy);
+      return { x: cx + dx * s, y: cy + dy * s };
+    };
+    const arrowList = L.arrows.filter(a => byId[a.a] && byId[a.b]).map(a => {
+      const A = byId[a.a], B = byId[a.b], ac = { x: A.x + A.w / 2, y: A.y + A.h / 2 }, bc = { x: B.x + B.w / 2, y: B.y + B.h / 2 };
+      const p1 = edge(A, bc.x, bc.y), p2 = edge(B, ac.x, ac.y), on = L.sel === a.id && L.selKind === 'arrow';
+      return { d: 'M' + Math.round(p1.x) + ' ' + Math.round(p1.y) + ' L' + Math.round(p2.x) + ' ' + Math.round(p2.y), color: on ? 'var(--accent)' : 'var(--ink)', w: on ? 4 : 2.5,
+        down: (e) => { const L2 = this.L; if (L2.tool !== 'select') return; e.stopPropagation(); this.set({ sel: a.id, selKind: 'arrow' }); } };
+    });
+    const strokeList = L.strokes.map(s => {
+      let d = ''; for (let j = 0; j < s.pts.length; j += 2) d += (j ? ' L' : 'M') + s.pts[j] + ' ' + s.pts[j + 1];
+      if (s.pts.length === 2) d += ' L' + (s.pts[0] + 0.1) + ' ' + s.pts[1];
+      return { d, color: s.color, down: (e) => { const L2 = this.L; if (L2.tool !== 'eraser') return; e.stopPropagation(); this.mut({ strokes: L2.strokes.filter(x => x.id !== s.id) }); } };
+    });
+
+    const eraseAt = (e) => {
+      const L2 = this.L, p = this.toWorld(e), r = 14 / L2.view.z;
+      const keep = L2.strokes.filter(s => { for (let j = 0; j < s.pts.length; j += 2) if (Math.abs(s.pts[j] - p.x) < r && Math.abs(s.pts[j + 1] - p.y) < r) return false; return true; });
+      if (keep.length !== L2.strokes.length) { if (!this.eraseSnap) { this.eraseSnap = { items: L2.items, arrows: L2.arrows, strokes: L2.strokes }; this.set({ strokes: keep, hist: L2.hist.concat([this.eraseSnap]).slice(-30) }); } else this.set({ strokes: keep }); }
+    };
+    const ptrDist = () => { const k = Object.keys(this.ptrs || {}); if (k.length < 2) return 0; const a = this.ptrs[k[0]], b = this.ptrs[k[1]]; return Math.hypot(a.x - b.x, a.y - b.y) || 1; };
+    const ptrMid = () => { const k = Object.keys(this.ptrs || {}); const a = this.ptrs[k[0]], b = this.ptrs[k[1]]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; };
+
+    const bgDown = (e) => {
+      const L2 = this.L, r = e.currentTarget.getBoundingClientRect(); this.rect = r; this.cw = r.width; this.ch = r.height;
+      this.ptrs = this.ptrs || {}; this.ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) { /* ok */ }
+      if (Object.keys(this.ptrs).length === 2) { const m = ptrMid(); this.pinch = { d: ptrDist(), v0: L2.view, w: { x: (m.x - r.left - L2.view.x) / L2.view.z, y: (m.y - r.top - L2.view.y) / L2.view.z } }; this.pan = null; this.stroke = null; this.erasing = false; return; }
+      if (L2.tool === 'pen') {
+        const p = this.toWorld(e), id = 's' + L2.nid; this.stroke = { id, lx: p.x, ly: p.y };
+        this.mut({ strokes: L2.strokes.concat([{ id, color: PEN[L2.pen][0], pts: [Math.round(p.x), Math.round(p.y)] }]), nid: L2.nid + 1, sel: '', selKind: '' }); return;
+      }
+      if (L2.tool === 'eraser') { this.erasing = true; this.eraseSnap = null; eraseAt(e); return; }
+      this.pan = { sx: e.clientX, sy: e.clientY, ox: L2.view.x, oy: L2.view.y, moved: false };
+    };
+    const bgMove = (e) => {
+      if (!this.ptrs || !this.ptrs[e.pointerId]) return;
+      this.ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
+      const L2 = this.L;
+      if (this.pinch && Object.keys(this.ptrs).length >= 2) {
+        const r = this.rect, m = ptrMid(), z = Math.max(0.2, Math.min(3, this.pinch.v0.z * ptrDist() / this.pinch.d));
+        this.set({ view: { x: m.x - r.left - this.pinch.w.x * z, y: m.y - r.top - this.pinch.w.y * z, z } }); this.viewMoved = true; return;
+      }
+      if (this.stroke) {
+        const p = this.toWorld(e), s = this.stroke;
+        if (Math.hypot(p.x - s.lx, p.y - s.ly) < 2 / L2.view.z) return;
+        s.lx = p.x; s.ly = p.y;
+        this.set({ strokes: L2.strokes.map(x => x.id === s.id ? Object.assign({}, x, { pts: x.pts.concat([Math.round(p.x), Math.round(p.y)]) }) : x) }); return;
+      }
+      if (this.erasing) { eraseAt(e); return; }
+      if (this.pan) {
+        const dx = e.clientX - this.pan.sx, dy = e.clientY - this.pan.sy;
+        if (!this.pan.moved && Math.abs(dx) + Math.abs(dy) < 4) return;
+        this.pan.moved = true; this.set({ view: { x: this.pan.ox + dx, y: this.pan.oy + dy, z: L2.view.z } });
+      }
+    };
+    const bgUp = (e) => {
+      if (this.ptrs) delete this.ptrs[e.pointerId];
+      if (this.pinch && Object.keys(this.ptrs || {}).length < 2) { this.pinch = null; this.touch(); return; }
+      if (this.stroke) { this.stroke = null; this.touch(); return; }
+      if (this.erasing) { this.erasing = false; this.eraseSnap = null; this.touch(); return; }
+      if (this.pan) { const moved = this.pan.moved; this.pan = null; if (moved) this.touch(); else if (L_hasSel(this.L)) this.set({ sel: '', selKind: '', arrowFrom: '' }); }
+    };
+    const L_hasSel = (S) => !!S.sel || !!S.arrowFrom;
+    const wheel = (e) => {
+      const r = e.currentTarget.getBoundingClientRect(); this.rect = r; this.cw = r.width; this.ch = r.height;
+      if (e.ctrlKey || e.metaKey) {
+        const L2 = this.L, z = Math.max(0.2, Math.min(3, L2.view.z * (e.deltaY < 0 ? 1.1 : 1 / 1.1))), cx = e.clientX - r.left, cy = e.clientY - r.top, wx = (cx - L2.view.x) / L2.view.z, wy = (cy - L2.view.y) / L2.view.z;
+        this.setView({ x: cx - wx * z, y: cy - wy * z, z });
+      } else { const L2 = this.L; this.setView({ x: L2.view.x - e.deltaX, y: L2.view.y - e.deltaY, z: L2.view.z }); }
+    };
+
+    const tools = (list) => list.map(t => ({ name: t[0], icon: t[1], hint: t[2], pick: t[3], on: t[4] ? 'true' : 'false', border: t[4] ? 'var(--accent)' : 'var(--line2)', bg: t[4] ? 'var(--accent-soft)' : 'var(--card)', fg: t[4] ? 'var(--accent-text)' : 'var(--ink)' }));
+    const addTools = tools([['Стикер', 'M5 4h14v10l-5 5H5zM14 19v-5h5', 'Добавить стикер', () => this.addItem('note')], ['Текст', 'M5 6V4h14v2M12 4v16M9 20h6', 'Добавить надпись', () => this.addItem('text')], ['Фигура', 'M4 6h16v12H4z', 'Добавить прямоугольник', () => this.addItem('rect')], ['Круг', 'M3 12a9 6 0 1018 0 9 6 0 10-18 0', 'Добавить овал', () => this.addItem('ellipse')]]);
+    const setTool = (t) => () => this.set({ tool: t, arrowFrom: '', sel: t === 'select' ? L.sel : '', selKind: t === 'select' ? L.selKind : '' });
+    const modeTools = tools([['Выбрать', 'M5 3l14 8-6 2-2 6z', 'Двигать объекты и доску', setTool('select'), L.tool === 'select'], ['Стрелка', 'M5 19L19 5M10 5h9v9', 'Соединить два объекта: нажмите один, потом другой', setTool('arrow'), L.tool === 'arrow'], ['Рисовать', 'M4 20l4-1 11-11-3-3L5 16zM14 6l3 3', 'Рисовать от руки', setTool('pen'), L.tool === 'pen'], ['Ластик', 'M4 16l9-9 6 6-5 5H8zM8 20h12', 'Стереть линию или объект', setTool('eraser'), L.tool === 'eraser']]);
+    const undo = () => { const L2 = this.L, h = L2.hist; if (!h.length) return; const last = h[h.length - 1]; this.set({ items: last.items, arrows: last.arrows, strokes: last.strokes, hist: h.slice(0, -1), sel: '', selKind: '' }); this.touch(); };
+    const viewTools = [
+      { name: 'Отменить действие', icon: 'M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3', text: '', iconD: 'block', textD: 'none', op: L.hist.length ? 1 : 0.45, pick: undo },
+      { name: 'Уменьшить', icon: 'M5 12h14', text: '', iconD: 'block', textD: 'none', op: 1, pick: () => this.zoomBy(1 / 1.25) },
+      { name: 'Масштаб', icon: '', text: Math.round(v.z * 100) + '%', iconD: 'none', textD: 'block', op: 1, pick: () => this.setView({ x: v.x, y: v.y, z: 1 }) },
+      { name: 'Увеличить', icon: 'M12 5v14M5 12h14', text: '', iconD: 'block', textD: 'none', op: 1, pick: () => this.zoomBy(1.25) },
+      { name: 'Показать всё', icon: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5', text: '', iconD: 'block', textD: 'none', op: 1, pick: () => this.fit() },
+      { name: L.full ? 'Свернуть доску' : 'На весь экран', icon: L.full ? 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5' : 'M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5', text: '', iconD: 'block', textD: 'none', op: 1, pick: () => this.set({ full: !this.L.full }) }
+    ];
+    const swatches = COL.map((c, i) => ({ name: c[1], bg: c[0], border: selItem && (selItem.c || 0) === i ? 'var(--accent)' : 'var(--line2)', pick: () => { const L2 = this.L; if (selItem) this.mut({ items: L2.items.map(x => x.id === selItem.id ? Object.assign({}, x, { c: i }) : x), swatch: i }); else this.set({ swatch: i }); } }));
+    const penColors = PEN.map((c, i) => ({ name: c[1], bg: c[0], border: L.pen === i ? 'var(--accent)' : 'var(--line2)', pick: () => this.set({ pen: i }) }));
+    const STATUS = { loading: ['Загружаю доску…', 'var(--muted)'], saving: ['Сохраняю…', 'var(--muted)'], saved: ['Сохранено', 'var(--ok)'], local: ['Сохранено на этом устройстве', 'var(--warn)'], error: ['Не удалось сохранить на сервер, копия на этом устройстве', 'var(--bad)'], big: ['Доска слишком большая, уберите часть рисунков', 'var(--bad)'] };
+    const st = STATUS[L.status] || STATUS.saved;
+    const s0 = L.full ? '' : '';
+    return {
+      rootStyle: L.full ? 'position:fixed;left:0;top:0;right:0;bottom:0;z-index:80;background:var(--bg);color:var(--ink);padding:12px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;font-family:Inter,system-ui,sans-serif' : 'display:flex;flex-direction:column;gap:8px;color:var(--ink);font-family:Inter,system-ui,sans-serif',
+      canvasStyle: 'position:relative;overflow:hidden;touch-action:none;overscroll-behavior:contain;border:1px solid var(--line2);border-radius:12px;background:var(--field);cursor:' + (L.tool === 'pen' ? 'crosshair' : L.tool === 'eraser' ? 'cell' : 'grab') + ';' + (L.full ? 'flex:1;min-height:0' : 'height:560px'),
+      worldT: 'translate(' + Math.round(v.x * 100) / 100 + 'px,' + Math.round(v.y * 100) / 100 + 'px) scale(' + v.z + ')',
+      gridS: 24 * v.z, gridX: v.x % (24 * v.z), gridY: v.y % (24 * v.z),
+      addTools, modeTools, viewTools, itemList, arrowList, strokeList, bgDown, bgMove, bgUp, wheel,
+      statusText: st[0], statusColor: st[1], empty: L.loaded && !L.items.length && !L.strokes.length, firstNote: () => this.addItem('note'),
+      hasSel: !!(selItem || selArrow), selIsItem: !!selItem, selText: selItem ? selItem.text : '', selHint: selItem ? (selItem.t === 'text' ? 'Введите надпись' : 'Что написать на ' + (selItem.t === 'note' ? 'стикере' : 'фигуре')) : '',
+      typeText: (e) => { const L2 = this.L, val = e.target.value; if (!selItem) return; const first = this.textSnap !== selItem.id; this.textSnap = selItem.id; this.mut({ items: L2.items.map(x => x.id === selItem.id ? Object.assign({}, x, { text: val }) : x) }, !first); },
+      swatches, penColors, penPalette: L.tool === 'pen',
+      delText: selArrow ? 'Удалить стрелку' : 'Удалить',
+      delSel: () => { const L2 = this.L; if (selItem) this.mut({ items: L2.items.filter(x => x.id !== selItem.id), arrows: L2.arrows.filter(a => a.a !== selItem.id && a.b !== selItem.id), sel: '', selKind: '' }); else if (selArrow) this.mut({ arrows: L2.arrows.filter(a => a.id !== selArrow.id), sel: '', selKind: '' }); },
+      dupSel: () => { const L2 = this.L; if (!selItem) return; const c = Object.assign({}, selItem, { id: 'i' + L2.nid, x: selItem.x + 24, y: selItem.y + 24 }); this.mut({ items: L2.items.concat([c]), nid: L2.nid + 1, sel: c.id }); },
+      arrowHint: L.tool === 'arrow', arrowHintText: L.arrowFrom ? 'Теперь нажмите на объект, куда должна вести стрелка.' : 'Нажмите на объект, откуда пойдёт стрелка.'
+    };
+  }
+}
+</script>
+</body>
+</html>

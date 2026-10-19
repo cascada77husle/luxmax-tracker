@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Расписание</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
+
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+  <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Расписание</b><span style="font-size:14px;color:var(--muted)">Неделя 19–25 октября</span></div>
+  <div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{modes}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+  <sc-for list="{{dayChips}}" as="d" hint-placeholder-count="7"><button type="button" onClick="{{d.pick}}" style="cursor:pointer;border:1.5px solid {{d.border}};background:{{d.bg}};color:{{d.fg}};border-radius:20px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:12px;font-weight:600">{{d.wd}}</span><b style="font-size:20px;font-weight:800;color:{{d.fg}}">{{d.num}}</b><span style="font-size:11px;opacity:.85">{{d.count}}</span></button></sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+  <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:12px">
+    <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;padding:16px;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">{{dayTitle}}</b><span style="font-size:13px;color:var(--muted)">{{freeText}}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="position:relative;height:14px;border-radius:999px;background:var(--soft);overflow:hidden"><sc-for list="{{segs}}" as="g" hint-placeholder-count="3"><span style="position:absolute;top:0;bottom:0;left:{{g.left}}%;width:{{g.width}}%;background:{{g.color}};opacity:.85"></span></sc-for></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)"><span>07:00</span><span>11:00</span><span>15:00</span><span>19:00</span><span>23:00</span></div></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{agenda}}" as="e" hint-placeholder-count="6"><div style="display:flex;flex-direction:column"><div style="display:{{e.evDisplay}};align-items:stretch;gap:12px"><div style="width:52px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;padding-top:12px"><b style="font-size:14px">{{e.start}}</b><span style="font-size:12px;color:var(--muted)">{{e.end}}</span></div><div style="flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:20px;background:{{e.bg}};"><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px"><b style="font-size:14px;font-weight:700;color:var(--ink);line-height:1.3">{{e.name}}</b><span style="font-size:12px;color:{{e.fg}};font-weight:600">{{e.sub}}</span></span><span style="display:{{e.nowDisplay}};font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--ok);color:var(--on-accent)">Сейчас</span><span style="display:{{e.clashDisplay}};font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--bad-soft);color:var(--bad)">Пересекается</span><button type="button" onClick="{{e.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;padding:0 2px" title="Убрать">×</button></div></div><div style="display:{{e.gapDisplay}};align-items:center;gap:12px"><div style="width:52px;flex-shrink:0"></div><button type="button" onClick="{{e.fill}}" style="flex:1;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1.5px dashed var(--line2);background:var(--field);font-size:13px;color:var(--muted);font-weight:600"><span>Свободно {{e.gapText}}</span><span style="color:var(--accent-text);font-weight:700">+ Занять</span></button></div></div></sc-for>
+          <span style="display:{{dayEmptyDisplay}};font-size:14px;color:var(--muted);padding:28px;text-align:center;border:1.5px dashed var(--line2);border-radius:20px">День свободен. Добавьте первое событие справа.</span>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{isWeek}}" hint-placeholder-val="{{false}}">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;padding:16px;gap:8px">
+        <sc-for list="{{weekRows}}" as="r" hint-placeholder-count="12"><div style="display:flex;flex-direction:column;gap:6px"><div style="display:{{r.hdrDisplay}};margin-top:8px;font-size:13px;font-weight:700;color:var(--accent-text)">{{r.hdr}}</div><div style="display:{{r.evDisplay}};align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:{{r.bg}};"><b style="width:104px;flex-shrink:0;font-size:13px;color:{{r.fg}}">{{r.time}}</b><span style="flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--ink)">{{r.name}}</span><span style="font-size:12px;font-weight:600;color:{{r.fg}}">{{r.cat}}</span><button type="button" onClick="{{r.remove}}" aria-label="Убрать" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:18px;padding:0 4px" title="Убрать">×</button></div><span style="display:{{r.emptyDisplay}};font-size:13px;color:var(--muted);padding:4px 14px">Свободный день</span></div></sc-for>
+      </div>
+    </sc-if>
+  </div>
+  <div style="flex:0 1 310px;width:100%;min-width:0;display:flex;flex-direction:column;gap:16px">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;padding:16px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Добавить в {{selName}}</b>
+      <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{cats}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button></sc-for></div>
+      <input type="text" value="{{fn}}" onInput="{{typeN}}" placeholder="Что планируете" aria-label="Название" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink)">
+      <div style="display:flex;gap:8px"><input type="text" value="{{fs}}" onInput="{{typeS}}" placeholder="С 09:00" aria-label="Начало" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);width:50%;min-width:0;box-sizing:border-box"><input type="text" value="{{fe}}" onInput="{{typeE}}" placeholder="До 10:00" aria-label="Конец" style="border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink);width:50%;min-width:0;box-sizing:border-box"></div>
+      <button type="button" onClick="{{add}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить в расписание</button>
+      <span style="display:{{errDisplay}};font-size:12px;color:var(--bad)">Введите название и время начала, например 09:00.</span>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;padding:16px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Платежи недели</b>
+      <sc-for list="{{pays}}" as="p" hint-placeholder-count="2"><div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span style="font-weight:600">{{p.name}}</span><span style="color:var(--muted)">{{p.when}}</span></div></sc-for>
+      <span style="display:{{noPaysDisplay}};font-size:13px;color:var(--muted)">Платежей на этой неделе нет. Добавьте со значком «Платёж».</span>
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":1300}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, mode: 'day', sel: 0, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {
+    0: [{ s: '09:00', e: '10:00', n: 'Созвон по проекту', c: 'work' }, { s: '13:30', e: '14:00', n: 'Обед', c: 'life' }, { s: '15:00', e: '16:30', n: 'Съёмка ролика', c: 'work' }, { s: '18:00', e: '19:00', n: 'Тренировка: спина и бицепс', c: 'sport' }, { s: '20:30', e: '21:00', n: 'Китайский: 14 карточек', c: 'study' }],
+    1: [{ s: '10:00', e: '12:00', n: 'Монтаж', c: 'work' }, { s: '19:00', e: '20:00', n: 'Йога', c: 'sport' }],
+    2: [{ s: '10:00', e: '10:30', n: 'Оплатить аренду, 28 000 ₽', c: 'pay' }, { s: '14:00', e: '16:00', n: 'Работа над проектом', c: 'work' }],
+    4: [{ s: '19:00', e: '22:00', n: 'Встреча с другом', c: 'life' }],
+    5: [{ s: '11:00', e: '12:00', n: 'Оплатить интернет, 700 ₽', c: 'pay' }, { s: '12:00', e: '13:30', n: 'Тренировка: ноги', c: 'sport' }] } }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+  renderVals() {
+    const L = this.L, START = 420, END = 1380, PX = 0.9;
+    const CAT = { work: ['Работа', 'var(--accent-soft)', 'var(--accent)', 'var(--accent-text)'], sport: ['Спорт', 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))', 'var(--cat-violet)', '#5B4DB8'], life: ['Личное', 'var(--ok-soft)', 'var(--ok)', 'var(--ok)'], study: ['Учёба', 'color-mix(in srgb,var(--cat-pink) 13%,var(--card))', 'var(--cat-pink)', '#A63A6B'], pay: ['Платёж', 'var(--warn-soft)', 'var(--warn)', 'var(--warn)'] };
+    const WD = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], WF = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+    const tm = (s) => { const m = /^(\d{1,2}):(\d{2})$/.exec((s || '').trim()); if (!m) return null; const h = +m[1], q = +m[2]; return (h < 24 && q < 60) ? h * 60 + q : null; };
+    const hm = (n) => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
+    const dur = (m) => (m >= 60 ? Math.floor(m / 60) + ' ч' + (m % 60 ? ' ' + (m % 60) + ' м' : '') : m + ' м');
+    const evs = (d) => (L.ev[d] || []).map((e, i) => ({ i, s: tm(e.s), e: tm(e.e), n: e.n, c: e.c, so: e })).sort((a, b) => a.s - b.s);
+    const rm = (d, e) => () => { const m = Object.assign({}, this.L.ev); m[d] = (m[d] || []).filter(x => x !== e); this.set({ ev: m }); };
+    const day = evs(L.sel);
+    const now = 13 * 60 + 20, agenda = [], segs = [];
+    let maxEnd = START;
+    day.forEach((x, k) => {
+      const c = CAT[x.c], clash = k > 0 && x.s < maxEnd;
+      if (!clash && x.s - maxEnd >= 15 && (k > 0 || x.s - START >= 60)) { const g = x.s - maxEnd, gs = maxEnd; agenda.push({ evDisplay: 'none', gapDisplay: 'flex', gapText: dur(g), fill: () => this.set({ fs: hm(gs), fe: hm(Math.min(gs + 60, x.s)) }), start: '', end: '', name: '', sub: '', bg: 'var(--card)', line: 'var(--card)', fg: 'var(--on-accent)', nowDisplay: 'none', clashDisplay: 'none', remove: () => {} }); }
+      agenda.push({ evDisplay: 'flex', gapDisplay: 'none', gapText: '', fill: () => {}, start: hm(x.s), end: hm(x.e), name: x.n, sub: c[0] + ' · ' + dur(Math.max(0, x.e - x.s)), bg: c[1], line: c[2], fg: c[3], nowDisplay: (L.sel === 0 && x.s <= now && now < x.e) ? 'inline-block' : 'none', clashDisplay: clash ? 'inline-block' : 'none', remove: rm(L.sel, x.so) });
+      segs.push({ left: Math.round((Math.max(x.s, START) - START) / (END - START) * 1000) / 10, width: Math.max(0.8, Math.round((Math.min(x.e, END) - Math.max(x.s, START)) / (END - START) * 1000) / 10), color: c[2] });
+      maxEnd = Math.max(maxEnd, x.e);
+    });
+    let busy = 0, cur = null; day.forEach(x => { const a = Math.max(START, x.s), b = Math.min(END, x.e); if (b <= a) return; if (!cur || a > cur[1]) { if (cur) busy += cur[1] - cur[0]; cur = [a, b]; } else cur[1] = Math.max(cur[1], b); }); if (cur) busy += cur[1] - cur[0];
+    const weekRows = []; WD.forEach((w, d) => { const a = evs(d); weekRows.push({ hdrDisplay: 'block', hdr: WF[d] + ', ' + (19 + d) + ' октября', evDisplay: 'none', emptyDisplay: a.length ? 'none' : 'block', time: '', name: '', cat: '', bg: 'var(--card)', line: 'var(--card)', fg: 'var(--ink2)', remove: () => {} }); a.forEach(x => { const c = CAT[x.c]; weekRows.push({ hdrDisplay: 'none', hdr: '', evDisplay: 'flex', emptyDisplay: 'none', time: hm(x.s) + '–' + hm(x.e), name: x.n, cat: c[0], bg: c[1], line: c[2], fg: c[3], remove: rm(d, x.so) }); }); });
+    const pays = []; WD.forEach((w, d) => (L.ev[d] || []).forEach(e => { if (e.c === 'pay') pays.push({ name: e.n, when: w + ', ' + (19 + d) + ' окт' }); }));
+    const cats = Object.keys(CAT).map(k => ({ name: CAT[k][0], bg: L.cat === k ? CAT[k][2] : 'var(--card)', fg: L.cat === k ? 'var(--on-accent)' : 'var(--ink2)', border: L.cat === k ? CAT[k][2] : 'var(--line)', pick: () => this.set({ cat: k }) }));
+    return {
+      modes: [['day', 'День'], ['week', 'Неделя']].map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ mode: m[0] }) })),
+      isDay: L.mode === 'day', isWeek: L.mode === 'week',
+      dayEmptyDisplay: day.length ? 'none' : 'block',
+      dayChips: WD.map((w, i) => { const n = (L.ev[i] || []).length, on = L.sel === i; return { wd: w, num: 19 + i, count: n ? n + ' дел' : 'свободно', bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ sel: i }) }; }),
+      dayTitle: WF[L.sel] + ', ' + (19 + L.sel) + ' октября', freeText: 'Занято ' + dur(busy) + ', свободно ' + dur(END - START - busy) + ' (с 07:00 до 23:00)',
+      agenda, segs,
+      weekRows, pays, noPaysDisplay: pays.length ? 'none' : 'block', cats, selName: WF[L.sel].toLowerCase().replace(/а$/, 'у').replace(/я$/, 'ю'),
+      fn: L.fn, fs: L.fs, fe: L.fe, typeN: (e) => this.set({ fn: e.target.value }), typeS: (e) => this.set({ fs: e.target.value }), typeE: (e) => this.set({ fe: e.target.value }), errDisplay: L.err ? 'block' : 'none',
+      add: () => { const n = (this.L.fn || '').trim(), s = tm(this.L.fs); if (!n || s === null) { this.set({ err: true }); return; } let e = tm(this.L.fe); if (e === null || e <= s) e = Math.min(1439, s + 60); const m = Object.assign({}, this.L.ev), d = this.L.sel; m[d] = (m[d] || []).concat([{ s: hm(s), e: hm(e), n, c: this.L.cat }]); this.set({ ev: m, fn: '', fs: '', fe: '', err: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

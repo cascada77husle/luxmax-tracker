@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Финансы</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;position:relative}
+.h{font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700}
+.sub{font-size:13px;color:var(--muted)}
+.cap{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.row{display:flex;align-items:center;gap:10px}
+.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink2);border-radius:999px;font-weight:600;font-size:13px;padding:7px 12px}
+.inp{border:1.5px solid var(--line2);border-radius:12px;background:var(--field);color:var(--ink);font-size:14px;padding:10px 12px;outline:none;width:100%;box-sizing:border-box}
+.btn{border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:12px 18px}
+.btn2{border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-size:14px;padding:10px 16px}
+.tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--ink2);white-space:nowrap}
+.num{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ib{width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
+.sw{width:42px;height:24px;border-radius:999px;border:0;padding:2px;display:flex;align-items:center;flex-shrink:0}
+.sw i{width:20px;height:20px;border-radius:50%;background:var(--card);display:block}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
+
+<sc-if value="{{isOps}}" hint-placeholder-val="{{true}}">
+  <div class="card" style="position:relative;display:{{fh.f1.disp}};opacity:{{fh.f1.op}}"><button type="button" onClick="{{fc.f1.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f1.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f1.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f1.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f1.bg}};color:{{fh.f1.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f1.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f1.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Добавить операцию</b><div style="display:inline-flex;background:var(--soft);border-radius:12px;padding:3px;gap:2px"><sc-for list="{{kinds}}" as="k" hint-placeholder-count="2"><button type="button" onClick="{{k.pick}}" style="border:0;border-radius:9px;padding:7px 16px;font-weight:700;font-size:13px;background:{{k.bg}};color:{{k.fg}}">{{k.name}}</button></sc-for></div></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f1.mh}};-webkit-mask-image:{{fc.f1.mask}};mask-image:{{fc.f1.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f1.cop}}">
+    <div class="row" style="border:1.5px solid var(--line2);border-radius:14px;padding:4px 14px;background:var(--field)"><input type="text" inputmode="numeric" placeholder="Сумма" value="{{amount}}" onInput="{{onAmount}}" aria-label="Сумма" style="flex:1;min-width:0;border:0;background:transparent;font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:800;color:var(--ink);padding:6px 0;outline:none"><span style="font-size:20px;font-weight:600;color:var(--muted)">₽</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{amountChips}}" as="a" hint-placeholder-count="5"><button type="button" class="chip" onClick="{{a.pick}}">{{a.label}}</button></sc-for></div>
+    <sc-for list="{{catGroups}}" as="g" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:6px"><span class="cap">{{g.name}}</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{g.chips}}" as="c" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div></div></sc-for>
+    <span class="cap">С какого счёта</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{accChips}}" as="c" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+    <span class="cap">Когда</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><sc-for list="{{dayChips}}" as="c" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for><input type="text" inputmode="numeric" placeholder="Число" value="{{dayMan}}" onInput="{{onDayMan}}" aria-label="Число месяца" class="inp" style="width:84px"></div>
+    <input type="text" placeholder="Комментарий (необязательно)" value="{{note}}" onInput="{{onNote}}" aria-label="Комментарий" class="inp">
+    <button type="button" onClick="{{submit}}" class="btn" style="background:{{submitBg}};color:{{submitFg}};padding:14px;font-size:15px">{{submitText}}</button>
+    <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}"><div style="padding:10px 14px;border-radius:12px;background:var(--ok-soft);color:var(--ok);font-weight:700;font-size:13px">{{toast}}</div></sc-if>
+    <span class="cap">Быстро</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{quick}}" as="q" hint-placeholder-count="5"><button type="button" class="chip" onClick="{{q.pick}}">{{q.label}}</button></sc-for></div>
+  </div></sc-if></div>
+  <div class="card" style="position:relative;display:{{fh.f2.disp}};opacity:{{fh.f2.op}}"><button type="button" onClick="{{fc.f2.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f2.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f2.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f2.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f2.bg}};color:{{fh.f2.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f2.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f2.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Операции</b><span class="sub">{{shownNote}}</span></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f2.mh}};-webkit-mask-image:{{fc.f2.mask}};mask-image:{{fc.f2.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f2.cop}}">
+    <input type="text" placeholder="Найти по названию или комментарию" value="{{q}}" onInput="{{onQ}}" aria-label="Поиск по операциям" class="inp">
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{filters}}" as="c" hint-placeholder-count="9"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><sc-for list="{{rows}}" as="r" hint-placeholder-count="8"><div class="row" style="padding:9px 4px;border-bottom:1px solid var(--line)"><span style="width:8px;height:28px;border-radius:4px;background:{{r.color}};flex-shrink:0"></span><span style="width:48px;font-size:12.5px;color:var(--muted);font-weight:700">{{r.date}}</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px;font-weight:600">{{r.note}}</b><span style="font-size:12px;color:var(--muted)">{{r.cat}}{{r.acc}}</span></span><b style="font-size:14px;color:{{r.amtColor}};white-space:nowrap">{{r.sum}}</b><button type="button" onClick="{{r.del}}" aria-label="Удалить операцию" style="width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></div></sc-for></div>
+    <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}"><div style="padding:22px;text-align:center;border:1.5px dashed var(--line2);border-radius:12px;color:var(--muted);font-size:14px">Ничего не найдено. Измените фильтр или добавьте операцию выше.</div></sc-if>
+    <sc-if value="{{moreOn}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{more}}" class="btn2">Показать ещё</button></sc-if>
+  </div></sc-if></div>
+</sc-if>
+
+<sc-if value="{{isAccounts}}" hint-placeholder-val="{{false}}">
+  <div class="card" style="position:relative;display:{{fh.f3.disp}};opacity:{{fh.f3.op}}"><button type="button" onClick="{{fc.f3.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f3.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f3.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f3.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f3.bg}};color:{{fh.f3.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f3.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f3.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Мои активы</b><span class="sub">{{countText}}</span></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f3.mh}};-webkit-mask-image:{{fc.f3.mask}};mask-image:{{fc.f3.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f3.cop}}">
+    <b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;letter-spacing:-.02em">{{total}}</b>
+    <div style="display:flex;height:12px;border-radius:999px;overflow:hidden;background:var(--line);gap:2px"><sc-for list="{{bar}}" as="b" hint-placeholder-count="4"><div style="height:100%;background:{{b.color}};width:{{b.w}}%"></div></sc-for></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><sc-for list="{{kindsA}}" as="k" hint-placeholder-count="3"><div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px"><span class="cap">{{k.name}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:800">{{k.value}}</b><span class="sub">{{k.pct}}% всех активов</span></div></sc-for></div>
+  </div></sc-if></div>
+  <button type="button" onClick="{{toggleAddAcc}}" class="btn" style="align-self:flex-start;display:flex;align-items:center;gap:8px;padding:12px 18px;background:{{addBtnBg}};color:{{addBtnFg}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="display:{{addPlus}}"><path d="M12 5v14M5 12h14"></path></svg>{{addBtnText}}</button>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px"><sc-for list="{{cards}}" as="a" hint-placeholder-count="4">
+    <div class="card" style="position:relative;gap:10px;display:{{fh.f4.disp}};opacity:{{fh.f4.op}}"><button type="button" onClick="{{fc.f4.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f4.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f4.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f4.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f4.bg}};color:{{fh.f4.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f4.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f4.toggle}}"><div class="row"><span style="width:40px;height:40px;border-radius:12px;background:{{a.color}};color:{{a.fg}};box-shadow:0 0 0 1px rgba(255,255,255,.18),0 6px 16px -8px {{a.color}};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0">{{a.letter}}</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14.5px">{{a.bank}}</b><span class="sub" style="font-size:12px;display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px;opacity:.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>{{a.name}}</span></span><button type="button" onClick="{{a.remove}}" class="chip" style="font-size:12px;padding:5px 10px;color:{{a.delFg}};border-color:{{a.delBorder}}">{{a.delText}}</button></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f4.mh}};-webkit-mask-image:{{fc.f4.mask}};mask-image:{{fc.f4.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f4.cop}}">
+      <div class="row" style="justify-content:space-between"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em">{{a.value}}</b><span class="sub">{{a.pct}}%</span></div>
+      <div style="height:6px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{a.color}};width:{{a.pct}}%"></div></div>
+      <span class="sub" style="font-size:12px;display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px;opacity:.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>{{a.moves}}</span>
+      <div class="row"><input type="text" inputmode="numeric" placeholder="Новый остаток, ₽" value="{{a.edit}}" onInput="{{a.onEdit}}" aria-label="Новый остаток" class="inp" style="flex:1;min-width:0"><button type="button" onClick="{{a.save}}" class="btn" style="background:{{a.saveBg}};color:{{a.saveFg}};padding:11px 14px;font-size:13px">Обновить</button></div>
+    </div></sc-if></div></sc-for></div>
+  <sc-if value="{{noAccShow}}" hint-placeholder-val="{{false}}"><div style="padding:26px;text-align:center;border:1.5px dashed var(--line2);border-radius:16px;color:var(--muted);font-size:14px">Счетов пока нет. Нажмите «Добавить счёт» выше.</div></sc-if>
+  <sc-if value="{{true}}" hint-placeholder-val="{{false}}"><div style="display:grid;grid-template-rows:{{addRows}};opacity:{{addOpc}};visibility:{{addVis}};transition:grid-template-rows .6s cubic-bezier(.22,1,.36,1),opacity .45s ease,visibility 0s linear {{addDelay}}"><div style="overflow:hidden;min-height:0;padding:4px 4px 30px;margin:-4px -4px -30px">
+  <div class="card" style="position:relative;display:{{fh.f5.disp}};opacity:{{fh.f5.op}}"><button type="button" onClick="{{fc.f5.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f5.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f5.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f5.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f5.bg}};color:{{fh.f5.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f5.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f5.toggle}}"><b class="h">Добавить счёт</b></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f5.mh}};-webkit-mask-image:{{fc.f5.mask}};mask-image:{{fc.f5.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f5.cop}}"><span class="cap">Где лежат деньги</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{banks}}" as="b" hint-placeholder-count="9"><button type="button" class="chip" onClick="{{b.pick}}" style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-color:{{b.border}};background:{{b.bg}};color:{{b.fg}};box-shadow:{{b.sh}}"><span style="width:26px;height:26px;border-radius:8px;background:{{b.ic}};color:{{b.icf}};display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">{{b.letter}}</span>{{b.name}}</button></sc-for></div>
+    <label style="display:flex;flex-direction:column;gap:6px;"><span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Название</span><input type="text" placeholder="Например: Зарплатная карта" value="{{aName}}" onInput="{{onAName}}" aria-label="Название счёта" style="border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;padding:13px 14px;outline:none;width:100%;box-sizing:border-box"></label>
+    <label style="display:flex;flex-direction:column;gap:6px;"><span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Остаток</span><div style="display:flex;align-items:center;gap:8px;border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);padding:2px 14px"><input type="text" inputmode="numeric" placeholder="Остаток" value="{{aBal}}" onInput="{{onABal}}" aria-label="Остаток на счёте" style="flex:1;min-width:0;border:0;background:transparent;font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;color:var(--ink);padding:6px 0;outline:none"><span style="font-size:18px;font-weight:600;color:#B8BECB">₽</span></div></label>
+    <button type="button" onClick="{{addAcc}}" class="btn" style="background:{{addBg}};color:{{addFg}};padding:14px">{{addText}}</button>
+    <span class="sub" style="font-size:12px;display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px;opacity:.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>Остаток после добавления меняется сам: расходы и доходы, привязанные к счёту, увеличивают и уменьшают его. Для Bybit укажите сумму в рублях по текущему курсу.</span>
+  </div></sc-if></div>
+</div></div>
+  </sc-if>
+</sc-if>
+
+<sc-if value="{{isStmt}}" hint-placeholder-val="{{false}}">
+  <div class="card" style="position:relative;display:{{fh.f6.disp}};opacity:{{fh.f6.op}}"><button type="button" onClick="{{fc.f6.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f6.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f6.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f6.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f6.bg}};color:{{fh.f6.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f6.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f6.toggle}}"><b class="h">Загрузить выписку</b></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f6.mh}};-webkit-mask-image:{{fc.f6.mask}};mask-image:{{fc.f6.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f6.cop}}">
+    <div class="row" style="align-items:flex-start"><span class="num">1</span><span style="font-size:13.5px;line-height:1.5;color:var(--ink2)"><b style="color:var(--ink)">Скачайте выписку.</b> В приложении банка: «Выписки» или «Справки», период, формат CSV.</span></div>
+    <div class="row" style="align-items:flex-start"><span class="num">2</span><span style="font-size:13.5px;line-height:1.5;color:var(--ink2)"><b style="color:var(--ink)">Выберите счёт и файл.</b> Колонки даты, суммы и назначения находятся сами.</span></div>
+    <div class="row" style="align-items:flex-start"><span class="num">3</span><span style="font-size:13.5px;line-height:1.5;color:var(--ink2)"><b style="color:var(--ink)">Проверьте и добавьте.</b> Лишнее отключите галочкой. Остальное попадёт в операции.</span></div>
+    <span class="cap">На какой счёт загружаем</span>
+    <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{stChips}}" as="a" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{a.pick}}" style="border-color:{{a.border}};background:{{a.bg}};color:{{a.fg}}">{{a.name}}</button></sc-for></div>
+    <label style="display:flex;flex-direction:column;align-items:center;gap:6px;border:2px dashed var(--line2);background:var(--field);border-radius:16px;padding:22px 14px;cursor:pointer;text-align:center"><b style="font-size:15px">Выберите файл выписки</b><span class="sub">CSV или TXT разбираем сразу, Excel и PDF придут в боте</span><input type="file" accept=".csv,.txt" onChange="{{onFile}}" aria-label="Файл выписки" style="font-size:12.5px;max-width:100%"></label>
+    <button type="button" onClick="{{demo}}" class="btn2" style="align-self:flex-start">Показать пример разбора</button>
+    <sc-if value="{{stErr}}" hint-placeholder-val="{{false}}"><div style="padding:10px 14px;border-radius:12px;background:var(--warn-soft);color:var(--warn);font-size:13px">{{stErr}}</div></sc-if>
+  </div></sc-if></div>
+  <sc-if value="{{hasPreview}}" hint-placeholder-val="{{false}}">
+    <div class="card" style="position:relative;gap:8px;display:{{fh.f7.disp}};opacity:{{fh.f7.op}}"><button type="button" onClick="{{fc.f7.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f7.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f7.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f7.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f7.bg}};color:{{fh.f7.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f7.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f7.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Нашли {{stCount}} операций</b><span class="sub">{{stLabel}}</span></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f7.mh}};-webkit-mask-image:{{fc.f7.mask}};mask-image:{{fc.f7.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f7.cop}}">
+      <span class="sub">Категории подобраны автоматически. Снимите галочку с того, что добавлять не нужно.</span>
+      <sc-for list="{{stRows}}" as="r" hint-placeholder-count="6"><div class="row" style="padding:10px 12px;border-radius:12px;background:{{r.bg}}"><button type="button" onClick="{{r.toggle}}" aria-label="Добавить операцию" style="width:24px;height:24px;border-radius:8px;border:1.5px solid {{r.boxBorder}};background:{{r.boxBg}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{r.tick}}"><path d="M5 12l4 4L19 7"/></svg></button><span style="width:48px;font-size:12.5px;color:var(--muted);font-weight:700">{{r.d}} окт</span><span style="flex:1;min-width:0;font-size:13.5px;font-weight:600">{{r.note}}</span><span class="tag">{{r.cat}}</span><b style="min-width:76px;text-align:right;font-size:13.5px;color:{{r.sumColor}}">{{r.sum}}</b></div></sc-for>
+      <div class="row" style="justify-content:space-between;flex-wrap:wrap;margin-top:6px"><span class="sub">Выбрано {{stChosen}}, итого {{stSum}}</span><button type="button" onClick="{{doImport}}" class="btn" style="background:{{impBg}};color:{{impFg}}">{{impText}}</button></div>
+    </div></sc-if></div>
+  </sc-if>
+  <sc-if value="{{stDone}}" hint-placeholder-val="{{false}}"><div style="background:var(--ok-soft);border:1px solid var(--ok-line);border-radius:16px;padding:14px 16px;color:var(--ok);font-weight:700;font-size:14px">{{stDoneText}} Они уже в «Операциях», на обзоре и в аналитике.</div></sc-if>
+</sc-if>
+
+<sc-if value="{{isPlans}}" hint-placeholder-val="{{false}}">
+  <div class="card" style="position:relative;display:{{fh.f8.disp}};opacity:{{fh.f8.op}}"><button type="button" onClick="{{fc.f8.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f8.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f8.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f8.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f8.bg}};color:{{fh.f8.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f8.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f8.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Платежи и подписки</b><button type="button" onClick="{{newMonth}}" class="btn2" style="font-size:13px;padding:7px 14px">Новый месяц: сбросить отметки</button></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f8.mh}};-webkit-mask-image:{{fc.f8.mask}};mask-image:{{fc.f8.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f8.cop}}">
+    <span class="sub">{{planSummary}}</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><sc-for list="{{planKpis}}" as="k" hint-placeholder-count="3"><div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px"><span class="cap">{{k.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:800;color:{{k.color}}">{{k.value}}</b></div></sc-for></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{planRows}}" as="p" hint-placeholder-count="6">
+      <div class="row" style="padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--field)">
+        <button type="button" onClick="{{p.toggle}}" aria-label="Отметить оплаченным" style="width:26px;height:26px;border-radius:8px;border:1.5px solid {{p.boxBorder}};background:{{p.boxBg}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{p.tick}}"><path d="M5 12l4 4L19 7"/></svg></button>
+        <span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px">{{p.name}}</b><span class="sub" style="font-size:12px;display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px;opacity:.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>{{p.sub}}</span></span>
+        <span class="tag" style="background:{{p.tagBg}};color:{{p.tagFg}}">{{p.tag}}</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;min-width:84px"><b style="font-size:14px">{{p.sum}}</b><span style="font-size:12px;font-weight:600;color:{{p.whenColor}}">{{p.when}}</span></span>
+        <button type="button" onClick="{{p.del}}" aria-label="Удалить платёж" style="width:30px;height:30px;padding:0;border-radius:8px;border:1px solid {{p.delBorder}};background:{{p.delBg}};color:{{p.delFg}};display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+      </div></sc-for></div>
+    <sc-if value="{{noPlans}}" hint-placeholder-val="{{false}}"><div style="padding:22px;text-align:center;border:1.5px dashed var(--line2);border-radius:12px;color:var(--muted);font-size:14px">Платежей пока нет. Добавьте первый ниже.</div></sc-if>
+  </div></sc-if></div>
+  <div class="card" style="position:relative;display:{{fh.f9.disp}};opacity:{{fh.f9.op}}"><button type="button" onClick="{{fc.f9.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f9.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f9.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f9.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f9.bg}};color:{{fh.f9.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f9.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f9.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Добавить платёж</b><div style="display:inline-flex;background:var(--soft);border-radius:12px;padding:3px;gap:2px"><sc-for list="{{planKinds}}" as="k" hint-placeholder-count="2"><button type="button" onClick="{{k.pick}}" style="border:0;border-radius:9px;padding:7px 14px;font-weight:700;font-size:13px;background:{{k.bg}};color:{{k.fg}}">{{k.name}}</button></sc-for></div></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f9.mh}};-webkit-mask-image:{{fc.f9.mask}};mask-image:{{fc.f9.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f9.cop}}">
+    <label style="display:flex;flex-direction:column;gap:6px;"><span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Название</span><input type="text" placeholder="Например: Интернет" value="{{pName}}" onInput="{{onPName}}" aria-label="Название платежа" style="border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;padding:13px 14px;outline:none;width:100%;box-sizing:border-box"></label>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px"><label style="display:flex;flex-direction:column;gap:6px;"><span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Сумма, ₽</span><input type="text" inputmode="numeric" placeholder="0" value="{{pSum}}" onInput="{{onPSum}}" aria-label="Сумма платежа" style="border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;padding:13px 14px;outline:none;width:100%;box-sizing:border-box"></label><label style="display:flex;flex-direction:column;gap:6px;"><span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">День месяца</span><input type="text" inputmode="numeric" placeholder="1–31" value="{{pDay}}" onInput="{{onPDay}}" aria-label="День месяца" style="border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;padding:13px 14px;outline:none;width:100%;box-sizing:border-box"></label></div>
+    <sc-if value="{{pIsBill}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Категория</span><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{billCats}}" as="c" hint-placeholder-count="8"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div></div></sc-if>
+    <button type="button" onClick="{{addPlan}}" class="btn" style="background:{{pBtnBg}};color:{{pBtnFg}};padding:14px;margin-top:4px">Добавить</button>
+    <span class="sub" style="font-size:12px;display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px;opacity:.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>{{pHint}}</span>
+  </div></sc-if></div>
+</sc-if>
+
+<sc-if value="{{isLimits}}" hint-placeholder-val="{{false}}">
+  <div class="card" style="position:relative;display:{{fh.f10.disp}};opacity:{{fh.f10.op}}"><button type="button" onClick="{{fc.f10.toggle}}" aria-label="Свернуть или развернуть блок" aria-expanded="{{fc.f10.open}}" style="position:absolute;top:10px;right:10px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{fc.f10.rot}}deg);transition:transform .15s ease"><path d="M6 9l6 6 6-6"></path></svg></button><button type="button" onClick="{{fh.f10.toggle}}" aria-label="Скрыть или показать блок" title="Скрыть или показать блок" style="display:{{fh.eyeD}};position:absolute;top:10px;right:44px;width:30px;height:30px;padding:0;border-radius:8px;border:0;background:{{fh.f10.bg}};color:{{fh.f10.fg}};align-items:center;justify-content:center;z-index:2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="M4 4l16 16" style="display:{{fh.f10.slash}}"></path></svg></button><div style="margin-right:{{fh.mr}}px;cursor:pointer" onClick="{{fc.f10.toggle}}"><div class="row" style="justify-content:space-between;flex-wrap:wrap"><b class="h">Лимиты по группам</b><span class="sub">{{limTotalText}}</span></div></div><sc-if value="{{true}}" hint-placeholder-val="{{true}}"><div style="display:flex;flex-direction:column;gap:12px;overflow:hidden;interpolate-size:allow-keywords;height:{{fc.f10.mh}};-webkit-mask-image:{{fc.f10.mask}};mask-image:{{fc.f10.mask}};transition:height .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;opacity:{{fc.f10.cop}}">
+    <span class="sub" style="display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><span>Добавляйте только те лимиты, которые нужны: готовые шаблоны или свой. Лишние можно убрать крестиком. Те же лимиты видны на обзоре и в кабинете.</span></span>
+    <sc-if value="{{noLim}}" hint-placeholder-val="{{false}}"><div style="padding:22px 16px;text-align:center;border:1.5px dashed var(--line2);border-radius:16px;color:var(--muted);font-size:14px;line-height:1.5">Лимитов пока нет. Выберите шаблон ниже или создайте свой.</div></sc-if>
+    <div style="display:flex;flex-direction:column;gap:12px"><sc-for list="{{limits}}" as="l" hint-placeholder-count="7">
+      <div style="display:flex;flex-direction:column;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:12px">
+        <div class="row" style="flex-wrap:wrap"><span style="width:10px;height:10px;border-radius:50%;background:{{l.color}}"></span><b style="font-size:14px;flex:1;min-width:90px">{{l.name}}</b><button type="button" onClick="{{l.del}}" aria-label="Убрать лимит" title="Убрать лимит" style="width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;line-height:1;order:5">×</button><span style="font-size:13px;color:var(--ink2)">{{l.spent}} из</span><button type="button" onClick="{{l.minus}}" aria-label="Меньше" style="width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-weight:700">−</button><input type="text" inputmode="numeric" value="{{l.input}}" onInput="{{l.onInput}}" aria-label="Лимит группы" class="inp" style="width:92px;padding:6px 8px;text-align:right"><button type="button" onClick="{{l.plus}}" aria-label="Больше" style="width:30px;height:30px;padding:0;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-weight:700">+</button><span class="tag" style="background:{{l.chipBg}};color:{{l.chipFg}}">{{l.chip}}</span></div>
+        <div style="height:9px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{l.bar}};width:{{l.w}}%"></div></div>
+        <span class="sub" style="font-size:12px;color:{{l.noteColor}}">{{l.note}}</span>
+      </div></sc-for></div>
+    <div style="display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)">
+      <b style="font-size:15px">Добавить лимит</b>
+      <span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Готовые шаблоны</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{limTpls}}" as="t" hint-placeholder-count="10"><button type="button" class="chip" onClick="{{t.pick}}" style="color:#fff;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.06)">+ {{t.name}} <span style="color:#B8BECB;font-weight:500">{{t.sum}}</span></button></sc-for></div>
+      <span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#B8BECB">Свой лимит</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><input type="text" placeholder="Название, например: Кофе" value="{{limName}}" onInput="{{onLimName}}" aria-label="Название лимита" style="border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;padding:12px 14px;outline:none;width:100%;box-sizing:border-box"><input type="text" inputmode="numeric" placeholder="Сумма в месяц, ₽" value="{{limAmt}}" onInput="{{onLimAmt}}" aria-label="Сумма лимита" style="border:1.5px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:15px;padding:12px 14px;outline:none;width:100%;box-sizing:border-box"></div>
+      <button type="button" onClick="{{addCustom}}" class="btn" style="padding:13px;background:{{cBtnBg}};color:#fff;opacity:{{cBtnOp}}">Добавить свой лимит</button>
+      <span class="sub" style="font-size:12px;display:flex;gap:8px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg><span>Траты считаются по категории или группе с таким же названием. Для своего названия укажите его при записи траты.</span></span>
+    </div>
+    <sc-if value="{{hasLim}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{resetLim}}" class="btn2" style="align-self:flex-start">Убрать все лимиты</button></sc-if>
+  </div></sc-if></div>
+</sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"plans":{"editor":null},"accounts":{"editor":null},"limits":{"editor":null},"sub":{"editor":null},"fcol":{"editor":null},"fnSetFcol":{"editor":null},"editMode":{"editor":null},"fnAddOp":{"editor":null},"fnDelOp":{"editor":null},"fnTogglePlan":{"editor":null},"fnAddPlan":{"editor":null},"fnDelPlan":{"editor":null},"fnAddAccount":{"editor":null},"fnUpdAccount":{"editor":null},"fnDelAccount":{"editor":null},"fnImportOps":{"editor":null},"fnSetLimits":{"editor":null},"fnNewMonth":{"editor":null},"$preview":{"width":1000,"height":1500}}'>
+class Component extends DCLogic {
+  init() {
+    return { ready: false, kind: 'out', amount: '', cat: '', acc: '', note: '', day: 19, dayMan: '', filter: 'Все', q: '', lim: 40, toast: '',
+      pKind: 'sub', pName: '', pSum: '', pDay: '', pCat: 'Аренда или ипотека',
+      aBank: 'Сбербанк', aName: '', aBal: '', edits: {}, delAsk: '', planAsk: '', limEdits: {},
+      stAcc: '', stFile: '', stRows: null, stSkip: {}, stDone: false, stDoneText: '', stErr: '' };
+  }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const P = this.props, L = this.L;
+    const TODAY = 19, DIM = 31, LEFT = DIM - TODAY;
+    const ops = P.ops || [], plans = P.plans || [], accs = P.accounts || [];
+    const DEFLIM = {};
+    const LIM = Object.assign({}, P.limits || {});
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const rub = (n) => fmt(n) + ' ₽';
+    const num = (s) => parseFloat(String(s).replace(',', '.').replace(/\s/g, '')) || 0;
+    const COL = { 'Жильё': '#1D4ED8', 'Еда': '#2F6FED', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': '#1E9E6B', 'Финансы': '#5B6475', 'Личное': '#C97A16', 'Доход': '#1E9E6B' };
+    const GCOL = { 'Жильё': 'var(--accent-text)', 'Еда': 'var(--accent)', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': 'var(--ok)', 'Финансы': 'var(--ink)', 'Личное': 'var(--warn)' };
+    const EXP = [
+      ['rent', 'Аренда или ипотека', 'Жильё'], ['util', 'Коммунальные услуги', 'Жильё'], ['net', 'Интернет и связь', 'Жильё'], ['repair', 'Ремонт и обслуживание', 'Жильё'],
+      ['food', 'Продукты', 'Еда'], ['eat', 'Кафе и доставка', 'Еда'],
+      ['fuel', 'Топливо', 'Транспорт'], ['taxi', 'Такси и общественный', 'Транспорт'], ['car', 'Авто: ТО и страховка', 'Транспорт'],
+      ['med', 'Врачи и аптека', 'Здоровье'], ['sport', 'Спорт и зал', 'Здоровье'],
+      ['kids', 'Семья и дети', 'Семья'], ['gift', 'Подарки', 'Семья'],
+      ['debt', 'Кредиты и долги', 'Финансы'], ['tax', 'Налоги и штрафы', 'Финансы'], ['subs', 'Подписки', 'Финансы'],
+      ['cloth', 'Одежда', 'Личное'], ['fun', 'Развлечения', 'Личное'], ['edu', 'Обучение', 'Личное'], ['other', 'Прочее', 'Личное']
+    ];
+    const INC = [['sal', 'Зарплата', 'Доход'], ['side', 'Подработка', 'Доход'], ['oth', 'Другой доход', 'Доход'], ['ret', 'Подарок или возврат', 'Доход']];
+    const GROUPS = ['Жильё', 'Еда', 'Транспорт', 'Здоровье', 'Семья', 'Финансы', 'Личное'];
+    const catByName = (n) => EXP.concat(INC).find(c => c[1] === n);
+    const plural = (n, a, b, c) => { const m = n % 100, k = n % 10; return (m > 10 && m < 20) ? c : k === 1 ? a : (k >= 2 && k <= 4) ? b : c; };
+    const SUB = P.sub || 'ops';
+    const chip = (name, sel, pick) => ({ name, border: sel ? 'var(--accent)' : 'var(--line)', bg: sel ? 'var(--accent-soft)' : 'var(--card)', fg: sel ? 'var(--accent-text)' : 'var(--ink2)', pick });
+    const accName = (id) => { const a = accs.find(x => x.id === id); return a ? a.bank + ' · ' + a.name : ''; };
+    // баланс счёта = стартовый остаток + операции, привязанные к счёту
+    const delta = (id) => ops.filter(o => o.acc === id).reduce((s, o) => s + (o.kind === 'in' ? o.sum : -o.sum), 0);
+    const balOf = (a) => a.bal + delta(a.id);
+
+    // ---------- операции
+    const kinds = [['out', 'Расход'], ['in', 'Доход']].map(k => ({ name: k[1], bg: L.kind === k[0] ? 'var(--card)' : 'transparent', fg: L.kind === k[0] ? 'var(--ink)' : 'var(--muted)', pick: () => this.set({ kind: k[0], cat: '' }) }));
+    const catGroups = L.kind === 'in'
+      ? [{ name: 'Доход', chips: INC.map(c => chip(c[1], L.cat === c[1], () => this.set({ cat: c[1] }))) }]
+      : GROUPS.map(g => ({ name: g, chips: EXP.filter(c => c[2] === g).map(c => chip(c[1], L.cat === c[1], () => this.set({ cat: c[1] }))) }));
+    const accChips = [chip('Без счёта', !L.acc, () => this.set({ acc: '' }))].concat(accs.map(a => chip(a.bank + ' · ' + a.name, L.acc === a.id, () => this.set({ acc: a.id }))));
+    const amountChips = [500, 1000, 3000, 5000, 10000].map(v => ({ label: fmt(v), pick: () => this.set({ amount: String(v) }) }));
+    const dayVal = L.dayMan ? Math.min(31, Math.max(1, parseInt(L.dayMan, 10) || TODAY)) : L.day;
+    const dayChips = [[TODAY, 'Сегодня, ' + TODAY + ' окт'], [TODAY - 1, 'Вчера']].concat([[TODAY - 2, TODAY - 2 + ' окт'], [TODAY - 3, TODAY - 3 + ' окт']]).map(d => chip(d[1], !L.dayMan && L.day === d[0], () => this.set({ day: d[0], dayMan: '' })));
+    const amt = parseInt(L.amount || '0', 10);
+    const ready = amt > 0 && !!L.cat;
+    const makeOp = (name, grp, sum, note, d, kind, acc) => { const o = { d, kind, cat: name, grp, color: COL[grp], note: note || name, sum }; if (acc) o.acc = acc; return o; };
+    const submit = () => {
+      const l = this.L; const a = parseInt(l.amount || '0', 10); if (!(a > 0) || !l.cat) return;
+      const c = catByName(l.cat); const d = l.dayMan ? Math.min(31, Math.max(1, parseInt(l.dayMan, 10) || TODAY)) : l.day;
+      if (P.fnAddOp) P.fnAddOp(makeOp(c[1], c[2], a, (l.note || '').trim(), d, l.kind, l.acc));
+      this.set({ amount: '', note: '', toast: 'Добавлено: ' + c[1] + ', ' + rub(a) });
+    };
+    const quick = [['food', 2000], ['eat', 800], ['taxi', 500], ['fuel', 2000], ['med', 600]].map(q => {
+      const c = EXP.find(x => x[0] === q[0]);
+      return { label: c[1] + ' ' + fmt(q[1]), pick: () => { if (P.fnAddOp) P.fnAddOp(makeOp(c[1], c[2], q[1], '', TODAY, 'out', this.L.acc)); this.set({ toast: 'Добавлено: ' + c[1] + ', ' + rub(q[1]) }); } };
+    });
+    const flt = ['Все'].concat(GROUPS).concat(['Доход']);
+    const filters = flt.map(n => chip(n, L.filter === n, () => this.set({ filter: n, lim: 40 })));
+    const qq = (L.q || '').trim().toLowerCase();
+    const filtered = ops.filter(o => (L.filter === 'Все' || o.grp === L.filter) && (!qq || (o.note + ' ' + o.cat).toLowerCase().indexOf(qq) >= 0));
+    const rows = filtered.slice(0, L.lim).map(o => ({
+      date: o.d + ' окт', cat: o.cat, acc: o.acc && accName(o.acc) ? ' · ' + accName(o.acc) : '', color: o.color, note: o.note,
+      sum: (o.kind === 'in' ? '+' : '−') + rub(o.sum), amtColor: o.kind === 'in' ? 'var(--ok)' : 'var(--ink)',
+      del: () => { if (P.fnDelOp) P.fnDelOp(o.id); }
+    }));
+
+    // ---------- счета
+    const total = accs.reduce((s, a) => s + balOf(a), 0);
+    const pct = (v) => total > 0 ? Math.max(0, Math.round(v / total * 100)) : 0;
+    const BANKS = [['Сбербанк', '#21A038', '#fff', 'С'], ['Альфа-Банк', '#EF3124', '#fff', 'А'], ['Т-Банк', '#FFDD2D', '#1A1A1A', 'Т'], ['ВТБ', '#1E4DD8', '#fff', 'В'], ['Райффайзен', '#FEE600', '#1A1A1A', 'Р'], ['Газпромбанк', '#0C5DA5', '#fff', 'Г'], ['Озон Банк', '#005BFF', '#fff', 'О'], ['Другой банк', '#4B5262', '#fff', '₽'], ['Наличные', '#2F8F5B', '#fff', '₽'], ['Bybit', '#F7A600', '#1A1A1A', 'B']];
+    const BF = {}; BANKS.forEach(b => { BF[b[0]] = b[2]; });
+    const BC = {}; BANKS.forEach(b => { BC[b[0]] = b[1]; });
+    const kindName = { bank: 'Банки', cash: 'Наличные', crypto: 'Биржа Bybit' };
+    const kindsA = ['bank', 'cash', 'crypto'].map(k => { const v = accs.filter(a => a.type === k).reduce((s, a) => s + balOf(a), 0); return { name: kindName[k], value: rub(v), pct: pct(v) }; });
+    const bar = accs.map(a => ({ color: BC[a.bank] || 'var(--muted)', w: total > 0 ? Math.max(0, balOf(a) / total * 100).toFixed(1) : 0 }));
+    const cards = accs.map(a => {
+      const v = balOf(a), e = L.edits[a.id] || '', ask = L.delAsk === a.id, dl = delta(a.id), cnt = ops.filter(o => o.acc === a.id).length;
+      return {
+        bank: a.bank, name: a.name, letter: (BANKS.find(x => x[0] === a.bank) || [0, 0, 0, a.bank.slice(0, 1)])[3], fg: BF[a.bank] || '#fff', color: BC[a.bank] || '#4B5262', value: rub(v), pct: pct(v),
+        moves: cnt ? 'По операциям на счёте: ' + (dl >= 0 ? '+' : '−') + rub(Math.abs(dl)) + ' (' + cnt + ' ' + plural(cnt, 'операция', 'операции', 'операций') + ')' : 'Операций по этому счёту пока нет',
+        edit: e, onEdit: (ev) => this.set({ edits: Object.assign({}, this.L.edits, { [a.id]: ev.target.value.replace(/[^0-9]/g, '') }) }),
+        saveBg: e ? 'var(--accent)' : 'var(--line)', saveFg: e ? 'var(--on-accent)' : 'var(--muted)',
+        save: () => { const t = this.L.edits[a.id]; if (t === undefined || t === '') return; const x = num(t); if (P.fnUpdAccount) P.fnUpdAccount(a.id, { bal: x - delta(a.id) }); this.set({ edits: Object.assign({}, this.L.edits, { [a.id]: '' }) }); },
+        delText: ask ? 'Точно удалить?' : 'Удалить', delFg: ask ? 'var(--bad)' : 'var(--muted)', delBorder: ask ? 'var(--bad-line)' : 'var(--line)',
+        remove: () => { if (this.L.delAsk === a.id) { if (P.fnDelAccount) P.fnDelAccount(a.id); this.set({ delAsk: '' }); } else this.set({ delAsk: a.id }); }
+      };
+    });
+    const banks = BANKS.map(b => ({ name: b[0], ic: b[1], icf: b[2], letter: b[3], border: L.aBank === b[0] ? '#ffffff' : 'rgba(255,255,255,.2)', bg: L.aBank === b[0] ? 'rgba(255,255,255,.16)' : 'rgba(255,255,255,.04)', fg: L.aBank === b[0] ? '#ffffff' : '#D5D9E3', sh: L.aBank === b[0] ? '0 0 16px rgba(255,255,255,.28)' : 'none', pick: () => this.set({ aBank: b[0] }) }));
+    const aOk = num(L.aBal) >= 0 && L.aBal !== '';
+
+    // ---------- выписка
+    const stAccs = accs.filter(a => a.type !== 'crypto');
+    const stAccId = L.stAcc || (stAccs[0] ? stAccs[0].id : '');
+    const stChips = stAccs.map(a => chip(a.bank + ' · ' + a.name, stAccId === a.id, () => this.set({ stAcc: a.id })));
+    const GUESS = [[/магнит|пят[её]роч|вкусвилл|лент[аы]|перекр[её]ст|ашан|дикси|продукт|азбука вкуса/i, 'Продукты'], [/такси|yandex go|яндекс go|метро|транспорт|троик|uber/i, 'Такси и общественный'], [/азс|лукойл|газпромнефть|роснефть|топлив|shell/i, 'Топливо'], [/аптек|клиник|врач|стоматол|медицин|ригла/i, 'Врачи и аптека'], [/кафе|кофе|ресторан|достав|самокат|burger|макдон|кфс|пицц|суши/i, 'Кафе и доставка'], [/зарплат|аванс|оклад/i, 'Зарплата'], [/кино|боулинг|игр|steam|театр/i, 'Развлечения'], [/подписк|netflix|spotify|яндекс плюс|youtube|icloud|яндекс 360/i, 'Подписки'], [/аренд|ипотек/i, 'Аренда или ипотека'], [/жкх|коммун|электр|газ\b/i, 'Коммунальные услуги'], [/мтс|билайн|мегафон|теле2|интернет|ростелеком/i, 'Интернет и связь'], [/одежд|zara|wildberries|ozon|lamoda/i, 'Одежда']];
+    const guess = (text, kind) => { for (let i = 0; i < GUESS.length; i++) if (GUESS[i][0].test(text)) { const c = catByName(GUESS[i][1]); if (c && ((kind === 'in') === (c[2] === 'Доход'))) return c; } return kind === 'in' ? INC[2] : EXP.find(x => x[0] === 'other'); };
+    const parseCsv = (text) => {
+      const lines = String(text).replace(/\r/g, '').split('\n').filter(l => l.trim());
+      if (lines.length < 2) return { rows: [], skipped: 0, err: 'В файле нет строк с операциями.' };
+      const sep = lines[0].split(';').length > lines[0].split(',').length ? ';' : (lines[0].split('\t').length > lines[0].split(',').length ? '\t' : ',');
+      const split = (l) => { const out = []; let cur = '', q = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (ch === '"') { q = !q; continue; } if (ch === sep && !q) { out.push(cur); cur = ''; continue; } cur += ch; } out.push(cur); return out.map(x => x.trim()); };
+      const head = split(lines[0]).map(h => h.toLowerCase());
+      const iD = head.findIndex(h => /дат|date/.test(h)), iS = head.findIndex(h => /сумм|amount|оборот/.test(h)), iN = head.findIndex(h => /назнач|описан|контраг|получател|merchant|операц|комментар/.test(h));
+      if (iD < 0 || iS < 0) return { rows: [], skipped: 0, err: 'Не нашёл колонки «Дата» и «Сумма» в первой строке. Проверьте файл или загрузите другой формат.' };
+      const rows = []; let skipped = 0;
+      lines.slice(1).forEach(l => {
+        const c = split(l); const dm = (c[iD] || '').match(/(\d{1,2})[.\-/](\d{1,2})[.\-/](\d{2,4})/) || (c[iD] || '').match(/(\d{4})-(\d{2})-(\d{2})/);
+        if (!dm) { skipped++; return; }
+        let day, mon; if (dm[1].length === 4) { day = parseInt(dm[3], 10); mon = parseInt(dm[2], 10); } else { day = parseInt(dm[1], 10); mon = parseInt(dm[2], 10); }
+        const raw = num((c[iS] || '').replace(/[^0-9,.\-−+]/g, '').replace('−', '-')); if (!raw) { skipped++; return; }
+        if (mon !== 10) { skipped++; return; }
+        const kind = raw > 0 && !/-/.test(c[iS] || '') ? 'in' : 'out'; const note = (c[iN >= 0 ? iN : 1] || 'Операция').slice(0, 60);
+        const cat = guess(note, kind); rows.push({ d: day, kind, cat: cat[1], grp: cat[2], note, sum: Math.abs(raw) });
+      });
+      return { rows, skipped, err: rows.length ? '' : 'Не нашёл операций за октябрь. Загрузите выписку за текущий месяц.' };
+    };
+    const SAMPLE = [
+      { d: 18, kind: 'out', cat: 'Продукты', grp: 'Еда', note: 'Магнит', sum: 1450 }, { d: 18, kind: 'out', cat: 'Такси и общественный', grp: 'Транспорт', note: 'Такси', sum: 380 },
+      { d: 17, kind: 'out', cat: 'Врачи и аптека', grp: 'Здоровье', note: 'Аптека', sum: 920 }, { d: 17, kind: 'in', cat: 'Подработка', grp: 'Доход', note: 'Перевод за заказ', sum: 5000 },
+      { d: 16, kind: 'out', cat: 'Кафе и доставка', grp: 'Еда', note: 'Кофейня', sum: 310 }, { d: 15, kind: 'out', cat: 'Топливо', grp: 'Транспорт', note: 'АЗС', sum: 2300 }, { d: 14, kind: 'out', cat: 'Развлечения', grp: 'Личное', note: 'Боулинг', sum: 1800 }
+    ];
+    const S = L.stRows || [];
+    const stRows = S.map((o, i) => { const on = !L.stSkip[i]; return { d: o.d, note: o.note, cat: o.cat, sum: (o.kind === 'in' ? '+' : '−') + rub(o.sum), sumColor: o.kind === 'in' ? 'var(--ok)' : 'var(--ink)', bg: on ? 'var(--field)' : 'var(--soft)', boxBg: on ? 'var(--accent)' : 'var(--card)', boxBorder: on ? 'var(--accent)' : 'var(--line2)', tick: on ? 1 : 0, toggle: () => this.set({ stSkip: Object.assign({}, this.L.stSkip, { [i]: !this.L.stSkip[i] }) }) }; });
+    const picked = S.filter((o, i) => !L.stSkip[i]);
+    const net = picked.reduce((s, o) => s + (o.kind === 'in' ? o.sum : -o.sum), 0);
+    const stOk = picked.length > 0 && !!stAccId && !L.stDone;
+    const readFile = (e) => {
+      const f = e.target.files && e.target.files[0]; if (!f) return;
+      if (!/\.(csv|txt)$/i.test(f.name)) { this.set({ stRows: null, stErr: 'Этот формат разберём в боте. Для макета загрузите CSV или TXT.', stFile: f.name }); return; }
+      const fr = new FileReader();
+      fr.onload = () => { const r = parseCsv(fr.result); this.set({ stRows: r.rows.length ? r.rows : null, stSkip: {}, stDone: false, stFile: f.name, stErr: r.err || (r.skipped ? 'Пропущено строк: ' + r.skipped + ' (не за октябрь или без суммы).' : '') }); };
+      fr.onerror = () => this.set({ stErr: 'Не удалось прочитать файл.' });
+      fr.readAsText(f, 'utf-8');
+    };
+
+    // ---------- платежи
+    const subsTotal = plans.filter(p => p.kind === 'sub').reduce((a, p) => a + p.sum, 0), totalPlans = plans.reduce((a, p) => a + p.sum, 0);
+    const unpaid = plans.filter(p => !p.paid), unpaidSum = unpaid.reduce((a, p) => a + p.sum, 0);
+    const overdue = unpaid.filter(p => p.day < TODAY);
+    const planKpis = [{ label: 'В месяц', value: rub(totalPlans), color: 'var(--ink)' }, { label: 'Подписки', value: rub(subsTotal), color: 'var(--ink)' }, { label: 'Осталось оплатить', value: rub(unpaidSum), color: unpaidSum ? 'var(--warn)' : 'var(--ok)' }, { label: 'Просрочено', value: overdue.length ? overdue.length + ' на ' + rub(overdue.reduce((a, p) => a + p.sum, 0)) : 'нет', color: overdue.length ? 'var(--bad)' : 'var(--ok)' }];
+    const planRows = plans.slice().sort((a, b) => (a.paid - b.paid) || (a.day - b.day)).map(p => {
+      const od = !p.paid && p.day < TODAY, ask = L.planAsk === p.id;
+      const when = p.paid ? 'оплачено' : (od ? 'просрочено на ' + (TODAY - p.day) + ' дн.' : (p.day === TODAY ? 'сегодня' : 'через ' + (p.day - TODAY) + ' дн.'));
+      return {
+        name: p.name, sub: p.cat + ', каждое ' + p.day + '-е число', tag: p.kind === 'sub' ? 'ПОДПИСКА' : 'ПЛАТЁЖ',
+        tagBg: p.kind === 'sub' ? 'var(--accent-soft)' : 'var(--soft)', tagFg: p.kind === 'sub' ? 'var(--accent-text)' : 'var(--muted)',
+        when, whenColor: p.paid ? 'var(--ok)' : (od ? 'var(--bad)' : 'var(--muted)'),
+        sum: rub(p.sum), boxBg: p.paid ? 'var(--ok)' : 'var(--card)', boxBorder: p.paid ? 'var(--ok)' : 'var(--line2)', tick: p.paid ? 1 : 0,
+        toggle: () => { if (P.fnTogglePlan) P.fnTogglePlan(p.id); },
+        delBg: ask ? 'var(--bad-soft)' : 'var(--card)', delFg: ask ? 'var(--bad)' : 'var(--muted)', delBorder: ask ? 'var(--bad-line)' : 'var(--line2)',
+        del: () => { if (this.L.planAsk === p.id) { if (P.fnDelPlan) P.fnDelPlan(p.id); this.set({ planAsk: '' }); } else this.set({ planAsk: p.id }); }
+      };
+    });
+    const planKinds = [['sub', 'Подписка'], ['bill', 'Платёж или счёт']].map(k => ({ name: k[1], bg: L.pKind === k[0] ? 'var(--card)' : 'transparent', fg: L.pKind === k[0] ? 'var(--ink)' : 'var(--muted)', pick: () => this.set({ pKind: k[0] }) }));
+    const BILL = ['Аренда или ипотека', 'Коммунальные услуги', 'Интернет и связь', 'Кредиты и долги', 'Налоги и штрафы', 'Авто: ТО и страховка', 'Ремонт и обслуживание', 'Прочее'];
+    const billCats = BILL.map(n => chip(n, L.pCat === n, () => this.set({ pCat: n })));
+    const pDay = parseInt(L.pDay || '0', 10);
+    const pOk = L.pName.trim().length > 0 && parseInt(L.pSum || '0', 10) > 0 && pDay >= 1 && pDay <= 31;
+    const addPlan = () => {
+      const l = this.L; const sum = parseInt(l.pSum || '0', 10), day = parseInt(l.pDay || '0', 10);
+      if (!l.pName.trim() || !(sum > 0) || !(day >= 1 && day <= 31)) return;
+      const catName = l.pKind === 'sub' ? 'Подписки' : l.pCat; const c = catByName(catName) || ['x', catName, 'Личное'];
+      if (P.fnAddPlan) P.fnAddPlan({ name: l.pName.trim(), cat: catName, grp: c[2], color: COL[c[2]], sum, day, kind: l.pKind });
+      this.set({ pName: '', pSum: '', pDay: '' });
+    };
+
+    // ---------- лимиты
+    const outs = ops.filter(o => o.kind === 'out');
+    const setLim = (g, v) => { const nl = Object.assign({}, LIM, { [g]: Math.max(0, v) }); if (P.fnSetLimits) P.fnSetLimits(nl); };
+    const PAL = ['#8FA3C8', '#6FCBA6', '#F0B85A', '#C79BE8', '#7FA6F5', '#F08A8A', '#8ED1D6'];
+    const colOf = (g, i) => GCOL[g] || PAL[i % PAL.length];
+    const TPLL = [['Продукты', 20000], ['Кафе и доставка', 8000], ['Такси и общественный', 5000], ['Топливо', 6000], ['Подписки', 3000], ['Развлечения', 6000], ['Одежда', 8000], ['Подарки', 3000], ['Обучение', 5000], ['Спорт и зал', 4000], ['Жильё', 38000], ['Транспорт', 9000], ['Здоровье', 6000], ['Семья', 7000], ['Финансы', 12000], ['Личное', 8000]];
+    const addLim = (name, amt) => { const n = (name || '').trim(); if (!n) return; const nl = Object.assign({}, LIM, { [n]: Math.max(0, amt || 0) }); if (P.fnSetLimits) P.fnSetLimits(nl); };
+    const limTpls = TPLL.filter(t => !(t[0] in LIM)).map(t => ({ name: t[0], sum: rub(t[1]), pick: () => addLim(t[0], t[1]) }));
+    const cName = (L.limName || '').trim(), cAmt = parseInt(L.limAmt || '0', 10), cOk = cName.length > 0 && !(cName in LIM);
+    const limits = Object.keys(LIM).map((g, gi) => {
+      const sp = outs.filter(o => o.grp === g || o.cat === g).reduce((a, o) => a + o.sum, 0), lim = LIM[g], p = lim > 0 ? sp / lim : (sp > 0 ? 2 : 0);
+      const bad = p > 1, warn = p >= 0.9;
+      const left = lim - sp;
+      const note = lim <= 0 ? 'Лимит не задан' : bad ? 'Превышено на ' + rub(sp - lim) : 'Осталось ' + rub(left) + ', это ' + rub(left / LEFT) + ' в день до конца месяца';
+      const ed = L.limEdits[g];
+      return { name: g, color: colOf(g, gi), del: () => { const nl = Object.assign({}, LIM); delete nl[g]; if (P.fnSetLimits) P.fnSetLimits(nl); }, spent: rub(sp), chip: lim > 0 ? (bad ? '+' + Math.round((p - 1) * 100) : Math.round(p * 100)) + '%' : '—', chipBg: bad ? 'var(--bad-soft)' : warn ? 'var(--warn-soft)' : 'var(--ok-soft)', chipFg: bad ? 'var(--bad)' : warn ? 'var(--warn)' : 'var(--ok)', bar: bad ? 'var(--bad)' : warn ? 'var(--warn)' : colOf(g, gi), w: Math.min(100, Math.round(p * 100)), note, noteColor: bad ? 'var(--bad)' : 'var(--muted)',
+        input: ed !== undefined ? ed : String(lim),
+        onInput: (e) => { const t = e.target.value.replace(/[^0-9]/g, ''); this.set({ limEdits: Object.assign({}, this.L.limEdits, { [g]: t }) }); if (t !== '') setLim(g, parseInt(t, 10)); },
+        minus: () => { setLim(g, Math.max(0, LIM[g] - 1000)); this.set({ limEdits: Object.assign({}, this.L.limEdits, { [g]: undefined }) }); },
+        plus: () => { setLim(g, LIM[g] + 1000); this.set({ limEdits: Object.assign({}, this.L.limEdits, { [g]: undefined }) }); } };
+    });
+    const limSum = Object.keys(LIM).reduce((a, g) => a + LIM[g], 0), incomeSum = ops.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0);
+
+    return {
+      fh: (() => { const fcm = (P.fcol || L.fcLocal || {}), ed = !!P.editMode, o = { eyeD: ed ? 'flex' : 'none', mr: ed ? 74 : 34 }; ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10'].forEach(id => { const hid = fcm[id] === 'h'; o[id] = { disp: (hid && !ed) ? 'none' : 'flex', op: hid ? 0.45 : 1, slash: hid ? 'inline' : 'none', bg: hid ? 'var(--line)' : 'var(--accent-soft)', fg: hid ? 'var(--muted)' : 'var(--accent-text)', toggle: () => { const nm = Object.assign({}, (P.fcol || L.fcLocal || {}), { [id]: hid ? 0 : 'h' }); if (P.fnSetFcol) P.fnSetFcol(nm); else this.set({ fcLocal: nm }); } }; }); return o; })(),
+      fc: (() => { const fcm = P.fcol || L.fcLocal || {}, o = {}; ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10'].forEach(id => { o[id] = { open: !fcm[id], rot: fcm[id] ? 0 : 180, mh: fcm[id] ? '30px' : 'auto', cop: fcm[id] ? .55 : 1, mask: fcm[id] ? 'linear-gradient(180deg,#000 0,transparent 100%)' : 'none', toggle: () => { const nm = Object.assign({}, P.fcol || this.L.fcLocal || {}, { [id]: (P.fcol || this.L.fcLocal || {})[id] ? 0 : 1 }); if (P.fnSetFcol) P.fnSetFcol(nm); else this.set({ fcLocal: nm }); } }; }); return o; })(),
+      isOps: SUB === 'ops', isAccounts: SUB === 'accounts', isStmt: SUB === 'stmt', isPlans: SUB === 'plans', isLimits: SUB === 'limits',
+      kinds, amount: L.amount, note: L.note, catGroups, accChips, amountChips, dayChips, dayMan: L.dayMan, quick,
+      onAmount: (e) => this.set({ amount: e.target.value.replace(/[^0-9]/g, '') }), onNote: (e) => this.set({ note: e.target.value }), onDayMan: (e) => this.set({ dayMan: e.target.value.replace(/[^0-9]/g, '').slice(0, 2) }),
+      submit, submitBg: ready ? 'var(--accent)' : 'var(--line)', submitFg: ready ? 'var(--on-accent)' : 'var(--muted)',
+      submitText: !(amt > 0) ? 'Введите сумму' : (!L.cat ? 'Выберите категорию' : (L.kind === 'in' ? 'Добавить доход' : 'Добавить расход') + ', ' + dayVal + ' окт'),
+      hasToast: !!L.toast, toast: L.toast, q: L.q, onQ: (e) => this.set({ q: e.target.value, lim: 40 }),
+      filters, rows, noRows: filtered.length === 0, shownNote: 'показано ' + rows.length + ' из ' + filtered.length, moreOn: filtered.length > L.lim, more: () => this.set({ lim: this.L.lim + 40 }),
+      countText: accs.length + ' ' + plural(accs.length, 'счёт', 'счёта', 'счетов'), total: rub(total), bar, kindsA, cards, noAcc: accs.length === 0, noAccShow: accs.length === 0 && !L.addOpen, banks, aName: L.aName, aBal: L.aBal,
+      onAName: (e) => this.set({ aName: e.target.value }), onABal: (e) => this.set({ aBal: e.target.value.replace(/[^0-9]/g, '') }),
+      addBg: aOk ? 'var(--accent)' : 'var(--line)', addFg: aOk ? 'var(--on-accent)' : 'var(--muted)', addText: aOk ? 'Добавить счёт' : 'Введите остаток',
+      addAcc: () => { const l = this.L; if (l.aBal === '') return; const type = l.aBank === 'Наличные' ? 'cash' : (l.aBank === 'Bybit' ? 'crypto' : 'bank'); const acc = { type, bank: l.aBank, name: l.aName.trim() || (type === 'cash' ? 'Наличные' : (type === 'crypto' ? 'Торговый счёт' : 'Счёт')), bal: num(l.aBal) }; if (P.fnAddAccount) P.fnAddAccount(acc); this.set({ aName: '', aBal: '', addOpen: false }); },
+      addOpen: !!L.addOpen, addRows: L.addOpen ? '1fr' : '0fr', addOpc: L.addOpen ? 1 : 0, addVis: L.addOpen ? 'visible' : 'hidden', addDelay: L.addOpen ? '0s' : '.6s', toggleAddAcc: () => this.set({ addOpen: !this.L.addOpen }), addBtnText: L.addOpen ? 'Закрыть' : 'Добавить счёт', addPlus: L.addOpen ? 'none' : 'inline', addBtnBg: L.addOpen ? 'var(--line)' : 'var(--accent)', addBtnFg: L.addOpen ? 'var(--ink)' : 'var(--on-accent)',
+      stChips, stErr: L.stErr, hasPreview: S.length > 0 && !L.stDone, stCount: S.length, stRows, stLabel: L.stFile || 'пример', stChosen: picked.length + ' из ' + S.length, stSum: (net >= 0 ? '+' : '−') + rub(Math.abs(net)),
+      onFile: readFile, demo: () => this.set({ stRows: SAMPLE, stSkip: {}, stDone: false, stFile: 'пример выписки', stErr: '' }),
+      impBg: stOk ? 'var(--accent)' : 'var(--line)', impFg: stOk ? 'var(--on-accent)' : 'var(--muted)', impText: stOk ? 'Добавить ' + picked.length + ' ' + plural(picked.length, 'операцию', 'операции', 'операций') : 'Нечего добавлять',
+      doImport: () => { const l = this.L; if (!stOk) return; const list = (l.stRows || []).filter((o, i) => !l.stSkip[i]).map(o => Object.assign({}, o, { color: COL[o.grp], acc: stAccId, imported: true })); if (P.fnImportOps) P.fnImportOps(list); this.set({ stDone: true, stRows: null, stDoneText: 'Добавлено операций: ' + list.length + '.' }); },
+      stDone: L.stDone, stDoneText: L.stDoneText,
+      planSummary: 'Всего ' + rub(totalPlans) + ' в месяц, из них подписки ' + rub(subsTotal), planKpis, planRows, noPlans: plans.length === 0, planKinds, pIsBill: L.pKind === 'bill', billCats, pName: L.pName, pSum: L.pSum, pDay: L.pDay,
+      onPName: (e) => this.set({ pName: e.target.value }), onPSum: (e) => this.set({ pSum: e.target.value.replace(/[^0-9]/g, '') }), onPDay: (e) => this.set({ pDay: e.target.value.replace(/[^0-9]/g, '').slice(0, 2) }),
+      addPlan, pBtnBg: pOk ? 'var(--accent)' : 'var(--line)', pBtnFg: pOk ? 'var(--on-accent)' : 'var(--muted)',
+      pHint: pOk ? 'Платёж появится в списке. Отметьте квадрат, когда оплатите: расход запишется сам.' : 'Заполните название, сумму и день месяца от 1 до 31.',
+      newMonth: () => { if (P.fnNewMonth) P.fnNewMonth(); },
+      limits, noLim: Object.keys(LIM).length === 0, hasLim: Object.keys(LIM).length > 0, limTpls, limName: L.limName || '', limAmt: L.limAmt || '', onLimName: (e) => this.set({ limName: e.target.value }), onLimAmt: (e) => this.set({ limAmt: e.target.value.replace(/[^0-9]/g, '') }), addCustom: () => { if (!cOk) return; addLim(cName, cAmt); this.set({ limName: '', limAmt: '' }); }, cBtnBg: cOk ? 'rgba(255,255,255,.2)' : 'rgba(255,255,255,.06)', cBtnOp: cOk ? 1 : .55, limTotalText: 'Всего лимитов ' + rub(limSum) + (incomeSum ? ', это ' + Math.round(limSum / incomeSum * 100) + '% дохода' : ''),
+      resetLim: () => { if (P.fnSetLimits) P.fnSetLimits({}); this.set({ limEdits: {} }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

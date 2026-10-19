@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Инструкция</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink)">
+  <div style="max-width:960px;margin:0 auto;padding:28px 32px 64px;display:flex;flex-direction:column;gap:16px">
+
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <h1 style="margin:0;font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:700;letter-spacing:-.02em">Инструкция</h1>
+      <span style="font-size:14px;color:var(--muted);line-height:1.5;max-width:680px">{{subtitle}}</span>
+    </div>
+
+    <sc-if value="{{locked}}" hint-placeholder-val="{{true}}">
+      <div style="background:var(--warn-soft);border:1px solid var(--warn-line);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+        <b style="font-size:14px;color:var(--warn)">Сначала прочитай инструкцию. Остальные разделы пока закрыты.</b>
+        <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;height:8px;border-radius:999px;background:var(--warn-line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--warn);width:{{progress}}%"></div></div><span style="font-size:12px;font-weight:700;color:var(--warn)">{{shown}} из {{total}}</span></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{isRead}}" hint-placeholder-val="{{false}}">
+      <div style="background:var(--ok-soft);border:1px solid var(--ok-line);border-radius:20px;padding:14px 18px;color:var(--ok);font-weight:700;font-size:14px">Инструкция прочитана. Все разделы трекера открыты.</div>
+    </sc-if>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+    <sc-for list="{{sections}}" as="s" hint-placeholder-count="7">
+      <div style="background:var(--card);border:1.5px solid {{s.border}};border-radius:20px;box-shadow:var(--shadow);overflow:hidden;opacity:{{s.opacity}}">
+        <button type="button" onClick="{{s.toggle}}" aria-expanded="{{s.expanded}}" style="width:100%;cursor:{{s.cursor}};text-align:left;border:0;background:transparent;padding:18px 20px;display:flex;align-items:center;gap:12px">
+          <span style="width:36px;height:36px;border-radius:50%;background:{{s.circle}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">{{s.mark}}</span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink)">{{s.title}}</b><span style="font-size:13px;color:var(--muted)">{{s.sub}}</span></span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{s.rot}}deg);flex-shrink:0;display:{{s.chevDisplay}}"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <sc-if value="{{s.open}}" hint-placeholder-val="{{false}}">
+          <div style="border-top:1px solid var(--soft);padding:16px;display:flex;flex-direction:column;gap:12px;animation:dc-open .18s ease-out both">
+            <span style="font-size:14px;color:var(--ink2);line-height:1.6">{{s.lead}}</span>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{s.items}}" as="i" hint-placeholder-count="3">
+                <div style="display:flex;gap:12px;padding:10px 14px;border-radius:12px;background:var(--field);border:1px solid var(--line)">
+                  <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:7px;flex-shrink:0"></span>
+                  <span style="font-size:14px;line-height:1.55;color:var(--ink2);min-width:0"><b style="color:var(--ink)">{{i.lead}}</b> {{i.text}}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <button type="button" onClick="{{s.nextBtn}}" style="display:{{s.nextDisplay}};cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:14px 24px">{{s.nextText}}</button>
+              <sc-if value="{{s.hasGo}}" hint-placeholder-val="{{false}}">
+                <button type="button" onClick="{{s.go}}" style="cursor:pointer;border:0;border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-weight:600;font-size:13px;padding:8px 16px">{{s.goLabel}}</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    </div>
+
+    <sc-if value="{{showFinal}}" hint-placeholder-val="{{false}}">
+      <div style="background:var(--accent-soft);color:var(--ink);border:1px solid var(--accent-line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:12px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Это всё. Осталось нажать кнопку</b>
+        <span style="font-size:14px;color:var(--ink2);line-height:1.6">После нажатия откроются Кабинет, Дашборд, Финансы и Блоки. Эту инструкцию всегда можно открыть снова во вкладке «Инструкция».</span>
+        <button type="button" onClick="{{confirm}}" style="cursor:pointer;align-self:flex-start;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:16px;padding:14px 24px">Я прочитал инструкцию</button>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"read":{"editor":null},"fnRead":{"editor":null},"fnGo":{"editor":null},"$preview":{"width":1360,"height":1200}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, step: 1, cur: 0 }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const P = this.props, L = this.L;
+    const isRead = !!P.read;
+    const go = (t) => () => { if (P.fnGo) P.fnGo(t); };
+    const S = [
+      { title: 'Как устроен трекер', lead: 'Вкладки наверху, всё в одном месте.', items: [
+        { lead: 'Дашборд.', text: 'Виджеты с главным за день и «Мои показатели» для ежедневного ввода. Вкладка «Аналитика» показывает, что получается лучше всего.' },
+        { lead: 'Моя волна.', text: 'Задачи, расписание, питание, тренировка, вода и привычки. Что показывать и в каком порядке, решаете вы.' },
+        { lead: 'Бизнес, Деньги, Курсы.', text: 'Отдельные вкладки. Их можно добавить или убрать в библиотеке разделов.' }
+      ] },
+      { title: 'Каждый день: 30 секунд', lead: 'Откройте «Моя волна» и пройдитесь по списку.', items: [
+        { lead: 'Дела.', text: 'Сделали, нажмите на галочку. Новое дело добавляется строкой внизу списка.' },
+        { lead: 'Показатели.', text: 'На дашборде нажимайте плюс и минус, ставьте галочки и оценки.' },
+        { lead: 'Питание и спорт.', text: 'Запишите приём пищи и тренировку, итоги попадут на дашборд.' }
+      ] },
+      { title: 'Соберите трекер под себя', lead: 'Здесь только то, что нужно именно вам.', items: [
+        { lead: 'Библиотека блоков.', text: 'Вкладка «Библиотека», раздел «Блоки». 155 показателей по группам. У каждого написано, что вводить и куда попадут данные.' },
+        { lead: 'Библиотека разделов.', text: 'Там же: добавляйте и убирайте целые вкладки и части дня. Можно создать свой раздел.' },
+        { lead: 'Настроить дашборд.', text: 'Кнопка «Настроить» двигает виджеты, меняет размер S, M, L и убирает лишние.' }
+      ] },
+      { title: 'Расписание и бизнес', lead: 'Планы по часам и работа над большими целями.', items: [
+        { lead: 'Расписание.', text: 'Выберите день, добавьте событие со временем. Свободные окна видно сразу, нажмите «Занять».' },
+        { lead: 'Бизнес.', text: 'Выберите тип: бизнес, предприятие, блог, ремонт и другие. Разделы подберутся сами, лишние можно убрать.' },
+        { lead: 'Отчёт.', text: 'Внутри бизнеса раздел «Отчёт» собирает итоги из ваших данных, их можно скопировать.' }
+      ] },
+      { title: 'Курсы и языки', lead: 'Загрузите материал и занимайтесь по плану.', items: [
+        { lead: 'Курсы.', text: 'Загрузите курс любого формата, выберите темп, получите план по дням. Нажмите «Жить по курсу», и «Моя волна» будет вести вас по нему каждый день.' },
+        { lead: 'Языки.', text: 'Выберите язык: слова, карточки, грамматика, практика и ежедневные цели.' }
+      ] },
+      { title: 'Деньги', lead: 'Всё о деньгах на одной вкладке.', items: [
+        { lead: 'Обзор.', text: 'Сколько денег, сколько можно тратить в день, лимиты, ближайшие платежи, счета, цели и долги.' },
+        { lead: 'Внести.', text: 'Вручную: сумма, категория, «Добавить». Или загрузите выписку из банка, трекер разложит траты по категориям.' },
+        { lead: 'Платежи и лимиты.', text: 'Регулярные платежи и подписки вносятся один раз. Оплатили, поставьте галочку.' },
+        { lead: 'Цели и долги.', text: 'Копите на цель, и трекер покажет месяц, когда дойдёте. Для долга покажет дату закрытия.' }
+      ] }
+    ];
+    const total = S.length;
+    const unlocked = isRead ? total : Math.min(L.step, total);
+    const cur = L.cur === undefined ? 0 : L.cur;
+    const sections = S.map((s, i) => {
+      const open = cur === i && i < unlocked, done = isRead || i < L.step - 1, lockedRow = i >= unlocked, last = i === total - 1;
+      return {
+        title: s.title, lead: s.lead, items: s.items, open, expanded: open ? 'true' : 'false',
+        mark: lockedRow ? String(i + 1) : done ? '✓' : String(i + 1), circle: lockedRow ? 'var(--line2)' : done ? 'var(--ok)' : 'var(--accent)',
+        border: open ? 'var(--accent)' : 'var(--line)', opacity: lockedRow ? 0.55 : 1, cursor: lockedRow ? 'default' : 'pointer',
+        sub: lockedRow ? 'Откроется после предыдущего раздела' : s.lead, rot: open ? 180 : 0, chevDisplay: lockedRow ? 'none' : 'block',
+        toggle: () => { if (i >= unlocked) return; this.set({ cur: this.L.cur === i ? -1 : i }); },
+        nextDisplay: isRead ? 'none' : 'inline-block', nextText: last ? 'Понятно, к финалу' : 'Понятно, дальше',
+        nextBtn: () => this.set({ step: Math.max(this.L.step, i + 2), cur: last ? -1 : i + 1 }),
+        hasGo: isRead && !!s.go, goLabel: s.go ? s.go[0] : '', go: go(s.go ? s.go[1] : 'cab')
+      };
+    });
+    return {
+      subtitle: isRead ? 'Как пользоваться трекером: что вносить, где и как это работает.' : 'Читайте по порядку. Прочитали раздел, нажмите «Понятно, дальше»: он закроется, а следующий откроется сам. Листать не нужно.',
+      locked: !isRead, isRead, progress: Math.round(Math.min(L.step - 1, total) / total * 100), shown: Math.min(L.step - 1, total), total,
+      sections, showFinal: !isRead && L.step > total,
+      confirm: () => { if (P.fnRead) P.fnRead(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

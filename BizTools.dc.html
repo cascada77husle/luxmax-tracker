@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Инструменты бизнеса</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+input,textarea{transition:border-color .15s ease}
+input:focus,textarea:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box;min-width:0;position:relative}
+.h{font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700}
+.sub{font-size:13px;color:var(--muted);line-height:1.45}
+.cap{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.row{display:flex;align-items:center;gap:10px}
+.wrap{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--card);color:var(--ink2);border-radius:999px;font-weight:600;font-size:13px;padding:0 14px;min-height:44px}
+.inp{border:1.5px solid var(--line2);border-radius:12px;background:var(--field);color:var(--ink);font-size:14px;padding:0 12px;min-height:44px;outline:none;width:100%;box-sizing:border-box}
+textarea.inp{padding:10px 12px;min-height:88px;resize:vertical}
+.btn{border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:0 18px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn2{border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:600;font-size:14px;padding:0 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.tag{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--ink2);white-space:nowrap}
+.tile{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.item{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--field)}
+.ib{width:44px;height:44px;padding:0;border-radius:12px;border:1.5px solid var(--line2);background:var(--card);color:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:14px">
+
+<!-- ПРОДАЖИ -->
+<sc-if value="{{kSales}}" hint-placeholder-val="{{true}}">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><sc-for list="{{stages}}" as="s" hint-placeholder-count="4"><div style="background:{{s.bg}};border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:{{s.fg}}">{{s.name}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:800;color:{{s.fg}}">{{s.sum}}</b><span style="font-size:12px;color:{{s.fg}};opacity:.85">{{s.count}}</span></div></sc-for></div>
+
+  <sc-if value="{{showAddDeal}}" hint-placeholder-val="{{false}}">
+    <div class="card" style="border:1.5px solid var(--accent);animation:dc-open .16s ease-out">
+      <b class="h">Новая сделка</b>
+      <input type="text" class="inp" placeholder="Клиент или сделка" aria-label="Клиент или сделка" value="{{dName}}" onInput="{{onDName}}">
+      <input type="text" inputmode="decimal" class="inp" placeholder="Сумма, ₽" aria-label="Сумма" value="{{dSum}}" onInput="{{onDSum}}">
+      <span class="cap">Откуда пришёл</span>
+      <div class="wrap"><sc-for list="{{srcChips}}" as="c" hint-placeholder-count="10"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+      <input type="text" class="inp" placeholder="Контакт: телефон, @ник или почта" aria-label="Контакт" value="{{dContact}}" onInput="{{onDContact}}">
+      <span class="cap">Следующее касание</span>
+      <input type="date" class="inp" aria-label="Дата следующего касания" value="{{dNext}}" onInput="{{onDNext}}">
+      <div class="row" style="gap:8px"><button type="button" class="btn2" onClick="{{closeAdd}}" style="flex:1">Отмена</button><button type="button" class="btn" onClick="{{addDeal}}" style="flex:2;opacity:{{dealOp}}">Добавить сделку</button></div>
+    </div>
+  </sc-if>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between;gap:8px"><b class="h">Кому написать сегодня</b><span class="tag" style="background:{{todayBg}};color:{{todayFg}}">{{todayCount}}</span></div>
+    <span class="sub">Открытые сделки, у которых подошла дата касания или она не назначена.</span>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{todayRows}}" as="r" hint-placeholder-count="3"><div class="item">
+      <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:15px">{{r.name}}</b><span style="font-size:13px;font-weight:700">{{r.sum}}</span></div>
+      <span class="sub">{{r.meta}}</span>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn" onClick="{{r.wrote}}" style="flex:1 1 140px">Написал, +3 дня</button><button type="button" class="btn2" onClick="{{r.tomorrow}}" style="flex:1 1 110px">На завтра</button></div>
+    </div></sc-for></div>
+    <span style="display:{{todayEmptyD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Сегодня писать никому не нужно.</span>
+  </div>
+
+  <div class="card">
+    <b class="h">Воронка по источникам</b>
+    <span class="sub">Источник, лиды, оплаты и что осталось после комиссии и рекламы. Комиссию площадки можно задать справа от названия.</span>
+    <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{funnelRows}}" as="f" hint-placeholder-count="4"><div class="item">
+      <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:15px">{{f.name}}</b><span class="tag" style="background:{{f.convBg}};color:{{f.convFg}}">{{f.conv}}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px"><span class="sub">Лиды<br><b style="font-size:16px;color:var(--ink)">{{f.leads}}</b></span><span class="sub">Оплаты<br><b style="font-size:16px;color:var(--ink)">{{f.paid}}</b></span><span class="sub">Выручка<br><b style="font-size:14px;color:var(--ink)">{{f.rev}}</b></span><span class="sub">Прибыль<br><b style="font-size:14px;color:{{f.pcol}}">{{f.profit}}</b></span></div>
+      <div class="bar"><i style="width:{{f.pct}}%"></i></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><span class="sub" style="flex:1 1 150px">Комиссия {{f.fee}}%, реклама {{f.spend}}</span><button type="button" class="ib" onClick="{{f.feeMinus}}" aria-label="Меньше комиссия">−</button><button type="button" class="ib" onClick="{{f.feePlus}}" aria-label="Больше комиссия">+</button></div>
+    </div></sc-for></div>
+    <span style="display:{{funnelEmptyD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Добавьте сделку с источником, и здесь появится воронка.</span>
+  </div>
+
+  <div class="card">
+    <b class="h">Сделки</b>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{dealRows}}" as="r" hint-placeholder-count="3"><div class="item">
+      <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:15px">{{r.name}}</b><span class="tag" style="background:{{r.bg}};color:{{r.fg}}">{{r.stage}}</span></div>
+      <div class="row" style="justify-content:space-between;gap:8px"><b style="font-size:16px">{{r.sum}}</b><span class="sub">{{r.meta}}</span></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><span class="sub">Касание</span><input type="date" class="inp" aria-label="Дата касания" value="{{r.next}}" onInput="{{r.setNext}}" style="flex:1 1 150px;width:auto"></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn" onClick="{{r.advance}}" style="display:{{r.advD}};flex:1 1 120px">{{r.advText}}</button><button type="button" class="btn2" onClick="{{r.doc}}" style="flex:1 1 100px">Документ</button><button type="button" class="btn2" onClick="{{r.task}}" style="flex:1 1 100px">В задачу</button><button type="button" class="btn2" onClick="{{r.remove}}" style="flex:0 0 auto">Удалить</button></div>
+    </div></sc-for></div>
+    <span style="display:{{dealsEmptyD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Сделок пока нет. Нажмите «Добавить сделку» внизу.</span>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between;gap:8px"><b class="h">Все обращения</b><button type="button" class="btn2" onClick="{{toggleInq}}">{{inqBtn}}</button></div>
+    <span class="sub">Один список из всех каналов. Пока обращения вносятся вручную, подключение чатов появится в боте.</span>
+    <sc-if value="{{inqOpen}}" hint-placeholder-val="{{false}}"><div class="item" style="animation:dc-open .16s ease-out">
+      <div class="wrap"><sc-for list="{{inqChips}}" as="c" hint-placeholder-count="6"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+      <input type="text" class="inp" placeholder="Кто написал" aria-label="Кто написал" value="{{iWho}}" onInput="{{onIWho}}">
+      <input type="text" class="inp" placeholder="Что спросил" aria-label="Что спросил" value="{{iText}}" onInput="{{onIText}}">
+      <button type="button" class="btn" onClick="{{addInq}}" style="opacity:{{inqOp}}">Записать обращение</button>
+    </div></sc-if>
+    <div class="wrap"><sc-for list="{{filterChips}}" as="c" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{inqRows}}" as="r" hint-placeholder-count="3"><div class="item" style="opacity:{{r.op}}">
+      <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:15px">{{r.who}}</b><span class="tag">{{r.ch}}</span></div>
+      <span style="font-size:14px;line-height:1.45">{{r.text}}</span><span class="sub">{{r.date}}</span>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn" onClick="{{r.toDeal}}" style="display:{{r.doD}};flex:1 1 120px">В сделку</button><button type="button" class="btn2" onClick="{{r.done}}" style="flex:1 1 100px">{{r.doneText}}</button><button type="button" class="btn2" onClick="{{r.remove}}">Удалить</button></div>
+    </div></sc-for></div>
+    <span style="display:{{inqEmptyD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Обращений пока нет.</span>
+  </div>
+</sc-if>
+
+<!-- РЕКЛАМА -->
+<sc-if value="{{kAds}}" hint-placeholder-val="{{false}}">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><sc-for list="{{adStats}}" as="s" hint-placeholder-count="4"><div class="tile"><span class="cap">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:800;color:{{s.color}}">{{s.value}}</b><span class="sub">{{s.sub}}</span></div></sc-for></div>
+
+  <sc-if value="{{showAddAd}}" hint-placeholder-val="{{false}}">
+    <div class="card" style="border:1.5px solid var(--accent);animation:dc-open .16s ease-out">
+      <b class="h">Расход на рекламу</b>
+      <span class="cap">Канал</span>
+      <div class="wrap"><sc-for list="{{adChips}}" as="c" hint-placeholder-count="10"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+      <input type="text" inputmode="decimal" class="inp" placeholder="Сколько потратили, ₽" aria-label="Расход" value="{{aSpend}}" onInput="{{onASpend}}">
+      <input type="text" class="inp" placeholder="Что за кампания (необязательно)" aria-label="Кампания" value="{{aNote}}" onInput="{{onANote}}">
+      <div class="row" style="gap:8px"><button type="button" class="btn2" onClick="{{closeAdd}}" style="flex:1">Отмена</button><button type="button" class="btn" onClick="{{addAd}}" style="flex:2;opacity:{{adOp}}">Добавить расход</button></div>
+    </div>
+  </sc-if>
+
+  <div class="card">
+    <b class="h">По каналам</b>
+    <span class="sub">Лиды и оплаты берутся из сделок с этим источником. Стоимость клиента и окупаемость считаются сами.</span>
+    <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{adRows}}" as="f" hint-placeholder-count="3"><div class="item">
+      <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:15px">{{f.name}}</b><span class="tag" style="background:{{f.roiBg}};color:{{f.roiFg}}">{{f.roi}}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px"><span class="sub">Расход<br><b style="font-size:14px;color:var(--ink)">{{f.spend}}</b></span><span class="sub">Лиды<br><b style="font-size:16px;color:var(--ink)">{{f.leads}}</b></span><span class="sub">Оплаты<br><b style="font-size:16px;color:var(--ink)">{{f.paid}}</b></span><span class="sub">Клиент<br><b style="font-size:14px;color:var(--ink)">{{f.cac}}</b></span></div>
+    </div></sc-for></div>
+    <span style="display:{{adEmptyD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Добавьте первый расход на рекламу.</span>
+  </div>
+
+  <div class="card">
+    <b class="h">Записи расходов</b>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{adEntries}}" as="e" hint-placeholder-count="3"><div class="row item" style="flex-direction:row;justify-content:space-between;gap:10px"><span style="display:flex;flex-direction:column;min-width:0"><b style="font-size:14px">{{e.ch}}</b><span class="sub">{{e.note}}</span></span><b style="font-size:14px;white-space:nowrap">{{e.sum}}</b><button type="button" class="ib" onClick="{{e.remove}}" aria-label="Удалить расход">×</button></div></sc-for></div>
+    <button type="button" class="btn2" onClick="{{goRoi}}">Расчёт окупаемости в «Деньги»</button>
+  </div>
+</sc-if>
+
+<!-- КУРС -->
+<sc-if value="{{kCourse}}" hint-placeholder-val="{{false}}">
+  <sc-if value="{{noCourse}}" hint-placeholder-val="{{false}}">
+    <div class="card" style="align-items:flex-start">
+      <b class="h">Курс для этого бизнеса</b>
+      <span class="sub" style="max-width:36em">Загрузите курс или гайд. Текстовый файл (TXT, Markdown) разобьётся на уроки по заголовкам. Для PDF и Word сохранится название, уроки добавьте вручную или возьмите пример разбивки.</span>
+      <label class="btn" style="cursor:pointer">Загрузить файл<input type="file" accept=".txt,.md,.pdf,.doc,.docx" style="display:none" onChange="{{onFile}}"></label>
+      <span class="cap">Или без файла</span>
+      <input type="text" class="inp" placeholder="Название курса" aria-label="Название курса" value="{{cName}}" onInput="{{onCName}}">
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn2" onClick="{{startEmpty}}">Создать пустой курс</button><button type="button" class="btn2" onClick="{{startDemo}}">Пример разбивки</button></div>
+      <span class="sub" style="color:var(--warn)">{{fileMsg}}</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{hasCourse}}" hint-placeholder-val="{{false}}">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="display:flex;flex-direction:column;min-width:0"><b class="h">{{cTitle}}</b><span class="sub">{{cSub}}</span></span><button type="button" class="btn2" onClick="{{resetCourse}}">Заменить курс</button></div>
+      <div class="bar"><i style="width:{{cPct}}%"></i></div>
+      <span class="sub">{{cProg}}</span>
+      <span class="cap">Сколько времени в день</span>
+      <div class="wrap"><sc-for list="{{minChips}}" as="c" hint-placeholder-count="4"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+      <span class="cap">Дней в неделю</span>
+      <div class="wrap"><sc-for list="{{dpwChips}}" as="c" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn2" onClick="{{allToTasks}}">Все дни в задачи бизнеса</button></div>
+      <span class="sub" style="color:var(--ok)">{{taskMsg}}</span>
+    </div>
+
+    <sc-if value="{{showAddLesson}}" hint-placeholder-val="{{false}}"><div class="card" style="border:1.5px solid var(--accent);animation:dc-open .16s ease-out"><b class="h">Новый урок</b><input type="text" class="inp" placeholder="Название урока" aria-label="Название урока" value="{{lText}}" onInput="{{onLText}}"><div class="row" style="gap:8px"><button type="button" class="btn2" onClick="{{closeAdd}}" style="flex:1">Отмена</button><button type="button" class="btn" onClick="{{addLesson}}" style="flex:2;opacity:{{lessonOp}}">Добавить урок</button></div></div></sc-if>
+
+    <div class="card">
+      <b class="h">План по дням</b>
+      <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{dayRows}}" as="d" hint-placeholder-count="4"><div class="item" style="background:{{d.bg}}">
+        <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:15px">{{d.title}}</b><span class="tag" style="background:{{d.tagBg}};color:{{d.tagFg}}">{{d.tag}}</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><sc-for list="{{d.lessons}}" as="l" hint-placeholder-count="2"><button type="button" onClick="{{l.toggle}}" style="display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 10px;border-radius:12px;border:1.5px solid {{l.border}};background:{{l.bg}};color:var(--ink);text-align:left"><span style="width:22px;height:22px;border-radius:7px;border:1.5px solid {{l.border}};background:{{l.box}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0">{{l.tick}}</span><span style="flex:1;min-width:0;font-size:14px;text-decoration:{{l.deco}}">{{l.name}}</span></button></sc-for></div>
+        <button type="button" class="btn2" onClick="{{d.toTask}}" style="opacity:{{d.taskOp}}">{{d.taskText}}</button>
+      </div></sc-for></div>
+      <span style="display:{{noLessonsD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">В курсе пока нет уроков. Нажмите «Добавить урок» внизу.</span>
+    </div>
+
+    <div class="card">
+      <b class="h">Уроки и конспекты</b>
+      <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{lessonRows}}" as="l" hint-placeholder-count="3"><div class="item">
+        <button type="button" onClick="{{l.open}}" style="display:flex;align-items:center;gap:10px;min-height:44px;border:0;background:transparent;color:var(--ink);text-align:left;padding:0"><span class="tag">{{l.num}}</span><b style="flex:1;min-width:0;font-size:14px">{{l.name}}</b><span class="sub">{{l.has}}</span></button>
+        <sc-if value="{{l.isOpen}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:8px"><textarea class="inp" placeholder="Конспект: что взяли из урока для бизнеса" aria-label="Конспект" value="{{l.note}}" onInput="{{l.onNote}}"></textarea><div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn2" onClick="{{l.noteTask}}">Сделать задачей бизнеса</button><button type="button" class="btn2" onClick="{{l.remove}}">Удалить урок</button></div></div></sc-if>
+      </div></sc-for></div>
+    </div>
+  </sc-if>
+</sc-if>
+
+<!-- УЧЁТ ВРЕМЕНИ (услуги) -->
+<sc-if value="{{kTime}}" hint-placeholder-val="{{false}}">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><sc-for list="{{timeStats}}" as="s" hint-placeholder-count="3"><div class="tile"><span class="cap">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:800;color:{{s.color}}">{{s.value}}</b><span class="sub">{{s.sub}}</span></div></sc-for></div>
+  <sc-if value="{{showAddTime}}" hint-placeholder-val="{{false}}">
+    <div class="card" style="border:1.5px solid var(--accent);animation:dc-open .16s ease-out">
+      <b class="h">Записать время</b>
+      <input type="text" class="inp" placeholder="Над чем работали" aria-label="Над чем работали" value="{{tWhat}}" onInput="{{onTWhat}}">
+      <input type="text" class="inp" placeholder="Клиент" aria-label="Клиент" value="{{tClient}}" onInput="{{onTClient}}">
+      <div class="row" style="gap:8px"><input type="text" inputmode="decimal" class="inp" placeholder="Часы" aria-label="Часы" value="{{tH}}" onInput="{{onTH}}"><input type="text" inputmode="decimal" class="inp" placeholder="Ставка, ₽/час" aria-label="Ставка" value="{{tRate}}" onInput="{{onTRate}}"></div>
+      <div class="row" style="gap:8px"><button type="button" class="btn2" onClick="{{closeAdd}}" style="flex:1">Отмена</button><button type="button" class="btn" onClick="{{addTime}}" style="flex:2;opacity:{{timeOp}}">Записать</button></div>
+    </div>
+  </sc-if>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b class="h">Часы по клиентам</b></div>
+    <span class="sub">Неоплаченные часы можно одной кнопкой отправить в «Счета клиентам» внутри «Деньги».</span>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{clientRows}}" as="c" hint-placeholder-count="2"><div class="item"><div class="row" style="justify-content:space-between;gap:8px"><b style="font-size:15px">{{c.name}}</b><b style="font-size:15px">{{c.sum}}</b></div><span class="sub">{{c.hours}}</span><button type="button" class="btn" onClick="{{c.bill}}" style="display:{{c.billD}}">Выставить счёт на {{c.sum}}</button></div></sc-for></div>
+    <span style="display:{{clientEmptyD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Записей времени пока нет.</span>
+    <span class="sub" style="color:var(--ok)">{{billMsg}}</span>
+  </div>
+  <div class="card">
+    <b class="h">Журнал времени</b>
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{timeRows}}" as="r" hint-placeholder-count="3"><div class="row item" style="flex-direction:row;justify-content:space-between;gap:10px"><span style="display:flex;flex-direction:column;min-width:0;flex:1"><b style="font-size:14px">{{r.what}}</b><span class="sub">{{r.meta}}</span></span><span class="tag" style="background:{{r.bg}};color:{{r.fg}}">{{r.state}}</span><button type="button" class="ib" onClick="{{r.remove}}" aria-label="Удалить запись">×</button></div></sc-for></div>
+  </div>
+</sc-if>
+
+<!-- ДОКУМЕНТЫ -->
+<sc-if value="{{kDocs}}" hint-placeholder-val="{{false}}">
+  <div class="card">
+    <b class="h">Документ из сделки</b>
+    <span class="sub">Выберите сделку и тип документа. Текст подставит клиента и сумму, его можно скопировать или скачать. Это черновик: реквизиты и налоги проверьте сами.</span>
+    <span class="cap">Сделка</span>
+    <div class="wrap"><sc-for list="{{docDeals}}" as="c" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+    <span style="display:{{docNoDealD}};padding:14px;text-align:center;border:1.5px dashed var(--line2);border-radius:14px;color:var(--muted);font-size:14px">Сначала добавьте сделку в разделе «Продажи».</span>
+    <span class="cap">Тип документа</span>
+    <div class="wrap"><sc-for list="{{docTypes}}" as="c" hint-placeholder-count="3"><button type="button" class="chip" onClick="{{c.pick}}" style="border-color:{{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div>
+    <span class="cap">Ваши реквизиты</span>
+    <textarea class="inp" placeholder="Например: ИП Иванов И. И., ИНН ..., р/с ..., банк ..." aria-label="Реквизиты" value="{{req}}" onInput="{{onReq}}"></textarea>
+  </div>
+  <sc-if value="{{docReady}}" hint-placeholder-val="{{false}}">
+    <div class="card">
+      <b class="h">{{docTitle}}</b>
+      <div style="white-space:pre-wrap;font-size:14px;line-height:1.55;padding:14px;border-radius:14px;background:var(--field);border:1px solid var(--line)">{{docText}}</div>
+      <div class="row" style="gap:8px;flex-wrap:wrap"><button type="button" class="btn" onClick="{{copyDoc}}" style="flex:1 1 140px">{{copyText}}</button><button type="button" class="btn2" onClick="{{downloadDoc}}" style="flex:1 1 140px">Скачать .txt</button></div>
+      <button type="button" class="btn2" onClick="{{docToInvoice}}" style="display:{{docInvD}}">Создать счёт в «Деньги»</button>
+      <span class="sub" style="color:var(--ok)">{{docMsg}}</span>
+    </div>
+  </sc-if>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kind":{"editor":null},"adding":{"editor":null},"deals":{"editor":null},"biz":{"editor":null},"pname":{"editor":null},"fnDeals":{"editor":null},"fnBiz":{"editor":null},"fnBoth":{"editor":null},"fnTask":{"editor":null},"fnAdding":{"editor":null},"fnDoc":{"editor":null},"fnSec":{"editor":null},"$preview":{"width":420,"height":1400}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, dName: '', dSum: '', dSrc: 'Instagram', dContact: '', dNext: '2026-10-21', aCh: 'Instagram', aSpend: '', aNote: '', iCh: 'Telegram', iWho: '', iText: '', inqOpen: false, fCh: 'all', tWhat: '', tClient: '', tH: '', tRate: '', cName: '', lText: '', openL: '', fileMsg: '', taskMsg: '', billMsg: '', docType: 'inv', docMsg: '', copied: false }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const L = this.L, P = this.props || {};
+    const kind = P.kind || 'sales', deals = P.deals || [], biz = P.biz || {}, pname = P.pname || 'Бизнес';
+    const TODAY = '2026-10-19';
+    const ALLCH = ['Сайт', 'Instagram', 'Telegram', 'WhatsApp', 'VK', 'Яндекс Директ', 'Блогеры', 'Авито', 'Wildberries', 'Ozon', 'Яндекс Маркет', 'Звонок', 'Рекомендация', 'Другое'];
+    const ADCH = ALLCH.filter(c => ['Звонок', 'Рекомендация', 'WhatsApp', 'Сайт'].indexOf(c) < 0);
+    const MOP = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    const MOF = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const dshort = (iso) => iso ? (+iso.slice(8, 10)) + ' ' + MOP[+iso.slice(5, 7) - 1] : '';
+    const dlong = (iso) => (+iso.slice(8, 10)) + ' ' + MOF[+iso.slice(5, 7) - 1] + ' ' + iso.slice(0, 4) + ' г.';
+    const addDays = (iso, n) => new Date(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10) + n)).toISOString().slice(0, 10);
+    const money = (n) => (n < 0 ? '− ' : '') + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+$)/g, ' ') + ' ₽';
+    const num = (x) => { const n = parseFloat(String(x == null ? '' : x).replace(/\s/g, '').replace(',', '.')); return isNaN(n) ? 0 : n; };
+    const uid = () => 'b' + Math.random().toString(36).slice(2, 7) + Date.now().toString(36).slice(-3);
+    const chipS = (on) => ({ bg: on ? 'var(--accent-soft)' : 'var(--card)', border: on ? 'var(--accent)' : 'var(--line)', fg: on ? 'var(--accent-text)' : 'var(--ink2)' });
+    const dig = (k) => (e) => this.set({ [k]: String(e.target.value).replace(/[^0-9.,]/g, '') });
+    const txt = (k) => (e) => this.set({ [k]: e.target.value });
+    const setBiz = (patch, close) => { if (P.fnBiz) P.fnBiz(Object.assign({}, this.props.biz || {}, patch), !!close); };
+    const setDeals = (arr, close) => { if (P.fnDeals) P.fnDeals(arr, !!close); };
+    const closeAdd = () => { if (P.fnAdding) P.fnAdding(''); };
+    const STG = ['Лид', 'Переговоры', 'Счёт выставлен', 'Оплачено'];
+    const STC = [['var(--soft)', 'var(--ink2)'], ['var(--accent-soft)', 'var(--accent-text)'], ['var(--warn-soft)', 'var(--warn)'], ['var(--ok-soft)', 'var(--ok)']];
+    const ADV = ['Дальше: переговоры', 'Выставить счёт', 'Отметить оплату', ''];
+
+    // ---------- расчёт воронки и рекламы (тот же, что на обзоре) ----------
+    const fees = biz.fees || {}, ads = biz.ads || [];
+    const by = {}; const get = (s) => by[s] || (by[s] = { name: s, leads: 0, paid: 0, rev: 0, spend: 0, fee: fees[s] || 0 });
+    deals.forEach(d => { const r = get(d.src || 'Без источника'); r.leads++; if (d.st === 3) { r.paid++; r.rev += d.s || 0; } });
+    ads.forEach(a => { get(a.ch).spend += a.sum || 0; });
+    const calc = Object.keys(by).map(k => { const r = by[k]; r.profit = r.rev - r.rev * r.fee / 100 - r.spend; r.conv = r.leads ? Math.round(r.paid / r.leads * 100) : 0; r.cac = r.paid ? r.spend / r.paid : 0; r.roi = r.spend ? Math.round((r.rev - r.spend) / r.spend * 100) : null; return r; }).sort((a, b) => b.leads - a.leads || b.spend - a.spend);
+    const spendRows = calc.filter(r => r.spend > 0);
+    const totSpend = spendRows.reduce((s, r) => s + r.spend, 0), totPaidAd = spendRows.reduce((s, r) => s + r.paid, 0), totRevAd = spendRows.reduce((s, r) => s + r.rev, 0);
+    const maxLeads = Math.max(1, ...calc.map(r => r.leads));
+
+    // ---------- ПРОДАЖИ ----------
+    const stages = STG.map((n, k) => { const a = deals.filter(x => x.st === k); return { name: n, sum: money(a.reduce((s, x) => s + (x.s || 0), 0)), count: a.length + ' ' + (a.length % 10 === 1 && a.length % 100 !== 11 ? 'сделка' : (a.length % 10 > 1 && a.length % 10 < 5 && (a.length % 100 < 10 || a.length % 100 > 20)) ? 'сделки' : 'сделок'), bg: STC[k][0], fg: STC[k][1] }; });
+    const upd = (i, patch) => setDeals(deals.map((y, j) => j === i ? Object.assign({}, y, patch) : y));
+    const meta = (d) => [d.src || 'источник не указан', d.contact || 'контакт не указан'].join(' · ');
+    const todayIdx = deals.map((d, i) => ({ d, i })).filter(o => o.d.st < 3 && (!o.d.next || o.d.next <= TODAY));
+    const todayRows = todayIdx.map(o => ({ name: o.d.n, sum: money(o.d.s || 0), meta: meta(o.d) + ' · ' + (o.d.next ? 'касание ' + dshort(o.d.next) : 'дата не назначена'), wrote: () => upd(o.i, { next: addDays(TODAY, 3), last: TODAY }), tomorrow: () => upd(o.i, { next: addDays(TODAY, 1) }) }));
+    const dealRows = deals.map((d, i) => ({ name: d.n, sum: money(d.s || 0), stage: STG[d.st] || STG[0], bg: (STC[d.st] || STC[0])[0], fg: (STC[d.st] || STC[0])[1], meta: (d.src || 'без источника'), next: d.next || '', setNext: (e) => upd(i, { next: e.target.value }), advD: d.st < 3 ? 'inline-flex' : 'none', advText: ADV[d.st] || '', advance: () => upd(i, { st: Math.min(3, (d.st || 0) + 1) }), doc: () => { if (P.fnDoc) P.fnDoc(i); }, task: () => { if (P.fnTask) P.fnTask('Сделка «' + d.n + '»: ' + (d.st === 0 ? 'связаться' : d.st === 1 ? 'договориться об условиях' : 'получить оплату'), null); }, remove: () => setDeals(deals.filter((_, j) => j !== i)) }));
+    const funnelRows = calc.filter(r => r.leads > 0 || r.spend > 0).map(r => ({ name: r.name, leads: r.leads, paid: r.paid, rev: money(r.rev), profit: money(r.profit), pcol: r.profit >= 0 ? 'var(--ok)' : 'var(--bad)', conv: 'конверсия ' + r.conv + '%', convBg: r.conv >= 30 ? 'var(--ok-soft)' : 'var(--soft)', convFg: r.conv >= 30 ? 'var(--ok)' : 'var(--ink2)', pct: Math.round(r.leads / maxLeads * 100), fee: r.fee, spend: money(r.spend), feeMinus: () => setBiz({ fees: Object.assign({}, fees, { [r.name]: Math.max(0, r.fee - 1) }) }), feePlus: () => setBiz({ fees: Object.assign({}, fees, { [r.name]: Math.min(50, r.fee + 1) }) }) }));
+    const srcChips = ALLCH.map(c => Object.assign({ name: c, pick: () => this.set({ dSrc: c }) }, chipS(L.dSrc === c)));
+    const dealOk = !!(L.dName || '').trim();
+    const addDeal = () => { if (!dealOk) return; setDeals(deals.concat([{ n: L.dName.trim(), s: num(L.dSum), st: 0, src: L.dSrc, contact: (L.dContact || '').trim(), next: L.dNext || addDays(TODAY, 2) }]), true); this.set({ dName: '', dSum: '', dContact: '', dNext: addDays(TODAY, 2) }); };
+    // обращения
+    const inq = biz.inbox || [];
+    const inqUsed = ['all'].concat(ALLCH.filter(c => inq.some(x => x.ch === c)));
+    const filterChips = inqUsed.map(c => Object.assign({ name: c === 'all' ? 'Все' : c, pick: () => this.set({ fCh: c }) }, chipS(L.fCh === c)));
+    const inqChips = ALLCH.map(c => Object.assign({ name: c, pick: () => this.set({ iCh: c }) }, chipS(L.iCh === c)));
+    const inqOk = !!(L.iWho || '').trim();
+    const inqRows = inq.map((x, i) => ({ x, i })).filter(o => L.fCh === 'all' || o.x.ch === L.fCh).sort((a, b) => (a.x.done ? 1 : 0) - (b.x.done ? 1 : 0)).map(o => ({ who: o.x.who, ch: o.x.ch, text: o.x.text || 'Без текста', date: dshort(o.x.d), op: o.x.done ? 0.55 : 1, doD: o.x.done || o.x.deal ? 'none' : 'inline-flex', doneText: o.x.done ? 'Вернуть' : 'Готово',
+      toDeal: () => { if (P.fnBoth) P.fnBoth(deals.concat([{ n: o.x.who, s: 0, st: 0, src: o.x.ch, contact: '', next: TODAY }]), Object.assign({}, biz, { inbox: inq.map((y, j) => j === o.i ? Object.assign({}, y, { deal: true }) : y) })); },
+      done: () => setBiz({ inbox: inq.map((y, j) => j === o.i ? Object.assign({}, y, { done: !y.done }) : y) }), remove: () => setBiz({ inbox: inq.filter((_, j) => j !== o.i) }) }));
+    const addInq = () => { if (!inqOk) return; setBiz({ inbox: [{ id: uid(), ch: L.iCh, who: L.iWho.trim(), text: (L.iText || '').trim(), d: TODAY, done: false }].concat(inq) }); this.set({ iWho: '', iText: '', inqOpen: false }); };
+
+    // ---------- РЕКЛАМА ----------
+    const adStats = [{ label: 'Расход', value: money(totSpend), sub: ads.length + ' ' + (ads.length === 1 ? 'запись' : 'записей'), color: 'var(--ink)' },
+      { label: 'Клиентов', value: String(totPaidAd), sub: 'оплатили из каналов с рекламой', color: 'var(--ink)' },
+      { label: 'Стоимость клиента', value: totPaidAd ? money(totSpend / totPaidAd) : '—', sub: 'расход на одного платящего', color: 'var(--accent-text)' },
+      { label: 'Окупаемость', value: totSpend ? Math.round((totRevAd - totSpend) / totSpend * 100) + '%' : '—', sub: totSpend ? 'выручка ' + money(totRevAd) : 'нет расходов', color: totSpend && totRevAd >= totSpend ? 'var(--ok)' : 'var(--bad)' }];
+    const adRows = spendRows.map(r => ({ name: r.name, spend: money(r.spend), leads: r.leads, paid: r.paid, cac: r.paid ? money(r.cac) : '—', roi: r.roi === null ? '—' : 'окупаемость ' + r.roi + '%', roiBg: r.roi !== null && r.roi >= 0 ? 'var(--ok-soft)' : 'var(--bad-soft)', roiFg: r.roi !== null && r.roi >= 0 ? 'var(--ok)' : 'var(--bad)' }));
+    const adEntries = ads.map((a, i) => ({ ch: a.ch, note: a.note || 'без описания', sum: money(a.sum || 0), remove: () => setBiz({ ads: ads.filter((_, j) => j !== i) }) }));
+    const adChips = ADCH.map(c => Object.assign({ name: c, pick: () => this.set({ aCh: c }) }, chipS(L.aCh === c)));
+    const adOk = num(L.aSpend) > 0;
+    const addAd = () => { if (!adOk) return; setBiz({ ads: ads.concat([{ id: uid(), ch: L.aCh, sum: num(L.aSpend), note: (L.aNote || '').trim() }]) }, true); this.set({ aSpend: '', aNote: '' }); };
+
+    // ---------- КУРС ----------
+    const course = biz.course || null;
+    const setCourse = (c, close) => setBiz({ course: c }, close);
+    const parseLessons = (text) => {
+      const lines = text.split(/\r?\n/); const clean = (s) => s.replace(/^\s*#{1,6}\s*/, '').trim().slice(0, 90);
+      const heads = lines.filter(l => /^\s*(#{1,3}\s+|урок\s*\d+|модуль\s*\d+|\d+[.)]\s+)/i.test(l)).map(clean).filter(Boolean);
+      if (heads.length >= 2) return heads.slice(0, 60).map(t => ({ id: uid(), t, done: false, note: '' }));
+      return text.split(/\n\s*\n/).map(p => clean(p.trim().split('\n')[0] || '')).filter(Boolean).slice(0, 30).map(t => ({ id: uid(), t, done: false, note: '' }));
+    };
+    const DEMO = ['Кто ваш клиент и чего он хочет', 'Предложение и цена', 'Первые продажи и разговор с клиентом', 'Где брать клиентов: реклама и каналы', 'Воронка и главные цифры', 'Повторные продажи', 'Найм и делегирование', 'План на месяц'];
+    const lessons = course ? (course.lessons || []) : [];
+    const mins = course ? (course.mins || 30) : 30, dpw = course ? (course.dpw || 5) : 5, lpd = Math.max(1, Math.round(mins / 20));
+    const nDays = Math.ceil(lessons.length / lpd);
+    const lessonsPlan = []; for (let i = 0; i < nDays; i++) lessonsPlan.push(lessons.slice(i * lpd, (i + 1) * lpd).map((l, k) => ({ l, n: i * lpd + k })));
+    const dayDate = (i) => addDays((course && course.start) || TODAY, Math.floor(i / dpw) * 7 + (i % dpw));
+    const doneCount = lessons.filter(l => l.done).length;
+    const toggleLesson = (n) => () => setCourse(Object.assign({}, course, { lessons: lessons.map((y, j) => j === n ? Object.assign({}, y, { done: !y.done }) : y) }));
+    const dayText = (i) => 'Курс «' + course.name + '», день ' + (i + 1) + ': ' + lessonsPlan[i].map(o => (o.n + 1) + '. ' + o.l.t).join('; ');
+    const dayRows = lessonsPlan.map((arr, i) => { const all = arr.every(o => o.l.done), tk = !!(course.tasks || {})[i], dt = dayDate(i); return { title: 'День ' + (i + 1) + ' · ' + dshort(dt), bg: all ? 'var(--ok-soft)' : 'var(--field)', tag: all ? 'Готово' : dt === TODAY ? 'Сегодня' : dt < TODAY ? 'Пропущен' : 'Впереди', tagBg: all ? 'var(--ok-soft)' : dt === TODAY ? 'var(--accent-soft)' : dt < TODAY ? 'var(--warn-soft)' : 'var(--soft)', tagFg: all ? 'var(--ok)' : dt === TODAY ? 'var(--accent-text)' : dt < TODAY ? 'var(--warn)' : 'var(--ink2)',
+      lessons: arr.map(o => ({ name: (o.n + 1) + '. ' + o.l.t, tick: o.l.done ? '✓' : '', box: o.l.done ? 'var(--ok)' : 'var(--card)', border: o.l.done ? 'var(--ok)' : 'var(--line2)', bg: o.l.done ? 'var(--ok-soft)' : 'var(--card)', deco: o.l.done ? 'line-through' : 'none', toggle: toggleLesson(o.n) })),
+      taskText: tk ? 'Задача создана' : 'Сделать задачей бизнеса', taskOp: tk ? 0.6 : 1, toTask: () => { if (tk || !P.fnTask) return; P.fnTask(dayText(i), { course: Object.assign({}, course, { tasks: Object.assign({}, course.tasks || {}, { [i]: true }) }) }); this.set({ taskMsg: 'Задача на день ' + (i + 1) + ' добавлена в «Задачи» бизнеса.' }); } }; });
+    const lessonRows = lessons.map((l, n) => { const op = L.openL === l.id; return { num: n + 1, name: l.t, has: l.note ? 'есть конспект' : '', isOpen: op, note: l.note || '', open: () => this.set({ openL: op ? '' : l.id }), onNote: (e) => setCourse(Object.assign({}, course, { lessons: lessons.map((y, j) => j === n ? Object.assign({}, y, { note: e.target.value }) : y) })), noteTask: () => { if (P.fnTask) P.fnTask('Применить из урока «' + l.t + '»' + (l.note ? ': ' + l.note.slice(0, 80) : ''), null); this.set({ taskMsg: 'Задача по уроку «' + l.t + '» добавлена в «Задачи» бизнеса.' }); }, remove: () => setCourse(Object.assign({}, course, { lessons: lessons.filter((_, j) => j !== n) })) }; });
+    const minChips = [15, 30, 60, 90].map(m => Object.assign({ name: m + ' мин', pick: () => setCourse(Object.assign({}, course, { mins: m })) }, chipS(mins === m)));
+    const dpwChips = [3, 5, 7].map(m => Object.assign({ name: m + ' дн.', pick: () => setCourse(Object.assign({}, course, { dpw: m })) }, chipS(dpw === m)));
+    const lessonOk = !!(L.lText || '').trim();
+
+    // ---------- УЧЁТ ВРЕМЕНИ ----------
+    const tm = biz.time || [];
+    const rateDef = biz.rate || 0;
+    const unb = tm.filter(x => !x.billed);
+    const tmHours = tm.reduce((s, x) => s + (x.h || 0), 0);
+    const timeStats = [{ label: 'Часов записано', value: String(Math.round(tmHours * 10) / 10).replace('.', ',') + ' ч', sub: tm.length + ' записей', color: 'var(--ink)' }, { label: 'Не выставлено', value: money(unb.reduce((s, x) => s + (x.h || 0) * (x.rate || 0), 0)), sub: 'часы без счёта', color: 'var(--warn)' }, { label: 'Выставлено', value: money(tm.filter(x => x.billed).reduce((s, x) => s + (x.h || 0) * (x.rate || 0), 0)), sub: 'часы со счётом', color: 'var(--ok)' }];
+    const byCl = {}; unb.forEach(x => { const c = x.client || 'Без клиента'; (byCl[c] = byCl[c] || { name: c, h: 0, sum: 0 }); byCl[c].h += x.h || 0; byCl[c].sum += (x.h || 0) * (x.rate || 0); });
+    const clientRows = Object.keys(byCl).map(k => { const c = byCl[k]; return { name: c.name, sum: money(c.sum), hours: String(Math.round(c.h * 10) / 10).replace('.', ',') + ' ч не выставлено', billD: c.sum > 0 ? 'inline-flex' : 'none', bill: () => { setBiz({ invQueue: (biz.invQueue || []).concat([{ id: uid(), client: c.name, amount: c.sum, note: 'Часы: ' + Math.round(c.h * 10) / 10 }]), time: tm.map(x => (!x.billed && (x.client || 'Без клиента') === c.name) ? Object.assign({}, x, { billed: true }) : x) }); this.set({ billMsg: 'Счёт для «' + c.name + '» ждёт в «Деньги → Счета клиентам».' }); } }; });
+    const timeRows = tm.map((x, i) => ({ what: x.what, meta: (x.client || 'без клиента') + ' · ' + String(x.h).replace('.', ',') + ' ч × ' + money(x.rate || 0), state: x.billed ? 'Со счётом' : 'Не выставлен', bg: x.billed ? 'var(--ok-soft)' : 'var(--warn-soft)', fg: x.billed ? 'var(--ok)' : 'var(--warn)', remove: () => setBiz({ time: tm.filter((_, j) => j !== i) }) }));
+    const timeOk = !!(L.tWhat || '').trim() && num(L.tH) > 0;
+    const addTime = () => { if (!timeOk) return; const r = num(L.tRate) || rateDef; setBiz({ time: [{ id: uid(), what: L.tWhat.trim(), client: (L.tClient || '').trim(), h: num(L.tH), rate: r, billed: false }].concat(tm), rate: r }, true); this.set({ tWhat: '', tH: '' }); };
+
+    // ---------- ДОКУМЕНТЫ ----------
+    const di = Math.min(Math.max(0, biz.docDeal || 0), Math.max(0, deals.length - 1)), dd = deals[di] || null;
+    const DT = [['inv', 'Счёт'], ['act', 'Акт'], ['kp', 'Коммерческое предложение']];
+    const docTypes = DT.map(t => Object.assign({ name: t[1], pick: () => this.set({ docType: t[0], docMsg: '', copied: false }) }, chipS(L.docType === t[0])));
+    const docDeals = deals.map((d, i) => Object.assign({ name: d.n, pick: () => { setBiz({ docDeal: i }); this.set({ docMsg: '', copied: false }); } }, chipS(i === di)));
+    const req = biz.req || '';
+    const docNo = 'Д-' + String(di + 1).padStart(3, '0');
+    const execLine = req.trim() ? req.trim() : 'Исполнитель: ' + pname + ' (укажите реквизиты)';
+    const sumTxt = dd ? money(dd.s || 0) : '';
+    const buildDoc = () => {
+      if (!dd) return '';
+      const cl = 'Заказчик: ' + dd.n + (dd.contact ? ', ' + dd.contact : '');
+      if (L.docType === 'inv') return 'СЧЁТ № ' + docNo + ' от ' + dlong(TODAY) + '\n\n' + execLine + '\n' + cl + '\n\nНаименование: услуги и товары по сделке «' + dd.n + '»\nСумма к оплате: ' + sumTxt + '\nОплатить до: ' + dlong(addDays(TODAY, 7)) + '\nНДС: укажите по вашему режиму налогообложения.\n\nПодпись исполнителя: ____________';
+      if (L.docType === 'act') return 'АКТ № ' + docNo + ' от ' + dlong(TODAY) + '\nо выполненных работах (оказанных услугах)\n\n' + execLine + '\n' + cl + '\n\nИсполнитель выполнил, а заказчик принял работы по сделке «' + dd.n + '» на сумму ' + sumTxt + '.\nЗаказчик претензий по объёму, качеству и срокам не имеет.\n\nИсполнитель: ____________     Заказчик: ____________';
+      return 'КОММЕРЧЕСКОЕ ПРЕДЛОЖЕНИЕ № ' + docNo + '\nот ' + dlong(TODAY) + '\n\nДля: ' + dd.n + (dd.contact ? ' (' + dd.contact + ')' : '') + '\nОт: ' + (req.trim() ? req.trim().split('\n')[0] : pname) + '\n\nПредлагаем: решение по вашей задаче «' + dd.n + '».\nСтоимость: ' + sumTxt + '.\nСрок действия предложения: до ' + dlong(addDays(TODAY, 14)) + '.\nУсловия оплаты: по счёту, предоплата по согласованию.\n\nГотовы ответить на вопросы и приступить к работе.';
+    };
+    const docText = buildDoc();
+    const DTN = { inv: 'Счёт', act: 'Акт', kp: 'Коммерческое предложение' };
+    const download = (name, text) => { const c = (typeof window !== 'undefined') ? window.claude : null; const fb = () => { try { const b = new Blob([text], { type: 'text/plain;charset=utf-8' }), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove(); } catch (e) {} }; if (c && c.use) c.use('downloads').then(d => { if (d) d.save({ filename: name, data: text }).catch(() => {}); else fb(); }).catch(fb); else fb(); };
+
+    return {
+      kSales: kind === 'sales', kAds: kind === 'ads', kCourse: kind === 'course', kTime: kind === 'time', kDocs: kind === 'docs',
+      closeAdd,
+      // sales
+      stages, showAddDeal: kind === 'sales' && P.adding === 'deal', dName: L.dName, onDName: txt('dName'), dSum: L.dSum, onDSum: dig('dSum'), dContact: L.dContact, onDContact: txt('dContact'), dNext: L.dNext, onDNext: txt('dNext'), srcChips, addDeal, dealOp: dealOk ? 1 : 0.45,
+      todayRows, todayCount: todayRows.length ? todayRows.length + ' чел.' : 'никого', todayBg: todayRows.length ? 'var(--warn-soft)' : 'var(--ok-soft)', todayFg: todayRows.length ? 'var(--warn)' : 'var(--ok)', todayEmptyD: todayRows.length ? 'none' : 'block',
+      funnelRows, funnelEmptyD: funnelRows.length ? 'none' : 'block', dealRows, dealsEmptyD: dealRows.length ? 'none' : 'block',
+      inqOpen: !!L.inqOpen, toggleInq: () => this.set({ inqOpen: !this.L.inqOpen }), inqBtn: L.inqOpen ? 'Закрыть' : 'Записать обращение', inqChips, filterChips, iWho: L.iWho, onIWho: txt('iWho'), iText: L.iText, onIText: txt('iText'), addInq, inqOp: inqOk ? 1 : 0.45, inqRows, inqEmptyD: inqRows.length ? 'none' : 'block',
+      // ads
+      adStats, adRows, adEmptyD: adRows.length ? 'none' : 'block', adEntries, showAddAd: kind === 'ads' && P.adding === 'ad', adChips, aSpend: L.aSpend, onASpend: dig('aSpend'), aNote: L.aNote, onANote: txt('aNote'), addAd, adOp: adOk ? 1 : 0.45, goRoi: () => { if (P.fnSec) P.fnSec('fin'); },
+      // course
+      noCourse: !course, hasCourse: !!course, cName: L.cName, onCName: txt('cName'), fileMsg: L.fileMsg,
+      onFile: (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const nm = f.name.replace(/\.[^.]+$/, ''), ext = (f.name.split('.').pop() || '').toLowerCase(); const mk = (ls, note) => setCourse({ name: nm, src: 'file', size: Math.max(1, Math.round(f.size / 1024)) + ' КБ', lessons: ls, mins: 30, dpw: 5, tasks: {}, start: TODAY, note }); if (ext === 'txt' || ext === 'md') { const fr = new FileReader(); fr.onload = () => mk(parseLessons(String(fr.result || '')), ''); fr.onerror = () => this.set({ fileMsg: 'Не удалось прочитать файл.' }); fr.readAsText(f); } else mk([], 'Файл ' + ext.toUpperCase() + ' сохранён как источник. Текст из него здесь не разбирается: добавьте уроки вручную или возьмите пример разбивки.'); },
+      startEmpty: () => setCourse({ name: (L.cName || '').trim() || 'Новый курс', src: 'manual', lessons: [], mins: 30, dpw: 5, tasks: {}, start: TODAY, note: '' }),
+      startDemo: () => setCourse({ name: (L.cName || '').trim() || 'Пример: основы продаж', src: 'demo', lessons: DEMO.map(t => ({ id: uid(), t, done: false, note: '' })), mins: 30, dpw: 5, tasks: {}, start: TODAY, note: 'Пример разбивки, замените его своим курсом.' }),
+      resetCourse: () => setCourse(null),
+      cTitle: course ? course.name : '', cSub: course ? [(course.size || ''), lessons.length + ' уроков', course.note || ''].filter(Boolean).join(' · ') : '', cPct: lessons.length ? Math.round(doneCount / lessons.length * 100) : 0, cProg: 'Пройдено ' + doneCount + ' из ' + lessons.length + ' уроков, дней в плане: ' + nDays + '.',
+      minChips, dpwChips, dayRows, noLessonsD: lessons.length ? 'none' : 'block', lessonRows, taskMsg: L.taskMsg,
+      allToTasks: () => { if (!P.fnTask || !course || !nDays) return; const texts = lessonsPlan.map((_, i) => dayText(i)); const tk = {}; texts.forEach((_, i) => { tk[i] = true; }); P.fnTask(texts, { course: Object.assign({}, course, { tasks: tk }) }); this.set({ taskMsg: 'Все дни курса добавлены в «Задачи» бизнеса.' }); },
+      showAddLesson: kind === 'course' && P.adding === 'lesson', lText: L.lText, onLText: txt('lText'), lessonOp: lessonOk ? 1 : 0.45, addLesson: () => { if (!lessonOk || !course) return; setCourse(Object.assign({}, course, { lessons: lessons.concat([{ id: uid(), t: L.lText.trim(), done: false, note: '' }]) }), true); this.set({ lText: '' }); },
+      // time
+      timeStats, clientRows, clientEmptyD: clientRows.length ? 'none' : 'block', billMsg: L.billMsg, timeRows, showAddTime: kind === 'time' && P.adding === 'time', tWhat: L.tWhat, onTWhat: txt('tWhat'), tClient: L.tClient, onTClient: txt('tClient'), tH: L.tH, onTH: dig('tH'), tRate: L.tRate, onTRate: dig('tRate'), addTime, timeOp: timeOk ? 1 : 0.45,
+      // docs
+      docDeals, docNoDealD: deals.length ? 'none' : 'block', docTypes, req, onReq: (e) => setBiz({ req: e.target.value }), docReady: !!dd, docTitle: DTN[L.docType] + (dd ? ' · ' + dd.n : ''), docText,
+      docMsg: L.docMsg, copyText: L.copied ? 'Скопировано' : 'Скопировать', copyDoc: () => { try { navigator.clipboard.writeText(docText).then(() => this.set({ copied: true })).catch(() => this.set({ docMsg: 'Не удалось скопировать, выделите текст вручную.' })); } catch (e) { this.set({ docMsg: 'Не удалось скопировать, выделите текст вручную.' }); } },
+      downloadDoc: () => download(DTN[L.docType] + ' ' + docNo + '.txt', docText), docInvD: L.docType === 'inv' ? 'inline-flex' : 'none',
+      docToInvoice: () => { if (!dd) return; setBiz({ invQueue: (biz.invQueue || []).concat([{ id: uid(), client: dd.n, amount: dd.s || 0, note: 'Из сделки' }]) }); this.set({ docMsg: 'Счёт ждёт в «Деньги → Счета клиентам»: откройте раздел «Деньги».' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

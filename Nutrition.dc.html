@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Питание и БЖУ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+
+  <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px">
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-wrap:wrap;gap:28px;align-items:center">
+      <div style="position:relative;width:168px;height:168px;flex-shrink:0">
+        <svg width="168" height="168" viewBox="0 0 168 168" aria-hidden="true">
+          <circle cx="84" cy="84" r="70" fill="none" stroke="var(--soft)" stroke-width="16"/>
+          <circle cx="84" cy="84" r="70" fill="none" stroke="{{ringColor}}" stroke-width="16" stroke-linecap="round" stroke-dasharray="{{ringDash}}" transform="rotate(-90 84 84)"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1">{{leftValue}}</b>
+          <span style="font-size:12px;color:var(--muted);font-weight:600">{{leftLabel}}</span>
+        </div>
+      </div>
+      <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Съедено {{eaten}} ккал</b><span style="font-size:13px;color:var(--muted)">из {{goalK}} по плану</span></div>
+        <sc-for list="{{macros}}" as="m" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px;font-weight:600"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:{{m.color}};margin-right:8px"></i>{{m.name}}</span><span style="font-size:13px;color:var(--ink2)"><b>{{m.got}}</b> / {{m.goal}} г</span></div>
+            <div style="height:9px;border-radius:999px;background:var(--soft);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{m.color}};width:{{m.pct}}%"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:12px 22px 22px;display:flex;flex-direction:column">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+        <div style="display:{{r.headDisplay}};align-items:center;justify-content:space-between;gap:12px;padding:16px 0 8px">
+          <span style="display:flex;align-items:baseline;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">{{r.meal}}</b><span style="font-size:12px;color:var(--muted)">{{r.mealSum}}</span></span>
+          <button type="button" onClick="{{r.open}}" style="cursor:pointer;border:1.5px solid {{r.openBorder}};background:{{r.openBg}};color:{{r.openFg}};font-weight:700;font-size:12px;padding:8px 16px;border-radius:999px">{{r.openText}}</button>
+        </div>
+        <div style="display:{{r.itemDisplay}};align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--soft)">
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column"><b style="font-size:14px;font-weight:600">{{r.name}}</b><span style="font-size:12px;color:var(--muted)">{{r.g}} г · Б {{r.p}} · Ж {{r.f}} · У {{r.c}}</span></span>
+          <b style="font-size:14px;width:74px;text-align:right">{{r.k}} ккал</b>
+          <button type="button" onClick="{{r.remove}}" aria-label="Убрать продукт" style="cursor:pointer;border:0;background:transparent;color:var(--line2);font-size:18px;line-height:1;padding:2px 6px" title="Убрать продукт">×</button>
+        </div>
+        <div style="display:{{r.emptyDisplay}};padding:10px 0;border-top:1px solid var(--soft);font-size:13px;color:var(--muted)">Пока ничего. Добавьте продукт.</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="flex:0 1 420px;width:100%;max-width:420px;min-width:0;display:flex;flex-direction:column;gap:16px">
+    <div style="background:var(--card);border:{{panelBorder}};border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">{{panelTitle}}</b>
+      <span style="display:{{hintDisplay}};font-size:13px;color:var(--muted)">Нажмите «Добавить» у нужного приёма пищи. Здесь появится поиск по базе продуктов.</span>
+      <div style="display:{{formDisplay}};flex-direction:column;gap:12px">
+        <input id="nut-q" type="text" placeholder="Найти продукт: курица, рис, творог" value="{{q}}" onInput="{{onQ}}" aria-label="Поиск продукта" style="border:1px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--field);color:var(--ink)">
+        <div style="display:flex;flex-direction:column;gap:4px;max-height:244px;overflow:auto">
+          <sc-for list="{{results}}" as="p" hint-placeholder-count="5">
+            <button type="button" onClick="{{p.pick}}" style="cursor:pointer;text-align:left;border:1.5px solid {{p.border}};background:{{p.bg}};border-radius:12px;padding:9px 12px;display:flex;justify-content:space-between;gap:10px;align-items:center"><span style="font-size:13px;font-weight:600;color:var(--ink)">{{p.name}}</span><span style="font-size:11px;color:var(--muted);white-space:nowrap">{{p.k}} ккал · Б {{p.p}} · Ж {{p.f}} · У {{p.c}}</span></button>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:13px;font-weight:600">Вес, г</span>
+          <button type="button" onClick="{{gMinus}}" aria-label="Меньше" style="cursor:pointer;width:38px;height:38px;border-radius:12px;border:1px solid var(--line2);background:var(--card);font-size:18px" title="Меньше">−</button>
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;min-width:56px;text-align:center">{{grams}}</b>
+          <button type="button" onClick="{{gPlus}}" aria-label="Больше" style="cursor:pointer;width:38px;height:38px;border-radius:12px;border:1px solid var(--line2);background:var(--card);font-size:18px" title="Больше">+</button>
+        </div>
+        <div style="background:var(--bg);border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;gap:8px;font-size:13px"><span><b>{{pvK}}</b> ккал</span><span style="color:var(--accent-text)"><b>{{pvP}}</b> Б</span><span style="color:var(--warn)"><b>{{pvF}}</b> Ж</span><span style="color:var(--ok)"><b>{{pvC}}</b> У</span></div>
+        <button type="button" onClick="{{addItem}}" style="cursor:pointer;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:14px;background:{{addBg}};color:{{addFg}}">{{addText}}</button>
+        <button type="button" onClick="{{toggleCustom}}" style="cursor:pointer;align-self:flex-start;border:0;background:transparent;color:var(--accent-text);font-weight:600;font-size:13px;padding:0">{{customToggleText}}</button>
+        <div style="display:{{customDisplay}};flex-direction:column;gap:8px;border-top:1px solid var(--soft);padding-top:12px">
+          <input type="text" placeholder="Название продукта" value="{{cName}}" onInput="{{onCName}}" aria-label="Название продукта" style="border:1px solid var(--line2);border-radius:12px;padding:11px 14px;font-size:14px;background:var(--field)">
+          <span style="font-size:12px;color:var(--muted)">Значения на 100 г, как на упаковке</span>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+            <input type="text" inputmode="decimal" placeholder="ккал" value="{{cK}}" onInput="{{onCK}}" aria-label="Калории на 100 г" style="min-width:0;border:1px solid var(--line2);border-radius:12px;padding:11px 10px;font-size:14px;background:var(--field)">
+            <input type="text" inputmode="decimal" placeholder="Б" value="{{cP}}" onInput="{{onCP}}" aria-label="Белки на 100 г" style="min-width:0;border:1px solid var(--line2);border-radius:12px;padding:11px 10px;font-size:14px;background:var(--field)">
+            <input type="text" inputmode="decimal" placeholder="Ж" value="{{cF}}" onInput="{{onCF}}" aria-label="Жиры на 100 г" style="min-width:0;border:1px solid var(--line2);border-radius:12px;padding:11px 10px;font-size:14px;background:var(--field)">
+            <input type="text" inputmode="decimal" placeholder="У" value="{{cC}}" onInput="{{onCC}}" aria-label="Углеводы на 100 г" style="min-width:0;border:1px solid var(--line2);border-radius:12px;padding:11px 10px;font-size:14px;background:var(--field)">
+          </div>
+          <button type="button" onClick="{{saveCustom}}" style="cursor:pointer;border:1.5px solid var(--accent);background:var(--accent-soft);color:var(--accent-text);border-radius:12px;padding:11px;font-weight:700;font-size:14px">Сохранить свой продукт</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:16px;font-weight:700">Цели на день</b>
+      <span style="font-size:12px;color:var(--muted)">Калории задают кольцо, граммы задают полоски. Меняйте шагом.</span>
+      <sc-for list="{{goals}}" as="g" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:10px"><span style="flex:1;font-size:13px;font-weight:600">{{g.name}}</span>
+          <button type="button" onClick="{{g.minus}}" aria-label="Уменьшить цель" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px" title="Уменьшить цель">−</button>
+          <b style="min-width:78px;text-align:center;font-size:14px">{{g.value}}</b>
+          <button type="button" onClick="{{g.plus}}" aria-label="Увеличить цель" style="cursor:pointer;width:34px;height:34px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:16px" title="Увеличить цель">+</button>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1100}}'>
+class Component extends DCLogic {
+  init() {
+    return { ready: false, addTo: '', q: '', sel: 0, grams: 100, custom: false, cName: '', cK: '', cP: '', cF: '', cC: '', extra: [], nid: 10,
+      goal: { k: 2400, p: 150, f: 70, c: 260 },
+      items: [
+        { id: 1, meal: 'Завтрак', name: 'Овсянка на воде', g: 250, k100: 88, p100: 3, f100: 1.7, c100: 15 },
+        { id: 2, meal: 'Завтрак', name: 'Яйцо куриное', g: 120, k100: 157, p100: 12.7, f100: 11.5, c100: 0.7 },
+        { id: 3, meal: 'Завтрак', name: 'Банан', g: 120, k100: 89, p100: 1.1, f100: 0.3, c100: 23 },
+        { id: 4, meal: 'Обед', name: 'Куриная грудка', g: 180, k100: 165, p100: 31, f100: 3.6, c100: 0 },
+        { id: 5, meal: 'Обед', name: 'Рис варёный', g: 200, k100: 130, p100: 2.7, f100: 0.3, c100: 28 },
+        { id: 6, meal: 'Обед', name: 'Брокколи', g: 150, k100: 34, p100: 2.8, f100: 0.4, c100: 7 }
+      ] };
+  }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const L = this.L;
+    const DB = [['Куриная грудка', 165, 31, 3.6, 0], ['Индейка, филе', 114, 24, 1.5, 0], ['Говядина, стейк', 217, 26, 12, 0], ['Лосось', 208, 20, 13, 0], ['Тунец консервированный', 96, 22, 1, 0], ['Яйцо куриное', 157, 12.7, 11.5, 0.7], ['Творог 5%', 121, 17, 5, 1.8], ['Греческий йогурт', 59, 10, 0.4, 3.6], ['Кефир 2,5%', 53, 3, 2.5, 4], ['Молоко 2,5%', 52, 2.8, 2.5, 4.7], ['Сыр твёрдый', 350, 26, 27, 0], ['Гречка варёная', 110, 4, 1, 21], ['Рис варёный', 130, 2.7, 0.3, 28], ['Овсянка на воде', 88, 3, 1.7, 15], ['Макароны варёные', 158, 5.8, 0.9, 31], ['Картофель варёный', 82, 2, 0.4, 17], ['Чечевица варёная', 116, 9, 0.4, 20], ['Фасоль варёная', 127, 8.7, 0.5, 22], ['Хлеб ржаной', 214, 6.6, 1.2, 40], ['Мюсли', 360, 9, 6, 68], ['Банан', 89, 1.1, 0.3, 23], ['Яблоко', 52, 0.3, 0.2, 14], ['Авокадо', 160, 2, 15, 9], ['Брокколи', 34, 2.8, 0.4, 7], ['Помидор', 18, 0.9, 0.2, 3.9], ['Огурец', 15, 0.8, 0.1, 2.8], ['Миндаль', 579, 21, 50, 22], ['Оливковое масло', 884, 0, 100, 0], ['Протеин, порошок', 380, 80, 6, 6], ['Тёмный шоколад', 540, 6, 35, 48]].concat(L.extra);
+    const r1 = (n) => Math.round(n * 10) / 10;
+    const items = L.items.map(i => Object.assign({}, i, { k: Math.round(i.k100 * i.g / 100), p: r1(i.p100 * i.g / 100), f: r1(i.f100 * i.g / 100), c: r1(i.c100 * i.g / 100) }));
+    const sum = (a, k) => a.reduce((s, i) => s + i[k], 0);
+    const eaten = Math.round(sum(items, 'k')), G = L.goal, left = G.k - eaten;
+    const C = 2 * Math.PI * 70, pct = Math.min(1, eaten / G.k);
+    const mac = [['Белки', 'p', 'var(--accent)'], ['Жиры', 'f', 'var(--warn)'], ['Углеводы', 'c', 'var(--ok)']].map(m => ({ name: m[0], color: m[2], got: Math.round(sum(items, m[1])), goal: G[m[1]], pct: Math.min(100, Math.round(sum(items, m[1]) / G[m[1]] * 100)) }));
+    const meals = ['Завтрак', 'Обед', 'Ужин', 'Перекус'];
+    const rows = [];
+    meals.forEach(m => {
+      const its = items.filter(i => i.meal === m), on = L.addTo === m;
+      rows.push({ headDisplay: 'flex', itemDisplay: 'none', emptyDisplay: 'none', meal: m, mealSum: its.length ? Math.round(sum(its, 'k')) + ' ккал' : '', open: () => this.set({ addTo: on ? '' : m, q: '', sel: 0, grams: 100 }), openText: on ? 'Закрыть' : '+ Добавить', openBg: on ? 'var(--accent)' : 'var(--card)', openFg: on ? 'var(--on-accent)' : 'var(--accent-text)', openBorder: 'var(--accent)', name: '', g: '', p: '', f: '', c: '', k: '', remove: () => {} });
+      its.forEach(i => rows.push({ headDisplay: 'none', itemDisplay: 'flex', emptyDisplay: 'none', meal: '', mealSum: '', open: () => {}, openText: '', openBg: '#fff', openFg: '#000', openBorder: '#fff', name: i.name, g: i.g, p: i.p, f: i.f, c: i.c, k: i.k, remove: () => this.set({ items: this.L.items.filter(x => x.id !== i.id) }) }));
+      if (!its.length) rows.push({ headDisplay: 'none', itemDisplay: 'none', emptyDisplay: 'block', meal: '', mealSum: '', open: () => {}, openText: '', openBg: '#fff', openFg: '#000', openBorder: '#fff', name: '', g: '', p: '', f: '', c: '', k: '', remove: () => {} });
+    });
+    const q = L.q.trim().toLowerCase();
+    const found = DB.map((d, idx) => ({ d, idx })).filter(x => !q || x.d[0].toLowerCase().indexOf(q) >= 0).slice(0, 6);
+    const selIdx = found.some(x => x.idx === L.sel) ? L.sel : (found[0] ? found[0].idx : -1);
+    const results = found.map(x => ({ name: x.d[0], k: x.d[1], p: x.d[2], f: x.d[3], c: x.d[4], bg: x.idx === selIdx ? 'var(--accent-soft)' : 'var(--card)', border: x.idx === selIdx ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ sel: x.idx }) }));
+    const cur = selIdx >= 0 ? DB[selIdx] : null, gr = L.grams;
+    const pv = cur ? { k: Math.round(cur[1] * gr / 100), p: r1(cur[2] * gr / 100), f: r1(cur[3] * gr / 100), c: r1(cur[4] * gr / 100) } : { k: 0, p: 0, f: 0, c: 0 };
+    const open = !!L.addTo;
+    const num = (s) => { const v = parseFloat(String(s).replace(',', '.')); return isNaN(v) ? 0 : v; };
+    const goal = (name, key, step, unit) => ({ name, value: G[key] + ' ' + unit, minus: () => this.set({ goal: Object.assign({}, this.L.goal, { [key]: Math.max(step, this.L.goal[key] - step) }) }), plus: () => this.set({ goal: Object.assign({}, this.L.goal, { [key]: this.L.goal[key] + step }) }) });
+    return {
+      eaten, goalK: G.k, ringDash: (C * pct).toFixed(1) + ' ' + C.toFixed(1), ringColor: left < 0 ? 'var(--bad)' : 'var(--ink)', leftValue: Math.abs(left), leftLabel: left < 0 ? 'ккал сверх плана' : 'ккал осталось',
+      macros: mac, rows, results, q: L.q, onQ: (e) => this.set({ q: e.target.value }),
+      panelBorder: open ? '1.5px solid var(--accent)' : '1px solid var(--line)', panelTitle: open ? 'Добавить в «' + L.addTo + '»' : 'Добавление продукта', hintDisplay: open ? 'none' : 'block', formDisplay: open ? 'flex' : 'none',
+      grams: gr, gMinus: () => this.set({ grams: Math.max(10, this.L.grams - 10) }), gPlus: () => this.set({ grams: this.L.grams + 10 }),
+      pvK: pv.k, pvP: pv.p, pvF: pv.f, pvC: pv.c,
+      addText: cur ? 'Добавить: ' + cur[0] + ', ' + gr + ' г' : 'Выберите продукт', addBg: cur ? 'var(--accent)' : 'var(--line)', addFg: cur ? 'var(--on-accent)' : 'var(--muted)',
+      addItem: () => { if (!cur) return; const l = this.L; this.set({ items: l.items.concat([{ id: l.nid, meal: l.addTo, name: cur[0], g: gr, k100: cur[1], p100: cur[2], f100: cur[3], c100: cur[4] }]), nid: l.nid + 1 }); },
+      custom: L.custom, customDisplay: L.custom ? 'flex' : 'none', customToggleText: L.custom ? 'Скрыть свой продукт' : '+ Нет в базе? Добавьте свой продукт', toggleCustom: () => this.set({ custom: !this.L.custom }),
+      cName: L.cName, cK: L.cK, cP: L.cP, cF: L.cF, cC: L.cC, onCName: (e) => this.set({ cName: e.target.value }), onCK: (e) => this.set({ cK: e.target.value }), onCP: (e) => this.set({ cP: e.target.value }), onCF: (e) => this.set({ cF: e.target.value }), onCC: (e) => this.set({ cC: e.target.value }),
+      saveCustom: () => { const l = this.L; if (!l.cName.trim()) return; const entry = [l.cName.trim(), num(l.cK), num(l.cP), num(l.cF), num(l.cC)]; this.set({ extra: l.extra.concat([entry]), sel: 30 + l.extra.length, q: entry[0], cName: '', cK: '', cP: '', cF: '', cC: '', custom: false }); },
+      goals: [goal('Калории', 'k', 50, 'ккал'), goal('Белки', 'p', 5, 'г'), goal('Жиры', 'f', 5, 'г'), goal('Углеводы', 'c', 10, 'г')]
+    };
+  }
+}
+</script>
+</body>
+</html>

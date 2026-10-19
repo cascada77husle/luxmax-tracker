@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Работа над ошибками</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;flex-direction:column;gap:3px">
+    <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Работа над ошибками</b>
+    <span style="font-size:12px;color:var(--muted);max-width:680px">Что за последние дни стало лучше, что просело и что сделать на следующей неделе. Всё считается из того, что ты внёс.</span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+    <sc-for list="{{cols}}" as="c" hint-placeholder-count="2">
+      <div style="flex:1 1 520px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">{{c.title}}</b>
+        <sc-for list="{{c.boxes}}" as="b" hint-placeholder-count="3">
+          <div style="border-radius:20px;background:{{b.bg}};padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:{{b.fg}};font-weight:800">{{b.name}}</span>
+            <sc-for list="{{b.items}}" as="i" hint-placeholder-count="3">
+              <div style="display:flex;gap:10px;align-items:baseline;font-size:13px;line-height:1.4"><span style="width:7px;height:7px;border-radius:50%;background:{{b.fg}};flex-shrink:0;transform:translateY(-1px)"></span><span style="min-width:0"><b style="font-weight:600">{{i.title}}</b> <span style="color:var(--muted)">{{i.sub}}</span></span></div>
+            </sc-for>
+            <sc-if value="{{b.empty}}" hint-placeholder-val="{{false}}"><span style="font-size:13px;color:var(--muted)">{{b.emptyText}}</span></sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"plans":{"editor":null},"tasks":{"editor":null},"habits":{"editor":null},"blocksOn":{"editor":null},"lib":{"editor":null},"vals":{"editor":null},"hist":{"editor":null},"$preview":{"width":1280,"height":820}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props;
+    const tasks = P.tasks || [], habits = P.habits || [], lib = P.lib || [], on = P.blocksOn || {}, hist = P.hist || {}, vals = P.vals || {}, ops = P.ops || [], plans = P.plans || [];
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const progOf = (b, v) => {
+      if (b.type === 'k') return v ? 100 : 0;
+      if (b.type === 's') return v ? (b.lower ? (11 - v) * 10 : v * 10) : 0;
+      if (b.lower) { if (b.target <= 0) return v <= 0 ? 100 : Math.max(0, 100 - v * 25); return v <= b.target ? 100 : Math.max(0, Math.round(100 - (v - b.target) / b.target * 100)); }
+      return b.target > 0 ? Math.min(100, Math.round(v / b.target * 100)) : (v > 0 ? 100 : 0);
+    };
+    const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+    // --- жизнь
+    const deltas = lib.filter(b => on[b.id] && !b.live && b.type !== 't' && hist[b.id]).map(b => {
+      const key = b.opts ? b.id + '_' + (vals[b.id + '_opt'] || b.opts[0]) : b.id;
+      const p = hist[b.id].map(v => progOf(b, v)).concat([progOf(b, vals[key] || 0)]);
+      return { b, from: Math.round(avg(p.slice(0, 3))), to: Math.round(avg(p.slice(4))) };
+    }).map(d => Object.assign(d, { diff: d.to - d.from }));
+    const better = deltas.filter(d => d.diff >= 10).sort((a, b) => b.diff - a.diff).slice(0, 3);
+    const worse = deltas.filter(d => d.diff <= -10).sort((a, b) => a.diff - b.diff).slice(0, 3);
+    const hCnt = (h) => h.days.reduce((a, b) => a + b, 0);
+    const hBest = habits.filter(h => hCnt(h) >= 6), hWorst = habits.slice().sort((a, b) => hCnt(a) - hCnt(b)).filter(h => hCnt(h) <= 3).slice(0, 2);
+    const overdue = tasks.filter(t => !t.done && t.day < 6);
+    const doneT = tasks.filter(t => t.done).length;
+    const lifeGood = hBest.map(h => ({ title: h.name, sub: 'выполнено ' + hCnt(h) + ' из 7 дней' })).concat(better.map(d => ({ title: d.b.name, sub: 'было ' + d.from + '%, стало ' + d.to + '% от цели' })));
+    if (tasks.length && doneT / tasks.length >= 0.5) lifeGood.push({ title: 'Задачи', sub: 'закрыто ' + doneT + ' из ' + tasks.length });
+    const lifeBad = overdue.slice(0, 3).map(t => ({ title: t.title, sub: 'просрочено, ' + t.sphere })).concat(hWorst.map(h => ({ title: h.name, sub: 'только ' + hCnt(h) + ' из 7 дней' }))).concat(worse.map(d => ({ title: d.b.name, sub: 'было ' + d.from + '%, стало ' + d.to + '% от цели' }))).slice(0, 5);
+    const lifeAct = [];
+    if (overdue.length) lifeAct.push({ title: 'Закрыть хвосты', sub: 'начни с «' + overdue[0].title + '», в списке «Что горит» их ' + overdue.length });
+    if (hWorst[0]) lifeAct.push({ title: 'Вернуть привычку «' + hWorst[0].name + '»', sub: 'поставь её первой в утренний ритм' });
+    if (worse[0]) lifeAct.push({ title: 'Подтянуть «' + worse[0].b.name + '»', sub: 'сейчас ' + worse[0].to + '% от цели' });
+    if (!lifeAct.length) lifeAct.push({ title: 'Держать темп', sub: 'просадок не найдено, поднимай планку на одну привычку' });
+    // --- деньги
+    const NORM = 2500;
+    const free = ops.filter(o => o.kind === 'out' && !o.planId);
+    const dsum = (a, b) => free.filter(o => o.d >= a && o.d <= b).reduce((s, o) => s + o.sum, 0);
+    const h1 = dsum(1, 9) / 9, h2 = dsum(10, 18) / 9;
+    const byDay = []; for (let d = 1; d <= 18; d++) byDay.push(dsum(d, d));
+    const redDays = byDay.filter(v => v > NORM).length;
+    const worstD = byDay.indexOf(Math.max.apply(null, byDay));
+    const big = free.slice().sort((a, b) => b.sum - a.sum)[0];
+    const unpaid = plans.filter(p => !p.paid && p.day < 18);
+    const income = ops.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0), spent = ops.filter(o => o.kind === 'out').reduce((a, o) => a + o.sum, 0);
+    const monGood = [], monBad = [], monAct = [];
+    if (h2 < h1) monGood.push({ title: 'Траты в день снизились', sub: 'со ' + fmt(h1) + ' до ' + fmt(h2) + ' ₽ (вторая половина месяца против первой)' });
+    if (income > spent) monGood.push({ title: 'Доходы выше расходов', sub: 'остаток ' + fmt(income - spent) + ' ₽' });
+    if (byDay.length - redDays >= 9) monGood.push({ title: 'Зелёных дней ' + (byDay.length - redDays), sub: 'из 18 уложился в норму ' + fmt(NORM) + ' ₽' });
+    if (h2 >= h1) monBad.push({ title: 'Траты в день выросли', sub: 'со ' + fmt(h1) + ' до ' + fmt(h2) + ' ₽' });
+    if (redDays) monBad.push({ title: 'Красных дней ' + redDays, sub: 'самый дорогой ' + (worstD + 1) + ' октября: ' + fmt(byDay[worstD]) + ' ₽' });
+    if (big) monBad.push({ title: 'Самая крупная покупка', sub: big.note + ', ' + fmt(big.sum) + ' ₽' });
+    unpaid.slice(0, 2).forEach(p => monBad.push({ title: 'Не оплачено: ' + p.name, sub: 'срок был ' + p.day + ' октября, ' + fmt(p.sum) + ' ₽' }));
+    if (unpaid.length) monAct.push({ title: 'Оплатить просроченное', sub: unpaid.length + ' платежей, кнопка «Выполнено» в «Что горит»' });
+    if (redDays > 2) monAct.push({ title: 'Закрепить норму ' + fmt(NORM) + ' ₽ в день', sub: 'проверяй линию трат по вечерам' });
+    if (big && big.sum > NORM * 1.5) monAct.push({ title: 'Крупные покупки обдумывать сутки', sub: 'как «' + big.note + '», чтобы не бить по неделе' });
+    if (!monAct.length) monAct.push({ title: 'Откладывать в первый день после дохода', sub: 'пока всё в норме, переведи часть на накопления' });
+    const box = (name, bg, fg, items, emptyText) => ({ name, bg, fg, items, empty: items.length === 0, emptyText });
+    return { cols: [
+      { title: 'Жизнь и привычки', boxes: [box('Стало лучше', 'var(--ok-soft)', 'var(--ok)', lifeGood, 'Пока нечего отметить, внеси больше данных.'), box('Просело', 'var(--bad-soft)', 'var(--bad)', lifeBad, 'Просадок нет.'), box('Что сделать на следующей неделе', 'var(--accent-soft)', 'var(--accent-text)', lifeAct, '')] },
+      { title: 'Деньги', boxes: [box('Стало лучше', 'var(--ok-soft)', 'var(--ok)', monGood, 'Пока нечего отметить.'), box('Просело', 'var(--bad-soft)', 'var(--bad)', monBad, 'Просадок нет.'), box('Что сделать на следующей неделе', 'var(--accent-soft)', 'var(--accent-text)', monAct, '')] }
+    ] };
+  }
+}
+</script>
+</body>
+</html>

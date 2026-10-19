@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Дашборд</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+@media (prefers-reduced-motion:reduce){[data-fold]{transition:none!important}}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+@keyframes dcUfA{from{opacity:0;transform:translateY(-10px) scale(.985);clip-path:inset(0 0 100% 0 round 16px)}to{opacity:1;transform:none;clip-path:inset(0 0 0 0 round 16px)}}
+@keyframes dcUfB{from{opacity:0;transform:translateY(-10px) scale(.985);clip-path:inset(0 0 100% 0 round 16px)}to{opacity:1;transform:none;clip-path:inset(0 0 0 0 round 16px)}}
+</style>
+</helmet>
+<div style="background:{{rootBg}};font-family:'Inter',system-ui,sans-serif;color:var(--ink)">
+  <div style="max-width:1280px;margin:0 auto;padding:{{rootPad}};display:flex;flex-direction:column;gap:24px">
+
+    <sc-if value="{{pickMode}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <span style="font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase">Шаблон</span>
+        <sc-for list="{{tpls}}" as="t" hint-placeholder-count="5"><button type="button" onClick="{{t.pick}}" title="{{t.hint}}" style="cursor:pointer;border:1px solid {{t.bd}};background:{{t.bg}};color:{{t.fg}};font-weight:600;font-size:13px;padding:8px 14px;border-radius:999px">{{t.name}}</button></sc-for>
+        <span style="flex:1"></span>
+        <button type="button" onClick="{{togglePanel}}" title="Выберите, какие разделы шаблона показывать, и в каком порядке" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;border:0;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;padding:9px 18px;border-radius:999px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path><circle cx="16" cy="7" r="2"></circle><circle cx="8" cy="17" r="2"></circle></svg>{{panelLabel}}</button>
+      </div>
+      <sc-if value="{{tplBar.showAdd}}" hint-placeholder-val="{{false}}"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-radius:16px;border:1px solid var(--line);background:var(--card)"><span style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:15px">Шаблон «{{tplBar.viewName}}»</b><span style="font-size:12px;color:var(--muted)">{{tplBar.viewHint}}</span></span><button type="button" onClick="{{tplBar.addTpl}}" style="cursor:pointer;min-height:42px;border:1.5px solid {{tplBar.addBd}};border-radius:999px;background:{{tplBar.addBg}};color:{{tplBar.addFg}};font-weight:700;font-size:13px;padding:0 20px">{{tplBar.addText}}</button></div></sc-if>
+      <sc-if value="{{tplBar.emptySet}}" hint-placeholder-val="{{false}}"><div style="padding:22px 16px;text-align:center;border:1.5px dashed var(--line2);border-radius:16px;color:var(--muted);font-size:14px;line-height:1.5">Здесь пока пусто. Откройте один из шаблонов выше и нажмите «Добавить шаблон»: он появится в вашем наборе.</div></sc-if>
+      <sc-if value="{{panelOpen}}" hint-placeholder-val="{{false}}">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;color:var(--muted);line-height:1.5">Это ваша копия шаблона: включайте и выключайте нужные разделы и двигайте их вверх и вниз. Всё запоминается для вас. «Сбросить» вернёт исходный вид шаблонов.</div>
+          <sc-for list="{{secRows}}" as="r" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line)">
+              <button type="button" onClick="{{r.toggle}}" aria-label="Показать или скрыть" style="cursor:pointer;width:38px;height:22px;border-radius:999px;border:0;background:{{r.sw}};position:relative;flex-shrink:0"><span style="position:absolute;top:3px;left:{{r.knob}}px;width:16px;height:16px;border-radius:50%;background:#fff"></span></button>
+              <span style="flex:1;min-width:0;font-size:14px;color:{{r.fg}}">{{r.name}}</span>
+              <button type="button" onClick="{{r.up}}" aria-label="Выше" style="cursor:pointer;border:1px solid var(--line2);background:var(--card);color:var(--ink2);width:32px;height:32px;border-radius:8px;opacity:{{r.upOp}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg></button>
+              <button type="button" onClick="{{r.down}}" aria-label="Ниже" style="cursor:pointer;border:1px solid var(--line2);background:var(--card);color:var(--ink2);width:32px;height:32px;border-radius:8px;opacity:{{r.dnOp}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+            </div>
+          </sc-for>
+          <div><button type="button" onClick="{{resetCfg}}" style="cursor:pointer;border:1px solid var(--line2);background:var(--card);color:var(--ink2);font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px">Сбросить</button></div>
+        </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- hero -->
+    <div style="order:{{ord.hero}};display:{{shw.hero}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.hero}}">
+      <button type="button" onClick="{{fold.hero.toggle}}" aria-label="Свернуть или развернуть: Оценка жизни" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Оценка жизни">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.hero.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Оценка жизни</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.hero.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.hero.rows}};opacity:{{fold.hero.op}};visibility:{{fold.hero.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.hero.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:28px;display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+      <div style="display:flex;align-items:center;gap:24px;flex:1 1 440px;min-width:0">
+        <div style="position:relative;width:{{hero.size}}px;height:{{hero.size}}px;flex-shrink:0">
+          <svg width="{{hero.size}}" height="{{hero.size}}" viewBox="0 0 {{hero.size}} {{hero.size}}" aria-hidden="true">
+            <circle cx="{{hero.mid}}" cy="{{hero.mid}}" r="{{hero.r}}" fill="none" stroke="var(--line)" stroke-width="{{hero.sw}}"></circle>
+            <circle cx="{{hero.mid}}" cy="{{hero.mid}}" r="{{hero.r}}" fill="none" stroke="var(--accent)" stroke-width="{{hero.sw}}" stroke-linecap="round" stroke-dasharray="{{hero.da}}" transform="rotate(-90 {{hero.mid}} {{hero.mid}})"></circle>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+            <b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;line-height:1">{{score}}</b>
+            <span style="font-size:12px;color:var(--muted);margin-top:4px">из 100</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">Неделя 42 · 12–18 октября</span>
+          <h1 style="margin:0;font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.15;text-wrap:balance">Оценка недели: {{scoreWord}}</h1>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <span style="background:{{delta.bg}};color:{{delta.fg}};font-weight:600;font-size:13px;padding:4px 10px;border-radius:999px">{{delta.text}}</span>
+            <span style="font-size:13px;color:var(--muted)">к прошлой неделе (62)</span>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:12px;color:var(--muted)">Из чего складывается оценка. Веса видны и меняются в настройках.</span>
+        <sc-for list="{{parts}}" as="p" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;width:92px;flex-shrink:0;font-weight:500">{{p.name}}</span>
+            <div style="flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--accent);width:{{p.w}}"></div></div>
+            <b style="font-size:13px;width:34px;text-align:right">{{p.v}}</b>
+            <span style="font-size:11px;color:var(--muted);width:34px">{{p.weight}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- kpi -->
+    <div style="order:{{ord.kpi}};display:{{shw.kpi}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.kpi}}">
+      <button type="button" onClick="{{fold.kpi.toggle}}" aria-label="Свернуть или развернуть: Ключевые цифры" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Ключевые цифры">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.kpi.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Ключевые цифры</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.kpi.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.kpi.rows}};opacity:{{fold.kpi.op}};visibility:{{fold.kpi.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.kpi.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px">
+      <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0">
+          <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">{{k.label}}</span>
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap">
+            <b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em;color:{{k.color}}">{{k.value}}</b>
+            <span style="font-size:13px;color:var(--muted)">{{k.unit}}</span>
+          </div>
+          <span style="font-size:12px;color:var(--muted)">{{k.sub}}</span>
+        </div>
+      </sc-for>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- wheel -->
+    <div style="order:{{ord.wheel}};display:{{shw.wheel}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.wheel}}">
+      <button type="button" onClick="{{fold.wheel.toggle}}" aria-label="Свернуть или развернуть: Колесо баланса и что горит" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Колесо баланса и что горит">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.wheel.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Колесо баланса и что горит</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.wheel.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.wheel.rows}};opacity:{{fold.wheel.op}};visibility:{{fold.wheel.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.wheel.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+      <div style="flex:1 1 560px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Колесо баланса</b>
+          <span style="font-size:12px;color:var(--muted)">8 сфер, оценка каждой от 0 до 100</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+          <svg width="340" height="320" viewBox="0 0 340 320" style="max-width:100%;flex-shrink:0" role="img" aria-label="Колесо баланса по восьми сферам">
+            <sc-for list="{{wheel.grid}}" as="g" hint-placeholder-count="4">
+              <polygon points="{{g.pts}}" fill="none" stroke="var(--line)" stroke-width="1"></polygon>
+            </sc-for>
+            <sc-for list="{{wheel.axes}}" as="a" hint-placeholder-count="8">
+              <line x1="170" y1="160" x2="{{a.x2}}" y2="{{a.y2}}" stroke="var(--line)" stroke-width="1"></line>
+              <text x="{{a.lx}}" y="{{a.ly}}" text-anchor="{{a.anchor}}" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" fill="var(--muted)">{{a.label}}</text>
+            </sc-for>
+            <polygon points="{{wheel.data}}" fill="var(--accent)" fill-opacity="0.16" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"></polygon>
+            <sc-for list="{{wheel.dots}}" as="d" hint-placeholder-count="8">
+              <circle cx="{{d.x}}" cy="{{d.y}}" r="4" fill="var(--card)" stroke="var(--accent)" stroke-width="2"></circle>
+            </sc-for>
+          </svg>
+          <div style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:9px">
+            <sc-for list="{{spheres}}" as="s" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:13px;font-weight:500;width:84px;flex-shrink:0">{{s.name}}</span>
+                <div style="flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{s.color}};width:{{s.w}}"></div></div>
+                <b style="font-size:13px;width:28px;text-align:right">{{s.v}}</b>
+              </div>
+            </sc-for>
+            <span style="font-size:12px;color:var(--muted);margin-top:4px">{{weakest}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1 1 400px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Что горит</b>
+          <span style="font-size:12px;color:var(--muted)">считается само</span>
+        </div>
+        <sc-for list="{{burning}}" as="b" hint-placeholder-count="4">
+          <button type="button" onClick="{{b.open}}" style="text-align:left;cursor:pointer;border:0;display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;background:{{b.soft}};color:var(--ink);width:100%">
+            <span style="width:8px;height:8px;border-radius:50%;background:{{b.dot}};flex-shrink:0"></span>
+            <span style="display:flex;flex-direction:column;min-width:0;flex:1">
+              <span style="font-size:13px;font-weight:600">{{b.title}}</span>
+              <span style="font-size:12px;color:var(--muted)">{{b.sub}}</span>
+            </span>
+            <span style="font-size:12px;font-weight:600;color:{{b.dot}};white-space:nowrap">{{b.when}}</span>
+          </button>
+        </sc-for>
+        <sc-if value="{{noBurning}}" hint-placeholder-val="{{false}}">
+          <span style="font-size:13px;color:var(--ok);padding:14px;border-radius:12px;background:var(--ok-soft)">Срочного нет. Все платежи и задачи в порядке.</span>
+        </sc-if>
+        <span style="font-size:12px;color:var(--muted)">Нажми на пункт, чтобы перейти в Кабинет. Закрывать пункты кнопкой «Выполнено» можно там.</span>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- money -->
+    <div style="order:{{ord.money}};display:{{shw.money}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.money}}">
+      <button type="button" onClick="{{fold.money.toggle}}" aria-label="Свернуть или развернуть: Куда уходят деньги" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Куда уходят деньги">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.money.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Куда уходят деньги</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.money.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.money.rows}};opacity:{{fold.money.op}};visibility:{{fold.money.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.money.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+      <div style="flex:1 1 560px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Куда уходят деньги</b>
+          <span style="font-size:12px;color:var(--muted)">по группам, из твоих операций</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+          <div style="position:relative;width:200px;height:200px;flex-shrink:0">
+            <svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="Расходы по группам">
+              <circle cx="100" cy="100" r="72" fill="none" stroke="var(--line)" stroke-width="26"></circle>
+              <sc-for list="{{segs}}" as="s" hint-placeholder-count="7">
+                <circle cx="100" cy="100" r="72" fill="none" stroke="{{s.color}}" stroke-width="26" stroke-dasharray="{{s.da}}" stroke-dashoffset="{{s.off}}" transform="rotate(-90 100 100)"></circle>
+              </sc-for>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800">{{spentPct}}%</b>
+              <span style="font-size:11px;color:var(--muted)">дохода потрачено</span>
+            </div>
+          </div>
+          <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{groups}}" as="g" hint-placeholder-count="7">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:10px;height:10px;border-radius:3px;background:{{g.color}};flex-shrink:0"></span>
+                <span style="font-size:13px;flex:1;min-width:0">{{g.name}}</span>
+                <span style="font-size:12px;color:var(--muted);width:36px;text-align:right">{{g.pct}}%</span>
+                <b style="font-size:13px;width:84px;text-align:right">{{g.sum}}</b>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1 1 560px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Расходы по дням и неделям</b><span style="font-size:12px;color:var(--muted)">октябрь, цвета это группы расходов</span></div>
+          <div style="display:flex;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px">
+            <sc-for list="{{modeBtns}}" as="m" hint-placeholder-count="2"><button type="button" onClick="{{m.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px;background:{{m.bg}};color:{{m.fg}}">{{m.name}}</button></sc-for>
+          </div>
+        </div>
+        <sc-if value="{{modeDays}}" hint-placeholder-val="{{true}}">
+          <div style="display:flex;align-items:flex-end;gap:6px;height:222px;padding-top:6px">
+            <sc-for list="{{dayCols}}" as="c" hint-placeholder-count="14">
+              <button type="button" onClick="{{c.pick}}" style="flex:1;min-width:0;height:100%;border:0;background:{{c.bg}};border-radius:8px;padding:4px 2px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px">
+                <span style="font-size:11px;font-weight:700;color:var(--ink2);white-space:nowrap">{{c.label}}</span>
+                <span style="width:100%;max-width:34px;display:flex;flex-direction:column-reverse;gap:1px">
+                  <sc-for list="{{c.segs}}" as="s" hint-placeholder-count="2"><span style="display:block;width:100%;border-radius:3px;background:{{s.color}};height:{{s.h}}px"></span></sc-for>
+                </span>
+                <span style="font-size:11px;font-weight:700;color:{{c.fg}}">{{c.wd}}</span>
+                <span style="font-size:11px;color:var(--muted)">{{c.num}}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><b style="font-size:14px">{{dayInfo.title}}</b><span style="font-size:13px;color:var(--muted)">{{dayInfo.total}}</span></div>
+            <sc-for list="{{dayInfo.rows}}" as="r" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:9px;height:9px;border-radius:3px;background:{{r.color}};flex-shrink:0"></span><span style="flex:1;min-width:0">{{r.note}}</span><span style="color:var(--muted)">{{r.cat}}</span><b style="width:84px;text-align:right">{{r.sum}}</b></div>
+            </sc-for>
+            <sc-if value="{{dayInfo.empty}}" hint-placeholder-val="{{false}}"><span style="font-size:13px;color:var(--muted)">В этот день расходов не было.</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{modeWeeks}}" hint-placeholder-val="{{false}}">
+          <div style="display:flex;align-items:flex-end;gap:16px;height:222px;padding-top:8px">
+            <sc-for list="{{weeks}}" as="w" hint-placeholder-count="4">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%;min-width:0">
+                <b style="font-size:12px">{{w.label}}</b>
+                <div style="width:100%;max-width:70px;border-radius:12px 10px 4px 4px;background:{{w.color}};height:{{w.h}}"></div>
+                <span style="font-size:11px;color:var(--muted);white-space:nowrap">{{w.name}}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <span style="font-size:12px;color:var(--muted)">{{weekNote}} Среднее в день: {{avgDay}}.</span>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- blocks -->
+    <div style="order:{{ord.blocks}};display:{{shw.blocks}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.blocks}}">
+      <button type="button" onClick="{{fold.blocks.toggle}}" aria-label="Свернуть или развернуть: Мои блоки" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Мои блоки">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.blocks.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Мои блоки</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.blocks.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.blocks.rows}};opacity:{{fold.blocks.op}};visibility:{{fold.blocks.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.blocks.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Мои блоки</b>
+          <span style="font-size:12px;color:var(--muted)">{{blocksNote}}</span>
+        </div>
+        <button type="button" onClick="{{goBlocks}}" style="cursor:pointer;border:0;display:flex;align-items:center;gap:8px;background:var(--accent);color:var(--on-accent);font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+          Добавить блок
+        </button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(235px, 1fr));gap:12px">
+        <sc-for list="{{tiles}}" as="w" hint-placeholder-count="5">
+          <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:12px 16px;display:flex;flex-direction:column;gap:8px;min-width:0">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:32px;height:32px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{w.icon}}"></path></svg>
+              </span>
+              <b style="font-size:14px;font-weight:600;flex:1;min-width:0">{{w.name}}</b>
+              <span style="font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:{{w.tagBg}};color:{{w.tagFg}}">{{w.tag}}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+              <b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em">{{w.big}}</b>
+              <span style="font-size:13px;color:var(--muted)">{{w.unit}}</span>
+            </div>
+            <div style="height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{w.bar}};width:{{w.w}}"></div></div>
+            <sc-if value="{{w.hasSpark}}" hint-placeholder-val="{{true}}">
+              <div style="display:flex;align-items:flex-end;gap:4px;height:30px">
+                <sc-for list="{{w.spark}}" as="s" hint-placeholder-count="7"><div style="flex:1;border-radius:3px 3px 1px 1px;background:{{s.cc}};height:{{s.hh}}px"></div></sc-for>
+              </div>
+            </sc-if>
+            <span style="font-size:12px;color:var(--muted);line-height:1.4">{{w.sub}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- candles -->
+    <div style="order:{{ord.candles}};display:{{shw.candles}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.candles}}">
+      <button type="button" onClick="{{fold.candles.toggle}}" aria-label="Свернуть или развернуть: Свечи оценки" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Свечи оценки">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.candles.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Свечи оценки</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.candles.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.candles.rows}};opacity:{{fold.candles.op}};visibility:{{fold.candles.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.candles.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <dc-import name="Candles" score="{{score}}" hint-size="100%,640px"></dc-import>
+        </div>
+      </div>
+    </div>
+    <!-- review -->
+    <div style="order:{{ord.review}};display:{{shw.review}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.review}}">
+      <button type="button" onClick="{{fold.review.toggle}}" aria-label="Свернуть или развернуть: Работа над ошибками" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Работа над ошибками">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.review.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Работа над ошибками</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.review.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.review.rows}};opacity:{{fold.review.op}};visibility:{{fold.review.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.review.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <dc-import name="Review" ops="{{ops}}" plans="{{plans}}" tasks="{{tasks}}" habits="{{habits}}" blocks-on="{{blocksOn}}" lib="{{lib}}" vals="{{vals}}" hist="{{hist}}" hint-size="100%,820px"></dc-import>
+        </div>
+      </div>
+    </div>
+    <!-- line -->
+    <div style="order:{{ord.line}};display:{{shw.line}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.line}}">
+      <button type="button" onClick="{{fold.line.toggle}}" aria-label="Свернуть или развернуть: Линия трат по дням" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Линия трат по дням">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.line.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Линия трат по дням</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.line.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.line.rows}};opacity:{{fold.line.op}};visibility:{{fold.line.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.line.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <dc-import name="SpendLine" ops="{{ops}}" hint-size="100%,760px"></dc-import>
+        </div>
+      </div>
+    </div>
+    <!-- assets -->
+    <div style="order:{{ord.assets}};display:{{shw.assets}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.assets}}">
+      <button type="button" onClick="{{fold.assets.toggle}}" aria-label="Свернуть или развернуть: Счета и активы" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Счета и активы">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.assets.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Счета и активы</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.assets.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.assets.rows}};opacity:{{fold.assets.op}};visibility:{{fold.assets.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.assets.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Счета и активы</b><button type="button" onClick="{{goFin}}" style="cursor:pointer;border:0;background:var(--accent-soft);color:var(--accent-text);font-weight:600;font-size:13px;padding:10px 20px;border-radius:999px">Управлять счетами</button></div>
+      <dc-import name="Accounts" accounts="{{accounts}}" compact="{{trueVal}}" hint-size="100%,520px"></dc-import>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- more -->
+    <div style="order:{{ord.more}};display:{{shw.more}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.more}}">
+      <button type="button" onClick="{{fold.more.toggle}}" aria-label="Свернуть или развернуть: Статьи расходов, задачи, привычки" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Статьи расходов, задачи, привычки">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.more.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Статьи расходов, задачи, привычки</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.more.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.more.rows}};opacity:{{fold.more.op}};visibility:{{fold.more.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.more.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+      <div style="flex:1 1 340px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Главные статьи расходов</b>
+        <sc-for list="{{topCats}}" as="c" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;width:130px;flex-shrink:0;font-weight:500">{{c.name}}</span>
+            <div style="flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--accent);width:{{c.w}}%"></div></div>
+            <b style="font-size:12px;width:78px;text-align:right">{{c.sum}}</b>
+          </div>
+        </sc-for>
+      </div>
+      <div style="flex:1 1 340px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Задачи по сферам</b>
+        <sc-for list="{{sphTasks}}" as="c" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;width:90px;flex-shrink:0;font-weight:500">{{c.name}}</span>
+            <div style="flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:var(--ok);width:{{c.w}}%"></div></div>
+            <b style="font-size:12px;width:46px;text-align:right">{{c.text}}</b>
+          </div>
+        </sc-for>
+      </div>
+      <div style="flex:1 1 340px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Серии привычек</b>
+        <sc-for list="{{habitStreaks}}" as="c" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;flex:1;min-width:0;font-weight:500">{{c.name}}</span>
+            <span style="font-size:12px;color:var(--muted)">{{c.pct}}% за неделю</span>
+            <b style="font-size:13px;width:56px;text-align:right;color:var(--accent-text)">{{c.streak}} дн.</b>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- links -->
+    <div style="order:{{ord.links}};display:{{shw.links}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.links}}">
+      <button type="button" onClick="{{fold.links.toggle}}" aria-label="Свернуть или развернуть: Связи между блоками" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Связи между блоками">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.links.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Связи между блоками</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.links.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.links.rows}};opacity:{{fold.links.op}};visibility:{{fold.links.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.links.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+
+      <div style="flex:1 1 440px;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Связи между блоками</b>
+          <span style="font-size:12px;font-weight:600;color:var(--warn);background:var(--warn-soft);padding:3px 10px;border-radius:999px">Про · после 3 недель данных</span>
+        </div>
+        <sc-for list="{{links}}" as="l" hint-placeholder-count="3">
+          <div style="display:flex;gap:12px;padding:12px;border-radius:12px;background:var(--field);border:1px solid var(--line)">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+              <span style="font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text)">{{l.a}}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              <span style="font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-text)">{{l.b}}</span>
+            </div>
+            <span style="font-size:13px;line-height:1.45;min-width:0">{{l.text}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <!-- pj -->
+    <div style="order:{{ord.pj}};display:{{shw.pj}};flex-direction:column;animation:{{ufn}} .6s cubic-bezier(.22,1,.36,1) both;animation-delay:{{ufd.pj}}">
+      <button type="button" onClick="{{fold.pj.toggle}}" aria-label="Свернуть или развернуть: Мои бизнесы" style="width:100%;display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;padding:2px 0 10px;text-align:left" title="Свернуть или развернуть: Мои бизнесы">
+        <span style="width:30px;height:30px;border-radius:8px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-fold="" style="transform:rotate({{fold.pj.rot}}deg);transition:transform .45s cubic-bezier(.4,0,.2,1)"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)">Мои бизнесы</span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>
+        <span style="font-size:12px;color:var(--muted);font-weight:600">{{fold.pj.hint}}</span>
+      </button>
+      <div data-fold="" style="display:grid;grid-template-rows:{{fold.pj.rows}};opacity:{{fold.pj.op}};visibility:{{fold.pj.vis}};transition:grid-template-rows .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,visibility 0s linear {{fold.pj.delay}}">
+        <div style="overflow:hidden;min-height:0;padding:8px 8px 30px;margin:-8px -8px -30px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-if value="{{pjEmpty}}" hint-placeholder-val="{{false}}"><div style="padding:16px;border-radius:16px;border:1.5px dashed var(--line2);color:var(--muted);font-size:13px;line-height:1.5">Здесь пока пусто. В «Бизнесы → Обзор» включите «Показывать в аналитике кабинета» или нажмите бизнес ниже.</div></sc-if>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+            <sc-for list="{{pjRows}}" as="r" hint-placeholder-count="2">
+              <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px"><div style="min-width:0;flex:1"><b style="font-size:15px">{{r.name}}</b><div style="font-size:12px;color:var(--muted)">{{r.sub}}</div></div><button type="button" onClick="{{r.hide}}" style="cursor:pointer;border:1px solid var(--line2);background:var(--card);color:var(--muted);font-size:12px;padding:6px 10px;border-radius:999px">Убрать</button></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--muted)"><span>Доход<br><b style="font-size:15px;color:var(--ink)">{{r.income}} ₽</b></span><span>Расход<br><b style="font-size:15px;color:var(--ink)">{{r.expense}} ₽</b></span><span>Прибыль<br><b style="font-size:15px;color:{{r.pcol}}">{{r.profit}} ₽</b></span><span>На счетах<br><b style="font-size:15px;color:var(--ink)">{{r.balance}} ₽</b></span></div>
+                <div style="height:7px;border-radius:999px;background:var(--line);overflow:hidden"><div style="height:100%;border-radius:999px;background:{{r.pcol}};width:{{r.pct}}%"></div></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="font-size:12px;color:var(--muted)">Добавить в аналитику:</span><sc-for list="{{pjOther}}" as="o" hint-placeholder-count="2"><button type="button" onClick="{{o.add}}" style="cursor:pointer;border:1px solid var(--accent-line);background:var(--accent-soft);color:var(--accent-text);font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px">+ {{o.name}}</button></sc-for></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pick":{"editor":null},"ops":{"editor":null},"plans":{"editor":null},"tasks":{"editor":null},"habits":{"editor":null},"blocksOn":{"editor":null},"lib":{"editor":null},"vals":{"editor":null},"hist":{"editor":null},"prog":{"editor":null},"accounts":{"editor":null},"fnGo":{"editor":null},"cfg":{"editor":null},"projects":{"editor":null},"fnCfg":{"editor":null},"$preview":{"width":1360,"height":5200}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, mode: 'days', selDay: 18, closed: {} }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+  renderVals() {
+    const P = this.props;
+    const ops = P.ops || [], plans = P.plans || [], tasks = P.tasks || [], habits = P.habits || [];
+    const on = P.blocksOn || {}, lib = P.lib || [];
+    const go = (t) => () => { if (P.fnGo) P.fnGo(t); };
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const clamp = (v) => Math.max(0, Math.min(100, Math.round(v)));
+
+    const income = ops.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0);
+    const out = ops.filter(o => o.kind === 'out');
+    const spent = out.reduce((a, o) => a + o.sum, 0);
+    const left = income - spent;
+    const saveRate = income > 0 ? left / income * 100 : 0;
+    const spentPct = income > 0 ? Math.round(spent / income * 100) : 0;
+
+    const tasksDone = tasks.filter(t => t.done).length;
+    const tasksPct = tasks.length ? Math.round(tasksDone / tasks.length * 100) : 0;
+    const hTotal = habits.reduce((a, h) => a + h.days.length, 0);
+    const hDone = habits.reduce((a, h) => a + h.days.reduce((x, y) => x + y, 0), 0);
+    const habitsPct = hTotal ? Math.round(hDone / hTotal * 100) : 0;
+    const vals = P.vals || {}, hist = P.hist || {}, prog = P.prog || {};
+    const gl = lib.filter(l => on[l.id] && !l.live && l.type !== 't');
+    const goalsPct = gl.length ? Math.round(gl.reduce((a, l) => a + (prog[l.id] || 0), 0) / gl.length) : 62;
+    const checkinPct = on.mood && vals.mood ? vals.mood * 10 : 80;
+    const grpPct = (names, dflt) => { const xs = lib.filter(l => on[l.id] && !l.live && names.indexOf(l.group) >= 0 && l.type !== 't'); return xs.length ? Math.round(xs.reduce((a, l) => a + (prog[l.id] || 0), 0) / xs.length) : dflt; };
+    const score = Math.round(tasksPct * 0.4 + habitsPct * 0.25 + goalsPct * 0.2 + checkinPct * 0.15);
+    const dl = score - 62;
+    const delta = dl >= 0 ? { text: '+' + dl, bg: 'var(--ok-soft)', fg: 'var(--ok)' } : { text: '' + dl, bg: 'var(--bad-soft)', fg: 'var(--bad)' };
+    const scoreWord = score >= 75 ? 'сильная неделя' : (score >= 60 ? 'уверенная неделя' : 'есть что подтянуть');
+
+    const size = 168, sw = 14, r = (size - sw) / 2, C = 2 * Math.PI * r;
+    const hero = { size, mid: size / 2, r, sw, da: (C * score / 100).toFixed(1) + ' ' + C.toFixed(1) };
+    const parts = [
+      { name: 'Задачи', v: tasksPct, weight: '40%' }, { name: 'Привычки', v: habitsPct, weight: '25%' },
+      { name: 'Цели', v: goalsPct, weight: '20%' }, { name: 'Check-in', v: checkinPct, weight: '15%' }
+    ].map(p => Object.assign(p, { w: p.v + '%' }));
+
+    const catMap = {};
+    out.forEach(o => { catMap[o.cat] = (catMap[o.cat] || 0) + o.sum; });
+    const catList = Object.keys(catMap).map(k => ({ name: k, v: catMap[k] })).sort((a, b) => b.v - a.v);
+    const topCats = catList.slice(0, 6).map(c => ({ name: c.name, sum: fmt(c.v) + ' ₽', w: Math.round(c.v / (catList[0].v || 1) * 100) }));
+    const forecast = Math.round(spent / 18 * 31);
+    const billSum = plans.filter(p => p.kind === 'bill').reduce((a, p) => a + p.sum, 0);
+    const subSum = plans.filter(p => p.kind === 'sub').reduce((a, p) => a + p.sum, 0);
+    const sphNames = ['Тело', 'Деньги', 'Дела', 'Семья', 'Быт', 'Обучение'];
+    const sphTasks = sphNames.map(n => { const ts = tasks.filter(t => t.sphere === n); const d = ts.filter(t => t.done).length; return { name: n, text: d + '/' + ts.length, w: ts.length ? Math.round(d / ts.length * 100) : 0, n: ts.length }; }).filter(s => s.n > 0);
+    const habitStreaks = habits.map(h => { let n = 0; for (let i = h.days.length - 1; i >= 0 && h.days[i]; i--) n++; return { name: h.name, streak: n, pct: Math.round(h.days.reduce((a, b) => a + b, 0) / h.days.length * 100) }; });
+    const bestStreak = habitStreaks.reduce((a, h) => Math.max(a, h.streak), 0);
+    const overdue = tasks.filter(t => !t.done && t.day < 6).length + plans.filter(p => !p.paid && p.day < 18).length;
+    const kpis = [
+      { label: 'Доход', value: fmt(income), unit: '₽', sub: 'за октябрь', color: 'var(--ink)' },
+      { label: 'Расходы', value: fmt(spent), unit: '₽', sub: out.length + ' операций', color: 'var(--ink)' },
+      { label: 'Осталось', value: fmt(left), unit: '₽', sub: left >= 0 ? 'после всех списаний' : 'расходы выше дохода', color: left >= 0 ? 'var(--ok)' : 'var(--bad)' },
+      { label: 'Норма накоплений', value: String(Math.round(saveRate)), unit: '%', sub: 'ориентир: от 20%', color: 'var(--accent)' },
+      { label: 'Прогноз расходов', value: fmt(forecast), unit: '₽', sub: 'к концу месяца при текущем темпе', color: forecast > income ? 'var(--bad)' : 'var(--ink)' },
+      { label: 'Средний расход в день', value: fmt(spent / 18), unit: '₽', sub: 'с 1 по 18 октября', color: 'var(--ink)' },
+      { label: 'Обязательные платежи', value: fmt(billSum), unit: '₽', sub: 'плюс подписки ' + fmt(subSum) + ' ₽ в месяц', color: 'var(--ink)' },
+      { label: 'Просрочено', value: String(overdue), unit: 'шт.', sub: overdue ? 'закрой в «Кабинете»' : 'всё вовремя', color: overdue ? 'var(--bad)' : 'var(--ok)' },
+      { label: 'Лучшая серия', value: String(bestStreak), unit: 'дн.', sub: 'самая долгая из привычек', color: 'var(--accent)' },
+      { label: 'Задачи', value: tasksPct, unit: '%', sub: tasksDone + ' из ' + tasks.length + ' выполнено', color: 'var(--ink)' },
+      { label: 'Привычки', value: habitsPct, unit: '%', sub: hDone + ' из ' + hTotal + ' отметок', color: 'var(--ink)' },
+      { label: 'Цели дня по блокам', value: goalsPct, unit: '%', sub: 'среднее выполнение целей показателей', color: 'var(--accent)' }
+    ];
+
+    const paidShare = plans.length ? plans.filter(p => p.paid).length / plans.length * 100 : 0;
+    const sph = [['Тело', grpPct(['Сон и энергия', 'Питание и вода', 'Тренировки', 'Тело и здоровье'], 78)], ['Деньги', clamp(45 + saveRate * 1.3)], ['Дела', tasksPct], ['Семья', grpPct(['Семья и люди'], 82)], ['Быт', clamp(paidShare)], ['Обучение', grpPct(['Языки и учёба'], 68)], ['Дисциплина', habitsPct], ['Покой', grpPct(['Психика и покой', 'Цифровая гигиена'], 59)]];
+    const cx = 170, cy = 160, R = 104;
+    const pt = (i, f) => { const a = (-90 + i * 45) * Math.PI / 180; return [cx + R * f * Math.cos(a), cy + R * f * Math.sin(a)]; };
+    const fp = (p) => p.map(n => n.toFixed(1)).join(',');
+    const wheel = {
+      grid: [0.25, 0.5, 0.75, 1].map(f => ({ pts: sph.map((_, i) => fp(pt(i, f))).join(' ') })),
+      axes: sph.map((s, i) => {
+        const [x2, y2] = pt(i, 1), [lx, ly] = pt(i, 1.17);
+        const cs = Math.cos((-90 + i * 45) * Math.PI / 180);
+        return { x2: x2.toFixed(1), y2: y2.toFixed(1), lx: lx.toFixed(1), ly: (ly + 4).toFixed(1), anchor: cs > 0.3 ? 'start' : (cs < -0.3 ? 'end' : 'middle'), label: s[0] };
+      }),
+      data: sph.map((s, i) => fp(pt(i, s[1] / 100))).join(' '),
+      dots: sph.map((s, i) => { const [x, y] = pt(i, s[1] / 100); return { x: x.toFixed(1), y: y.toFixed(1) }; })
+    };
+    const spheres = sph.map(s => ({ name: s[0], v: s[1], w: s[1] + '%', color: s[1] < 60 ? 'var(--warn)' : (s[1] >= 75 ? 'var(--ok)' : 'var(--accent)') }));
+    const sorted = sph.slice().sort((a, b) => a[1] - b[1]);
+    const weakest = 'Слабее всего: ' + sorted[0][0].toLowerCase() + ' (' + sorted[0][1] + ') и ' + sorted[1][0].toLowerCase() + ' (' + sorted[1][1] + ').';
+
+    // burning
+    const dayNames = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+    const burn = [];
+    tasks.filter(t => !t.done && t.day < 6).forEach(t => burn.push({ k: 0, title: t.title, sub: 'Задача · ' + t.sphere, when: 'просрочено ' + (6 - t.day) + ' дн.', dot: 'var(--bad)', soft: 'var(--bad-soft)', open: go('cab') }));
+    plans.filter(p => !p.paid && p.day >= 18).sort((a, b) => a.day - b.day).forEach(p => {
+      const dd = p.day - 18;
+      burn.push({ k: dd <= 3 ? 1 : 3, title: p.name, sub: 'Финансы · ' + fmt(p.sum) + ' ₽', when: dd === 0 ? 'сегодня' : 'через ' + dd + ' дн.', dot: dd <= 3 ? 'var(--warn)' : 'var(--muted)', soft: dd <= 3 ? 'var(--warn-soft)' : 'var(--bg)', open: go('fin') });
+    });
+    plans.filter(p => !p.paid && p.day < 18).forEach(p => burn.push({ k: 0, title: p.name, sub: 'Финансы · ' + fmt(p.sum) + ' ₽', when: 'просрочено', dot: 'var(--bad)', soft: 'var(--bad-soft)', open: go('fin') }));
+    tasks.filter(t => !t.done && t.day === 6 && t.hot).forEach(t => burn.push({ k: 2, title: t.title, sub: 'Задача · ' + t.sphere, when: t.due || 'сегодня', dot: 'var(--warn)', soft: 'var(--warn-soft)', open: go('cab') }));
+    const burning = burn.sort((a, b) => a.k - b.k).slice(0, 5);
+
+    // groups
+    const gOrder = ['Жильё', 'Еда', 'Транспорт', 'Здоровье', 'Семья', 'Финансы', 'Личное'];
+    const gCol = { 'Жильё': 'var(--accent-text)', 'Еда': 'var(--accent)', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': 'var(--ok)', 'Финансы': 'var(--ink)', 'Личное': 'var(--warn)' };
+    const gSum = gOrder.map(n => ({ name: n, color: gCol[n], v: out.filter(o => o.grp === n).reduce((a, o) => a + o.sum, 0) })).filter(g => g.v > 0).sort((a, b) => b.v - a.v);
+    const rr = 72, CC = 2 * Math.PI * rr;
+    let acc = 0;
+    const segs = gSum.map(g => { const len = CC * g.v / (spent || 1); const s = { color: g.color, da: Math.max(0, len - 2).toFixed(2) + ' ' + (CC - len + 2).toFixed(2), off: (-acc).toFixed(2) }; acc += len; return s; });
+    const groups = gSum.map(g => ({ name: g.name, color: g.color, pct: spent ? Math.round(g.v / spent * 100) : 0, sum: fmt(g.v) + ' ₽' }));
+
+    // weeks
+    const wk = [['1–7 окт', 1, 7], ['8–14 окт', 8, 14], ['15–21 окт', 15, 21], ['22–31 окт', 22, 31]].map(w => ({ name: w[0], v: out.filter(o => o.d >= w[1] && o.d <= w[2]).reduce((a, o) => a + o.sum, 0) }));
+    const mx = Math.max.apply(null, wk.map(w => w.v).concat([1]));
+    const weeks = wk.map((w, i) => ({ name: w.name, label: fmt(w.v), h: Math.max(4, Math.round(w.v / mx * 120)) + 'px', color: i === 3 ? 'var(--line2)' : 'var(--accent)' }));
+    const top = wk.slice(0, 3).sort((a, b) => b.v - a.v)[0];
+    const weekNote = 'Самая затратная неделя: ' + top.name + '. Последняя неделя ещё не началась, поэтому серая.';
+    const L = this.L;
+    const WDN = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+    const wdOf = (n) => WDN[(n - 1 + 3) % 7];
+    const dayList = []; for (let n = 5; n <= 18; n++) dayList.push(n);
+    const dayData = dayList.map(n => { const os = out.filter(o => o.d === n); return { n, sum: os.reduce((a, o) => a + o.sum, 0), segs: gOrder.map(g => ({ g, v: os.filter(o => o.grp === g).reduce((a, o) => a + o.sum, 0) })).filter(x => x.v > 0), os }; });
+    const maxDay = Math.max.apply(null, dayData.map(x => x.sum).concat([1]));
+    const dayCols = dayData.map(x => ({ num: x.n, wd: wdOf(x.n), label: x.sum ? fmt(x.sum) : '', fg: x.n === L.selDay ? 'var(--accent-text)' : 'var(--muted)', bg: x.n === L.selDay ? 'var(--accent-soft)' : 'transparent', segs: x.segs.map(s => ({ color: gCol[s.g], h: Math.max(3, Math.round(s.v / maxDay * 140)) })), pick: () => this.set({ selDay: x.n }) }));
+    const sd = dayData.find(x => x.n === L.selDay) || dayData[dayData.length - 1];
+    const dayInfo = { title: sd.n + ' октября, ' + wdOf(sd.n), total: 'всего ' + fmt(sd.sum) + ' ₽', empty: sd.os.length === 0, rows: sd.os.map(o => ({ note: o.note, cat: o.cat, color: o.color, sum: fmt(o.sum) + ' ₽' })) };
+    const modeBtns = [['days', 'По дням'], ['weeks', 'По неделям']].map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ mode: m[0] }) }));
+    const avgDay = fmt(spent / 18) + ' ₽';
+
+    // tiles
+    const onList = lib.filter(l => on[l.id]);
+    const tiles = onList.map((l, i) => {
+      const base = { name: l.name, icon: l.icon, tag: l.group, tagBg: 'var(--bg)', tagFg: 'var(--muted)', bar: 'var(--accent)', spark: [], hasSpark: false };
+      if (l.id === 'flow') return Object.assign(base, { big: fmt(left), unit: '₽ осталось из ' + fmt(income), w: Math.min(100, spentPct) + '%', sub: 'Потрачено ' + spentPct + '% дохода. Крупнее всего группа «' + (gSum[0] ? gSum[0].name : '—') + '».' });
+      if (l.id === 'plans') { const unpaid = plans.filter(p => !p.paid); const sumU = unpaid.reduce((a, p) => a + p.sum, 0); return Object.assign(base, { big: unpaid.length + ' из ' + plans.length, unit: 'платежей впереди', w: (plans.length ? (plans.length - unpaid.length) / plans.length * 100 : 0) + '%', bar: 'var(--ok)', sub: 'До конца месяца нужно оплатить ' + fmt(sumU) + ' ₽.' }); }
+      if (l.id === 'tasks') return Object.assign(base, { big: tasksDone + ' из ' + tasks.length, unit: 'задач выполнено', w: tasksPct + '%', bar: 'var(--ok)', sub: 'Невыполненных: ' + (tasks.length - tasksDone) + '. Хвосты прошлых дней видны в «Что горит».' });
+      if (l.id === 'habits') return Object.assign(base, { big: hDone + ' из ' + hTotal, unit: 'отметок за неделю', w: habitsPct + '%', bar: 'var(--ok)', sub: 'Выполнение ' + habitsPct + '%. Отмечать можно в кабинете.' });
+      const optL = l.opts ? (vals[l.id + '_opt'] || l.opts[0]) : '';
+      const v = vals[l.opts ? l.id + '_' + optL : l.id] || 0, h = hist[l.id] || [0, 0, 0, 0, 0, 0], st = l.step || 1, pr = prog[l.id] || 0;
+      const fv = (x) => st < 1 ? x.toFixed(st < 0.1 ? 2 : 1).replace('.', ',') : fmt(x);
+      const avgH = h.reduce((a, x) => a + x, 0) / 6;
+      let big, unit, sub;
+      if (l.type === 'k') { big = v ? 'Да' : 'Нет'; unit = 'сегодня'; sub = 'За неделю отмечено ' + (h.reduce((a, x) => a + x, 0) + (v ? 1 : 0)) + ' из 7 дней.'; }
+      else if (l.type === 's') { big = v ? String(v) : '—'; unit = 'из 10'; sub = 'Среднее за прошлые 6 дней: ' + avgH.toFixed(1).replace('.', ',') + '.'; }
+      else if (l.type === 't') { big = v ? 'Есть' : 'Пусто'; unit = 'запись дня'; sub = 'Записи ведутся в кабинете.'; }
+      else { big = fv(v); unit = (l.unit || '') + ' · ' + (l.lower ? 'лимит ' : 'цель ') + fv(l.target); sub = 'Среднее за прошлые 6 дней: ' + fv(avgH) + ' ' + (l.unit || '') + '.'; }
+      const series = l.type === 't' ? [] : h.concat([typeof v === 'number' ? v : 0]);
+      const mx = Math.max.apply(null, series.concat([l.target || 1, 1]));
+      const good = pr >= 100 || (l.lower && pr >= 80);
+      return Object.assign(base, { name: l.name + (optL ? ' · ' + optL : ''), big, unit, w: pr + '%', bar: good ? 'var(--ok)' : (l.lower ? 'var(--warn)' : 'var(--accent)'), sub, hasSpark: series.length > 0, spark: series.map((x, j) => ({ hh: Math.max(3, Math.round(x / mx * 28)), cc: j === 6 ? 'var(--accent)' : 'var(--line2)' })) });
+    });
+    const blocksNote = onList.length + ' ' + (onList.length === 1 ? 'блок включён' : 'блоков включено') + '. Значения вносятся в Кабинете, здесь видно итог и динамику за неделю.';
+
+    const links = [
+      { a: 'Сон', b: 'Еда', text: 'В недели, когда ты спишь меньше 6 ч 30, траты на еду вне дома выше примерно на четверть.' },
+      { a: 'Спорт', b: 'Настроение', text: 'После дней с тренировкой настроение в check-in в среднем на 1,2 балла выше.' },
+      { a: 'Задачи', b: 'Покой', text: 'Когда просрочено больше трёх задач, оценка покоя падает ниже 60 и держится так до закрытия хвостов.' }
+    ];
+    const KEYS = ['hero', 'kpi', 'wheel', 'money', 'blocks', 'candles', 'review', 'line', 'assets', 'more', 'links'];
+    const ALL = KEYS.concat(['pj']);
+    const NAMES = { hero: 'Оценка жизни', kpi: 'Ключевые цифры', wheel: 'Колесо баланса', money: 'Куда уходят деньги', blocks: 'Мои блоки', candles: 'Свечи оценки', review: 'Работа над ошибками', line: 'Линия трат по дням', assets: 'Счета и активы', more: 'Статьи расходов, задачи, привычки', links: 'Связи между блоками', pj: 'Мои бизнесы' };
+    const TPL = [
+      { id: 'over', name: 'Обзор', hint: 'Главное за минуту', list: ['hero', 'kpi', 'wheel', 'review', 'pj'] },
+      { id: 'fin', name: 'Финансы', hint: 'Деньги, счета, бизнесы', list: ['kpi', 'money', 'line', 'assets', 'pj', 'more'] },
+      { id: 'life', name: 'Жизнь и здоровье', hint: 'Баланс, блоки, привычки', list: ['hero', 'wheel', 'blocks', 'candles', 'more', 'links'] },
+      { id: 'proj', name: 'Бизнес', hint: 'Бизнес, продажи, реклама', list: ['pj', 'kpi', 'money', 'line'] },
+      { id: 'min', name: 'Минимум', hint: 'Только оценка и цифры', list: ['hero', 'kpi'] }
+    ];
+    const cur = () => { const c = this.props.cfg; return (c && c.v) ? c : (this.L.lcfg || {}); };
+    const setCfg = (patch) => { const c = Object.assign({ v: 1 }, cur(), patch, { v: 1, dv: 2 }); this.set({ lcfg: c }); if (this.props.fnCfg) this.props.fnCfg(c); };
+    const cf = cur();
+    const hiddenM = cf.dv === 2 ? (cf.hidden || {}) : {};
+    const pinned = cf.dv === 2 ? (cf.pinned || []) : [], viewId = (cf.dv === 2 && !!this.props.pick) ? (cf.view || '') : '';
+    const viewT = TPL.find(t => t.id === viewId) || null;
+    const visL = viewT ? viewT.list : ALL.filter(k => pinned.some(id => (TPL.find(t => t.id === id) || { list: [] }).list.indexOf(k) >= 0));
+    const ordL = (cf.order || []).filter(k => ALL.indexOf(k) >= 0); ALL.forEach(k => { if (ordL.indexOf(k) < 0) ordL.push(k); });
+    const closed = cf.closed || {};
+    const ord = {}, shw = {}; const ordV = viewT ? viewT.list.concat(ALL.filter(k => viewT.list.indexOf(k) < 0)) : ordL; ordV.forEach((k, i) => { ord[k] = i; shw[k] = (hiddenM[k] || visL.indexOf(k) < 0) ? 'none' : 'flex'; });
+    const applyTpl = (t) => () => setCfg({ view: viewId === t.id ? '' : t.id, closed: {} });
+    if (this._lv !== viewId) { this._lv = viewId; this._uf = (this._uf || 0) + 1; }
+    const ufn = (this._uf || 0) % 2 ? 'dcUfA' : 'dcUfB';
+    const ufd = {}; ordV.forEach((k, i) => { ufd[k] = (i * 0.05).toFixed(2) + 's'; });
+    const tpls = [{ id: '', name: 'Мой набор' + (pinned.length ? ' · ' + pinned.length : ''), hint: 'Шаблоны, которые вы добавили', on: !viewId, pk: false }].concat(TPL.map(t => ({ id: t.id, name: t.name, hint: t.hint, on: viewId === t.id, pk: pinned.indexOf(t.id) >= 0 }))).map(t => ({ name: (t.pk ? '✓ ' : '') + t.name, hint: t.hint, bg: t.on ? 'var(--accent)' : 'var(--card)', fg: t.on ? 'var(--on-accent)' : 'var(--ink2)', bd: t.on ? 'var(--accent)' : 'var(--line2)', pick: t.id ? applyTpl(TPL.find(x => x.id === t.id)) : (() => setCfg({ view: '' })) }));
+    const isPinned = !!viewT && pinned.indexOf(viewT.id) >= 0;
+    const tplBar = { showAdd: !!viewT, addText: isPinned ? 'Убрать шаблон' : 'Добавить шаблон', addBg: isPinned ? 'var(--card)' : 'var(--accent)', addFg: isPinned ? 'var(--ink2)' : 'var(--on-accent)', addBd: isPinned ? 'var(--line2)' : 'var(--accent)', viewName: viewT ? viewT.name : '', viewHint: viewT ? viewT.hint : '', emptySet: !viewT && pinned.length === 0, addTpl: () => { if (!viewT) return; setCfg({ pinned: isPinned ? pinned.filter(x => x !== viewT.id) : pinned.concat([viewT.id]) }); } };
+    const move = (k, d) => () => { const a = ordL.slice(), i = a.indexOf(k), j = i + d; if (j < 0 || j >= a.length) return; a.splice(i, 1); a.splice(j, 0, k); setCfg({ order: a, tpl: 'custom' }); };
+    const secRows = ordL.map((k, i) => ({ name: NAMES[k], sw: hiddenM[k] ? 'var(--line2)' : 'var(--accent)', knob: hiddenM[k] ? 3 : 19, fg: hiddenM[k] ? 'var(--muted)' : 'var(--ink)', toggle: () => setCfg({ hidden: Object.assign({}, hiddenM, { [k]: !hiddenM[k] }), tpl: 'custom' }), up: move(k, -1), down: move(k, 1), upOp: i === 0 ? 0.3 : 1, dnOp: i === ordL.length - 1 ? 0.3 : 1 }));
+    const pjAll = P.projects || [], pjOn = cf.pj || {};
+    const showP = (p) => pjOn[p.key] === true || (pjOn[p.key] !== false && p.analytics);
+    const maxP = Math.max(1, ...pjAll.map(p => Math.abs(p.income)));
+    const pjRows = pjAll.filter(showP).map(p => ({ name: p.name, sub: p.sub, income: fmt(p.income), expense: fmt(p.expense), profit: fmt(p.profit), balance: fmt(p.balance), pcol: p.profit >= 0 ? 'var(--ok)' : 'var(--bad)', pct: Math.min(100, Math.round(Math.abs(p.profit) / maxP * 100)), hide: () => setCfg({ pj: Object.assign({}, pjOn, { [p.key]: false }) }) }));
+    const pjOther = pjAll.filter(p => !showP(p)).map(p => ({ name: p.name, add: () => setCfg({ pj: Object.assign({}, pjOn, { [p.key]: true }) }) }));
+
+    const fold = {}; ALL.forEach(k => { const c = !!closed[k]; fold[k] = { rows: c ? '0fr' : '1fr', op: c ? 0 : 1, vis: c ? 'hidden' : 'visible', delay: c ? '.5s' : '0s', rot: c ? -90 : 0, hint: c ? 'Развернуть' : 'Свернуть', toggle: () => setCfg({ closed: Object.assign({}, closed, { [k]: !closed[k] }) }) }; });
+    const foldAll = () => { const m = {}; ALL.forEach(k => { m[k] = true; }); setCfg({ closed: m }); };
+    const openAll = () => setCfg({ closed: {} });
+    const resetCfg = () => setCfg({ view: '', pinned: [], hidden: {}, order: ALL.slice(), closed: {}, pj: {} });
+    return { rootBg: this.props.pick ? 'transparent' : 'var(--bg)', rootPad: this.props.pick ? '4px 0 8px' : '28px 32px 64px', ufn, ufd, pickMode: !!this.props.pick, tplBar, fold, foldAll, openAll, resetCfg, ord, shw, tpls, secRows, pjRows, pjOther, pjEmpty: pjRows.length === 0, panelOpen: !!L.panel, panelLabel: L.panel ? 'Готово' : 'Настроить шаблон под себя', togglePanel: () => this.set({ panel: !this.L.panel }), ops, plans, tasks, habits, blocksOn: on, lib, vals, hist, accounts: P.accounts || [], goFin: go('fin'), trueVal: true, hero, score, scoreWord, delta, parts, kpis, wheel, spheres, weakest, burning, noBurning: burning.length === 0, segs, groups, spentPct, weeks, weekNote, tiles, blocksNote, goBlocks: go('blocks'), links, topCats, sphTasks, habitStreaks, dayCols, dayInfo, modeBtns, modeDays: L.mode === 'days', modeWeeks: L.mode === 'weeks', avgDay };
+  }
+}
+</script>
+</body>
+</html>

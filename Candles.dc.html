@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Свечи оценки</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+<div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:16px;font-family:'Inter',system-ui,sans-serif;color:var(--ink)">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Динамика оценки жизни</b>
+      <span style="font-size:12px;color:var(--muted)">Свеча — один день. Зелёная: день закончился выше, чем начался. Красная: ниже. Нажми на свечу, чтобы увидеть детали.</span>
+    </div>
+    <div style="display:flex;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px">
+      <sc-for list="{{periods}}" as="p" hint-placeholder-count="3">
+        <button type="button" onClick="{{p.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:12px;padding:8px 16px;border-radius:999px;background:{{p.bg}};color:{{p.fg}}">{{p.name}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px">
+    <sc-for list="{{stats}}" as="s" hint-placeholder-count="6">
+      <div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:3px">
+        <span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">{{s.label}}</span>
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:800;color:{{s.color}}">{{s.value}}</b>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="position:relative"><svg viewBox="0 0 1200 560" style="width:100%;height:auto;display:block" role="img" aria-label="Свечной график оценки жизни по дням">
+    <sc-for list="{{grid}}" as="g" hint-placeholder-count="5">
+      <line x1="44" y1="{{g.y}}" x2="1180" y2="{{g.y}}" stroke="var(--line)" stroke-width="1"/>
+    </sc-for>
+    <sc-for list="{{candles}}" as="c" hint-placeholder-count="30">
+      <rect x="{{c.sx}}" y="14" width="{{c.sw}}" height="452" fill="{{c.band}}"/>
+      <line x1="{{c.cx}}" y1="{{c.yh}}" x2="{{c.cx}}" y2="{{c.yl}}" stroke="{{c.color}}" stroke-width="2" stroke-linecap="round"/>
+      <rect x="{{c.bx}}" y="{{c.yt}}" width="{{c.bw}}" height="{{c.bh}}" rx="2" fill="{{c.color}}"/>
+      <rect x="{{c.sx}}" y="14" width="{{c.sw}}" height="506" fill="transparent" style="cursor:pointer" onClick="{{c.pick}}"/>
+    </sc-for>
+    <line x1="44" y1="{{last.y}}" x2="1180" y2="{{last.y}}" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 4"/>
+    <rect x="1128" y="{{last.ty}}" width="52" height="20" rx="5" fill="var(--accent)"/>
+  </svg>
+    <sc-for list="{{grid}}" as="g" hint-placeholder-count="5"><div style="position:absolute;left:0;width:{{g.w}};text-align:right;top:{{g.tp}};transform:translateY(-50%);font-size:11px;color:var(--muted);line-height:1">{{g.label}}</div></sc-for>
+    <sc-for list="{{candles}}" as="c" hint-placeholder-count="30"><div style="position:absolute;left:{{c.lp}};top:{{c.nt}};transform:translate(-50%,-100%);font-size:{{c.fs}}px;font-weight:700;color:{{c.color}};line-height:1;pointer-events:none">{{c.label}}</div><div style="position:absolute;left:{{c.lp}};top:{{c.dt}};transform:translateX(-50%);font-size:13px;font-weight:700;color:var(--ink);line-height:1;white-space:nowrap;pointer-events:none">{{c.date}}</div><div style="position:absolute;left:{{c.lp}};top:{{c.pt}};transform:translateX(-50%);font-size:11px;font-weight:700;color:{{c.color}};line-height:1;white-space:nowrap;pointer-events:none">{{c.dl}}</div><div style="position:absolute;left:{{c.lp}};top:{{c.mt}};transform:translateX(-35%);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-text);line-height:1;white-space:nowrap;pointer-events:none;border-left:2px solid var(--accent-text);padding-left:5px">{{c.mon}}</div></sc-for>
+    <div style="position:absolute;left:{{last.lp}};top:{{last.tp}};width:4.3%;transform:translate(-50%,-50%);text-align:center;font-size:12px;font-weight:700;color:var(--on-accent);line-height:1;pointer-events:none">{{last.label}}</div>
+  </div>
+
+  <div style="background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+    <b style="font-size:14px;min-width:90px">{{sel.date}}</b>
+    <span style="font-size:13px;color:var(--muted)">Открытие <b style="color:var(--ink)">{{sel.o}}</b></span>
+    <span style="font-size:13px;color:var(--muted)">Максимум <b style="color:var(--ink)">{{sel.h}}</b></span>
+    <span style="font-size:13px;color:var(--muted)">Минимум <b style="color:var(--ink)">{{sel.l}}</b></span>
+    <span style="font-size:13px;color:var(--muted)">Закрытие <b style="color:var(--ink)">{{sel.c}}</b></span>
+    <span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:{{sel.bg}};color:{{sel.color}}">{{sel.chg}}</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"score":{"editor":null},"$preview":{"width":1280,"height":640}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, period: 30, sel: -1 }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  series(live) {
+    const out = [];
+    for (let i = 0; i < 60; i++) out.push({ o: 0, c: 0, h: 0, l: 0 });
+    const last = out[59]; last.c = live; last.h = live; last.l = 0;
+    return out;
+  }
+
+  renderVals() {
+    const L = this.L, P = this.props;
+    const TD = new Date(); const live = Math.round(typeof P.score === 'number' ? P.score : 0);
+    const all = this.series(live);
+    const n = L.period;
+    const data = all.slice(60 - n);
+    const MON = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    const MONF = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+    const dayD = (i) => new Date(TD.getFullYear(), TD.getMonth(), TD.getDate() - (n - 1 - i));
+    const dateOf = (i) => { const d = new Date(TD.getFullYear(), TD.getMonth(), TD.getDate() - (n - 1 - i)); return d.getDate() + ' ' + MON[d.getMonth()]; };
+    const lo = Math.max(0, Math.floor((Math.min.apply(null, data.map(d => d.l)) - 4) / 10) * 10);
+    const hi = Math.min(100, Math.ceil((Math.max.apply(null, data.map(d => d.h)) + 4) / 10) * 10);
+    const Y = (v) => 20 + (1 - (v - lo) / (hi - lo)) * 440;
+    const slot = 1136 / n, bw = Math.max(5, slot * 0.56);
+    const selI = (L.sel >= 0 && L.sel < n) ? L.sel : n - 1;
+    const every = n <= 14 ? 1 : (n <= 30 ? 2 : 5);
+    const UP = 'var(--ok)', DN = 'var(--bad)';
+    const candles = data.map((d, i) => {
+      const up = d.c >= d.o, color = up ? UP : DN;
+      const cx = 44 + slot * (i + 0.5);
+      const yt = Y(Math.max(d.o, d.c)), yb = Y(Math.min(d.o, d.c));
+      const emp = d.c === 0 && d.o === 0 && d.h === 0, showNum = !emp && (n <= 30 || i % 5 === 0 || i === n - 1);
+      return {
+        sx: (44 + slot * i).toFixed(1), sw: slot.toFixed(1), band: i === selI ? 'var(--accent-soft)' : 'transparent',
+        cx: cx.toFixed(1), yh: Y(d.h).toFixed(1), yl: Y(d.l).toFixed(1), bx: (cx - bw / 2).toFixed(1), bw: bw.toFixed(1),
+        yt: yt.toFixed(1), bh: Math.max(2, yb - yt).toFixed(1), color,
+        ly: (Y(d.h) - 6).toFixed(1), label: showNum ? String(d.c) : '', fs: n <= 14 ? 12 : (n <= 30 ? 10 : 10),
+        lp: (cx/12).toFixed(2)+'%', nt: ((Y(d.h) - 4)/560*100).toFixed(2)+'%', dt: (490/560*100-3).toFixed(2)+'%', pt: (510/560*100-1).toFixed(2)+'%', date: ((i % every === 0 && n - 1 - i >= 2) || i === n - 1) ? String(dayD(i).getDate()) : '', mon: (i === 0 || dayD(i).getDate() === 1) ? MONF[dayD(i).getMonth()] : '', mt: (532/560*100).toFixed(2)+'%', dl: emp ? '' : ((i % every === 0 && n - 1 - i >= 2) || i === n - 1) ? ((d.c - d.o >= 0 ? '+' : '−') + Math.abs(d.c - d.o)) : '', pick: () => this.set({ sel: i })
+      };
+    });
+    const grid = [];
+    for (let v = lo; v <= hi; v += (hi - lo) > 50 ? 20 : 10) grid.push({ w: (36/12).toFixed(2)+'%', tp: (Y(v)/560*100).toFixed(2)+'%', y: Y(v).toFixed(1), ty: (Y(v) + 4).toFixed(1), label: String(v) });
+    const lastC = data[n - 1].c;
+    const last = { lp: (1154/12).toFixed(2)+'%', tp: ((Y(lastC) + 0)/560*100).toFixed(2)+'%', y: Y(lastC).toFixed(1), ty: (Y(lastC) - 10).toFixed(1), tt: (Y(lastC) + 4).toFixed(1), label: String(lastC) };
+    const first = data[0].o;
+    const chg = lastC - first;
+    const ups = data.filter(d => d.c > d.o).length;
+    const avg = Math.round(data.reduce((a, d) => a + d.c, 0) / n);
+    const stats = [
+      { label: 'Сейчас', value: String(lastC), color: 'var(--ink)' },
+      { label: 'За период', value: (chg >= 0 ? '+' : '') + chg, color: chg >= 0 ? UP : DN },
+      { label: 'Максимум', value: String(Math.max.apply(null, data.map(d => d.h))), color: 'var(--ink)' },
+      { label: 'Минимум', value: String(Math.min.apply(null, data.map(d => d.l))), color: 'var(--ink)' },
+      { label: 'Среднее', value: String(avg), color: 'var(--ink)' },
+      { label: 'Зелёных дней', value: ups + ' из ' + n, color: UP }
+    ];
+    const s = data[selI], sc = s.c - s.o;
+    const sel = { date: dateOf(selI), o: s.o, h: s.h, l: s.l, c: s.c, chg: (sc >= 0 ? '+' : '') + sc + ' за день', color: sc >= 0 ? UP : DN, bg: sc >= 0 ? 'var(--ok-soft)' : 'var(--bad-soft)' };
+    const periods = [14, 30, 60].map(p => ({ name: p + ' дней', bg: n === p ? 'var(--accent)' : 'transparent', fg: n === p ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ period: p, sel: -1 }) }));
+    return { periods, stats, grid, candles, last, sel };
+  }
+}
+</script>
+</body>
+</html>
