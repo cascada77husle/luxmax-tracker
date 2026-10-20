@@ -201,7 +201,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"score":{"editor":null},"$preview":{"width":1280,"height":640}}'>
+<script type="text/x-dc" data-dc-script data-props='{"score":{"editor":null},"demo":{"editor":null},"$preview":{"width":1280,"height":640}}'>
 class Component extends DCLogic {
   init() { return { ready: false, period: 30, sel: -1 }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
@@ -209,6 +209,11 @@ class Component extends DCLogic {
 
   series(live) {
     const out = [];
+    if (this.props && this.props.demo) {
+      const cl = [52, 55, 53, 58, 61, 57, 60, 64, 62, 59, 63, 67, 65, 70, 68, 66, 71, 74, 72, 69, 73, 76, 74, 71, 75, 78, 76, 73, 77, 80, 78, 75, 72, 76, 79, 77, 74, 78, 81, 79, 76, 80, 83, 81, 78, 82, 79, 75, 77, 80, 78, 74, 76, 79, 82, 80, 77, 81, 78, 74];
+      for (let i = 0; i < 60; i++) { const c = cl[i], o = i ? cl[i - 1] : 50; out.push({ o, c, h: Math.min(100, Math.max(o, c) + 3 + (i % 3)), l: Math.max(0, Math.min(o, c) - 3 - (i % 2)) }); }
+      return out;
+    }
     for (let i = 0; i < 60; i++) out.push({ o: 0, c: 0, h: 0, l: 0 });
     const last = out[59]; last.c = live; last.h = live; last.l = 0;
     return out;
@@ -229,19 +234,20 @@ class Component extends DCLogic {
     const Y = (v) => 20 + (1 - (v - lo) / (hi - lo)) * 440;
     const slot = 1136 / n, bw = Math.max(5, slot * 0.56);
     const selI = (L.sel >= 0 && L.sel < n) ? L.sel : n - 1;
-    const every = n <= 14 ? 1 : (n <= 30 ? 2 : 5);
+    const NAR = typeof window !== 'undefined' && window.innerWidth < 700;
+    const every = NAR ? (n <= 14 ? 3 : (n <= 30 ? 7 : 10)) : (n <= 14 ? 1 : (n <= 30 ? 2 : 5));
     const UP = 'var(--ok)', DN = 'var(--bad)';
     const candles = data.map((d, i) => {
       const up = d.c >= d.o, color = up ? UP : DN;
       const cx = 44 + slot * (i + 0.5);
       const yt = Y(Math.max(d.o, d.c)), yb = Y(Math.min(d.o, d.c));
-      const emp = d.c === 0 && d.o === 0 && d.h === 0, showNum = !emp && (n <= 30 || i % 5 === 0 || i === n - 1);
+      const emp = d.c === 0 && d.o === 0 && d.h === 0, showNum = !emp && (NAR ? i === n - 1 : (n <= 30 || i % 5 === 0 || i === n - 1));
       return {
         sx: (44 + slot * i).toFixed(1), sw: slot.toFixed(1), band: i === selI ? 'var(--accent-soft)' : 'transparent',
         cx: cx.toFixed(1), yh: Y(d.h).toFixed(1), yl: Y(d.l).toFixed(1), bx: (cx - bw / 2).toFixed(1), bw: bw.toFixed(1),
         yt: yt.toFixed(1), bh: Math.max(2, yb - yt).toFixed(1), color,
         ly: (Y(d.h) - 6).toFixed(1), label: showNum ? String(d.c) : '', fs: n <= 14 ? 12 : (n <= 30 ? 10 : 10),
-        lp: (cx/12).toFixed(2)+'%', nt: ((Y(d.h) - 4)/560*100).toFixed(2)+'%', dt: (490/560*100-3).toFixed(2)+'%', pt: (510/560*100-1).toFixed(2)+'%', date: ((i % every === 0 && n - 1 - i >= 2) || i === n - 1) ? String(dayD(i).getDate()) : '', mon: (i === 0 || dayD(i).getDate() === 1) ? MONF[dayD(i).getMonth()] : '', mt: (532/560*100).toFixed(2)+'%', dl: emp ? '' : ((i % every === 0 && n - 1 - i >= 2) || i === n - 1) ? ((d.c - d.o >= 0 ? '+' : '−') + Math.abs(d.c - d.o)) : '', pick: () => this.set({ sel: i })
+        lp: (cx/12).toFixed(2)+'%', nt: ((Y(d.h) - 4)/560*100).toFixed(2)+'%', dt: (490/560*100-3).toFixed(2)+'%', pt: (510/560*100-1).toFixed(2)+'%', date: ((i % every === 0 && n - 1 - i >= 2) || i === n - 1) ? String(dayD(i).getDate()) : '', mon: (!NAR && (i === 0 || dayD(i).getDate() === 1)) ? MONF[dayD(i).getMonth()] : '', mt: (532/560*100).toFixed(2)+'%', dl: (emp || NAR) ? '' : ((i % every === 0 && n - 1 - i >= 2) || i === n - 1) ? ((d.c - d.o >= 0 ? '+' : '−') + Math.abs(d.c - d.o)) : '', pick: () => this.set({ sel: i })
       };
     });
     const grid = [];
