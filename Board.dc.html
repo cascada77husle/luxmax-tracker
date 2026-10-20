@@ -155,11 +155,29 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </helmet>
 
 <div class="bd" style="{{rootStyle}}">
-  <div style="display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:2px">
-    <sc-for list="{{addTools}}" as="t" hint-placeholder-count="4"><button type="button" onClick="{{t.pick}}" aria-label="{{t.name}}" title="{{t.hint}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;min-height:0;padding:6px 8px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-size:11px;font-weight:600;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><span>{{t.name}}</span></button></sc-for>
-    <span style="width:1px;align-self:stretch;background:var(--line2);flex-shrink:0;margin:2px 4px" aria-hidden="true"></span>
-    <sc-for list="{{modeTools}}" as="t" hint-placeholder-count="4"><button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" aria-label="{{t.name}}" title="{{t.hint}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;min-height:0;padding:6px 8px;border:1.5px solid {{t.border}};border-radius:12px;background:{{t.bg}};color:{{t.fg}};font-size:11px;font-weight:600;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><span>{{t.name}}</span></button></sc-for>
+  <div style="display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:2px" role="tablist" aria-label="Доски">
+    <sc-for list="{{boardChips}}" as="b" hint-placeholder-count="2"><button type="button" onClick="{{b.pick}}" aria-pressed="{{b.on}}" style="cursor:pointer;min-height:0;height:34px;padding:0 14px;border:1.5px solid {{b.border}};border-radius:999px;background:{{b.bg}};color:{{b.fg}};font-size:13px;font-weight:700;flex-shrink:0;white-space:nowrap">{{b.name}}</button></sc-for>
+    <button type="button" onClick="{{addBoard}}" aria-label="Новая доска" title="Новая доска" style="cursor:pointer;min-height:0;height:34px;padding:0 14px;border:1.5px dashed var(--line2);border-radius:999px;background:transparent;color:var(--ink);font-size:13px;font-weight:700;flex-shrink:0">+ Доска</button>
   </div>
+  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+    <input value="{{curBoardName}}" onInput="{{renameBoard}}" aria-label="Название доски" placeholder="Название доски" style="flex:1;min-width:140px;height:34px;box-sizing:border-box;border:1.5px solid var(--line2);border-radius:10px;background:var(--field);color:var(--ink);font-size:14px;font-weight:600;padding:0 12px;outline:none">
+    <button type="button" onClick="{{delBoard}}" style="cursor:pointer;min-height:0;height:34px;border:1.5px solid var(--bad-line);border-radius:10px;background:var(--card);color:var(--bad);font-weight:700;font-size:12px;padding:0 12px">{{delBoardText}}</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:2px">
+    <sc-for list="{{addTools}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" aria-label="{{t.name}}" title="{{t.hint}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;min-height:0;padding:6px 8px;border-radius:12px;font-size:11px;font-weight:600;flex-shrink:0;border:1.5px solid {{t.border}};background:{{t.bg}};color:{{t.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><span>{{t.name}}</span></button></sc-for>
+    <span style="width:1px;align-self:stretch;background:var(--line2);flex-shrink:0;margin:2px 4px" aria-hidden="true"></span>
+    <sc-for list="{{modeTools}}" as="t" hint-placeholder-count="4"><button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" aria-label="{{t.name}}" title="{{t.hint}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:56px;min-height:0;padding:6px 8px;border-radius:12px;font-size:11px;font-weight:600;flex-shrink:0;border:1.5px solid {{t.border}};background:{{t.bg}};color:{{t.fg}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><span>{{t.name}}</span></button></sc-for>
+  </div>
+  <sc-if value="{{menuShapes}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;animation:dc-open .22s ease both">
+      <sc-for list="{{shapeMenu}}" as="m" hint-placeholder-count="8"><button type="button" onClick="{{m.pick}}" title="{{m.name}}" aria-label="{{m.name}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:0;padding:6px 8px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-size:11px;font-weight:600"><svg width="44" height="34" viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="{{m.d}}"></path></svg><span>{{m.name}}</span></button></sc-for>
+    </div>
+  </sc-if>
+  <sc-if value="{{menuTpl}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;animation:dc-open .22s ease both">
+      <sc-for list="{{tplMenu}}" as="m" hint-placeholder-count="5"><button type="button" onClick="{{m.pick}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:0;padding:8px 12px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);text-align:left"><b style="font-size:14px;font-weight:700;color:var(--ink)">{{m.name}}</b><span style="font-size:11px;color:var(--muted);font-weight:500">{{m.hint}}</span></button></sc-for>
+    </div>
+  </sc-if>
 
   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
     <sc-for list="{{viewTools}}" as="t" hint-placeholder-count="5"><button type="button" onClick="{{t.pick}}" aria-label="{{t.name}}" title="{{t.name}}" style="cursor:pointer;display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;min-height:0;padding:0 8px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-size:12px;font-weight:700;opacity:{{t.op}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:{{t.iconD}}"><path d="{{t.icon}}"></path></svg><span style="display:{{t.textD}}">{{t.text}}</span></button></sc-for>
@@ -167,10 +185,14 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
   </div>
 
   <sc-if value="{{hasSel}}" hint-placeholder-val="{{false}}">
-    <div style="display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px">
+    <div style="display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;animation:dc-open .22s ease both">
       <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><textarea value="{{selText}}" onInput="{{typeText}}" rows="2" placeholder="{{selHint}}" aria-label="Текст на доске" style="width:100%;box-sizing:border-box;border:1.5px solid var(--line2);border-radius:12px;background:var(--field);color:var(--ink);font-size:16px;padding:8px 10px;outline:none;resize:vertical"></textarea></sc-if>
+      <sc-if value="{{selIsShape}}" hint-placeholder-val="{{false}}"><div style="display:flex;align-items:center;gap:6px;overflow-x:auto"><span style="font-size:12px;color:var(--muted);font-weight:600;min-width:66px">Форма</span><sc-for list="{{shapeCh}}" as="c" hint-placeholder-count="8"><button type="button" onClick="{{c.pick}}" title="{{c.name}}" aria-label="{{c.name}}" style="cursor:pointer;min-height:0;width:44px;height:34px;padding:0;border:1.5px solid {{c.border}};border-radius:10px;background:{{c.bg}};color:var(--ink);flex-shrink:0"><svg width="32" height="24" viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" aria-hidden="true"><path d="{{c.d}}"></path></svg></button></sc-for></div></sc-if>
+      <sc-if value="{{selNotText}}" hint-placeholder-val="{{true}}"><div style="display:flex;align-items:center;gap:6px;overflow-x:auto" role="group" aria-label="Заливка"><span style="font-size:12px;color:var(--muted);font-weight:600;min-width:66px">Заливка</span><sc-for list="{{swatches}}" as="c" hint-placeholder-count="13"><button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" title="{{c.name}}" style="cursor:pointer;width:26px;height:26px;min-height:0;padding:0;border-radius:50%;flex-shrink:0;background:{{c.bg}};border:2px solid {{c.border}}"></button></sc-for></div></sc-if>
+      <sc-if value="{{selStroke}}" hint-placeholder-val="{{true}}"><div style="display:flex;align-items:center;gap:6px;overflow-x:auto" role="group" aria-label="Контур"><span style="font-size:12px;color:var(--muted);font-weight:600;min-width:66px">Контур</span><sc-for list="{{strokeSw}}" as="c" hint-placeholder-count="8"><button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" title="{{c.name}}" style="cursor:pointer;width:26px;height:26px;min-height:0;padding:0;border-radius:50%;flex-shrink:0;background:{{c.bg}};border:2px solid {{c.border}}"></button></sc-for><sc-for list="{{widthCh}}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{c.pick}}" title="{{c.title}}" aria-label="{{c.title}}" style="cursor:pointer;min-width:34px;height:32px;min-height:0;padding:0 10px;border-radius:10px;font-size:13px;font-weight:700;flex-shrink:0;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div></sc-if>
+      <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><div style="display:flex;align-items:center;gap:6px;overflow-x:auto" role="group" aria-label="Текст"><span style="font-size:12px;color:var(--muted);font-weight:600;min-width:66px">Текст</span><sc-for list="{{textCh}}" as="c" hint-placeholder-count="7"><button type="button" onClick="{{c.pick}}" title="{{c.title}}" aria-label="{{c.title}}" style="cursor:pointer;min-width:34px;height:32px;min-height:0;padding:0 10px;border-radius:10px;font-size:13px;font-weight:700;flex-shrink:0;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for><sc-for list="{{tcCh}}" as="c" hint-placeholder-count="3"><button type="button" onClick="{{c.pick}}" title="{{c.title}}" aria-label="Цвет текста {{c.title}}" style="cursor:pointer;min-width:34px;height:32px;min-height:0;padding:0 10px;border-radius:10px;font-size:13px;font-weight:700;flex-shrink:0;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.name}}</button></sc-for></div></sc-if>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><div style="display:flex;gap:6px" role="group" aria-label="Цвет"><sc-for list="{{swatches}}" as="c" hint-placeholder-count="6"><button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" title="{{c.name}}" style="cursor:pointer;width:28px;height:28px;min-height:0;padding:0;border-radius:50%;background:{{c.bg}};border:2px solid {{c.border}}"></button></sc-for></div></sc-if>
+        <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><sc-for list="{{orderCh}}" as="c" hint-placeholder-count="2"><button type="button" onClick="{{c.pick}}" title="{{c.title}}" style="cursor:pointer;min-width:34px;height:32px;min-height:0;padding:0 10px;border-radius:10px;font-size:13px;font-weight:700;flex-shrink:0;border:1.5px solid var(--line2);background:var(--card);color:var(--ink)">{{c.name}}</button></sc-for></sc-if>
         <span style="flex:1"></span>
         <sc-if value="{{selIsItem}}" hint-placeholder-val="{{true}}"><button type="button" onClick="{{dupSel}}" style="cursor:pointer;min-height:0;height:36px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font-weight:700;font-size:13px;padding:0 14px">Копия</button></sc-if>
         <button type="button" onClick="{{delSel}}" style="cursor:pointer;min-height:0;height:36px;border:1.5px solid var(--bad-line);border-radius:12px;background:var(--card);color:var(--bad);font-weight:700;font-size:13px;padding:0 14px">{{delText}}</button>
@@ -190,30 +212,31 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
         <sc-for list="{{arrowList}}" as="a" hint-placeholder-count="2"><path d="{{a.d}}" fill="none" stroke="{{a.color}}" stroke-width="{{a.w}}" stroke-linecap="round" marker-end="url(#bdah)"></path><path d="{{a.d}}" fill="none" stroke="transparent" stroke-width="18" onPointerDown="{{a.down}}" style="pointer-events:stroke;cursor:pointer"></path></sc-for>
       </svg>
       <sc-for list="{{itemList}}" as="it" hint-placeholder-count="3">
-        <button type="button" class="{{it.cls}}" onPointerDown="{{it.down}}" onPointerMove="{{it.move}}" onPointerUp="{{it.up}}" onPointerCancel="{{it.up}}" aria-label="{{it.label}}" style="{{it.style}}">{{it.show}}</button>
+        <button type="button" class="{{it.cls}}" onPointerDown="{{it.down}}" onPointerMove="{{it.move}}" onPointerUp="{{it.up}}" onPointerCancel="{{it.up}}" aria-label="{{it.label}}" style="{{it.style}}"><svg viewBox="{{it.vb}}" preserveAspectRatio="none" style="{{it.svgStyle}}" aria-hidden="true"><path d="{{it.pd}}" fill="{{it.fill}}" stroke="{{it.stroke}}" stroke-width="{{it.sw}}" stroke-dasharray="{{it.dash}}" stroke-linejoin="round"></path></svg><span style="{{it.tStyle}}">{{it.show}}</span><div style="{{it.chartStyle}}"><div style="{{it.titleStyle}}">{{it.title}}</div><div style="{{it.barsStyle}}"><sc-for list="{{it.bars}}" as="bar" hint-placeholder-count="0"><div style="{{bar.col}}"><span style="{{bar.vs}}">{{bar.val}}</span><div style="{{bar.bar}}"></div><span style="{{bar.ls}}">{{bar.label}}</span></div></sc-for></div></div></button>
         <sc-if value="{{it.isSel}}" hint-placeholder-val="{{false}}"><button type="button" onPointerDown="{{it.rdown}}" onPointerMove="{{it.rmove}}" onPointerUp="{{it.rup}}" onPointerCancel="{{it.rup}}" aria-label="Изменить размер" title="Потяните, чтобы изменить размер" style="{{it.hStyle}}"></button></sc-if>
       </sc-for>
     </div>
     <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
       <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;pointer-events:none">
         <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Доска бизнеса пока пустая</b>
-        <span style="font-size:14px;color:var(--muted);max-width:30em">Добавляйте стикеры, текст и фигуры, соединяйте их стрелками, рисуйте от руки. Всё сохраняется само и будет здесь при следующем открытии.</span>
+        <span style="font-size:14px;color:var(--muted);max-width:30em">Добавляйте стикеры, фигуры, рамки и графики, берите готовые шаблоны, соединяйте блоки стрелками, рисуйте от руки. Всё сохраняется само и будет здесь при следующем открытии.</span>
         <button type="button" onClick="{{firstNote}}" style="pointer-events:auto;cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:10px 20px">Добавить первый стикер</button>
       </div>
     </sc-if>
   </div>
-  <span style="font-size:12px;color:var(--muted)">Перетаскивайте пустое место, чтобы двигать доску, двумя пальцами или кнопками масштабировать. Нажмите на объект, чтобы изменить текст и цвет.</span>
+  <span style="font-size:12px;color:var(--muted)">Перетаскивайте пустое место, чтобы двигать доску, двумя пальцами или кнопками масштабировать. Нажмите на объект, чтобы поменять текст, форму, цвет и контур. Несколько досок переключаются сверху.</span>
 </div>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"boardKey":{"editor":"text","default":"demo"},"$preview":{"width":1000,"height":760}}'>
 class Component extends DCLogic {
-  init() { return { ready: false, items: [], arrows: [], strokes: [], view: { x: 40, y: 40, z: 1 }, sel: '', selKind: '', tool: 'select', arrowFrom: '', full: false, status: 'loading', hist: [], loaded: false, nid: 1, swatch: 0, pen: 0 }; }
+  init() { return { ready: false, items: [], arrows: [], strokes: [], view: { x: 40, y: 40, z: 1 }, sel: '', selKind: '', tool: 'select', arrowFrom: '', full: false, status: 'loading', hist: [], loaded: false, nid: 1, swatch: 0, pen: 0, bid: 'b1', boards: [{ id: 'b1', name: 'Доска 1' }], snap: false, menu: '', delAsk: false }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
-  key() { return String((this.props && this.props.boardKey) || 'demo'); }
-  componentDidMount() { this.load(); }
-  componentDidUpdate(prev) { if (prev && prev.boardKey !== (this.props && this.props.boardKey)) { this.flush(); this.load(); } }
+  base() { return String((this.props && this.props.boardKey) || 'demo'); }
+  key() { const b = this.bidCur || 'b1'; return this.base() + (b === 'b1' ? '' : '~' + b); }
+  componentDidMount() { this.loadList(); this.load(); }
+  componentDidUpdate(prev) { if (prev && prev.boardKey !== (this.props && this.props.boardKey)) { this.flush(); this.bidCur = 'b1'; this.set({ bid: 'b1' }); this.loadList(); this.load(); } }
   componentWillUnmount() { clearTimeout(this.tm); if (this.dirty) this.flush(); }
 
   load() {
@@ -237,6 +260,14 @@ class Component extends DCLogic {
       }).catch(() => { if (!local) apply({}, 'local'); else this.set({ status: 'local' }); });
     }).catch(() => { if (!local) apply({}, 'local'); });
   }
+  loadList() {
+    const k = this.base(); let l = null; try { l = JSON.parse(localStorage.getItem('boardlist:' + k) || 'null'); } catch (e) { l = null; }
+    const boards = (l && l.length) ? l : [{ id: 'b1', name: 'Доска 1' }]; let cur = 'b1'; try { cur = localStorage.getItem('boardcur:' + k) || 'b1'; } catch (e) { cur = 'b1'; }
+    if (!boards.some(b => b.id === cur)) cur = boards[0].id;
+    this.bidCur = cur; this.set({ boards, bid: cur });
+  }
+  saveList(boards) { try { localStorage.setItem('boardlist:' + this.base(), JSON.stringify(boards)); } catch (e) { /* ok */ } }
+  switchBoard(id) { if (id === (this.bidCur || 'b1')) return; this.flush(); this.bidCur = id; try { localStorage.setItem('boardcur:' + this.base(), id); } catch (e) { /* ok */ } this.set({ bid: id, menu: '', delAsk: false }); this.load(); }
   touch() {
     this.dirty = true; clearTimeout(this.tm);
     this.tm = setTimeout(() => this.flush(), 600);
@@ -260,12 +291,42 @@ class Component extends DCLogic {
   toWorld(e) { const r = this.rect || e.currentTarget.getBoundingClientRect(), v = this.L.view; return { x: (e.clientX - r.left - v.x) / v.z, y: (e.clientY - r.top - v.y) / v.z }; }
   size() { return { w: this.cw || Math.min(1100, (typeof window !== 'undefined' ? window.innerWidth : 600) - 28), h: this.ch || 560 }; }
 
-  addItem(t) {
+  addItem(t, extra) {
     const L = this.L, s = this.size(), v = L.view, n = L.items.length;
-    const DEF = { note: [180, 150], text: [220, 56], rect: [200, 120], ellipse: [180, 130] }[t];
-    const col = L.swatch;
-    const it = { id: 'i' + L.nid, t, x: Math.round((s.w / 2 - v.x) / v.z - DEF[0] / 2 + (n % 5) * 18), y: Math.round((s.h / 2 - v.y) / v.z - DEF[1] / 2 + (n % 5) * 18), w: DEF[0], h: DEF[1], text: '', c: col };
-    this.mut({ items: L.items.concat([it]), nid: L.nid + 1, sel: it.id, selKind: 'item', tool: 'select', arrowFrom: '' });
+    const DEF = { note: [180, 150], text: [220, 56], rect: [200, 120], round: [200, 110], ellipse: [180, 130], diamond: [180, 140], triangle: [170, 140], hexagon: [190, 130], star: [160, 150], para: [210, 110], frame: [440, 300], chart: [360, 240] }[t] || [200, 120];
+    const it = Object.assign({ id: 'i' + L.nid, t, x: Math.round((s.w / 2 - v.x) / v.z - DEF[0] / 2 + (n % 5) * 18), y: Math.round((s.h / 2 - v.y) / v.z - DEF[1] / 2 + (n % 5) * 18), w: DEF[0], h: DEF[1], text: '', c: t === 'frame' || t === 'chart' ? 12 : L.swatch }, extra || {});
+    this.mut({ items: L.items.concat([it]), nid: L.nid + 1, sel: it.id, selKind: 'item', tool: 'select', arrowFrom: '', menu: '' });
+  }
+  addTemplate(name) {
+    const L = this.L, s = this.size(), v = L.view; let nid = L.nid; const items = [], arrows = [];
+    const cx = Math.round((s.w / 2 - v.x) / v.z), cy = Math.round((s.h / 2 - v.y) / v.z);
+    const add = (t, x, y, w, h, text, c, o) => { const id = 'i' + (nid++); items.push(Object.assign({ id, t, x: cx + x, y: cy + y, w, h, text, c }, o || {})); return id; };
+    const link = (a, b) => { arrows.push({ id: 'a' + (nid++), a, b }); };
+    if (name === 'flow') {
+      const a = add('round', -90, -250, 180, 60, 'Старт', 2), b = add('rect', -100, -150, 200, 80, 'Шаг 1', 3), d = add('diamond', -100, -40, 200, 120, 'Условие?', 0), e = add('rect', -330, 130, 200, 80, 'Да: действие', 2), f = add('rect', 130, 130, 200, 80, 'Нет: другое действие', 1), g = add('round', -90, 260, 180, 60, 'Финиш', 4);
+      link(a, b); link(b, d); link(d, e); link(d, f); link(e, g); link(f, g);
+    } else if (name === 'mind') {
+      const m = add('ellipse', -110, -60, 220, 120, 'Главная идея', 0, { fb: 1, fs: 18 });
+      [[-420, -230, 3, 'Идея 1'], [260, -230, 2, 'Идея 2'], [-420, 130, 1, 'Идея 3'], [260, 130, 4, 'Идея 4']].forEach(q => { const i = add('round', q[0], q[1], 170, 70, q[3], q[2]); link(m, i); });
+    } else if (name === 'kanban') {
+      [['Нужно сделать', 1, -480], ['В работе', 0, -150], ['Готово', 2, 180]].forEach(col => { add('frame', col[2], -230, 300, 460, col[0], 12); add('note', col[2] + 60, -150, 180, 110, 'Задача', col[1]); });
+    } else if (name === 'swot') {
+      [['Сильные стороны', 2, -330, -250], ['Слабые стороны', 1, 10, -250], ['Возможности', 3, -330, 40], ['Угрозы', 0, 10, 40]].forEach(q => { add('frame', q[2], q[3], 320, 270, q[0], 12); add('note', q[2] + 70, q[3] + 80, 180, 130, '', q[1]); });
+    } else { const t1 = add('text', -250, -240, 500, 70, 'План на месяц', 0, { fs: 34, fb: 1 }); add('frame', -330, -130, 320, 320, 'Цели', 12); add('frame', 10, -130, 320, 320, 'Шаги', 12); add('note', -260, -50, 180, 110, 'Цель 1', 2); add('note', 80, -50, 180, 110, 'Шаг 1', 3); }
+    this.mut({ items: L.items.concat(items), arrows: L.arrows.concat(arrows), nid, sel: '', selKind: '', menu: '' });
+    setTimeout(() => this.fit(), 30);
+  }
+  shapePath(t, w, h, p) {
+    const f = (n) => Math.round(n * 10) / 10;
+    if (t === 'rect') { const r = 8; return 'M' + f(p + r) + ' ' + p + 'H' + f(w - p - r) + 'Q' + f(w - p) + ' ' + p + ' ' + f(w - p) + ' ' + f(p + r) + 'V' + f(h - p - r) + 'Q' + f(w - p) + ' ' + f(h - p) + ' ' + f(w - p - r) + ' ' + f(h - p) + 'H' + f(p + r) + 'Q' + p + ' ' + f(h - p) + ' ' + p + ' ' + f(h - p - r) + 'V' + f(p + r) + 'Q' + p + ' ' + p + ' ' + f(p + r) + ' ' + p + 'Z'; }
+    if (t === 'round') { const r = Math.min(w, h) / 2 - p; return 'M' + f(p + r) + ' ' + p + 'H' + f(w - p - r) + 'A' + f(r) + ' ' + f(r) + ' 0 0 1 ' + f(w - p - r) + ' ' + f(h - p) + 'H' + f(p + r) + 'A' + f(r) + ' ' + f(r) + ' 0 0 1 ' + f(p + r) + ' ' + p + 'Z'; }
+    if (t === 'ellipse') { const rx = w / 2 - p, ry = h / 2 - p; return 'M' + p + ' ' + f(h / 2) + 'A' + f(rx) + ' ' + f(ry) + ' 0 1 0 ' + f(w - p) + ' ' + f(h / 2) + 'A' + f(rx) + ' ' + f(ry) + ' 0 1 0 ' + p + ' ' + f(h / 2) + 'Z'; }
+    if (t === 'diamond') return 'M' + f(w / 2) + ' ' + p + 'L' + f(w - p) + ' ' + f(h / 2) + 'L' + f(w / 2) + ' ' + f(h - p) + 'L' + p + ' ' + f(h / 2) + 'Z';
+    if (t === 'triangle') return 'M' + f(w / 2) + ' ' + p + 'L' + f(w - p) + ' ' + f(h - p) + 'L' + p + ' ' + f(h - p) + 'Z';
+    if (t === 'hexagon') return 'M' + f(w * .25) + ' ' + p + 'L' + f(w * .75) + ' ' + p + 'L' + f(w - p) + ' ' + f(h / 2) + 'L' + f(w * .75) + ' ' + f(h - p) + 'L' + f(w * .25) + ' ' + f(h - p) + 'L' + p + ' ' + f(h / 2) + 'Z';
+    if (t === 'para') return 'M' + f(w * .2) + ' ' + p + 'L' + f(w - p) + ' ' + p + 'L' + f(w * .8) + ' ' + f(h - p) + 'L' + p + ' ' + f(h - p) + 'Z';
+    if (t === 'star') { let d = ''; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 0.42 : 1, x = w / 2 + Math.cos(a) * r * (w / 2 - p), y = h / 2 + Math.sin(a) * r * (h / 2 - p) * 1.0; d += (i ? 'L' : 'M') + f(x) + ' ' + f(y); } return d + 'Z'; }
+    return '';
   }
   setView(view) { this.set({ view }); this.touch(); }
   zoomBy(f) { const L = this.L, s = this.size(), v = L.view, z = Math.max(0.2, Math.min(3, v.z * f)), cx = s.w / 2, cy = s.h / 2, wx = (cx - v.x) / v.z, wy = (cy - v.y) / v.z; this.setView({ x: cx - wx * z, y: cy - wy * z, z }); }
@@ -280,26 +341,71 @@ class Component extends DCLogic {
 
   renderVals() {
     const L = this.L, v = L.view;
-    const COL = [['#FFE98A', 'Жёлтый'], ['#FFC2D4', 'Розовый'], ['#BFEAC9', 'Зелёный'], ['#BFDDFF', 'Голубой'], ['#D9CCFF', 'Сиреневый'], ['#E4E7EC', 'Серый']];
     const PEN = [['#F4F5F7', 'Белый'], ['#2F6FED', 'Синий'], ['#17A06B', 'Зелёный'], ['#D63A4F', 'Красный'], ['#C97A16', 'Оранжевый'], ['#7C6FD6', 'Фиолетовый']];
     const ink = '#1B2230';
     const selItem = L.selKind === 'item' ? L.items.find(i => i.id === L.sel) : null;
     const selArrow = L.selKind === 'arrow' ? L.arrows.find(a => a.id === L.sel) : null;
     const byId = {}; L.items.forEach(i => { byId[i.id] = i; });
-    const KIND = { note: 'Стикер', text: 'Текст', rect: 'Фигура', ellipse: 'Круг' };
+    const FILL = ['#FFE98A', '#FFC2D4', '#BFEAC9', '#BFDDFF', '#D9CCFF', '#E4E7EC', '#FFB88A', '#8AE0E0', '#F58B9B', '#6FA8FF', '#A68BFF', '#2B3140', 'transparent'];
+    const FILLN = ['Жёлтый', 'Розовый', 'Зелёный', 'Голубой', 'Сиреневый', 'Серый', 'Оранжевый', 'Бирюзовый', 'Красный', 'Синий', 'Фиолетовый', 'Тёмный', 'Без заливки'];
+    const STR = ['#1B2230', '#F4F5F7', '#2F6FED', '#17A06B', '#D63A4F', '#C97A16', '#7C6FD6'];
+    const STRN = ['Чёрный', 'Белый', 'Синий', 'Зелёный', 'Красный', 'Оранжевый', 'Фиолетовый'];
+    const HATCH = 'repeating-linear-gradient(45deg,#8a8f9c 0 3px,transparent 3px 6px)';
+    const SHAPES = ['rect', 'round', 'ellipse', 'diamond', 'triangle', 'hexagon', 'para', 'star'];
+    const KIND = { note: 'Стикер', text: 'Текст', rect: 'Прямоугольник', round: 'Скруглённый', ellipse: 'Овал', diamond: 'Ромб', triangle: 'Треугольник', hexagon: 'Шестиугольник', para: 'Параллелограмм', star: 'Звезда', frame: 'Рамка', chart: 'График' };
+    const isShape = (t) => SHAPES.indexOf(t) >= 0;
+    const ph = (t) => t === 'text' ? 'Текст' : t === 'note' ? 'Новый стикер' : t === 'frame' ? 'Рамка' : '';
+    const sorted = L.items.filter(i => i.t === 'frame').concat(L.items.filter(i => i.t !== 'frame'));
+    const parseChart = (txt, h, fs) => {
+      let title = ''; const rows = [];
+      String(txt || '').split('\n').forEach(line => { line = line.trim(); if (!line) return; if (line[0] === '#') { title = line.replace(/^#+\s*/, ''); return; } const m = line.match(/^(.*?)[\s:=]+(-?[\d.,]+)\s*$/); if (m) rows.push({ label: m[1].trim() || '·', n: parseFloat(m[2].replace(',', '.')) || 0, raw: m[2] }); });
+      const max = Math.max(1, ...rows.map(r => Math.abs(r.n)));
+      const H = Math.max(20, h - 24 - (title ? 26 : 0) - (fs + 2) * 2 - 12);
+      return { title, rows, max, H };
+    };
 
-    const itemList = L.items.map(it => {
-      const isSel = L.sel === it.id && L.selKind === 'item', col = COL[it.c || 0][0], from = L.arrowFrom === it.id;
-      const base = 'position:absolute;left:' + it.x + 'px;top:' + it.y + 'px;width:' + it.w + 'px;height:' + it.h + 'px;box-sizing:border-box;margin:0;min-height:0;transform:none;touch-action:none;cursor:grab;overflow:hidden;white-space:pre-wrap;word-break:break-word;text-align:left;font-family:inherit;display:flex;';
-      let st;
-      if (it.t === 'note') st = base + 'padding:12px;align-items:flex-start;font-size:15px;line-height:1.35;border:0;border-radius:4px;background:' + col + ';color:' + ink;
-      else if (it.t === 'text') st = base + 'padding:6px 8px;align-items:center;font-size:20px;font-weight:700;border:1.5px dashed ' + (isSel ? 'var(--accent)' : 'transparent') + ';border-radius:8px;background:transparent;color:var(--ink)';
-      else if (it.t === 'rect') st = base + 'padding:10px;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:600;border:2px solid ' + ink + ';border-radius:8px;background:' + col + ';color:' + ink;
-      else st = base + 'padding:10px;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:600;border:2px solid ' + ink + ';border-radius:50%;background:' + col + ';color:' + ink;
+    const itemList = sorted.map(it => {
+      const isSel = L.sel === it.id && L.selKind === 'item', from = L.arrowFrom === it.id;
+      const fi = it.c == null ? 0 : it.c, fill = FILL[fi] || FILL[0], noFill = fi === 12, darkF = fi === 11 || noFill;
+      const auto = (it.t === 'text' || it.t === 'frame') ? 'var(--ink)' : (darkF ? '#F4F5F7' : ink);
+      const tcol = it.tc === 1 ? ink : it.tc === 2 ? '#F4F5F7' : auto;
+      const scol = it.sc === -1 ? 'none' : it.sc != null ? STR[it.sc] : (darkF ? '#F4F5F7' : ink);
+      const sw = it.sw || 2, fs = it.fs || (it.t === 'text' ? 20 : it.t === 'frame' ? 14 : it.t === 'chart' ? 12 : 15);
+      const fw = it.fb === 1 ? 800 : it.fb === 0 ? 400 : (it.t === 'text' || it.t === 'frame' ? 700 : isShape(it.t) ? 600 : it.t === 'chart' ? 500 : 400);
+      const ta = it.ta || (isShape(it.t) ? 'c' : 'l'), jc = ta === 'c' ? 'center' : ta === 'r' ? 'flex-end' : 'flex-start', tal = ta === 'c' ? 'center' : ta === 'r' ? 'right' : 'left';
+      const base = 'position:absolute;left:' + it.x + 'px;top:' + it.y + 'px;width:' + it.w + 'px;height:' + it.h + 'px;box-sizing:border-box;margin:0;min-height:0;transform:none;touch-action:none;cursor:grab;overflow:hidden;white-space:pre-wrap;word-break:break-word;font-family:inherit;display:flex;justify-content:' + jc + ';';
+      let st, pd = '', svgStyle = 'display:none', chart = false, inset = 10;
+      if (it.t === 'note') st = base + 'padding:12px;align-items:flex-start;border:' + (it.sc != null && it.sc !== -1 ? sw + 'px solid ' + scol : '0') + ';border-radius:4px;background:' + (noFill ? 'transparent' : fill);
+      else if (it.t === 'text') st = base + 'padding:6px 8px;align-items:center;border:1.5px dashed ' + (isSel ? 'var(--accent)' : 'transparent') + ';border-radius:8px;background:transparent';
+      else if (it.t === 'frame') st = base + 'padding:12px 16px;align-items:flex-start;border:2px dashed ' + (it.sc != null && it.sc !== -1 ? scol : 'rgba(255,255,255,.3)') + ';border-radius:16px;background:' + (noFill ? 'rgba(255,255,255,.035)' : fill + '44');
+      else if (it.t === 'chart') { chart = true; st = base + 'padding:12px;align-items:stretch;border:1.5px solid ' + (noFill ? 'rgba(255,255,255,.16)' : 'rgba(27,34,48,.25)') + ';border-radius:14px;background:' + (noFill ? 'rgba(255,255,255,.05)' : fill); }
+      else {
+        const pad = it.t === 'diamond' || it.t === 'triangle' || it.t === 'star' || it.t === 'hexagon' ? Math.round(it.w * 0.2) : it.t === 'para' ? Math.round(it.w * 0.14) : 10;
+        inset = pad;
+        st = base + 'padding:10px ' + pad + 'px;align-items:center;border:0;background:transparent';
+        svgStyle = 'position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none';
+        pd = this.shapePath(it.t, it.w, it.h, (scol === 'none' ? 0 : sw / 2) + 0.5);
+      }
       if (isSel || from) st += ';outline:2px solid var(--accent);outline-offset:3px';
-      const empty = !it.text;
+      const empty = !it.text && !chart;
+      const tStyle = chart ? 'display:none' : 'position:relative;z-index:1;max-width:100%;font-size:' + fs + 'px;line-height:1.3;font-weight:' + fw + ';color:' + tcol + ';text-align:' + tal + (it.t === 'note' || it.t === 'text' || it.t === 'frame' ? ';width:100%' : '');
+      let bars = [], title = '', chartStyle = 'display:none', titleStyle = '', barsStyle = '';
+      if (chart) {
+        const cf = Math.max(10, fs), pc = parseChart(it.text, it.h, cf), bc = it.sc != null && it.sc > 0 ? STR[it.sc] : '#2F6FED';
+        title = pc.title; chartStyle = 'display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;width:100%;color:' + tcol;
+        titleStyle = (pc.title ? 'font-size:' + (cf + 3) + 'px;font-weight:700;margin-bottom:8px;line-height:18px' : 'display:none');
+        barsStyle = 'display:flex;align-items:flex-end;gap:8px;flex:1;min-height:0';
+        bars = pc.rows.map(r => ({
+          col: 'flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px',
+          vs: 'font-size:' + (cf - 1) + 'px;font-weight:700;line-height:' + (cf + 2) + 'px;color:' + tcol, val: r.raw,
+          bar: 'width:76%;max-width:60px;border-radius:6px 6px 2px 2px;background:' + bc + ';height:' + Math.max(2, Math.round(Math.abs(r.n) / pc.max * pc.H)) + 'px',
+          ls: 'font-size:' + (cf - 1) + 'px;line-height:' + (cf + 2) + 'px;color:' + tcol + ';opacity:.8;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap', label: r.label
+        }));
+      }
       return {
-        id: it.id, isSel, style: st + (empty ? ';opacity:.78' : ''), cls: it.t === 'note' ? 'bd-note' : '', label: KIND[it.t] + (it.text ? ': ' + it.text : ', пустой'), show: it.text || (it.t === 'text' ? 'Текст' : it.t === 'note' ? 'Новый стикер' : ''),
+        id: it.id, isSel, style: st + (empty ? ';opacity:.8' : ''), cls: it.t === 'note' ? 'bd-note' : '', label: KIND[it.t] + (it.text && !chart ? ': ' + it.text : ''),
+        show: chart ? '' : (it.text || ph(it.t)), tStyle, svgStyle, vb: '0 0 ' + it.w + ' ' + it.h, pd, fill: noFill ? 'none' : fill, stroke: scol, sw: scol === 'none' ? 0 : sw, dash: it.dash ? '9 6' : 'none',
+        chartStyle, titleStyle, title, barsStyle, bars,
         hStyle: 'position:absolute;left:' + (it.x + it.w - 10) + 'px;top:' + (it.y + it.h - 10) + 'px;width:20px;height:20px;min-height:0;padding:0;border-radius:50%;border:2px solid var(--accent);background:var(--card);cursor:nwse-resize;touch-action:none;transform:none',
         down: (e) => {
           const L2 = this.L;
@@ -313,14 +419,15 @@ class Component extends DCLogic {
             return;
           }
           try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) { /* ok */ }
-          this.drag = { id: it.id, sx: e.clientX, sy: e.clientY, ox: it.x, oy: it.y, moved: false, z: L2.view.z, snap: { items: L2.items, arrows: L2.arrows, strokes: L2.strokes } };
+          const carry = {}; if (it.t === 'frame') L2.items.forEach(x => { if (x.id !== it.id && x.t !== 'frame' && x.x + x.w / 2 > it.x && x.x + x.w / 2 < it.x + it.w && x.y + x.h / 2 > it.y && x.y + x.h / 2 < it.y + it.h) carry[x.id] = { x: x.x, y: x.y }; });
+          this.drag = { id: it.id, sx: e.clientX, sy: e.clientY, ox: it.x, oy: it.y, moved: false, z: L2.view.z, carry, snap: { items: L2.items, arrows: L2.arrows, strokes: L2.strokes } };
           if (L2.sel !== it.id || L2.selKind !== 'item') this.set({ sel: it.id, selKind: 'item' });
         },
         move: (e) => {
           const d = this.drag; if (!d || d.id !== it.id) return;
           const dx = (e.clientX - d.sx) / d.z, dy = (e.clientY - d.sy) / d.z;
           if (!d.moved && Math.abs(dx) + Math.abs(dy) < 3 / d.z) return;
-          const L2 = this.L, p = { items: L2.items.map(x => x.id === it.id ? Object.assign({}, x, { x: Math.round(d.ox + dx), y: Math.round(d.oy + dy) }) : x) };
+          const L2 = this.L, p = { items: L2.items.map(x => x.id === it.id ? Object.assign({}, x, { x: Math.round(d.ox + dx), y: Math.round(d.oy + dy) }) : (d.carry && d.carry[x.id] ? Object.assign({}, x, { x: Math.round(d.carry[x.id].x + dx), y: Math.round(d.carry[x.id].y + dy) }) : x)) };
           if (!d.moved) { d.moved = true; p.hist = L2.hist.concat([d.snap]).slice(-30); }
           this.set(p);
         },
@@ -413,7 +520,7 @@ class Component extends DCLogic {
     };
 
     const tools = (list) => list.map(t => ({ name: t[0], icon: t[1], hint: t[2], pick: t[3], on: t[4] ? 'true' : 'false', border: t[4] ? 'var(--accent)' : 'var(--line2)', bg: t[4] ? 'var(--accent-soft)' : 'var(--card)', fg: t[4] ? 'var(--accent-text)' : 'var(--ink)' }));
-    const addTools = tools([['Стикер', 'M5 4h14v10l-5 5H5zM14 19v-5h5', 'Добавить стикер', () => this.addItem('note')], ['Текст', 'M5 6V4h14v2M12 4v16M9 20h6', 'Добавить надпись', () => this.addItem('text')], ['Фигура', 'M4 6h16v12H4z', 'Добавить прямоугольник', () => this.addItem('rect')], ['Круг', 'M3 12a9 6 0 1018 0 9 6 0 10-18 0', 'Добавить овал', () => this.addItem('ellipse')]]);
+    const addTools = tools([['Стикер', 'M5 4h14v10l-5 5H5zM14 19v-5h5', 'Добавить стикер', () => this.addItem('note')], ['Текст', 'M5 6V4h14v2M12 4v16M9 20h6', 'Добавить надпись', () => this.addItem('text')], ['Фигуры', 'M12 3l9 16H3z', 'Прямоугольник, ромб, звезда и другие', () => this.set({ menu: this.L.menu === 'shapes' ? '' : 'shapes' }), L.menu === 'shapes'], ['Рамка', 'M4 5h16v14H4zM4 9h8', 'Рамка для группы блоков: двигается вместе с содержимым', () => this.addItem('frame')], ['График', 'M5 20V10M12 20V4M19 20v-7', 'Столбчатый график из строк «название число»', () => this.addItem('chart', { text: '# Продажи\nЯнв 40\nФев 65\nМар 50\nАпр 90', sc: 2 })], ['Шаблоны', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z', 'Готовые схемы: блок-схема, канбан, SWOT', () => this.set({ menu: this.L.menu === 'tpl' ? '' : 'tpl' }), L.menu === 'tpl']]);
     const setTool = (t) => () => this.set({ tool: t, arrowFrom: '', sel: t === 'select' ? L.sel : '', selKind: t === 'select' ? L.selKind : '' });
     const modeTools = tools([['Выбрать', 'M5 3l14 8-6 2-2 6z', 'Двигать объекты и доску', setTool('select'), L.tool === 'select'], ['Стрелка', 'M5 19L19 5M10 5h9v9', 'Соединить два объекта: нажмите один, потом другой', setTool('arrow'), L.tool === 'arrow'], ['Рисовать', 'M4 20l4-1 11-11-3-3L5 16zM14 6l3 3', 'Рисовать от руки', setTool('pen'), L.tool === 'pen'], ['Ластик', 'M4 16l9-9 6 6-5 5H8zM8 20h12', 'Стереть линию или объект', setTool('eraser'), L.tool === 'eraser']]);
     const undo = () => { const L2 = this.L, h = L2.hist; if (!h.length) return; const last = h[h.length - 1]; this.set({ items: last.items, arrows: last.arrows, strokes: last.strokes, hist: h.slice(0, -1), sel: '', selKind: '' }); this.touch(); };
@@ -425,7 +532,34 @@ class Component extends DCLogic {
       { name: 'Показать всё', icon: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5', text: '', iconD: 'block', textD: 'none', op: 1, pick: () => this.fit() },
       { name: L.full ? 'Свернуть доску' : 'На весь экран', icon: L.full ? 'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5' : 'M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5', text: '', iconD: 'block', textD: 'none', op: 1, pick: () => this.set({ full: !this.L.full }) }
     ];
-    const swatches = COL.map((c, i) => ({ name: c[1], bg: c[0], border: selItem && (selItem.c || 0) === i ? 'var(--accent)' : 'var(--line2)', pick: () => { const L2 = this.L; if (selItem) this.mut({ items: L2.items.map(x => x.id === selItem.id ? Object.assign({}, x, { c: i }) : x), swatch: i }); else this.set({ swatch: i }); } }));
+    const upd = (patch) => () => { if (!selItem) return; const L2 = this.L; this.mut({ items: L2.items.map(x => x.id === selItem.id ? Object.assign({}, x, patch) : x) }); };
+    const chip = (label, on, pick, title) => ({ name: label, title: title || label, bg: on ? 'var(--accent-soft)' : 'var(--card)', border: on ? 'var(--accent)' : 'var(--line2)', fg: on ? 'var(--accent-text)' : 'var(--ink)', pick });
+    const cur = selItem || {};
+    const swatches = FILL.map((c, i) => ({ name: FILLN[i], bg: i === 12 ? HATCH : c, border: selItem && (selItem.c || 0) === i ? 'var(--accent)' : 'var(--line2)', pick: () => { const L2 = this.L; if (selItem) this.mut({ items: L2.items.map(x => x.id === selItem.id ? Object.assign({}, x, { c: i }) : x), swatch: i === 12 ? L2.swatch : i }); else this.set({ swatch: i }); } }));
+    const strokeSw = STR.map((c, i) => ({ name: 'Контур: ' + STRN[i], bg: c, border: cur.sc === i ? 'var(--accent)' : 'var(--line2)', pick: upd({ sc: i }) })).concat([{ name: 'Без контура', bg: HATCH, border: cur.sc === -1 ? 'var(--accent)' : 'var(--line2)', pick: upd({ sc: -1 }) }]);
+    const widthCh = [1, 2, 4, 6].map(n => chip(String(n), (cur.sw || 2) === n, upd({ sw: n }), 'Толщина контура ' + n)).concat([chip('Пунктир', !!cur.dash, upd({ dash: !cur.dash }), 'Пунктирный контур')]);
+    const curFs = cur.fs || (cur.t === 'text' ? 20 : cur.t === 'frame' ? 14 : cur.t === 'chart' ? 12 : 15);
+    const boldNow = cur.fb === 1 || (cur.fb == null && (cur.t === 'text' || cur.t === 'frame' || SHAPES.indexOf(cur.t) >= 0));
+    const curTa = cur.ta || (SHAPES.indexOf(cur.t) >= 0 ? 'c' : 'l');
+    const textCh = [chip('A−', false, upd({ fs: Math.max(9, curFs - 2) }), 'Меньше шрифт'), chip(String(curFs), false, () => {}, 'Размер шрифта'), chip('A+', false, upd({ fs: Math.min(64, curFs + 2) }), 'Больше шрифт'), chip('Ж', boldNow, upd({ fb: boldNow ? 0 : 1 }), 'Жирный'), chip('⇤', curTa === 'l', upd({ ta: 'l' }), 'По левому краю'), chip('↔', curTa === 'c', upd({ ta: 'c' }), 'По центру'), chip('⇥', curTa === 'r', upd({ ta: 'r' }), 'По правому краю')];
+    const tcCh = [chip('Авто', !cur.tc, upd({ tc: 0 }), 'Цвет текста сам'), chip('Тёмный', cur.tc === 1, upd({ tc: 1 })), chip('Светлый', cur.tc === 2, upd({ tc: 2 }))];
+    const shapeCh = SHAPES.map(t => ({ name: KIND[t], d: this.shapePath(t, 40, 30, 3), on: cur.t === t, border: cur.t === t ? 'var(--accent)' : 'var(--line2)', bg: cur.t === t ? 'var(--accent-soft)' : 'var(--card)', pick: upd({ t }) }));
+    const orderCh = [chip('Вперёд', false, () => { const L2 = this.L; if (selItem) this.mut({ items: L2.items.filter(x => x.id !== selItem.id).concat([L2.items.find(x => x.id === selItem.id)]) }); }, 'Поверх остальных'), chip('Назад', false, () => { const L2 = this.L; if (selItem) this.mut({ items: [L2.items.find(x => x.id === selItem.id)].concat(L2.items.filter(x => x.id !== selItem.id)) }); }, 'Под остальные')];
+    const shapeMenu = SHAPES.map(t => ({ name: KIND[t], d: this.shapePath(t, 40, 30, 3), pick: () => this.addItem(t) }));
+    const tplMenu = [['flow', 'Блок-схема', 'Старт, шаги, условие, финиш'], ['mind', 'Карта идей', 'Центр и четыре ветки'], ['kanban', 'Канбан', 'Три колонки с задачами'], ['swot', 'SWOT', 'Сильные, слабые, возможности, угрозы'], ['plan', 'План на месяц', 'Цели и шаги']].map(q => ({ name: q[1], hint: q[2], pick: () => this.addTemplate(q[0]) }));
+    const boardChips = L.boards.map(b => ({ name: b.name || 'Без названия', on: b.id === L.bid, bg: b.id === L.bid ? 'var(--accent-soft)' : 'var(--card)', border: b.id === L.bid ? 'var(--accent)' : 'var(--line2)', fg: b.id === L.bid ? 'var(--accent-text)' : 'var(--ink)', pick: () => this.switchBoard(b.id) }));
+    const curBoard = L.boards.find(b => b.id === L.bid) || L.boards[0] || { name: '' };
+    const addBoard = () => { const L2 = this.L, id = 'b' + Date.now().toString(36), boards = L2.boards.concat([{ id, name: 'Доска ' + (L2.boards.length + 1) }]); this.saveList(boards); this.set({ boards }); this.switchBoard(id); };
+    const renameBoard = (e) => { const L2 = this.L, val = e.target.value, boards = L2.boards.map(b => b.id === L2.bid ? Object.assign({}, b, { name: val }) : b); this.saveList(boards); this.set({ boards }); };
+    const delBoard = () => {
+      const L2 = this.L; if (!L2.delAsk) { this.set({ delAsk: true }); setTimeout(() => { if (this.L.delAsk) this.set({ delAsk: false }); }, 4000); return; }
+      if (L2.bid === 'b1') { this.mut({ items: [], arrows: [], strokes: [], sel: '', selKind: '', delAsk: false }); return; }
+      const k = this.key(), boards = L2.boards.filter(b => b.id !== L2.bid);
+      try { localStorage.removeItem('board:' + k); } catch (e) { /* ok */ }
+      if (this.db) { try { this.db.doc('boards/' + k).delete(); } catch (e) { /* ok */ } }
+      this.dirty = false; clearTimeout(this.tm); this.saveList(boards); this.bidCur = 'b1'; try { localStorage.setItem('boardcur:' + this.base(), 'b1'); } catch (e) { /* ok */ }
+      this.set({ boards, bid: 'b1', delAsk: false }); this.load();
+    };
     const penColors = PEN.map((c, i) => ({ name: c[1], bg: c[0], border: L.pen === i ? 'var(--accent)' : 'var(--line2)', pick: () => this.set({ pen: i }) }));
     const STATUS = { loading: ['Загружаю доску…', 'var(--muted)'], saving: ['Сохраняю…', 'var(--muted)'], saved: ['Сохранено', 'var(--ok)'], local: ['Сохранено на этом устройстве', 'var(--warn)'], error: ['Не удалось сохранить на сервер, копия на этом устройстве', 'var(--bad)'], big: ['Доска слишком большая, уберите часть рисунков', 'var(--bad)'] };
     const st = STATUS[L.status] || STATUS.saved;
@@ -437,9 +571,12 @@ class Component extends DCLogic {
       gridS: 24 * v.z, gridX: v.x % (24 * v.z), gridY: v.y % (24 * v.z),
       addTools, modeTools, viewTools, itemList, arrowList, strokeList, bgDown, bgMove, bgUp, wheel,
       statusText: st[0], statusColor: st[1], empty: L.loaded && !L.items.length && !L.strokes.length, firstNote: () => this.addItem('note'),
-      hasSel: !!(selItem || selArrow), selIsItem: !!selItem, selText: selItem ? selItem.text : '', selHint: selItem ? (selItem.t === 'text' ? 'Введите надпись' : 'Что написать на ' + (selItem.t === 'note' ? 'стикере' : 'фигуре')) : '',
+      hasSel: !!(selItem || selArrow), selIsItem: !!selItem, selText: selItem ? selItem.text : '', selHint: selItem ? (selItem.t === 'text' ? 'Введите надпись' : selItem.t === 'chart' ? 'Строки: «# Заголовок», затем «название число»' : selItem.t === 'frame' ? 'Название рамки' : 'Что написать на ' + (selItem.t === 'note' ? 'стикере' : 'фигуре')) : '',
       typeText: (e) => { const L2 = this.L, val = e.target.value; if (!selItem) return; const first = this.textSnap !== selItem.id; this.textSnap = selItem.id; this.mut({ items: L2.items.map(x => x.id === selItem.id ? Object.assign({}, x, { text: val }) : x) }, !first); },
-      swatches, penColors, penPalette: L.tool === 'pen',
+      swatches, penColors, penPalette: L.tool === 'pen', strokeSw, widthCh, textCh, tcCh, shapeCh, orderCh, shapeMenu, tplMenu, boardChips, addBoard, renameBoard, delBoard, curBoardName: curBoard.name,
+      delBoardText: L.delAsk ? 'Точно? Нажмите ещё раз' : (L.bid === 'b1' ? 'Очистить доску' : 'Удалить доску'),
+      menuShapes: L.menu === 'shapes', menuTpl: L.menu === 'tpl',
+      selNotText: !!selItem && selItem.t !== 'text', selIsShape: !!selItem && SHAPES.indexOf(selItem.t) >= 0, selStroke: !!selItem && selItem.t !== 'text',
       delText: selArrow ? 'Удалить стрелку' : 'Удалить',
       delSel: () => { const L2 = this.L; if (selItem) this.mut({ items: L2.items.filter(x => x.id !== selItem.id), arrows: L2.arrows.filter(a => a.a !== selItem.id && a.b !== selItem.id), sel: '', selKind: '' }); else if (selArrow) this.mut({ arrows: L2.arrows.filter(a => a.id !== selArrow.id), sel: '', selKind: '' }); },
       dupSel: () => { const L2 = this.L; if (!selItem) return; const c = Object.assign({}, selItem, { id: 'i' + L2.nid, x: selItem.x + 24, y: selItem.y + 24 }); this.mut({ items: L2.items.concat([c]), nid: L2.nid + 1, sel: c.id }); },
