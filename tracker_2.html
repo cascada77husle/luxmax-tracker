@@ -62,7 +62,7 @@ input:focus{border-color:var(--accent) !important}
 html,body{min-height:100%}
 body{margin:0;background:var(--bg);min-height:100vh;color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 button,input{font-family:inherit}
-button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:focus-visible,input:focus-visible{outline:none}
 
 @media (max-width:760px){
   .pg{padding:0 14px 96px !important;gap:12px !important}
@@ -190,6 +190,45 @@ div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:9
 [data-me] svg *{-webkit-text-fill-color:initial !important}
 [data-me] input{color:#151B2B !important;-webkit-text-fill-color:#151B2B !important}
 button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+
+/*MOBILE-POLISH*/
+button[aria-label="Свернуть или развернуть блок"]{position:relative}
+button[aria-label="Свернуть или развернуть блок"]::after{content:"";position:absolute;inset:-9px}
+*,*::before,*::after{-webkit-tap-highlight-color:transparent}
+button,a,summary,label,select,[role=button],[onclick]{touch-action:manipulation;-webkit-touch-callout:none}
+button,summary,[role=button]{-webkit-user-select:none;user-select:none}
+:focus,:focus-visible,button:focus,button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:none !important}
+button{-webkit-appearance:none;appearance:none}
+html{-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
+@media (hover:none){
+  button:hover{box-shadow:none !important}
+  button[style*="background:var(--accent);"]:hover{box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}
+  button:active{transform:scale(.96);opacity:.88}
+}
+@media (max-width:760px),(hover:none){
+  @keyframes dcShine{from{background-position:66% 50%}to{background-position:66% 50%}}
+  @keyframes addGlow{from{box-shadow:0 0 14px rgba(255,255,255,.14)}to{box-shadow:0 0 14px rgba(255,255,255,.14)}}
+  @keyframes addShine{from{background-position:0 0}to{background-position:0 0}}
+  *,*::before,*::after{-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+  html body .card,html body div[style*="background:var(--card)"]{background-color:rgba(255,255,255,.06) !important}
+  body::before{-webkit-mask-image:none;mask-image:none;opacity:.55}
+  html{scroll-behavior:auto}
+  .gal-row{flex-wrap:wrap !important}
+  .gal-row>span:nth-of-type(2){flex:1 1 calc(100% - 70px) !important}
+  .gal-row>button[aria-label^="Посмотреть"]{margin-left:auto}
+  html body [style*="font-size:32px"]{font-size:26px !important;line-height:1.15 !important}
+  .sec-nav{flex-wrap:wrap !important}
+  .sec-nav>button[aria-label="Назад"],.sec-nav>button[aria-label="Вперёд"]{display:none !important}
+  .sec-nav>.noscroll{flex:1 1 100% !important;order:-1;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .sec-nav>.noscroll>button{scroll-snap-align:start}
+  .sec-nav>button[aria-label="Добавить раздел"]{flex:1 1 100% !important;min-height:46px !important}
+  .bz-head{flex-wrap:wrap !important;row-gap:8px !important}
+  .bz-head>b:first-of-type{flex:1 1 0 !important}
+  .bz-step{flex:1 1 100% !important;white-space:normal !important}
+  html body [role=menu]{background:#12151B !important}
+  html body [style*="blur(14px)"][style*="position:fixed"]{background:rgba(4,5,8,.78) !important}
+}
 </style>
 </helmet>
 <div style="background:var(--bg);min-height:100vh;font-family:'Inter',system-ui,sans-serif;color:var(--ink)">
@@ -311,7 +350,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{gWaves}}" as="w" hint-placeholder-count="2"><div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:20px;border:1px solid var(--line);background:var(--field)"><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px">{{w.name}}</b><span style="font-size:12px;color:var(--muted)">{{w.sub}}</span></span><button type="button" onClick="{{w.peek}}" aria-label="Посмотреть, как выглядит" title="Посмотреть, как выглядит" style="cursor:pointer;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);padding:0;display:flex;align-items:center;justify-content:center;color:var(--ink2);flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" onClick="{{w.toggle}}" style="cursor:pointer;border:1.5px solid {{w.bd}};background:{{w.bg}};color:{{w.fg}};font-weight:700;font-size:12px;padding:8px 16px;border-radius:999px;white-space:nowrap">{{w.btnText}}</button></div></sc-for></div>
           <b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700;margin-top:6px">Аналитика по бизнесу</b>
           <span style="font-size:13px;color:var(--muted);margin-top:-8px">Прибыль, доходы и расходы, свечи и разбивка по каждому бизнесу. Нажмите на глаз, чтобы увидеть, как это будет выглядеть.</span>
-          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:20px;border:1px solid {{gBiz.border}};background:var(--field)"><span style="width:40px;height:40px;border-radius:12px;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5M9 20v-5M13 20v-8M17 20v-3"></path></svg></span><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px">Аналитика бизнеса</b><span style="font-size:12px;color:var(--muted)">Прибыль, свечи и показатели ваших бизнесов</span></span><button type="button" onClick="{{gBiz.peek}}" aria-label="Посмотреть, как выглядит" title="Посмотреть, как выглядит" style="cursor:pointer;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);padding:0;display:flex;align-items:center;justify-content:center;color:var(--ink2);flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" onClick="{{gBiz.toggle}}" style="cursor:pointer;border:1.5px solid {{gBiz.bd}};background:{{gBiz.bg}};color:{{gBiz.fg}};font-weight:700;font-size:12px;padding:8px 16px;border-radius:999px;white-space:nowrap">{{gBiz.btnText}}</button></div>
+          <div class="gal-row" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:20px;border:1px solid {{gBiz.border}};background:var(--field)"><span style="width:40px;height:40px;border-radius:12px;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5M9 20v-5M13 20v-8M17 20v-3"></path></svg></span><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px">Аналитика бизнеса</b><span style="font-size:12px;color:var(--muted)">Прибыль, свечи и показатели ваших бизнесов</span></span><button type="button" onClick="{{gBiz.peek}}" aria-label="Посмотреть, как выглядит" title="Посмотреть, как выглядит" style="cursor:pointer;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);padding:0;display:flex;align-items:center;justify-content:center;color:var(--ink2);flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button><button type="button" onClick="{{gBiz.toggle}}" style="cursor:pointer;border:1.5px solid {{gBiz.bd}};background:{{gBiz.bg}};color:{{gBiz.fg}};font-weight:700;font-size:12px;padding:8px 16px;border-radius:999px;white-space:nowrap">{{gBiz.btnText}}</button></div>
           <div style="display:flex;flex-wrap:wrap;gap:6px">
             <sc-for list="{{cats}}" as="c" hint-placeholder-count="8">
               <button type="button" onClick="{{c.pick}}" style="cursor:pointer;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{c.name}}</button>
@@ -319,7 +358,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px">
             <sc-for list="{{gallery}}" as="g" hint-placeholder-count="6">
-              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:20px;border:1.5px solid {{g.border}};background:{{g.bg}}">
+              <div class="gal-row" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:20px;border:1.5px solid {{g.border}};background:{{g.bg}}">
                 <span style="width:44px;height:44px;border-radius:12px;background:{{g.soft}};color:{{g.color}};display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{g.icon}}"></path></svg></span>
                 <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-size:14px;font-weight:700">{{g.name}}</b><span style="font-size:12px;line-height:1.4;color:var(--muted)">{{g.desc}}</span></span>
                 <button type="button" onClick="{{g.peekPick}}" aria-label="Посмотреть, как выглядит" style="cursor:pointer;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);padding:0;display:flex;align-items:center;justify-content:center;color:var(--ink2);flex-shrink:0" title="Посмотреть, как выглядит"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
@@ -1362,7 +1401,7 @@ class Component extends DCLogic {
     return { ops: [], plans: [], accounts: [], goals: [], debts: [] };
     })();
     const DIARY = (() => { const base = { sleep: 7, sleepq: 7, energy: 6, mood: 7, stress: 4, meditation: 5, steps: 6200, reading: 10, screen: 3 }, out = {}; for (let k = 0; k <= 6; k++) { if (k === 3) continue; const d = new Date(2026, 9, 19 - k), key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'), o = {}; Object.keys(base).forEach((id, i) => { const j = k === 0 ? 0 : ((k * 7 + i * 3) % 5) - 2, b0 = base[id]; o[id] = id === 'sleep' ? b0 + j * 0.5 : id === 'steps' ? b0 + j * 1100 : id === 'reading' ? Math.max(0, b0 + j * 3) : id === 'meditation' ? Math.max(0, b0 + j * 2) : id === 'screen' ? Math.max(1, b0 + j * 0.5) : Math.max(1, Math.min(10, b0 + j)); }); out[key] = o; } return out; })();
-    return { ready: false, mode: 'dash', prev: 'dash', menu: '', createKind: '', createText: '', notice: null, openSec: {}, dayCfgOpen: false, projNew: false, dayTab: 'today', diaryLib: false, peek: '', cardEdit: false, card: { hue: -1, pat: 0, ear: -1, eyes: 0, glasses: false, acc: 0 }, seen: {}, howOpen: '', fixes: [], dsub: 'main', ltab: 'blocks', stTab: 'study', widgets: [{ id: 'score', size: 'S' }, { id: 'fmonth', size: 'M' }, { id: 'kcal', size: 'M' }, { id: 'workouts', size: 'M' }, { id: 'sleep', size: 'S' }, { id: 'water', size: 'S' }, { id: 'habits', size: 'S' }, { id: 'flimits', size: 'M' }, { id: 'candles', size: 'L' }], gallery: false, cat: 'Все', edit: false,
+    return { ready: false, mode: 'dash', prev: 'dash', menu: '', createKind: '', createText: '', notice: null, openSec: {}, dayCfgOpen: false, projNew: false, dayTab: 'today', diaryLib: false, peek: '', cardEdit: false, card: { hue: -1, pat: 0, ear: -1, eyes: 0, glasses: false, acc: 0 }, seen: {}, howOpen: '', fixes: [], dsub: 'main', ltab: 'blocks', stTab: 'study', widgets: [], gallery: false, cat: 'Все', edit: false,
     daySecs: [{ id: 'tasks', on: true }, { id: 'schedule', on: true }, { id: 'water', on: true }, { id: 'habits', on: true }], water: 0, hab: [],
     wcTab: 'now', waves: [], waveCur: '', wz: { open: false }, wDate: '2026-10-19', wb: null, wbSel: 'Тело', wbText: '', wbNote: '', sec: { food: false, sport: true, projects: true, money: true, study: true, lang: true }, customs: [], newItem: '',
     tasks: [], newToday: '',
@@ -1412,7 +1451,7 @@ class Component extends DCLogic {
   tasksFor(L) { const T = this.dayKey({ mode: 'x', waves: L.waves, waveCur: L.waveCur }), K = this.dayKey(L); return L.tasks.filter(x => (x.date || T) === K); }
   componentDidMount() {
     let ls = null; try { ls = JSON.parse(localStorage.getItem('tracker:v1') || 'null'); } catch (e) { ls = null; }
-    const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); this.setState(Object.assign({}, this.L, p, { ready: true })); };
+    const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); this.setState(Object.assign({}, this.L, p, { ready: true })); };
     if (ls) apply(ls);
     this.loadedAt = ls ? (ls.at || 0) : 0; this.loaded = true;
     const c = (typeof window !== 'undefined') ? window.claude : null;
@@ -1429,7 +1468,7 @@ class Component extends DCLogic {
   componentWillUnmount() { clearTimeout(this.tm); if (this.dirty) this.flush(); }
   saveSoon() { if (!this.loaded) return; this.dirty = true; clearTimeout(this.tm); this.tm = setTimeout(() => this.flush(), 700); }
   flush() {
-    this.dirty = false; const L = this.L; const o = { v: 1, dm: 2, em: 1, wv: 3, at: Date.now() }; Component.KEYS().forEach(k => { if (L[k] !== undefined) o[k] = L[k]; });
+    this.dirty = false; const L = this.L; const o = { v: 1, dm: 2, em: 1, wv: 3, wd: 2, at: Date.now() }; Component.KEYS().forEach(k => { if (L[k] !== undefined) o[k] = L[k]; });
     let js = ''; try { js = JSON.stringify(o); } catch (e) { return; }
     try { localStorage.setItem('tracker:v1', js); } catch (e) {}
     if (this.db && js.length < 240000) { this.db.doc('app/state').set({ json: js, at: o.at }).catch(() => {}); }
