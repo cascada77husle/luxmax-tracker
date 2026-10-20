@@ -22,6 +22,9 @@ jobs:
 
       - name: Установить Android SDK
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq imagemagick
+          command -v convert > /dev/null || sudo ln -s "$(command -v magick)" /usr/local/bin/convert
           export ANDROID_HOME=$HOME/android-sdk
           mkdir -p $ANDROID_HOME/cmdline-tools
           curl -fsSL -o /tmp/ct.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
