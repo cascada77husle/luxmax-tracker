@@ -172,11 +172,11 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"plans":{"editor":null},"tasks":{"editor":null},"habits":{"editor":null},"blocksOn":{"editor":null},"lib":{"editor":null},"vals":{"editor":null},"hist":{"editor":null},"$preview":{"width":1280,"height":820}}'>
+<script type="text/x-dc" data-dc-script data-props='{"demo":{"editor":null},"ops":{"editor":null},"plans":{"editor":null},"tasks":{"editor":null},"habits":{"editor":null},"blocksOn":{"editor":null},"lib":{"editor":null},"vals":{"editor":null},"hist":{"editor":null},"$preview":{"width":1280,"height":820}}'>
 class Component extends DCLogic {
   renderVals() {
     const P = this.props;
-    const tasks = P.tasks || [], habits = P.habits || [], lib = P.lib || [], on = P.blocksOn || {}, hist = P.hist || {}, vals = P.vals || {}, ops = P.ops || [], plans = P.plans || [];
+    const tasks = P.tasks || (P.demo ? [{ title: 'Сдать отчёт', done: false, day: 3, sphere: 'Работа' }, { title: 'Записаться к врачу', done: false, day: 4, sphere: 'Здоровье' }, { title: 'План недели', done: true, day: 8, sphere: 'Работа' }, { title: 'Тренировка', done: true, day: 8, sphere: 'Спорт' }, { title: 'Созвон по проекту', done: true, day: 8, sphere: 'Работа' }] : []), habits = P.habits || (P.demo ? [{ name: 'Зарядка', days: [1, 1, 1, 1, 1, 1, 0] }, { name: 'Вода 2 литра', days: [1, 1, 1, 1, 1, 0, 1] }, { name: 'Чтение 20 минут', days: [1, 0, 0, 0, 1, 0, 0] }] : []), lib = P.lib || [], on = P.blocksOn || {}, hist = P.hist || {}, vals = P.vals || {}, ops = P.ops || [], plans = P.plans || [];
     const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     const progOf = (b, v) => {
       if (b.type === 'k') return v ? 100 : 0;
