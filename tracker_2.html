@@ -703,7 +703,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
             <span style="display:flex;align-items:center;gap:10px;min-width:0"><span style="width:34px;height:34px;border-radius:12px;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M17 6v14M5 8h4v8H5zM15 10h4v6h-4z"></path></svg></span><b style="font-size:14px;font-weight:700">Свечи оценки жизни</b></span>
             <div style="display:none;align-items:center;gap:3px;flex-wrap:wrap;justify-content:flex-end"><button type="button" onClick="{{wid.candles.left}}" aria-label="Сдвинуть раньше" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:14px;padding:0" title="Сдвинуть раньше">‹</button><button type="button" onClick="{{wid.candles.right}}" aria-label="Сдвинуть позже" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:14px;padding:0" title="Сдвинуть позже">›</button><button type="button" onClick="{{wid.candles.sizeS}}" aria-label="Размер S" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:{{wid.candles.bgS}};color:{{wid.candles.fgS}};font-size:11px;font-weight:700;padding:0" title="Размер S">S</button><button type="button" onClick="{{wid.candles.sizeM}}" aria-label="Размер M" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:{{wid.candles.bgM}};color:{{wid.candles.fgM}};font-size:11px;font-weight:700;padding:0" title="Размер M">M</button><button type="button" onClick="{{wid.candles.sizeL}}" aria-label="Размер L" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:{{wid.candles.bgL}};color:{{wid.candles.fgL}};font-size:11px;font-weight:700;padding:0" title="Размер L">L</button><button type="button" onClick="{{wid.candles.remove}}" aria-label="Убрать виджет" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--bad-line);background:var(--bad-soft);color:var(--bad);font-size:14px;padding:0" title="Убрать виджет">×</button></div>
           </div>
-          <dc-import name="Candles" score="{{lifeScore}}" hint-size="100%,640px"></dc-import>
+          <dc-import name="Candles" score="{{lifeScore}}" demo="{{true}}" hint-size="100%,640px"></dc-import>
         </div>
       </div></sc-if>
 <sc-if value="{{pv.spendline}}" hint-placeholder-val="{{false}}">
@@ -723,7 +723,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
             <span style="display:flex;align-items:center;gap:10px;min-width:0"><span style="width:34px;height:34px;border-radius:12px;background:color-mix(in srgb,var(--cat-violet) 13%,var(--card));color:var(--cat-violet);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4M12 21a9 9 0 100-18 9 9 0 000 18z"></path></svg></span><b style="font-size:14px;font-weight:700">Работа над ошибками</b></span>
             <div style="display:none;align-items:center;gap:3px;flex-wrap:wrap;justify-content:flex-end"><button type="button" onClick="{{wid.review.left}}" aria-label="Сдвинуть раньше" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:14px;padding:0" title="Сдвинуть раньше">‹</button><button type="button" onClick="{{wid.review.right}}" aria-label="Сдвинуть позже" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:14px;padding:0" title="Сдвинуть позже">›</button><button type="button" onClick="{{wid.review.sizeS}}" aria-label="Размер S" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:{{wid.review.bgS}};color:{{wid.review.fgS}};font-size:11px;font-weight:700;padding:0" title="Размер S">S</button><button type="button" onClick="{{wid.review.sizeM}}" aria-label="Размер M" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:{{wid.review.bgM}};color:{{wid.review.fgM}};font-size:11px;font-weight:700;padding:0" title="Размер M">M</button><button type="button" onClick="{{wid.review.sizeL}}" aria-label="Размер L" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--line2);background:{{wid.review.bgL}};color:{{wid.review.fgL}};font-size:11px;font-weight:700;padding:0" title="Размер L">L</button><button type="button" onClick="{{wid.review.remove}}" aria-label="Убрать виджет" style="cursor:pointer;width:28px;height:28px;border-radius:8px;border:1px solid var(--bad-line);background:var(--bad-soft);color:var(--bad);font-size:14px;padding:0" title="Убрать виджет">×</button></div>
           </div>
-          <dc-import name="Review" ops="{{ops}}" plans="{{plans}}" hint-size="100%,820px"></dc-import>
+          <dc-import name="Review" ops="{{ops}}" plans="{{plans}}" demo="{{true}}" hint-size="100%,820px"></dc-import>
         </div>
       </div></sc-if>
 <sc-if value="{{pv.indsum}}" hint-placeholder-val="{{false}}">
@@ -1426,6 +1426,7 @@ class Component extends DCLogic {
     const P = (id, name, cat, sum, day, kind, paid) => ({ id, name, cat, grp: G[cat], color: C[G[cat]], sum, day, kind, paid });
     const plans = [P('p1', 'Абонемент в зал', 'Спорт и зал', 3500, 1, 'bill', true), P('p2', 'Аренда квартиры', 'Аренда или ипотека', 28000, 5, 'bill', true), P('p3', 'Яндекс Плюс', 'Подписки', 299, 8, 'sub', true), P('p4', 'Коммуналка', 'Коммунальные услуги', 4300, 10, 'bill', true), P('p5', 'Интернет', 'Интернет и связь', 700, 12, 'bill', true), P('p6', 'Музыка', 'Подписки', 199, 15, 'sub', true), P('p7', 'Облако для файлов', 'Подписки', 299, 20, 'sub', false), P('p8', 'Нейросети', 'Подписки', 2000, 22, 'sub', false), P('p9', 'Кредит на авто', 'Аренда или ипотека', 12400, 25, 'bill', false), P('p10', 'Страховка авто', 'Аренда или ипотека', 5200, 28, 'bill', false)];
     const DEMO = { ops, plans, accounts: [{ id: 'a1', type: 'bank', bank: 'Сбербанк', name: 'Основная карта', bal: 84300 }, { id: 'a2', type: 'bank', bank: 'Т-Банк', name: 'Накопительный счёт', bal: 120000 }, { id: 'a3', type: 'cash', bank: 'Наличные', name: 'Наличные', bal: 12000 }, { id: 'a4', type: 'crypto', bank: 'Bybit', name: 'Торговый счёт', bal: 46800 }], goals: [{ id: 'g1', name: 'Подушка безопасности', target: 300000, saved: 120000, mo: 15000, color: 'var(--ok)' }, { id: 'g2', name: 'Отпуск', target: 150000, saved: 35000, mo: 8000, color: 'var(--warn)' }, { id: 'g3', name: 'Новый ноутбук', target: 90000, saved: 60000, mo: 6000, color: 'var(--cat-violet)' }], debts: [{ id: 'd1', name: 'Автокредит', total: 640000, left: 412000, pay: 12400, rate: 14.5, day: 25 }, { id: 'd2', name: 'Рассрочка на телефон', total: 60000, left: 18000, pay: 5000, rate: 0, day: 20 }] };
+    window.__FD = DEMO; window.__FD.limits = { 'Жильё': 34000, 'Еда': 18000, 'Транспорт': 9000, 'Здоровье': 5000, 'Личное': 8000 };
     return { ops: [], plans: [], accounts: [], goals: [], debts: [] };
     })();
     const DIARY = (() => { const base = { sleep: 7, sleepq: 7, energy: 6, mood: 7, stress: 4, meditation: 5, steps: 6200, reading: 10, screen: 3 }, out = {}; for (let k = 0; k <= 6; k++) { if (k === 3) continue; const d = new Date(2026, 9, 19 - k), key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'), o = {}; Object.keys(base).forEach((id, i) => { const j = k === 0 ? 0 : ((k * 7 + i * 3) % 5) - 2, b0 = base[id]; o[id] = id === 'sleep' ? b0 + j * 0.5 : id === 'steps' ? b0 + j * 1100 : id === 'reading' ? Math.max(0, b0 + j * 3) : id === 'meditation' ? Math.max(0, b0 + j * 2) : id === 'screen' ? Math.max(1, b0 + j * 0.5) : Math.max(1, Math.min(10, b0 + j)); }); out[key] = o; } return out; })();
@@ -1561,7 +1562,7 @@ class Component extends DCLogic {
     const glasses = [0, 1, 2, 3, 4, 5, 6, 7].map(i => ({ n: i + 1, fill: i < L.water ? 'color-mix(in srgb,var(--cat-blue) 24%,var(--card))' : 'var(--card)', pick: () => this.set({ water: this.L.water === i + 1 ? i : i + 1 }) }));
     const HAB = ['Вода 2 литра', 'Зарядка', 'Чтение 20 минут'];
     const habRows = HAB.map((n, i) => ({ name: n, bg: L.hab[i] ? 'var(--ok-soft)' : 'var(--field)', boxBg: L.hab[i] ? 'var(--ok)' : 'var(--card)', border: L.hab[i] ? 'var(--ok)' : 'var(--line2)', tick: L.hab[i] ? 1 : 0, toggle: () => this.set({ hab: this.L.hab.map((v, j) => j === i ? !v : v) }) }));
-    const P = {}; const curG = () => this.L.goals, curD = () => this.L.debts;
+    const P = (L.peek && window.__FD) ? { ops: window.__FD.ops, plans: window.__FD.plans, accounts: window.__FD.accounts, goals: window.__FD.goals, debts: window.__FD.debts, limits: window.__FD.limits } : {}; const curG = () => this.L.goals, curD = () => this.L.debts;
     const upd = (p) => this.set(p);
     const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     const rub = (n) => fmt(n) + ' ₽';
@@ -1569,10 +1570,10 @@ class Component extends DCLogic {
     const MN = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
     const GROUPS = ['Жильё', 'Еда', 'Транспорт', 'Здоровье', 'Семья', 'Финансы', 'Личное'];
     const COL = { 'Жильё': 'var(--accent-text)', 'Еда': 'var(--accent)', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': 'var(--ok)', 'Финансы': 'var(--ink)', 'Личное': 'var(--warn)' };
-    const LIM = Object.assign({}, L.limits || {});
+    const LIM = Object.assign({}, P.limits || L.limits || {});
     const SEP = { 'Жильё': 33200, 'Еда': 17900, 'Транспорт': 8700, 'Здоровье': 3900, 'Семья': 2500, 'Финансы': 14500, 'Личное': 11200 };
     const BANKC = { 'Сбербанк': 'var(--ok)', 'Т-Банк': '#B58A00', 'Наличные': 'var(--warn)', 'Bybit': 'var(--ink)', 'Альфа-Банк': 'var(--bad)', 'ВТБ': 'var(--accent-text)' };
-    const ops = P.ops || L.ops, plans = P.plans || L.plans, accs = P.accounts || L.accounts, goals = curG(), debts = curD();
+    const ops = P.ops || L.ops, plans = P.plans || L.plans, accs = P.accounts || L.accounts, goals = P.goals || curG(), debts = P.debts || curD();
     const outs = ops.filter(o => o.kind === 'out'), income = ops.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0), spent = outs.reduce((a, o) => a + o.sum, 0);
     const unpaid = plans.filter(p => !p.paid), unpaidSum = unpaid.reduce((a, p) => a + p.sum, 0);
     const free = income - spent - unpaidSum, perDay = Math.max(0, free) / LEFT;
@@ -1580,7 +1581,7 @@ class Component extends DCLogic {
     const saveRate = income ? Math.round((income - forecast) / income * 100) : 0;
     const total = accs.reduce((a, x) => a + x.bal, 0), liquid = accs.filter(a => a.type !== 'crypto').reduce((a, x) => a + x.bal, 0);
     const debtLeft = debts.reduce((a, d) => a + d.left, 0);
-    const HIST = [['Май', 0, 0], ['Июн', 0, 0], ['Июл', 0, 0], ['Авг', 0, 0], ['Сен', 0, 0]];
+    const HIST = P.ops ? [['Май', 92, 71], ['Июн', 98, 77], ['Июл', 101, 85], ['Авг', 96, 80], ['Сен', 110, 86]] : [['Май', 0, 0], ['Июн', 0, 0], ['Июл', 0, 0], ['Авг', 0, 0], ['Сен', 0, 0]];
     const avgSpend = HIST.reduce((a, h) => a + h[2], 0) / HIST.length * 1000;
     const cushion = avgSpend > 0 ? liquid / avgSpend : 0;
 
@@ -1767,7 +1768,7 @@ class Component extends DCLogic {
     const HABN = ['Вода 2 литра', 'Зарядка', 'Чтение 20 минут'];
     const dashTasks = this.tasksFor(Object.assign({}, L, { mode: 'x' })).map(x => ({ done: !!x.d, title: x.n }));
     const dashHabits = HABN.map((nm, i) => ({ name: nm, days: [1, 1, 0, 1, 1, 0, L.hab[i] ? 1 : 0] }));
-    const metricSum = allCards.filter(c => !c.isNote).map(c => ({ name: c.name, val: c.pctNum + '%', pct: c.pctNum, color: c.color }));
+    const metricSum = L.peek === 'indsum' ? [{ name: 'Сон', val: '88%', pct: 88, color: 'var(--ok)' }, { name: 'Вода', val: '63%', pct: 63, color: 'var(--accent)' }, { name: 'Шаги', val: '74%', pct: 74, color: 'var(--cat-violet)' }, { name: 'Чтение', val: '50%', pct: 50, color: 'var(--warn)' }, { name: 'Экран', val: '35%', pct: 35, color: 'var(--bad)' }] : allCards.filter(c => !c.isNote).map(c => ({ name: c.name, val: c.pctNum + '%', pct: c.pctNum, color: c.color }));
 
     const HOWS = {
       projects: ['Бизнес за пять минут', '', [['Создайте бизнес', 'Выберите тип, инструменты подберутся сами.'], ['Этапы', 'Крупные шаги со сроками.'], ['Задачи', '«В работу →», потом «Готово ✓».'], ['Деньги и люди', 'Доходы, клиенты, команда, склад.'], ['Отчёт', 'Итоги одним текстом, можно скопировать.']], ''],
