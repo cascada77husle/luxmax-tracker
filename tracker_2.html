@@ -214,6 +214,33 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
   html body .card,html body div[style*="background:var(--card)"]{background-color:rgba(255,255,255,.06) !important}
   body::before{-webkit-mask-image:none;mask-image:none;opacity:.55}
   html{scroll-behavior:auto}
+  .dash-empty{padding:18px !important;gap:12px !important}
+  .dash-empty>div:first-child{flex:1 1 100% !important;gap:10px !important}
+  .dash-empty b{font-size:22px !important;line-height:1.15 !important}
+  .de-p,.de-ph,.tpl-sub{display:none !important}
+  .dash-empty button{font-size:15px !important;padding:12px 18px !important;border-radius:14px !important;width:100%;justify-content:center;box-sizing:border-box}
+  .tpl-grid{display:flex !important;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px !important;margin:0 -14px;padding:2px 14px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .tpl-grid::-webkit-scrollbar{display:none}
+  .tpl-grid{scroll-padding:0 14px}
+  .wave-land{padding:18px !important;gap:10px !important;border-radius:20px !important}
+  .wave-land>span:first-child,.wl-p{display:none !important}
+  .wave-land b{font-size:22px !important;line-height:1.15 !important}
+  .wave-land button{width:100%;min-height:50px !important;font-size:16px !important;padding:0 18px !important;border-radius:14px !important}
+  #howBlock{padding:14px !important;gap:10px !important;border-radius:18px !important}
+  #howBlock b[style*="font-size:24px"]{font-size:20px !important}
+  #howBlock>div:first-child>span{display:none}
+  #howBlock>div:nth-child(2){gap:8px !important}
+  #howBlock>div:nth-child(2) span[style*="font-size:13px"]{font-size:12.5px !important;line-height:1.4 !important}
+  #howBlock>span{display:none}
+  #howBlock button{align-self:stretch !important;width:100%;border-radius:14px !important}
+  .me-card{padding:10px 14px !important;gap:8px 12px !important}
+  .me-card>span:first-child{width:38px !important;height:38px !important;font-size:15px !important}
+  .tpl-grid>button{flex:0 0 78% !important;scroll-snap-align:start;padding:14px !important;gap:6px !important}
+  .tpl-grid>button span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  html body div[style*="display:inline-flex"][style*="padding:4px"],html body div[style*="display: inline-flex"][style*="padding: 4px"],html body div[style*="display:inline-flex"][style*="padding: 4px"]{border-radius:16px !important;display:flex !important;flex-wrap:wrap !important;width:100% !important;box-sizing:border-box;gap:4px !important;overflow:visible !important}
+  html body div[style*="display:inline-flex"][style*="padding:4px"]>button,html body div[style*="display: inline-flex"][style*="padding: 4px"]>button,html body div[style*="display:inline-flex"][style*="padding: 4px"]>button{border-radius:12px !important;flex:1 1 auto !important;padding:10px 12px !important;text-align:center;justify-content:center}
+  html body .sec-nav>.noscroll{border-radius:16px !important}
+  html body .sec-nav>.noscroll>button{border-radius:12px !important}
   .gal-row{flex-wrap:wrap !important}
   .gal-row>span:nth-of-type(2){flex:1 1 calc(100% - 70px) !important}
   .gal-row>button[aria-label^="Посмотреть"]{margin-left:auto}
@@ -224,7 +251,9 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
   .sec-nav>.noscroll>button{scroll-snap-align:start}
   .sec-nav>button[aria-label="Добавить раздел"]{flex:1 1 100% !important;min-height:46px !important}
   .bz-head{flex-wrap:wrap !important;row-gap:8px !important}
-  .bz-head>b:first-of-type{flex:1 1 0 !important}
+  .bz-head>b:first-of-type{flex:1 1 calc(100% - 60px) !important}
+  .bz-pk>*:nth-child(n+2){display:none !important}
+  .bz-row{padding-bottom:12px !important}
   .bz-step{flex:1 1 100% !important;white-space:normal !important}
   html body [role=menu]{background:#12151B !important}
   html body [style*="blur(14px)"][style*="position:fixed"]{background:rgba(4,5,8,.78) !important}
@@ -292,20 +321,20 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
       </sc-if>
 
       <sc-if value="{{dsub.main}}" hint-placeholder-val="{{true}}">
-        <button type="button" onClick="{{openMe}}" style="cursor:pointer;text-align:left;width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-radius:20px;border:1px solid var(--line);background:var(--accent-soft)">
+        <button type="button" class="me-card" onClick="{{openMe}}" style="cursor:pointer;text-align:left;width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-radius:20px;border:1px solid var(--line);background:var(--accent-soft)">
           <span style="width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:'Archivo',system-ui,sans-serif;font-weight:800;font-size:18px;flex-shrink:0" aria-label="Уровень">{{me.levelNum}}</span>
           <span style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px"><span style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:14px;color:var(--ink)">Мой прогресс · {{me.level}}</b><span style="font-size:12px;color:var(--ink2)">{{me.score}} из 100</span></span><span style="display:block;height:8px;border-radius:999px;background:color-mix(in srgb,var(--card) 70%,transparent);overflow:hidden"><span style="display:block;height:100%;border-radius:999px;background:var(--accent);width:{{me.lvlPct}}%"></span></span></span>
           <span style="display:flex;gap:14px;font-size:12px;color:var(--ink2)"><span><b style="font-size:16px;color:var(--ok)">{{me.upCount}}</b> улучшений</span><span><b style="font-size:16px;color:var(--warn)">{{me.openCount}}</b> в работе</span></span>
         </button>
 
       <sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
-        <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:44px;display:flex;flex-wrap:wrap;gap:40px;align-items:center;overflow:hidden">
+        <div class="dash-empty" style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:44px;display:flex;flex-wrap:wrap;gap:40px;align-items:center;overflow:hidden">
           <div style="flex:1 1 380px;display:flex;flex-direction:column;gap:14px;min-width:0">
             <b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.08;max-width:12em">Дашборд пока пустой</b>
-            <span style="font-size:16px;line-height:1.55;color:var(--ink2);max-width:30em">Соберите свой дашборд: добавьте готовые карточки, выберите шаблон аналитики или подключите аналитику по своей волне. Нажмите «Добавить виджет», всё выбранное появится здесь, карточки можно двигать и менять размер.</span>
+            <span class="de-p" style="font-size:16px;line-height:1.55;color:var(--ink2);max-width:30em">Соберите свой дашборд: добавьте готовые карточки, выберите шаблон аналитики или подключите аналитику по своей волне. Нажмите «Добавить виджет», всё выбранное появится здесь, карточки можно двигать и менять размер.</span>
             <button type="button" onClick="{{openGallery}}" style="cursor:pointer;align-self:flex-start;border:1.5px solid var(--accent);border-radius:20px;background:var(--card);color:var(--accent-text);font-weight:700;font-size:18px;padding:16px 32px;display:flex;align-items:center;gap:12px;box-shadow:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Добавить виджет</button>
           </div>
-          <div style="flex:1 1 320px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0" aria-hidden="true">
+          <div class="de-ph" style="flex:1 1 320px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0" aria-hidden="true">
             <div style="grid-column:span 2;height:92px;border-radius:20px;border:1.5px dashed var(--line2);background:var(--field)"></div>
             <div style="height:120px;border-radius:20px;border:1.5px dashed var(--line2);background:var(--field)"></div>
             <div style="height:120px;border-radius:20px;border:1.5px dashed var(--line2);background:var(--field)"></div>
@@ -314,7 +343,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Или начните с шаблона</b>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+          <div class="tpl-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
             <sc-for list="{{templates}}" as="t" hint-placeholder-count="5">
               <button type="button" onClick="{{t.pick}}" style="cursor:pointer;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)">
                 <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700;color:var(--ink)">{{t.name}}</b>
@@ -367,7 +396,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
             </sc-for>
           </div>
           <div style="position:relative;border-radius:20px;border:1px solid {{tplBd}};background:rgba(255,255,255,.03);overflow:hidden;box-shadow:{{tplSh}};transition:box-shadow .4s ease,border-color .4s ease">
-          <button type="button" onClick="{{tplToggle}}" aria-expanded="{{tplOpen}}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:transparent;cursor:pointer;padding:16px;text-align:left;color:var(--ink)"><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Шаблоны</b><span style="font-size:13px;color:var(--muted)">Откройте шаблон, посмотрите, что в нём, и нажмите «Добавить шаблон».</span></span><span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink2)">{{tplHint}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{tplRot}}deg);transition:transform .4s ease"><path d="M6 9l6 6 6-6"></path></svg></span></button>
+          <button type="button" onClick="{{tplToggle}}" aria-expanded="{{tplOpen}}" style="width:100%;display:flex;align-items:center;gap:12px;border:0;background:transparent;cursor:pointer;padding:16px;text-align:left;color:var(--ink)"><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Шаблоны</b><span class="tpl-sub" style="font-size:13px;color:var(--muted)">Откройте шаблон, посмотрите, что в нём, и нажмите «Добавить шаблон».</span></span><span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink2)">{{tplHint}}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate({{tplRot}}deg);transition:transform .4s ease"><path d="M6 9l6 6 6-6"></path></svg></span></button>
           <div onClick="{{tplPeekOpen}}" style="padding:0 16px 16px;overflow:hidden;interpolate-size:allow-keywords;height:{{tplMh}};transition:height .6s cubic-bezier(.22,1,.36,1),opacity .4s ease;opacity:{{tplOp}};-webkit-mask-image:{{tplMask}};mask-image:{{tplMask}};cursor:{{tplCur}}"><div style="pointer-events:{{tplPe}}">
           <dc-import name="Dashboard" pick="{{true}}" ops="{{ops}}" plans="{{plans}}" accounts="{{accounts}}" tasks="{{dashTasks}}" habits="{{dashHabits}}" cfg="{{acfg}}" projects="{{moneyProjects}}" fn-cfg="{{setAcfg}}" hint-size="100%,5200px"></dc-import>
           </div></div>
@@ -1008,10 +1037,10 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
       <sc-if value="{{wc.lib}}" hint-placeholder-val="{{false}}"><dc-import name="Study" live="{{courseLive}}" fn-live="{{setCourseLive}}" hint-size="100%,1000px"></dc-import></sc-if>
       <sc-if value="{{wc.lang}}" hint-placeholder-val="{{false}}"><dc-import name="Languages" hint-size="100%,1200px"></dc-import></sc-if>
       <sc-if value="{{showLanding}}" hint-placeholder-val="{{false}}">
-        <div style="background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:32px 24px;display:flex;flex-direction:column;align-items:flex-start;gap:16px">
+        <div class="wave-land" style="background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:32px 24px;display:flex;flex-direction:column;align-items:flex-start;gap:16px">
           <span style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:4px 10px">Моя волна</span>
           <b style="font-family:'Archivo',system-ui,sans-serif;font-size:30px;font-weight:700;line-height:1.15;max-width:15em">Создайте свою волну саморазвития</b>
-          <span style="font-size:15px;line-height:1.55;color:var(--muted);max-width:40em">Выберите направления или готовый курс, дату старта, и волна сама ведёт вас день за днём: задачи, спорт, питание, привычки, заметки. Волн может быть несколько, например одна по жизни и одна по менталистике.</span>
+          <span class="wl-p" style="font-size:15px;line-height:1.55;color:var(--muted);max-width:40em">Выберите направления или готовый курс, дату старта, и волна сама ведёт вас день за днём: задачи, спорт, питание, привычки, заметки. Волн может быть несколько, например одна по жизни и одна по менталистике.</span>
           <button type="button" onClick="{{startWave}}" style="cursor:pointer;min-height:64px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:18px;padding:0 44px">Создать свою волну</button>
         </div>
       </sc-if>
