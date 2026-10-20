@@ -198,12 +198,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":1300}}'>
 class Component extends DCLogic {
-  init() { return { ready: false, mode: 'day', sel: 0, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {
-    0: [{ s: '09:00', e: '10:00', n: 'Созвон по проекту', c: 'work' }, { s: '13:30', e: '14:00', n: 'Обед', c: 'life' }, { s: '15:00', e: '16:30', n: 'Съёмка ролика', c: 'work' }, { s: '18:00', e: '19:00', n: 'Тренировка: спина и бицепс', c: 'sport' }, { s: '20:30', e: '21:00', n: 'Китайский: 14 карточек', c: 'study' }],
-    1: [{ s: '10:00', e: '12:00', n: 'Монтаж', c: 'work' }, { s: '19:00', e: '20:00', n: 'Йога', c: 'sport' }],
-    2: [{ s: '10:00', e: '10:30', n: 'Оплатить аренду, 28 000 ₽', c: 'pay' }, { s: '14:00', e: '16:00', n: 'Работа над проектом', c: 'work' }],
-    4: [{ s: '19:00', e: '22:00', n: 'Встреча с другом', c: 'life' }],
-    5: [{ s: '11:00', e: '12:00', n: 'Оплатить интернет, 700 ₽', c: 'pay' }, { s: '12:00', e: '13:30', n: 'Тренировка: ноги', c: 'sport' }] } }; }
+  init() { return { ready: false, mode: 'day', sel: 0, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {} }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
   renderVals() {
