@@ -158,19 +158,31 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
       <span style="width:64px;height:64px;border-radius:20px;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg></span>
       <span style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:6px">
         <span style="align-self:flex-start;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:4px 10px">Курсы</span>
-        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:700;line-height:1.15">Загрузите курс любого формата</b>
-        <span style="font-size:14px;line-height:1.5;color:var(--muted);max-width:40em">Файл, видео, аудио, ссылка или скриншоты. Трекер разложит материал на уроки и поведёт по плану: описание курса, как всё выглядит, фото-примеры, конспекты, карточки, проверка знаний и учёт времени.</span>
+        <b style="font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:700;line-height:1.15">Добавьте свой курс из файла</b>
+        <span style="font-size:14px;line-height:1.5;color:var(--muted);max-width:40em">Загрузите файл или вставьте текст. Приложение разложит материал на модули и уроки, соберёт описание, карточки и проверку знаний и поведёт по плану.</span>
       </span>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Формат материала</span>
-      <div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{formats}}" as="f" hint-placeholder-count="8"><button type="button" onClick="{{f.pick}}" style="cursor:pointer;min-height:44px;border:1.5px solid {{f.border}};background:{{f.bg}};color:{{f.fg}};font-weight:600;font-size:13px;padding:8px 16px;border-radius:999px">{{f.name}}</button></sc-for></div>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <input type="text" value="{{titleVal}}" onInput="{{onTitle}}" placeholder="Название курса, например: Менталистика" aria-label="Название курса" style="flex:1 1 260px;min-width:0;min-height:48px;box-sizing:border-box;border:1.5px solid var(--line2);border-radius:999px;padding:12px 18px;font-size:14px;background:var(--card);color:var(--ink)">
-      <button type="button" onClick="{{upload}}" style="cursor:pointer;min-height:48px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:12px 28px">Загрузить курс</button>
-    </div>
-    <span style="display:{{upNoteDisplay}};font-size:13px;line-height:1.45;color:var(--ok);background:var(--ok-soft);border-radius:12px;padding:10px 14px">{{upNote}}</span>
+    <sc-if value="{{canParse}}" hint-placeholder-val="{{true}}">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <label style="cursor:pointer;display:inline-flex;align-items:center;min-height:48px;border:1.5px dashed var(--accent-line);border-radius:999px;padding:0 22px;font-weight:700;font-size:14px;color:var(--accent-text);background:var(--accent-soft)">Выбрать файл<input type="file" accept=".txt,.md,.srt,.vtt,.html,.htm,.json,.csv,.docx,.pdf,text/plain" onChange="{{onFile}}" style="display:none"></label>
+          <span style="font-size:13px;color:var(--muted)">{{fileLabel}}</span>
+        </div>
+        <span style="font-size:12px;color:var(--muted)">Читаются: PDF с текстом, Word (.docx), TXT, MD, HTML, субтитры SRT и VTT, JSON, CSV. Видео и аудио: вставьте расшифровку текстом.</span>
+        <textarea rows="5" onInput="{{onPaste}}" placeholder="Или вставьте текст курса сюда: конспект, расшифровку, главы" aria-label="Текст курса" style="border:1.5px solid var(--line2);border-radius:14px;padding:12px 16px;font-size:14px;background:var(--card);color:var(--ink);min-width:0;box-sizing:border-box;resize:vertical;font-family:inherit;line-height:1.5"></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input type="text" value="{{titleVal}}" onInput="{{onTitle}}" placeholder="Название курса (необязательно)" aria-label="Название курса" style="flex:1 1 260px;min-height:48px;border:1.5px solid var(--line2);border-radius:14px;padding:12px 16px;font-size:14px;background:var(--card);color:var(--ink);min-width:0;box-sizing:border-box;border-radius:999px;padding:12px 18px">
+          <button type="button" onClick="{{parse}}" style="cursor:pointer;min-height:48px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:12px 28px;opacity:{{parseOp}}">{{parseLabel}}</button>
+        </div>
+        <span style="display:{{upNoteDisplay}};font-size:13px;line-height:1.45;color:{{upFg}};background:{{upBg}};border-radius:12px;padding:10px 14px">{{upNote}}</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{cantParse}}" hint-placeholder-val="{{false}}">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;border:1.5px solid var(--line2);border-radius:18px;padding:16px 18px;background:var(--card)">
+        <span style="width:44px;height:44px;border-radius:14px;background:var(--field);color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg></span>
+        <span style="flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:3px"><b style="font-size:15px">Разбор своих файлов закрыт</b><span style="font-size:13px;line-height:1.45;color:var(--muted)">Скоро откроем. Пока можно проходить готовые курсы ниже.</span></span>
+      </div>
+    </sc-if>
   </div>
 
   <div style="display:flex;flex-direction:column;gap:12px">
@@ -305,9 +317,116 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"live":{"editor":null},"fnLive":{"editor":null},"fnToProject":{"editor":null},"$preview":{"width":1000,"height":1300}}'>
+<script type="text/x-dc" data-dc-script data-props='{"live":{"editor":null},"fnLive":{"editor":null},"fnToProject":{"editor":null},"canParse":{"editor":null},"$preview":{"width":1000,"height":1300}}'>
 class Component extends DCLogic {
   init() { return { ready: false, step: 'lib', course: 'change', tab: 'about', fmt: 'PDF', title: '', upNote: '', extra: [], by: {}, photoAdd: {}, mins: 30, dpw: 5, done: {}, note: '', notes: {}, nl: 0, nt: '', ci: 0, flipped: false, known: {}, qi: 0, qa: {}, qd: false, fm: 25, sess: [] }; }
+  static stripTags(h) { return h.replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<h[1-3][^>]*>/gi, '\n# ').replace(/<\/(p|div|h[1-6]|li|tr)>|<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'"); }
+  static async docx(buf) {
+    const u = new Uint8Array(buf), dv = new DataView(buf); let e = u.length - 22;
+    while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+    if (e < 0) throw new Error('не похоже на docx');
+    const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true);
+    for (let i = 0; i < n; i++) {
+      const m = dv.getUint16(p + 10, true), cs = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+      const name = new TextDecoder().decode(u.subarray(p + 46, p + 46 + nl));
+      if (name === 'word/document.xml') {
+        const lnl = dv.getUint16(off + 26, true), lel = dv.getUint16(off + 28, true), st = off + 30 + lnl + lel, data = u.subarray(st, st + cs);
+        let bytes = data;
+        if (m === 8) bytes = new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
+        const xml = new TextDecoder().decode(bytes);
+        return xml.replace(/<w:p[ >][\s\S]*?<\/w:p>/g, (q) => { const h = /<w:pStyle w:val="(?:Heading|Заголовок|heading)\s?(\d)"/.exec(q); const tx = q.replace(/<w:tab\/>/g, ' ').replace(/<[^>]+>/g, ''); return (h ? '\n' + '#'.repeat(+h[1]) + ' ' : '') + tx + '\n'; }).replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+      }
+      p += 46 + nl + el + cl;
+    }
+    throw new Error('в docx нет текста');
+  }
+  static async pdf(buf) {
+    const B = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+    if (!window.pdfjsLib) {
+      await new Promise((ok, no) => { const s = document.createElement('script'); s.src = B + 'pdf.min.js'; s.onload = ok; s.onerror = () => no(new Error('не загрузился модуль PDF')); document.head.appendChild(s); });
+      const w = await (await fetch(B + 'pdf.worker.min.js')).text();
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(new Blob([w], { type: 'text/javascript' }));
+    }
+    const d = await window.pdfjsLib.getDocument({ data: buf }).promise, out = [];
+    for (let i = 1; i <= Math.min(d.numPages, 400); i++) {
+      const c = await (await d.getPage(i)).getTextContent(); let line = '', y = null; const ls = [];
+      c.items.forEach((it) => { const yy = it.transform[5]; if (y !== null && Math.abs(yy - y) > 3) { ls.push(line); line = ''; } line += it.str; y = yy; });
+      ls.push(line); out.push(ls.join('\n'));
+    }
+    return out.join('\n\n').replace(/([^\n.!?:»"])\n([а-яёa-z])/g, '$1 $2');
+  }
+  static async readFile(f) {
+    const ext = (f.name.split('.').pop() || '').toLowerCase();
+    if (ext === 'docx') return Component.docx(await f.arrayBuffer());
+    if (ext === 'pdf') return Component.pdf(await f.arrayBuffer());
+    if (ext === 'doc') throw new Error('старый .doc не читается, сохраните как .docx');
+    let s = await f.text();
+    if (ext === 'html' || ext === 'htm') s = Component.stripTags(s);
+    else if (ext === 'srt' || ext === 'vtt') s = s.split('\n').filter((l) => l.trim() && !/^\d+$/.test(l.trim()) && !/-->/.test(l) && !/^WEBVTT/.test(l)).join(' ').replace(/<[^>]+>/g, '');
+    else if (ext === 'json') { try { const a = []; (function w(x) { if (typeof x === 'string') a.push(x); else if (x && typeof x === 'object') Object.values(x).forEach(w); })(JSON.parse(s)); s = a.join('\n\n'); } catch (e) {} }
+    return s;
+  }
+  static analyze(raw, title) {
+    const STOP = new Set('этот эта это эти того тому этом также который которая которые которое можно нужно будет были была было быть если чтобы когда потом после перед через такой таких более очень только всего всех свой своей своих себя наш ваш вашей есть еще ещё или как так что для при без над под про его они она оно мне тебе вам нас них нет для то же the and for that with this from are was were have has not you your'.split(' '));
+    const t = raw.replace(/\r/g, '').replace(/[ \t ]+/g, ' ').replace(/\n[ ]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    if (t.length < 250) return null;
+    const lines = t.split('\n').map((s) => s.trim());
+    const clean = (s) => s.replace(/^#{1,6}\s*/, '').replace(/^[\d.)\s]+(?=\S)/, (m) => /^\d/.test(m) ? '' : m).replace(/[:.\s]+$/, '').trim();
+    const KW = /^(урок|глава|модуль|часть|раздел|тема|занятие|lesson|chapter|module|part|section)\s*[№#]?\s*\d*[.:)\-—\s]*/i, MODW = /^(модуль|часть|раздел|module|part|section)\b/i;
+    const strong = (l, i) => { if (!l || l.length < 3 || l.length > 90) return 0; if (/^#{1,6}\s+\S/.test(l)) return l.match(/^#+/)[0].length; if (/[.!?,;]$/.test(l)) return 0; if (KW.test(l) && l.length < 80) return 2; if (/^\d{1,2}[.)]\s+\S/.test(l) && l.length < 80 && !lines[i + 1 - 0 === i ? 0 : i]) return 2; if (l.length >= 6 && l === l.toUpperCase() && /[А-ЯЁA-Z]{3}/.test(l)) return 2; return 0; };
+    let heads = []; lines.forEach((l, i) => { const lv = strong(l, i); if (lv) heads.push({ i, lv }); });
+    if (heads.length < 3) { heads = []; lines.forEach((l, i) => { if (l.length >= 4 && l.length <= 70 && !/[.!?,;:]$/.test(l) && /^[А-ЯЁA-Z«"0-9]/.test(l) && !lines[i - 1] && lines[i + 1] === '' && i > 0) heads.push({ i, lv: 2 }); }); if (heads.length < 3 || heads.length > 60) heads = []; }
+    let secs = [], mods = [];
+    if (heads.length >= 3) {
+      const lvs = heads.map((h) => h.lv), minL = Math.min.apply(null, lvs), maxL = Math.max.apply(null, lvs);
+      const first = lines.slice(0, heads[0].i).join('\n').trim();
+      if (first.length > 300) secs.push({ title: 'Введение', body: first });
+      heads.forEach((h, k) => {
+        const end = k + 1 < heads.length ? heads[k + 1].i : lines.length, body = lines.slice(h.i + 1, end).join('\n').trim(), ttl = clean(lines[h.i]) || ('Урок ' + (secs.length + 1));
+        const isMod = MODW.test(lines[h.i]) || (h.lv === minL && maxL > minL && /^#/.test(lines[h.i]));
+        if (isMod) { mods.push({ name: ttl, at: secs.length }); if (body.length > 300) secs.push({ title: ttl, body }); }
+        else if (secs.length && body.length < 150 && !(secs.length === 1 && secs[0].title === 'Введение')) secs[secs.length - 1].body += '\n' + ttl + '. ' + body;
+        else secs.push({ title: ttl, body: body || ttl });
+      });
+    } else {
+      let ps = t.split(/\n\s*\n/).map((s) => s.replace(/\n/g, ' ').trim()).filter(Boolean);
+      if (ps.length < 4) ps = t.replace(/\n/g, ' ').replace(/([.!?…])\s+/g, '$1\u0001').split('\u0001').map((s) => s.trim()).filter(Boolean);
+      const total = ps.join(' ').length, target = Math.max(900, Math.min(2600, Math.round(total / 10)));
+      let cur = [], len = 0; const out = [];
+      ps.forEach((p) => { cur.push(p); len += p.length; if (len >= target) { out.push(cur.join('\n')); cur = []; len = 0; } });
+      if (cur.length) { if (len < target * 0.4 && out.length) out[out.length - 1] += '\n' + cur.join('\n'); else out.push(cur.join('\n')); }
+      secs = out.map((b, i) => { const s0 = b.split(/(?<=[.!?…])\s/)[0].replace(/^[\s\-—–•]+/, ''); let tt = s0.length > 60 ? s0.slice(0, 60).replace(/\s\S*$/, '') + '…' : s0; return { title: (i + 1) + '. ' + tt.replace(/[.!?…]+$/, ''), body: b }; });
+    }
+    while (secs.length > 60) { const m = []; for (let i = 0; i < secs.length; i += 2) m.push(secs[i + 1] ? { title: secs[i].title, body: secs[i].body + '\n' + secs[i + 1].body } : secs[i]); secs = m; mods = mods.map((x) => ({ name: x.name, at: Math.floor(x.at / 2) })); }
+    if (!secs.length) return null;
+    const words = (s) => (s.match(/[A-Za-zА-Яа-яЁё0-9]+/g) || []).length;
+    const sents = (s) => s.replace(/\n/g, ' ').replace(/([.!?…])\s+/g, '$1\u0001').split('\u0001').map((x) => x.trim()).filter((x) => x.length > 20);
+    const freq = {}; (t.toLowerCase().match(/[а-яёa-z]{4,}/g) || []).forEach((w) => { if (!STOP.has(w)) { const k = w.slice(0, 5); freq[k] = (freq[k] || 0) + 1; } });
+    const score = (s) => { const ws = s.toLowerCase().match(/[а-яёa-z]{4,}/g) || []; if (ws.length < 5 || ws.length > 32) return 0; let z = 0; ws.forEach((w) => { if (!STOP.has(w)) z += freq[w.slice(0, 5)] || 0; }); return z / Math.sqrt(ws.length); };
+    const best = (s) => { let b = '', bs = 0; sents(s).forEach((x) => { const z = score(x); if (z > bs) { bs = z; b = x; } }); return b; };
+    const short = (s, n) => { s = s.replace(/\s+/g, ' ').trim(); if (s.length <= n) return s; const c = s.slice(0, n), k = Math.max(c.lastIndexOf(','), c.lastIndexOf(' ')); return c.slice(0, k > n * 0.5 ? k : n).replace(/[,;:\s]+$/, '') + '…'; };
+    const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const LES = secs.map((s) => [short(s.title, 70), Math.max(8, Math.min(90, Math.round((words(s.body) / 120 + 5) / 5) * 5))]);
+    let MODS;
+    if (mods.length) { const ms = mods.slice(); if (ms[0].at > 0) ms.unshift({ name: 'Введение', at: 0 }); MODS = ms.map((m, i) => [short(m.name, 50), m.at, i + 1 < ms.length ? ms[i + 1].at : LES.length]).filter((m) => m[2] > m[1]); }
+    if (!MODS || !MODS.length) { const n = LES.length; if (n <= 4) MODS = [['Весь курс', 0, n]]; else { const g = Math.ceil(n / Math.ceil(n / 5)); MODS = []; for (let i = 0, k = 1; i < n; i += g, k++) MODS.push(['Модуль ' + k + ': ' + short(LES[i][0].replace(/^\d+\.\s*/, ''), 34), i, Math.min(n, i + g)]); } }
+    const CARDS = [], seen = {};
+    const defs = [/^([^,.:;—–]{3,45}?)\s+[—–]\s+(?:это\s+)?(.{15,230})$/, /^([^,.:;]{3,45}?)\s+(?:это|является|называется|называют)\s+(.{15,230})$/, /^([^.:;,]{3,45}):\s+(.{20,230})$/];
+    secs.forEach((s) => { sents(s.body).forEach((x) => { x = x.replace(/[.!?…]+$/, ''); for (const re of defs) { const m = re.exec(x); if (m) { const term = m[1].replace(/^[\d.)\s\-—•]+/, '').trim(); if (term.split(/\s+/).length <= 6 && !seen[term.toLowerCase()] && /[А-Яа-яЁёA-Za-z]/.test(term)) { seen[term.toLowerCase()] = 1; CARDS.push(['Что такое «' + term + '»?', cap(m[2].trim()) + '.']); } break; } } }); });
+    const defCards = CARDS.slice(0, 14);
+    secs.forEach((s, i) => { const b = best(s.body); if (b && CARDS.length < 24 + 0) CARDS.push([/^\d+\.\s/.test(LES[i][0]) ? 'Главная мысль раздела ' + (i + 1) + '?' : 'Главное в уроке «' + LES[i][0] + '»?', short(b, 240)]); });
+    const cards = defCards.concat(CARDS.slice(14)).slice(0, 24);
+    const QZ = []; const pool = cards.map((c) => short(c[1].replace(/\.$/, ''), 90));
+    if (cards.length >= 3) cards.slice(0, 8).forEach((c, i) => { const ds = []; for (let k = 1; ds.length < 2 && k < cards.length; k++) { const d = pool[(i + k * 2 + 1) % cards.length]; if (d !== pool[i] && ds.indexOf(d) < 0) ds.push(d); } if (ds.length < 2) return; const pos = i % 3, opts = ds.slice(); opts.splice(pos, 0, pool[i]); QZ.push([c[0], opts, pos]); });
+    if (!QZ.length) QZ.push(['Вы изучили материал этого курса?', ['Да, прошёл(а) все уроки', 'Пока нет', 'Прошёл(а) частично'], 0]);
+    const mins = LES.reduce((a, l) => a + l[1], 0), hh = mins >= 60 ? Math.floor(mins / 60) + ' ч' + (mins % 60 ? ' ' + (mins % 60) + ' м' : '') : mins + ' м';
+    const intro = sents(secs[0].body).slice(0, 2).join(' ');
+    const desc = 'Разобран из вашего материала: ' + LES.length + ' ' + (LES.length % 10 === 1 && LES.length % 100 !== 11 ? 'урок' : (LES.length % 10 >= 2 && LES.length % 10 <= 4 && (LES.length % 100 < 10 || LES.length % 100 >= 20) ? 'урока' : 'уроков')) + ', около ' + hh + '. ' + short(intro, 260);
+    const step = Math.max(1, Math.floor(secs.length / 5)), outcomes = [];
+    for (let i = 0; i < secs.length && outcomes.length < 5; i += step) { const b = best(secs[i].body); if (b) outcomes.push(short(b.replace(/[.!?…]+$/, ''), 120)); }
+    if (!outcomes.length) outcomes.push('Пройти материал по плану и закрепить его карточками');
+    return { desc, how: ['Урок по частям: читаете раздел и отмечаете главное.', 'Короткий конспект своими словами после каждого урока.', 'Карточки на повторение, собранные из определений в тексте.', 'Проверка знаний по материалу курса и учёт времени.'], outcomes, LES, MODS, CARDS: cards, QZ, words: words(t) };
+  }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
 
@@ -420,7 +539,7 @@ class Component extends DCLogic {
     const FM = [['PDF', 'PDF'], ['DOC', 'Word'], ['TXT', 'TXT, MD'], ['VID', 'Видео'], ['AUD', 'Аудио'], ['URL', 'Ссылка'], ['IMG', 'Фото'], ['ZIP', 'Архив']];
     const TAGC = { PDF: ['var(--bad-soft)', 'var(--bad)'], DOC: ['var(--accent-soft)', 'var(--accent-text)'], TXT: ['var(--ok-soft)', 'var(--ok)'], VID: ['var(--warn-soft)', 'var(--warn)'], AUD: ['var(--warn-soft)', 'var(--warn)'], URL: ['var(--accent-soft)', 'var(--accent-text)'], IMG: ['var(--ok-soft)', 'var(--ok)'], ZIP: ['var(--accent-soft)', 'var(--accent-text)'] };
     const all = { change: COURSES.change, discipline: COURSES.discipline };
-    L.extra.forEach(c => { all[c.id] = Object.assign({}, COURSES.mental, { desc: 'Описание появится после разбора файла. Пока показан пример структуры: описание курса, как он выглядит, программа, план по дням, конспекты, карточки и проверка.', outcomes: ['План по дням под ваш темп', 'Конспект и карточки по каждому уроку', 'Проверка знаний в конце модуля', 'Учёт времени и серия дней'], photos: ['Сюда попадут кадры из вашего курса', 'Схемы и таблицы из материала', 'Скриншоты упражнений', 'Ваши фото-примеры'], seed: { done: {}, notes: {}, sess: [] } }, c); });
+    L.extra.forEach(c => { all[c.id] = Object.assign({}, COURSES.mental, c.demo === false ? { photos: [] } : {}, { desc: 'Описание появится после разбора файла. Пока показан пример структуры: описание курса, как он выглядит, программа, план по дням, конспекты, карточки и проверка.', outcomes: ['План по дням под ваш темп', 'Конспект и карточки по каждому уроку', 'Проверка знаний в конце модуля', 'Учёт времени и серия дней'], photos: ['Сюда попадут кадры из вашего курса', 'Схемы и таблицы из материала', 'Скриншоты упражнений', 'Ваши фото-примеры'], seed: { done: {}, notes: {}, sess: [] } }, c.p || {}, c); });
     const C = all[L.course] || all.change, LES = C.LES, MODS = C.MODS, CARDS = C.CARDS, QZ = C.QZ;
     const fmtM = (m) => m >= 60 ? Math.floor(m / 60) + ' ч' + (m % 60 ? ' ' + (m % 60) + ' м' : '') : m + ' м';
     const group = (les, cap) => { const ds = []; let cu = [], sm = 0, li = 0; les.forEach((l, i) => { if (cu.length && sm + l[1] > cap * 1.15) { ds.push({ items: cu, sum: sm, from: li, to: i }); cu = []; sm = 0; li = i; } cu.push(l); sm += l[1]; }); if (cu.length) ds.push({ items: cu, sum: sm, from: li, to: les.length }); return ds; };
@@ -483,7 +602,26 @@ class Component extends DCLogic {
       back: () => this.set({ step: 'lib', by: saveCur() }),
       formats: FM.map(f => ({ name: f[1], bg: L.fmt === f[0] ? 'var(--accent-soft)' : 'var(--card)', fg: L.fmt === f[0] ? 'var(--accent-text)' : 'var(--ink2)', border: L.fmt === f[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ fmt: f[0] }) })),
       titleVal: L.title, onTitle: (e) => this.set({ title: e.target.value }),
-      upload: () => { const n = this.L.extra.length + 1, t = (this.L.title || '').trim() || ('Новый курс ' + n), f = FM.find(x => x[0] === this.L.fmt); this.set({ extra: this.L.extra.concat([{ id: 'up' + n, name: t, tag: this.L.fmt, fmt: f[1] + ', ждёт разбора', demo: true }]), title: '', upNote: 'Курс «' + t + '» добавлен в список. Формат: ' + f[1] + '. Откройте его, чтобы увидеть, как он будет выглядеть.' }); },
+      canParse: !!P.canParse, cantParse: !P.canParse, fileLabel: L.fileName || 'Файл не выбран', parseOp: L.busy ? 0.6 : 1, parseLabel: L.busy ? 'Разбираю…' : 'Разобрать и создать курс',
+      upFg: L.upErr ? 'var(--bad)' : 'var(--ok)', upBg: L.upErr ? 'var(--bad-soft)' : 'var(--ok-soft)',
+      onFile: (e) => { const f = e.target.files && e.target.files[0]; this._file = f || null; this.set({ fileName: f ? f.name : '' }); },
+      onPaste: (e) => { this._paste = e.target.value; },
+      parse: async () => {
+        if (!P.canParse || this.L.busy) return;
+        const f = this._file, pasted = (this._paste || '').trim();
+        if (!f && pasted.length < 250) { this.set({ upNote: 'Выберите файл или вставьте текст курса, хотя бы несколько абзацев.', upErr: true }); return; }
+        this.set({ busy: true, upNote: 'Читаю материал и собираю курс…', upErr: false });
+        try {
+          const text = f ? await Component.readFile(f) : pasted, ext = f ? (f.name.split('.').pop() || '').toLowerCase() : 'txt';
+          const title = (this.L.title || '').trim() || (f ? f.name.replace(/\.[^.]+$/, '') : 'Курс из текста');
+          const r = Component.analyze(text, title);
+          if (!r) { this.set({ busy: false, upErr: true, upNote: 'В материале мало текста. Если это скан или картинки, нужен серверный разбор: он будет позже.' }); return; }
+          const tag = ext === 'pdf' ? 'PDF' : ext === 'docx' ? 'DOC' : 'TXT', id = 'up' + Date.now().toString(36);
+          const ex = this.L.extra.concat([{ id, name: title, tag, fmt: ext.toUpperCase() + ', ' + r.LES.length + ' ур.', demo: false, p: { desc: r.desc, how: r.how, outcomes: r.outcomes, LES: r.LES, MODS: r.MODS, CARDS: r.CARDS, QZ: r.QZ } }]);
+          this._file = null; this._paste = '';
+          this.set({ extra: ex, busy: false, title: '', fileName: '', upErr: false, upNote: 'Готово: курс «' + title + '» собран. Уроков: ' + r.LES.length + ', карточек: ' + r.CARDS.length + ', вопросов: ' + r.QZ.length + '. Он в списке «Мои курсы» ниже.' });
+        } catch (err) { this.set({ busy: false, upErr: true, upNote: 'Не удалось прочитать файл: ' + ((err && err.message) || 'ошибка') }); }
+      },
       upNote: L.upNote, upNoteDisplay: L.upNote ? 'block' : 'none',
       courseCards, publicCards, publicCount: publicCards.length + ' шт.', noMine: courseCards.length === 0, courseCount: courseCards.length + ' шт.',
       courseName: C.name, courseTag: C.tag, courseTagBg: tagOf(C)[0], courseTagFg: tagOf(C)[1], demoDisplay: C.demo ? 'block' : 'none',
