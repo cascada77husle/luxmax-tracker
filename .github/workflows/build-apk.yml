@@ -23,7 +23,7 @@ jobs:
       - name: Установить Android SDK
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq imagemagick
+          sudo apt-get install -y -qq imagemagick librsvg2-bin
           command -v convert > /dev/null || sudo ln -s "$(command -v magick)" /usr/local/bin/convert
           export ANDROID_HOME=$HOME/android-sdk
           mkdir -p $ANDROID_HOME/cmdline-tools
@@ -41,6 +41,8 @@ jobs:
           gradle-version: "8.9"
 
       - name: Создать проект приложения
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
         run: |
           set -e
           P=android
@@ -68,11 +70,11 @@ jobs:
             namespace 'app.luxmax.tracker'
             compileSdk 34
             defaultConfig {
-              applicationId 'app.luxmax.tracker'
+              applicationId 'app.arqon.tracker'
               minSdk 24
               targetSdk 34
-              versionCode 1
-              versionName '1.0'
+              versionCode ${{ github.run_number }}
+              versionName '${{ github.run_number }}'
             }
             signingConfigs {
               release {
@@ -99,7 +101,7 @@ jobs:
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
             <uses-permission android:name="android.permission.INTERNET" />
             <application
-              android:label="Трекер жизни"
+              android:label="ARQON"
               android:icon="@mipmap/ic_launcher"
               android:allowBackup="true"
               android:usesCleartextTraffic="false"
@@ -147,6 +149,7 @@ jobs:
               s.setJavaScriptEnabled(true);
               s.setDomStorageEnabled(true);
               s.setDatabaseEnabled(true);
+              s.setUserAgentString(s.getUserAgentString() + " ARQONApp/${{ github.run_number }}");
               web.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest r) {
@@ -172,12 +175,18 @@ jobs:
             }
           }
           EOF
+          rsvg-convert -w 512 -h 512 icon.svg -o icon-512.png
+          rsvg-convert -w 192 -h 192 icon.svg -o icon-192.png
           for pair in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
             d=${pair%%:*}; sz=${pair##*:}
             mkdir -p $P/app/src/main/res/mipmap-$d
             convert icon-512.png -resize ${sz}x${sz} $P/app/src/main/res/mipmap-$d/ic_launcher.png
           done
-          keytool -genkeypair -v -keystore $P/release.keystore -alias tracker -keyalg RSA -keysize 2048 -validity 10000 -storepass luxmax-tracker -keypass luxmax-tracker -dname "CN=Tracker, O=Luxmax, C=RU"
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > $P/release.keystore
+          else
+            keytool -genkeypair -v -keystore $P/release.keystore -alias tracker -keyalg RSA -keysize 2048 -validity 10000 -storepass luxmax-tracker -keypass luxmax-tracker -dname "CN=ARQON, O=ARQON, C=RU"
+          fi
 
       - name: Собрать APK
         run: gradle -p android assembleRelease --no-daemon
@@ -188,4 +197,14 @@ jobs:
         run: |
           cp android/app/build/outputs/apk/release/app-release.apk tracker.apk
           gh release delete apk-latest --yes --cleanup-tag || true
-          gh release create apk-latest tracker.apk --title "Приложение для Android" --notes "Установочный файл трекера для Android (APK). Скачать tracker.apk и открыть на телефоне." --latest=false
+          gh release create apk-latest tracker.apk --title "Приложение ARQON для Android" --notes "Установочный файл ARQON для Android (APK). Скачать tracker.apk и открыть на телефоне." --latest=false
+
+      - name: Обновить иконки и номер версии в репозитории
+        run: |
+          echo '{"versionCode": ${{ github.run_number }}, "apk": "https://github.com/cascada77husle/luxmax-tracker/releases/download/apk-latest/tracker.apk"}' > app-version.json
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add icon-192.png icon-512.png app-version.json
+          git commit -m "Обновить иконки и версию приложения" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
