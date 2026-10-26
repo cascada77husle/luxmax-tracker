@@ -206,14 +206,14 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"$preview":{"width":1280,"height":760}}'>
+<script type="text/x-dc" data-dc-script data-props='{"cur":{"editor":null},"ops":{"editor":null},"$preview":{"width":1280,"height":760}}'>
 class Component extends DCLogic {
   init() { return { ready: false, withBills: false, norm: 2500, sel: 18 }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
 
   renderVals() {
-    const P = this.props, L = this.L;
+    const P = this.props, L = this.L, CUR = P.cur || '₽';
     const ops = (P.ops || []).filter(o => o.kind === 'out' && (L.withBills || !o.planId));
     const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     const WD = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
@@ -229,19 +229,19 @@ class Component extends DCLogic {
     const red = sp.filter(v => v > L.norm).length, tot = sp.reduce((a, b) => a + b, 0);
     const worstI = sp.indexOf(Math.max.apply(null, sp));
     const stats = [
-      { label: 'Средний день', value: fmt(tot / N) + ' ₽', color: 'var(--ink)' },
+      { label: 'Средний день', value: fmt(tot / N) + ' ' + CUR, color: 'var(--ink)' },
       { label: 'Красных дней', value: red + ' из ' + N, color: red > N / 2 ? RED : 'var(--warn)' },
       { label: 'Зелёных дней', value: (N - red) + ' из ' + N, color: GREEN },
-      { label: 'Самый дорогой', value: worstI + 1 + ' окт · ' + fmt(sp[worstI]) + ' ₽', color: RED }
+      { label: 'Самый дорогой', value: worstI + 1 + ' окт · ' + fmt(sp[worstI]) + ' ' + CUR, color: RED }
     ];
     const days = sp.map((v, i) => ({ n: i + 1, wd: WD[(i + 3) % 7], bg: i + 1 === L.sel ? 'var(--accent-soft)' : 'transparent', fg: i + 1 === L.sel ? 'var(--accent-text)' : 'var(--muted)', pick: () => this.set({ sel: i + 1 }) }));
-    const selRows = ops.filter(o => o.d === L.sel).map(o => ({ note: o.note, cat: o.cat, sum: fmt(o.sum) + ' ₽', color: o.color }));
+    const selRows = ops.filter(o => o.d === L.sel).map(o => ({ note: o.note, cat: o.cat, sum: fmt(o.sum) + ' ' + CUR, color: o.color }));
     const selV = sp[L.sel - 1];
     const modes = [[false, 'Без обязательных платежей'], [true, 'Все расходы']].map(m => ({ name: m[1], bg: L.withBills === m[0] ? 'var(--accent)' : 'transparent', fg: L.withBills === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ withBills: m[0] }) }));
     return {
-      modes, normText: fmt(L.norm) + ' ₽', normMinus: () => this.set({ norm: Math.max(500, this.L.norm - 500) }), normPlus: () => this.set({ norm: this.L.norm + 500 }),
-      stats, grid, normY: Y(L.norm), segs, dots, days, selTitle: L.sel + ' октября · ' + (selV > L.norm ? 'выше нормы на ' + fmt(selV - L.norm) + ' ₽' : 'в пределах нормы'),
-      selTotal: fmt(selV) + ' ₽', selColor: col(selV), selRows, selEmpty: selRows.length === 0
+      modes, normText: fmt(L.norm) + ' ' + CUR, normMinus: () => this.set({ norm: Math.max(500, this.L.norm - 500) }), normPlus: () => this.set({ norm: this.L.norm + 500 }),
+      stats, grid, normY: Y(L.norm), segs, dots, days, selTitle: L.sel + ' октября · ' + (selV > L.norm ? 'выше нормы на ' + fmt(selV - L.norm) + ' ' + CUR : 'в пределах нормы'),
+      selTotal: fmt(selV) + ' ' + CUR, selColor: col(selV), selRows, selEmpty: selRows.length === 0
     };
   }
 }
