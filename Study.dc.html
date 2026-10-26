@@ -180,7 +180,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
   </div><sc-if value="{{lockOn}}" hint-placeholder-val="{{false}}"><div style="position:absolute;left:0;top:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--ink)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg><b style="font-size:17px">Свои курсы: скоро будет</b><span style="font-size:13px;color:var(--muted);max-width:30em">Загрузка файлов и разбор в свой курс откроются позже. Пока проходите публичные курсы ниже.</span></div></sc-if></div>
 
   <div style="display:flex;flex-direction:column;gap:12px">
-    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Публичные курсы</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok)">Для всех</span><span style="font-size:13px;color:var(--muted)">{{publicCount}}</span></div>
+<div style="position:relative;border-radius:18px;overflow:hidden;min-height:200px"><div style="{{pubStyle}};display:flex;flex-direction:column;gap:12px">    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Публичные курсы</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok)">Для всех</span><span style="font-size:13px;color:var(--muted)">{{publicCount}}</span></div>
     <span style="font-size:13px;color:var(--muted);margin-top:-4px">Готовые курсы, доступны каждому. Откройте и начните учиться.</span>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
       <sc-for list="{{publicCards}}" as="c" hint-placeholder-count="3">
@@ -190,7 +190,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           <span style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"><span>{{c.sub}}</span><span style="color:var(--ink2);font-weight:600">Открыть</span></span>
         </button>
       </sc-for>
-    </div>
+    </div></div><sc-if value="{{pubLockOn}}" hint-placeholder-val="{{false}}"><div style="position:absolute;left:0;top:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--ink)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg><b style="font-size:17px">Публичные курсы: скоро будет</b><span style="font-size:13px;color:var(--muted);max-width:30em">Готовые курсы откроются позже. Пока загрузите свой материал или вставьте текст, мы соберём из него курс.</span></div></sc-if></div>
     <div style="height:1px;background:var(--line);margin:8px 0"></div>
     <div style="position:relative;border-radius:18px;overflow:hidden;min-height:200px"><div style="{{lockStyle}};display:flex;flex-direction:column;gap:12px">
     <div style="display:flex;align-items:baseline;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Мои курсы</b><span style="font-size:13px;color:var(--muted)">{{courseCount}}</span></div>
@@ -598,12 +598,12 @@ class Component extends DCLogic {
       back: () => this.set({ step: 'lib', by: saveCur() }),
       formats: FM.map(f => ({ name: f[1], bg: L.fmt === f[0] ? 'var(--accent-soft)' : 'var(--card)', fg: L.fmt === f[0] ? 'var(--accent-text)' : 'var(--ink2)', border: L.fmt === f[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ fmt: f[0] }) })),
       titleVal: L.title, onTitle: (e) => this.set({ title: e.target.value }),
-      lockOn: !P.canParse, lockStyle: P.canParse ? '' : 'filter:blur(7px);opacity:.5;pointer-events:none;-webkit-user-select:none;user-select:none', fileLabel: L.fileName || 'Файл не выбран', parseOp: L.busy ? 0.6 : 1, parseLabel: L.busy ? 'Разбираю…' : 'Разобрать и создать курс',
+      lockOn: false, lockStyle: '', pubLockOn: !P.canParse, pubStyle: P.canParse ? '' : 'filter:blur(7px);opacity:.5;pointer-events:none;-webkit-user-select:none;user-select:none', fileLabel: L.fileName || 'Файл не выбран', parseOp: L.busy ? 0.6 : 1, parseLabel: L.busy ? 'Разбираю…' : 'Разобрать и создать курс',
       upFg: L.upErr ? 'var(--bad)' : 'var(--ok)', upBg: L.upErr ? 'var(--bad-soft)' : 'var(--ok-soft)',
       onFile: (e) => { const f = e.target.files && e.target.files[0]; this._file = f || null; this.set({ fileName: f ? f.name : '' }); },
       onPaste: (e) => { this._paste = e.target.value; },
       parse: async () => {
-        if (!P.canParse || this.L.busy) return;
+        if (this.L.busy) return;
         const f = this._file, pasted = (this._paste || '').trim();
         if (!f && pasted.length < 250) { this.set({ upNote: 'Выберите файл или вставьте текст курса, хотя бы несколько абзацев.', upErr: true }); return; }
         this.set({ busy: true, upNote: 'Читаю материал и собираю курс…', upErr: false });
