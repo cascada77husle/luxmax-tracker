@@ -322,7 +322,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
       </sc-if>
 
       <sc-if value="{{dsub.main}}" hint-placeholder-val="{{true}}">
-        <button type="button" class="me-card" onClick="{{openMe}}" style="cursor:pointer;text-align:left;width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-radius:20px;border:1px solid var(--line);background:var(--accent-soft)">
+        <button type="button" class="me-card" onClick="{{openMe}}" style="cursor:pointer;text-align:left;width:100%;display:{{meDisp}};align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-radius:20px;border:1px solid var(--line);background:var(--accent-soft)">
           <span style="width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-family:'Archivo',system-ui,sans-serif;font-weight:800;font-size:18px;flex-shrink:0" aria-label="Уровень">{{me.levelNum}}</span>
           <span style="flex:1 1 200px;min-width:0;display:flex;flex-direction:column;gap:6px"><span style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b style="font-size:14px;color:var(--ink)">Мой прогресс · {{me.level}}</b><span style="font-size:12px;color:var(--ink2)">{{me.score}} из 100</span></span><span style="display:block;height:8px;border-radius:999px;background:color-mix(in srgb,var(--card) 70%,transparent);overflow:hidden"><span style="display:block;height:100%;border-radius:999px;background:var(--accent);width:{{me.lvlPct}}%"></span></span></span>
           <span style="display:flex;gap:14px;font-size:12px;color:var(--ink2)"><span><b style="font-size:16px;color:var(--ok)">{{me.upCount}}</b> улучшений</span><span><b style="font-size:16px;color:var(--warn)">{{me.openCount}}</b> в работе</span><span style="display:{{wvMissShow}}"><b style="font-size:16px;color:var(--bad)">{{wvMissCount}}</b> не выполнено</span></span>
@@ -331,7 +331,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
       <sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
         <div class="dash-empty" style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:44px;display:flex;flex-wrap:wrap;gap:40px;align-items:center;overflow:hidden">
           <div style="flex:1 1 380px;display:flex;flex-direction:column;gap:14px;min-width:0">
-            <b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.08;max-width:12em">Дашборд пока пустой</b>
+            <b style="font-family:'Archivo',system-ui,sans-serif;font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.08;max-width:12em">{{emptyTitle}}</b>
             <span class="de-p" style="font-size:16px;line-height:1.55;color:var(--ink2);max-width:30em">Соберите свой дашборд: добавьте готовые карточки, выберите шаблон аналитики или подключите аналитику по своей волне. Нажмите «Добавить виджет», всё выбранное появится здесь, карточки можно двигать и менять размер.</span>
             <button type="button" onClick="{{openGallery}}" style="cursor:pointer;align-self:flex-start;border:1.5px solid var(--accent);border-radius:20px;background:var(--card);color:var(--accent-text);font-weight:700;font-size:18px;padding:16px 32px;display:flex;align-items:center;gap:12px;box-shadow:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Добавить виджет</button>
           </div>
@@ -412,7 +412,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
             <sc-if value="{{bpHas}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:8px">
               <sc-for each="{{bpList}}" as="b" hint-placeholder-count="1"><button type="button" onClick="{{b.pick}}" style="cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:3px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--ink)"><b style="font-size:16px">{{b.name}}</b><span style="font-size:12px;color:var(--muted)">{{b.sub}}</span></button></sc-for>
             </div></sc-if>
-            <sc-if value="{{bpNone}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;border:1px solid var(--line);background:var(--card)"><span style="font-size:14px;line-height:1.45;color:var(--ink2)">Бизнеса пока нет. Сначала создайте бизнес в разделе «Бизнес».</span><button type="button" onClick="{{bpGo}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:12px 20px">Перейти в «Бизнес»</button></div></sc-if>
+            <sc-if value="{{bpNone}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;border:1px solid var(--line);background:var(--card)"><span style="font-size:14px;line-height:1.45;color:var(--ink2)">Бизнеса пока нет. Сначала создайте бизнес в разделе «Проекты».</span><button type="button" onClick="{{bpGo}}" style="cursor:pointer;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:14px;padding:12px 20px">Перейти в «Проекты»</button></div></sc-if>
           </div>
         </div>
       </sc-if>
@@ -1446,8 +1446,8 @@ class Component extends DCLogic {
     nid: 200, createDate: '', createTime: '', createP: '', createBody: '', allNotes: false, notes: [], limits: {}, mcfg: {}, acfg: {}, linked: {}, pf: {}, projList: [], ops: FIN.ops, plans: FIN.plans, accounts: FIN.accounts, goals: FIN.goals, debts: FIN.debts }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.fixInit(this.init()); }
   fixInit(o) { o.projList = o.projList.map(p => Object.assign({}, p, { key: this.pfKey(p.name) })); return o; }
-  set(p) { const L0 = this.L; if (p && p.mode && p.mode !== L0.mode && !(L0.seen && L0.seen['how:' + L0.mode]) && !(p.seen)) p = Object.assign({}, p, { seen: Object.assign({}, L0.seen, { ['how:' + L0.mode]: true }) }); this.setState(Object.assign({}, this.L, p, { ready: true })); this.saveSoon(); }
-  static KEYS() { return ['projList', 'tasks', 'notes', 'ops', 'plans', 'accounts', 'goals', 'debts', 'limits', 'mcfg', 'acfg', 'linked', 'pf', 'widgets', 'daySecs', 'customs', 'water', 'hab', 'diary', 'added', 'sec', 'fixes', 'nid', 'uname', 'skin', 'card', 'waves', 'waveCur', 'dashWp', 'seen']; }
+  set(p) { const L0 = this.L; if (p) { const WK = (m) => m === 'projects' || m === 'biz' ? m : 'dash'; const ck = WK(L0.mode); if (p.mode && WK(p.mode) !== ck) { const ws = Object.assign({}, L0.wsets, { [ck]: L0.widgets }); p = Object.assign({}, p, { wsets: ws, widgets: ws[WK(p.mode)] || [] }); } else if (p.widgets) { p = Object.assign({}, p, { wsets: Object.assign({}, L0.wsets, { [ck]: p.widgets }) }); } } if (p && p.mode && p.mode !== L0.mode && !(L0.seen && L0.seen['how:' + L0.mode]) && !(p.seen)) p = Object.assign({}, p, { seen: Object.assign({}, L0.seen, { ['how:' + L0.mode]: true }) }); this.setState(Object.assign({}, this.L, p, { ready: true })); this.saveSoon(); }
+  static KEYS() { return ['projList', 'tasks', 'notes', 'ops', 'plans', 'accounts', 'goals', 'debts', 'limits', 'mcfg', 'acfg', 'linked', 'pf', 'widgets', 'wsets', 'daySecs', 'customs', 'water', 'hab', 'diary', 'added', 'sec', 'fixes', 'nid', 'uname', 'skin', 'card', 'waves', 'waveCur', 'dashWp', 'seen']; }
   static TOOL(w, k) { if (!w) return true; if (w.kind === 'own') { const d = w.dk || []; if (k === 'sport') return d.indexOf('body') >= 0; if (k === 'food') return d.indexOf('food') >= 0; if (k === 'diary') return d.indexOf('sleep') >= 0 || d.indexOf('health') >= 0; return true; } if (w.tpl === 'discipline') return k === 'diary' || k === 'today'; return true; }
   pfSeed(kind) {
     const T = (id, d, k, amount, cat, party, acc, status, note) => ({ id, d, kind: k, amount, cat, party, acc, status, note: note || '' });
@@ -1488,7 +1488,7 @@ class Component extends DCLogic {
   tasksFor(L) { const T = this.dayKey({ mode: 'x', waves: L.waves, waveCur: L.waveCur }), K = this.dayKey(L); return L.tasks.filter(x => (x.date || T) === K); }
   componentDidMount() {
     let ls = null; try { ls = JSON.parse(localStorage.getItem('tracker:v1') || 'null'); } catch (e) { ls = null; }
-    const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); this.setState(Object.assign({}, this.L, p, { ready: true })); };
+    const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'wsets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); if (p.wsets && p.wsets.dash) p.widgets = p.wsets.dash; this.setState(Object.assign({}, this.L, p, { ready: true })); };
     if (ls) apply(ls);
     this.loadedAt = ls ? (ls.at || 0) : 0; this.loaded = true;
     const c = (typeof window !== 'undefined') ? window.claude : null;
@@ -1751,7 +1751,7 @@ class Component extends DCLogic {
     const topicSecs = [fixedOn('Календарь', 'Задачи, вода и привычки по дням', 'Всегда открыт', ICON.schedule, 'var(--accent)', 'var(--accent-soft)')].concat(Component.TOOL(wcT, 'diary') ? [fixedOn('Дневник дня', 'Мелкие показатели за день', 'Тема', ICON.metrics, 'var(--cat-blue)', 'color-mix(in srgb,var(--cat-blue) 13%,var(--card))')] : [], pageSecsAll.filter(p => p.where.indexOf('Тема') === 0));
     const partSecs = PARTS.map(p => { const on = !!(L.daySecs.find(s => s.id === p[0]) || {}).on; return Object.assign({ name: p[1], desc: p[2], where: 'Страница «Моя волна»', color: p[3], soft: p[4], icon: ICON[p[0]] }, secBtn(on, () => this.set({ daySecs: this.L.daySecs.map(s => s.id === p[0] ? { id: s.id, on: !s.on } : s) }))); });
     // tabs
-    const TABS2 = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['me', 'Мой прогресс']]; if (L.sec.projects) TABS2.push(['projects', 'Бизнес']); if (L.sec.money) TABS2.push(['money', 'Экономика']);
+    const TABS2 = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['me', 'Мой прогресс']]; if (L.sec.study || L.sec.lang) TABS2.push(['study', 'Курсы']); if (L.sec.projects) { TABS2.push(['projects', 'Проекты']); TABS2.push(['biz', 'Бизнес']); } if (L.sec.money) TABS2.push(['money', 'Экономика']);
     
     const special = L.mode === 'library' || L.mode === 'guide';
     const mode = special ? L.mode : (TABS2.some(m => m[0] === L.mode) ? L.mode : 'dash');
@@ -1880,7 +1880,7 @@ class Component extends DCLogic {
       addOp: l_addOp, delOp: l_delOp, togglePlan: l_togglePlan, addPlan: l_addPlan, delPlan: l_delPlan, addAccount: l_addAccount, updAccount: l_updAccount, delAccount: l_delAccount, importOps: l_importOps, setLimits: l_setLimits, setMcfg: l_setMcfg, setAcfg: l_setAcfg, acfg: L.acfg || {}, newMonth: l_newMonth, linkProject: l_linkProject, moneyProjects, pfMap: L.pf || {}, pfSums, linkedMap: L.linked || {}, pfSet: l_pfSet, reportProjects: l_report, limits: LIM, mcfg: (L.mcfg && Object.keys(L.mcfg).length) ? L.mcfg : null, setGoals: (g2) => this.set({ goals: g2 }), setDebts: (d2) => this.set({ debts: d2 }),
       modes: TABS2.map(m => ({ name: m[1], bg: mode === m[0] ? 'var(--accent)' : 'transparent', fg: mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
 
-      pageTitle: ({ dash: 'Кабинет', day: 'Моя волна', me: 'Мой прогресс', projects: 'Бизнес', money: 'Экономика', study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Кабинет',
+      pageTitle: ({ dash: 'Кабинет', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Кабинет',
       showBack: special || mode === 'me',
       menuCreate: L.menu === 'create', menuMore: L.menu === 'more', menuClose: () => this.set({ menu: '', createKind: '', createText: '', createDate: '', createTime: '', createP: '', createBody: '' }),
       createForm: L.menu === 'create' && !!L.createKind, createList: L.menu === 'create' && !L.createKind,
@@ -1914,7 +1914,7 @@ class Component extends DCLogic {
         const toLib = (tab) => () => this.set({ menu: '', mode: 'library', ltab: tab, prev: (this.L.mode === 'library' || this.L.mode === 'guide') ? this.L.prev : this.L.mode });
         return [
           { name: 'Задача', hint: 'Дело с датой и временем', icon: 'M5 12l4 4L19 7', pick: () => this.set({ createKind: 'task', createText: '' }) },
-          { name: 'Бизнес', hint: 'Бизнес, блог, ремонт, цель', icon: 'M5 21V4M5 4h11l-2 4 2 4H5', pick: () => { try { window.scrollTo({ top: 0 }); } catch (e) {} this.set({ menu: '', mode: 'projects', projNew: false }); } },
+          { name: 'Проекты', hint: 'Блог, магазин, фриланс, цель', icon: 'M5 21V4M5 4h11l-2 4 2 4H5', pick: () => { try { window.scrollTo({ top: 0 }); } catch (e) {} this.set({ menu: '', mode: 'projects', projNew: false }); } },
           { name: 'Запланировать', hint: 'В расписание волны: дата и время', icon: 'M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h6', pick: () => this.set({ createKind: 'note', createText: '' }) },
           { name: 'Файл', hint: 'Гайд или курс в библиотеку', icon: 'M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3', pick: () => { try { window.scrollTo({ top: 0 }); } catch (e) {} this.set({ menu: '', mode: 'day', wcTab: 'lib', waveOpen: false }); } }
         ];
@@ -1928,7 +1928,7 @@ class Component extends DCLogic {
       })(),
       navItems: (() => {
         const NV = [['dash', 'Кабинет', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'], ['day', 'Моя волна', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4']]
-          .concat(L.sec.projects ? [['projects', 'Бизнес', 'M5 21V4M5 4h11l-2 4 2 4H5']] : [])
+          .concat(L.sec.study || L.sec.lang ? [['study', 'Курсы', 'M4 5h7a3 3 0 013 3v12a2 2 0 00-2-2H4zM20 5h-7a3 3 0 00-3 3']] : []).concat(L.sec.projects ? [['projects', 'Проекты', 'M5 21V4M5 4h11l-2 4 2 4H5'], ['biz', 'Бизнес', 'M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6']] : [])
           .concat(L.sec.money ? [['money', 'Экономика', 'M4 7h16v12H4zM4 7l3-3h10l3 3M15 13h2']] : []);
         const act = mode === 'me' ? 'dash' : mode;
         return NV.map(n => ({ name: n[1], icon: n[2], cur: act === n[0] ? 'page' : 'false', bg: act === n[0] ? 'var(--accent-soft)' : 'transparent', fg: act === n[0] ? 'var(--accent-text)' : 'var(--muted)', w: act === n[0] ? 700 : 600, pick: () => this.set(Object.assign({}, n[0] === 'day' ? { mode: 'day', menu: '' } : { mode: n[0], menu: '' })) }));
@@ -2016,7 +2016,7 @@ class Component extends DCLogic {
           wc: { now: wct === 'now', lib: wct === 'lib', lang: wct === 'lang' },
           lvOp: L.waveLeave ? 0 : 1, lvSc: L.waveLeave ? 1.06 : 1, lvBl: L.waveLeave ? 8 : 0, lvPe: L.waveLeave ? 'none' : 'auto', hasWaves: waves.length > 0, showLanding: wct === 'now' && !waves.length && !wz.open, showWizard: wct === 'now' && !!wz.open, showList: wct === 'now' && waves.length > 0 && !wz.open && !(L.waveOpen && cur), showWave: wct === 'now' && !!cur && !!L.waveOpen && !wz.open && !isCW, waveSelf: wct === 'now' && !!cur && !!L.waveOpen && !wz.open && !isCW, showCourse: wct === 'now' && !!cur && !!L.waveOpen && !wz.open && isCW,
           stripDisplay: !wz.open && !(wct === 'now' && L.waveOpen && cur) ? 'inline-flex' : 'none', backToList: () => { try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {} this.set({ waveOpen: false }); },
-          dashWavesOn: waves.some(w => (L.dashWp || []).indexOf(w.id) >= 0), dashWaveChipsOn: 'none',
+          dashWavesOn: mode === 'dash' && waves.some(w => (L.dashWp || []).indexOf(w.id) >= 0), dashWaveChipsOn: 'none',
           dashWaves: waves.filter(w => (L.dashWp || []).indexOf(w.id) >= 0).map(w => { const d0 = TODAY < w.start ? w.start : TODAY, pc = pctOf(w, d0), n = diff(w.start, TODAY), len = lenOf(w); return { name: w.name, tag: w.kind === 'own' ? 'Свой план' : 'По курсу', day: n < 0 ? 'старт ' + shortD(w.start) : 'День ' + (n + 1) + (len ? ' из ' + len : ''), prog: pc.a ? pc.d + ' из ' + pc.a : 'дел нет', pct: pc.p, hide: () => this.set({ dashWp: (this.L.dashWp || []).filter(x => x !== w.id) }), open: () => { try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {} this.set({ mode: 'day', wcTab: 'now', waveCur: w.id, waveOpen: true, wDate: d0, dayOff: Math.max(-60, Math.min(30, diff(TODAY, d0))) }); } }; }),
           dashWaveChips: [],
           gWaves: waves.map(w => { const on = (L.dashWp || []).indexOf(w.id) >= 0; return { peek: () => this.set({ peekWave: w.id }), name: w.name, sub: w.kind === 'own' ? 'Свой план' : 'Курс', btnText: on ? 'Добавлено' : 'Добавить', bg: on ? 'var(--ok-soft)' : 'var(--accent)', fg: on ? 'var(--ok)' : 'var(--on-accent)', bd: on ? 'var(--ok-line)' : 'var(--accent)', toggle: () => this.set({ dashWp: on ? (this.L.dashWp || []).filter(x => x !== w.id) : (this.L.dashWp || []).concat([w.id]) }) }; }),
@@ -2118,11 +2118,11 @@ class Component extends DCLogic {
         return out;
       })()),
       modeAnim: 'modeIn' + Math.max(0, ['dash', 'day', 'food', 'sport', 'projects', 'money', 'study', 'library', 'guide', 'wave', 'finance', 'settings', 'cab', 'other'].indexOf(mode)),
-      isDash: mode === 'dash', isDay: mode === 'day', isFood: mode === 'food', isSport: mode === 'sport', isProjects: mode === 'projects', isMoney: mode === 'money', isStudy: mode === 'study', isLibrary: mode === 'library', isGuide: mode === 'guide', isCustom: isCust,
+      isDash: mode === 'dash' || mode === 'projects' || mode === 'biz', emptyTitle: mode === 'projects' ? 'Проекты пока пустые' : mode === 'biz' ? 'Бизнес пока пустой' : 'Дашборд пока пустой', isDay: mode === 'day', isFood: mode === 'food', isSport: mode === 'sport', isProjects: mode === 'projects', isMoney: mode === 'money', isStudy: mode === 'study', isLibrary: mode === 'library', isGuide: mode === 'guide', isCustom: isCust,
       inTabs: !special, inLib: special, libTitle: mode === 'guide' ? 'Как пользоваться' : 'Библиотека', intro: INTRO[mode] || '',
       openLibrary: () => this.set({ mode: 'library', ltab: 'sections', prev: special ? this.L.prev : mode }), openGuide: () => this.set({ mode: 'guide', prev: special ? this.L.prev : mode }), goBack: () => this.set({ mode: this.L.mode === 'me' ? 'dash' : (this.L.prev || 'dash'), menu: '' }),
       libBtnBg: mode === 'library' ? 'var(--accent)' : 'var(--card)', libBtnFg: mode === 'library' ? 'var(--on-accent)' : 'var(--accent-text)', guideBtnBg: mode === 'guide' ? 'var(--accent)' : 'var(--card)', guideBtnFg: mode === 'guide' ? 'var(--on-accent)' : 'var(--ink)',
-      dsub: { main: true, stats: true }, dsubTabs: [['main', 'Виджеты'], ['stats', 'Полная аналитика']].map(t => ({ name: t[1], bg: L.dsub === t[0] ? 'var(--accent)' : 'transparent', fg: L.dsub === t[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ dsub: t[0] }) })),
+      meDisp: mode === 'dash' ? 'flex' : 'none', dsub: { main: true, stats: true }, dsubTabs: [['main', 'Виджеты'], ['stats', 'Полная аналитика']].map(t => ({ name: t[1], bg: L.dsub === t[0] ? 'var(--accent)' : 'transparent', fg: L.dsub === t[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ dsub: t[0] }) })),
       mcards, mchips, mineCount: allCards.length, mineEmptyDisplay: allCards.length ? 'none' : 'flex', openBlocks: () => this.set({ mode: 'library', ltab: 'blocks', prev: 'day' }),
       sumKpis, bestRows, weakRows, lifeScore,
       stSubs: stSubs.map(s => Object.assign({ name: s[1], pick: () => this.set({ stTab: s[0] }) }, sty(stCur === s[0]))), stMulti: stSubs.length > 1 ? 'inline-flex' : 'none', st: { study: stCur === 'study' && !!L.sec.study, lang: stCur === 'lang' && !!L.sec.lang },
@@ -2137,10 +2137,10 @@ class Component extends DCLogic {
     Object.assign(EXTRA, EXTRA1);
 
     const n = L.widgets.length, hasW = n > 0;
-    const MODES = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['projects', 'Бизнес'], ['library', 'Библиотека']];
+    const MODES = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['study', 'Курсы'], ['projects', 'Проекты'], ['biz', 'Бизнес'], ['library', 'Библиотека']];
     const BASE = {
       modes: MODES.map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
-      isDash: L.mode === 'dash', isDay: L.mode === 'day', isProjects: L.mode === 'projects', isLibrary: L.mode === 'library',
+      isDash: L.mode === 'dash' || L.mode === 'projects' || L.mode === 'biz', isDay: L.mode === 'day', isProjects: L.mode === 'projects', isLibrary: L.mode === 'library',
       isEmpty: !hasW && !L.gallery, hasWidgets: hasW, galleryOpen: !!(L.gallery || L.galOut), gridDisplay: hasW ? 'grid' : 'none',
       bzR: bzReal, bzS: bzSample,
       galMh: L.gallery ? 'auto' : '0px', galOp: L.gallery ? 1 : 0, galTy: L.gallery ? 0 : -14, galPe: L.gallery ? 'auto' : 'none',
