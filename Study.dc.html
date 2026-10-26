@@ -153,6 +153,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </helmet>
 <div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
 <sc-if value="{{isLib}}" hint-placeholder-val="{{true}}">
+  <div style="position:relative;border-radius:22px;overflow:hidden"><div style="{{lockStyle}}">
   <div style="border:1.5px dashed var(--accent-line);border-radius:22px;background:var(--field);padding:24px 22px;display:flex;flex-direction:column;gap:16px">
     <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
       <span style="width:64px;height:64px;border-radius:20px;background:var(--accent-soft);color:var(--accent-text);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg></span>
@@ -162,8 +163,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
         <span style="font-size:14px;line-height:1.5;color:var(--muted);max-width:40em">Загрузите файл или вставьте текст. Приложение разложит материал на модули и уроки, соберёт описание, карточки и проверку знаний и поведёт по плану.</span>
       </span>
     </div>
-    <sc-if value="{{canParse}}" hint-placeholder-val="{{true}}">
-      <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
           <label style="cursor:pointer;display:inline-flex;align-items:center;min-height:48px;border:1.5px dashed var(--accent-line);border-radius:999px;padding:0 22px;font-weight:700;font-size:14px;color:var(--accent-text);background:var(--accent-soft)">Выбрать файл<input type="file" accept=".txt,.md,.srt,.vtt,.html,.htm,.json,.csv,.docx,.pdf,text/plain" onChange="{{onFile}}" style="display:none"></label>
           <span style="font-size:13px;color:var(--muted)">{{fileLabel}}</span>
@@ -175,15 +175,9 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           <button type="button" onClick="{{parse}}" style="cursor:pointer;min-height:48px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;padding:12px 28px;opacity:{{parseOp}}">{{parseLabel}}</button>
         </div>
         <span style="display:{{upNoteDisplay}};font-size:13px;line-height:1.45;color:{{upFg}};background:{{upBg}};border-radius:12px;padding:10px 14px">{{upNote}}</span>
-      </div>
-    </sc-if>
-    <sc-if value="{{cantParse}}" hint-placeholder-val="{{false}}">
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;border:1.5px solid var(--line2);border-radius:18px;padding:16px 18px;background:var(--card)">
-        <span style="width:44px;height:44px;border-radius:14px;background:var(--field);color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg></span>
-        <span style="flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:3px"><b style="font-size:15px">Разбор своих файлов закрыт</b><span style="font-size:13px;line-height:1.45;color:var(--muted)">Скоро откроем. Пока можно проходить готовые курсы ниже.</span></span>
-      </div>
-    </sc-if>
+    </div>
   </div>
+  </div><sc-if value="{{lockOn}}" hint-placeholder-val="{{false}}"><div style="position:absolute;left:0;top:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--ink)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg><b style="font-size:17px">Свои курсы: скоро будет</b><span style="font-size:13px;color:var(--muted);max-width:30em">Загрузка файлов и разбор в свой курс откроются позже. Пока проходите публичные курсы ниже.</span></div></sc-if></div>
 
   <div style="display:flex;flex-direction:column;gap:12px">
     <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Публичные курсы</b><span style="font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--ok-soft);color:var(--ok)">Для всех</span><span style="font-size:13px;color:var(--muted)">{{publicCount}}</span></div>
@@ -198,6 +192,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
       </sc-for>
     </div>
     <div style="height:1px;background:var(--line);margin:8px 0"></div>
+    <div style="position:relative;border-radius:18px;overflow:hidden;min-height:200px"><div style="{{lockStyle}};display:flex;flex-direction:column;gap:12px">
     <div style="display:flex;align-items:baseline;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Мои курсы</b><span style="font-size:13px;color:var(--muted)">{{courseCount}}</span></div>
     <sc-if value="{{noMine}}" hint-placeholder-val="{{false}}"><div style="padding:22px 16px;text-align:center;border:1.5px dashed var(--line2);border-radius:16px;color:var(--muted);font-size:14px;line-height:1.5">Здесь появятся курсы, которые вы загрузите сами. Нажмите «Загрузить» выше и выберите файл.</div></sc-if>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
@@ -209,6 +204,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
         </button>
       </sc-for>
     </div>
+    </div><sc-if value="{{lockOn}}" hint-placeholder-val="{{false}}"><div style="position:absolute;left:0;top:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px;color:var(--ink)"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2.5"></rect><path d="M8 11V7.5a4 4 0 018 0V11"></path></svg><b style="font-size:17px">Мои курсы: скоро будет</b><span style="font-size:13px;color:var(--muted);max-width:30em">Здесь появятся курсы, собранные из ваших файлов.</span></div></sc-if></div>
   </div>
 </sc-if>
 <sc-if value="{{isCourse}}" hint-placeholder-val="{{false}}">
@@ -602,7 +598,7 @@ class Component extends DCLogic {
       back: () => this.set({ step: 'lib', by: saveCur() }),
       formats: FM.map(f => ({ name: f[1], bg: L.fmt === f[0] ? 'var(--accent-soft)' : 'var(--card)', fg: L.fmt === f[0] ? 'var(--accent-text)' : 'var(--ink2)', border: L.fmt === f[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ fmt: f[0] }) })),
       titleVal: L.title, onTitle: (e) => this.set({ title: e.target.value }),
-      canParse: !!P.canParse, cantParse: !P.canParse, fileLabel: L.fileName || 'Файл не выбран', parseOp: L.busy ? 0.6 : 1, parseLabel: L.busy ? 'Разбираю…' : 'Разобрать и создать курс',
+      lockOn: !P.canParse, lockStyle: P.canParse ? '' : 'filter:blur(7px);opacity:.5;pointer-events:none;-webkit-user-select:none;user-select:none', fileLabel: L.fileName || 'Файл не выбран', parseOp: L.busy ? 0.6 : 1, parseLabel: L.busy ? 'Разбираю…' : 'Разобрать и создать курс',
       upFg: L.upErr ? 'var(--bad)' : 'var(--ok)', upBg: L.upErr ? 'var(--bad-soft)' : 'var(--ok-soft)',
       onFile: (e) => { const f = e.target.files && e.target.files[0]; this._file = f || null; this.set({ fileName: f ? f.name : '' }); },
       onPaste: (e) => { this._paste = e.target.value; },
