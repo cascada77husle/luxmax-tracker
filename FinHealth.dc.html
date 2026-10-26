@@ -200,7 +200,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"salary":{"editor":null},"$preview":{"width":900,"height":700}}'>
+<script type="text/x-dc" data-dc-script data-props='{"cur":{"editor":null},"ops":{"editor":null},"salary":{"editor":null},"$preview":{"width":900,"height":700}}'>
 class Component extends DCLogic {
   init() { return { ready: false, view: 'w', off: 0, selW: -1 }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
@@ -208,7 +208,7 @@ class Component extends DCLogic {
 
   renderVals() {
     const P = this.props, L = this.L, now = new Date();
-    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ' + (P.cur || '₽');
     const MN = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
     const MS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
     const WD = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
