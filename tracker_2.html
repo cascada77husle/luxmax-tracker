@@ -302,6 +302,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
     </div>
 
     <sc-if value="{{noticeOn}}" hint-placeholder-val="{{false}}"><div role="status" style="animation:dc-open .18s ease-out;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--ok-soft);border:1px solid var(--ok-line);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--ink)"><span style="flex:1 1 160px;font-weight:600">{{noticeText}}</span><button type="button" onClick="{{noticeGo}}" style="cursor:pointer;border:1.5px solid var(--ok);border-radius:8px;background:var(--card);color:var(--ok);font-weight:700;font-size:13px;padding:6px 12px">Открыть</button><button type="button" onClick="{{noticeClose}}" aria-label="Закрыть" title="Закрыть" style="cursor:pointer;border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;padding:0 6px;min-height:0">×</button></div></sc-if>
+      <sc-if value="{{bsOn}}" hint-placeholder-val="{{false}}"><div role="tablist" style="display:flex;gap:4px;padding:4px;border-radius:16px;border:1px solid var(--line);background:var(--card);overflow-x:auto"><sc-for list="{{bsTabs}}" as="t" hint-placeholder-count="3"><button type="button" role="tab" onClick="{{t.pick}}" style="flex:1 0 auto;cursor:pointer;border:0;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div></sc-if>
       <sc-if value="{{showHow}}" hint-placeholder-val="{{false}}">
       <div id="howBlock" style="scroll-margin-top:84px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;flex-direction:column;gap:3px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">{{howTitle}}</b><span style="font-size:13px;color:var(--muted)">{{howSub}}</span></div>
@@ -1488,7 +1489,7 @@ class Component extends DCLogic {
   tasksFor(L) { const T = this.dayKey({ mode: 'x', waves: L.waves, waveCur: L.waveCur }), K = this.dayKey(L); return L.tasks.filter(x => (x.date || T) === K); }
   componentDidMount() {
     let ls = null; try { ls = JSON.parse(localStorage.getItem('tracker:v1') || 'null'); } catch (e) { ls = null; }
-    const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'wsets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); if (p.wsets && p.wsets.dash) p.widgets = p.wsets.dash; this.setState(Object.assign({}, this.L, p, { ready: true })); };
+    const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'wsets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); this.setState(Object.assign({}, this.L, p, { ready: true })); };
     if (ls) apply(ls);
     this.loadedAt = ls ? (ls.at || 0) : 0; this.loaded = true;
     const c = (typeof window !== 'undefined') ? window.claude : null;
@@ -1505,7 +1506,7 @@ class Component extends DCLogic {
   componentWillUnmount() { clearTimeout(this.tm); if (this.dirty) this.flush(); }
   saveSoon() { if (!this.loaded) return; this.dirty = true; clearTimeout(this.tm); this.tm = setTimeout(() => this.flush(), 700); }
   flush() {
-    this.dirty = false; const L = this.L; const o = { v: 1, dm: 2, em: 1, wv: 3, wd: 2, at: Date.now() }; Component.KEYS().forEach(k => { if (L[k] !== undefined) o[k] = L[k]; });
+    this.dirty = false; const L = this.L; const o = { v: 1, dm: 2, em: 1, wv: 3, wd: 2, at: Date.now() }; Component.KEYS().forEach(k => { if (L[k] !== undefined) o[k] = L[k]; }); if (L.wsets && L.wsets.dash && (L.mode === 'projects' || L.mode === 'biz')) o.widgets = L.wsets.dash;
     let js = ''; try { js = JSON.stringify(o); } catch (e) { return; }
     try { localStorage.setItem('tracker:v1', js); } catch (e) {}
     if (this.db && js.length < 240000) { this.db.doc('app/state').set({ json: js, at: o.at }).catch(() => {}); }
@@ -1751,7 +1752,7 @@ class Component extends DCLogic {
     const topicSecs = [fixedOn('Календарь', 'Задачи, вода и привычки по дням', 'Всегда открыт', ICON.schedule, 'var(--accent)', 'var(--accent-soft)')].concat(Component.TOOL(wcT, 'diary') ? [fixedOn('Дневник дня', 'Мелкие показатели за день', 'Тема', ICON.metrics, 'var(--cat-blue)', 'color-mix(in srgb,var(--cat-blue) 13%,var(--card))')] : [], pageSecsAll.filter(p => p.where.indexOf('Тема') === 0));
     const partSecs = PARTS.map(p => { const on = !!(L.daySecs.find(s => s.id === p[0]) || {}).on; return Object.assign({ name: p[1], desc: p[2], where: 'Страница «Моя волна»', color: p[3], soft: p[4], icon: ICON[p[0]] }, secBtn(on, () => this.set({ daySecs: this.L.daySecs.map(s => s.id === p[0] ? { id: s.id, on: !s.on } : s) }))); });
     // tabs
-    const TABS2 = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['me', 'Мой прогресс']]; if (L.sec.study || L.sec.lang) TABS2.push(['study', 'Курсы']); if (L.sec.projects) { TABS2.push(['projects', 'Проекты']); TABS2.push(['biz', 'Бизнес']); } if (L.sec.money) TABS2.push(['money', 'Экономика']);
+    const TABS2 = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['me', 'Мой прогресс']]; if (L.sec.projects) { TABS2.push(['projects', 'Бизнес']); TABS2.push(['biz', 'Бизнес']); TABS2.push(['study', 'Курсы и обучение']); } if (L.sec.money) TABS2.push(['money', 'Экономика']);
     
     const special = L.mode === 'library' || L.mode === 'guide';
     const mode = special ? L.mode : (TABS2.some(m => m[0] === L.mode) ? L.mode : 'dash');
@@ -1788,7 +1789,7 @@ class Component extends DCLogic {
       me: ['Как это работает', '', [['Смотрите', 'Что стало лучше.'], ['Берите в работу', 'Один-два пункта.'], ['Отмечайте', '«Исправлено», счётчик растёт.']], '']
     };
     const hw = HOWS[mode];
-    const hasHow = !!hw && !special;
+    const hasHow = !!hw && !special && mode !== 'projects';
     const showHow = hasHow && (!(L.seen && L.seen['how:' + mode]) || L.howOpen === mode);
 
     // ---- Моя волна: темы
@@ -1880,7 +1881,7 @@ class Component extends DCLogic {
       addOp: l_addOp, delOp: l_delOp, togglePlan: l_togglePlan, addPlan: l_addPlan, delPlan: l_delPlan, addAccount: l_addAccount, updAccount: l_updAccount, delAccount: l_delAccount, importOps: l_importOps, setLimits: l_setLimits, setMcfg: l_setMcfg, setAcfg: l_setAcfg, acfg: L.acfg || {}, newMonth: l_newMonth, linkProject: l_linkProject, moneyProjects, pfMap: L.pf || {}, pfSums, linkedMap: L.linked || {}, pfSet: l_pfSet, reportProjects: l_report, limits: LIM, mcfg: (L.mcfg && Object.keys(L.mcfg).length) ? L.mcfg : null, setGoals: (g2) => this.set({ goals: g2 }), setDebts: (d2) => this.set({ debts: d2 }),
       modes: TABS2.map(m => ({ name: m[1], bg: mode === m[0] ? 'var(--accent)' : 'transparent', fg: mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
 
-      pageTitle: ({ dash: 'Кабинет', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Кабинет',
+      bsOn: mode === 'projects' || mode === 'biz' || mode === 'study', bsTabs: [['projects', 'Проекты'], ['biz', 'Бизнес'], ['study', 'Курсы и обучение']].map(t => ({ name: t[1], bg: mode === t[0] ? 'var(--accent)' : 'transparent', fg: mode === t[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ mode: t[0], menu: '' }) })), pageTitle: ({ dash: 'Кабинет', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: 'Курсы и обучение', _study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Кабинет',
       showBack: special || mode === 'me',
       menuCreate: L.menu === 'create', menuMore: L.menu === 'more', menuClose: () => this.set({ menu: '', createKind: '', createText: '', createDate: '', createTime: '', createP: '', createBody: '' }),
       createForm: L.menu === 'create' && !!L.createKind, createList: L.menu === 'create' && !L.createKind,
@@ -1928,9 +1929,9 @@ class Component extends DCLogic {
       })(),
       navItems: (() => {
         const NV = [['dash', 'Кабинет', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'], ['day', 'Моя волна', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4']]
-          .concat(L.sec.study || L.sec.lang ? [['study', 'Курсы', 'M4 5h7a3 3 0 013 3v12a2 2 0 00-2-2H4zM20 5h-7a3 3 0 00-3 3']] : []).concat(L.sec.projects ? [['projects', 'Проекты', 'M5 21V4M5 4h11l-2 4 2 4H5'], ['biz', 'Бизнес', 'M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6']] : [])
+          .concat(L.sec.projects ? [['projects', 'Бизнес', 'M5 21V4M5 4h11l-2 4 2 4H5']] : [])
           .concat(L.sec.money ? [['money', 'Экономика', 'M4 7h16v12H4zM4 7l3-3h10l3 3M15 13h2']] : []);
-        const act = mode === 'me' ? 'dash' : mode;
+        const act = mode === 'me' ? 'dash' : (mode === 'biz' || mode === 'study') ? 'projects' : mode;
         return NV.map(n => ({ name: n[1], icon: n[2], cur: act === n[0] ? 'page' : 'false', bg: act === n[0] ? 'var(--accent-soft)' : 'transparent', fg: act === n[0] ? 'var(--accent-text)' : 'var(--muted)', w: act === n[0] ? 700 : 600, pick: () => this.set(Object.assign({}, n[0] === 'day' ? { mode: 'day', menu: '' } : { mode: n[0], menu: '' })) }));
       })(),
       ...((() => {
@@ -2137,7 +2138,7 @@ class Component extends DCLogic {
     Object.assign(EXTRA, EXTRA1);
 
     const n = L.widgets.length, hasW = n > 0;
-    const MODES = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['study', 'Курсы'], ['projects', 'Проекты'], ['biz', 'Бизнес'], ['library', 'Библиотека']];
+    const MODES = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['projects', 'Бизнес'], ['library', 'Библиотека']];
     const BASE = {
       modes: MODES.map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
       isDash: L.mode === 'dash' || L.mode === 'projects' || L.mode === 'biz', isDay: L.mode === 'day', isProjects: L.mode === 'projects', isLibrary: L.mode === 'library',
