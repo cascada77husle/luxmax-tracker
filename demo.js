@@ -33,7 +33,7 @@
   function showBadge() {
     if (badge) return;
     badge = mk('div', 'position:fixed;top:8px;left:8px;z-index:2147483000;padding:5px 11px;border-radius:999px;background:rgba(15,17,21,.92);color:#fff;border:1px solid rgba(255,255,255,.22);font:700 13px system-ui,sans-serif;letter-spacing:.02em;pointer-events:none;box-shadow:0 2px 10px rgba(0,0,0,.35)');
-    mount(badge);
+    /* таймер пользователю не показываем */
   }
 
   function lock() {
@@ -45,14 +45,14 @@
     var box = mk('div', 'position:fixed;inset:0;z-index:2147483647;background:#0F1115;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;font:16px/1.5 system-ui,sans-serif');
     box.id = 'demo-lock';
     box.appendChild(mk('div', 'font-size:44px', '⏱'));
-    box.appendChild(mk('b', 'font-size:22px', 'Тест закончился'));
-    box.appendChild(mk('div', 'max-width:22em;color:#cfd3dc', 'Новый пробный просмотр откроется через ' + days + ' дн. Чтобы получить больше тестирования, свяжитесь с нашим администратором.'));
+    box.appendChild(mk('b', 'font-size:22px', 'Ваш доступ закончился'));
+    box.appendChild(mk('div', 'max-width:22em;color:#cfd3dc', 'Продлите доступ: договоритесь о продлении бесплатного доступа или приобретите доступ.'));
     var btnS = 'cursor:pointer;min-height:48px;border:0;border-radius:999px;padding:0 28px;font:700 15px system-ui,sans-serif;';
-    var b1 = mk('button', btnS + 'background:#fff;color:#0F1115', '💳 Выбрать тариф');
+    var b1 = mk('button', btnS + 'background:#fff;color:#0F1115', 'Приобрести доступ');
     b1.onclick = function () { openLink('https://t.me/' + BOT); };
     box.appendChild(b1);
     if (admin) {
-      var b2 = mk('button', btnS + 'background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)', '✍️ Написать администратору');
+      var b2 = mk('button', btnS + 'background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)', 'Договориться о продлении бесплатного доступа');
       b2.onclick = function () { openLink('https://t.me/' + admin); };
       box.appendChild(b2);
     }
