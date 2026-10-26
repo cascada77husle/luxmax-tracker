@@ -206,6 +206,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
     <span style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">{{courseName}}</b><span style="font-size:13px;color:var(--muted)">{{courseSub}}</span></span>
     <button type="button" onClick="{{toggleLive}}" style="cursor:pointer;min-height:48px;border:{{liveBorder}};border-radius:999px;background:{{liveBg}};color:{{liveFg}};font-weight:700;font-size:14px;padding:0 22px">{{liveText}}</button>
   </div>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px;border-radius:16px;border:1.5px dashed var(--accent-line);background:var(--accent-soft)"><span style="flex:1 1 220px;min-width:0;font-size:13px;line-height:1.5;color:var(--ink2)"><b style="display:block;font-size:14px;color:var(--ink)">Прошли курс или раздел?</b>Перенесите его в проект и начните делать по этим материалам: уроки станут задачами, файлы лягут в документы.</span><button type="button" onClick="{{toProjects}}" style="cursor:pointer;min-height:44px;border:1.5px solid var(--accent);border-radius:999px;background:var(--card);color:var(--accent-text);font-weight:700;font-size:13px;padding:0 18px">В Проекты</button><button type="button" onClick="{{toBiz}}" style="cursor:pointer;min-height:44px;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;padding:0 18px">В Бизнес и начать проект</button></div>
   <span style="display:{{liveHintDisplay}};font-size:13px;line-height:1.5;color:var(--ok);background:var(--ok-soft);border:1px solid var(--ok-line);border-radius:12px;padding:10px 14px">План этого курса теперь виден во вкладке «Моя волна», режим «По курсу»: там сегодняшний урок и ближайшие дни. Отметки синхронизируются.</span>
   <span style="display:{{demoDisplay}};font-size:13px;line-height:1.5;color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn-line);border-radius:12px;padding:10px 14px">В макете структура курса показана на примере. В рабочей версии уроки строятся из вашего материала на сервере, а пока файл разбирается, курс помечен «обрабатывается».</span>
   <div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{tabs}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>  <sc-if value="{{v.about}}" hint-placeholder-val="{{true}}">
@@ -304,7 +305,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"live":{"editor":null},"fnLive":{"editor":null},"$preview":{"width":1000,"height":1300}}'>
+<script type="text/x-dc" data-dc-script data-props='{"live":{"editor":null},"fnLive":{"editor":null},"fnToProject":{"editor":null},"$preview":{"width":1000,"height":1300}}'>
 class Component extends DCLogic {
   init() { return { ready: false, step: 'lib', course: 'change', tab: 'about', fmt: 'PDF', title: '', upNote: '', extra: [], by: {}, photoAdd: {}, mins: 30, dpw: 5, done: {}, note: '', notes: {}, nl: 0, nt: '', ci: 0, flipped: false, known: {}, qi: 0, qa: {}, qd: false, fm: 25, sess: [] }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
@@ -476,6 +477,8 @@ class Component extends DCLogic {
     return {
       isLib: L.step === 'lib', isCourse: L.step === 'course', v,
       liveBg: liveOn ? 'rgba(255,255,255,.06)' : 'var(--accent)', liveFg: liveOn ? 'var(--ink)' : 'var(--on-accent)', liveBorder: liveOn ? '1.5px solid var(--ok)' : '0', liveText: liveOn ? 'Курс идёт в «Моей волне»' : 'Жить по курсу в «Моей волне»', liveHintDisplay: liveOn ? 'block' : 'none',
+      toProjects: () => { if (P.fnToProject) P.fnToProject({ kind: 'projects', id: L.course, name: C.name, tasks: liveRows(info).map(r => r.text).filter(Boolean).slice(0, 30) }); },
+      toBiz: () => { if (P.fnToProject) P.fnToProject({ kind: 'biz', id: L.course, name: C.name, tasks: liveRows(info).map(r => r.text).filter(Boolean).slice(0, 30) }); },
       toggleLive: () => { if (!P.fnLive) return; if (liveOn) P.fnLive(null); else P.fnLive({ id: L.course, name: C.name, done: L.done, rows: liveRows(info) }); },
       back: () => this.set({ step: 'lib', by: saveCur() }),
       formats: FM.map(f => ({ name: f[1], bg: L.fmt === f[0] ? 'var(--accent-soft)' : 'var(--card)', fg: L.fmt === f[0] ? 'var(--accent-text)' : 'var(--ink2)', border: L.fmt === f[0] ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ fmt: f[0] }) })),
