@@ -298,7 +298,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"showNewExt":{"editor":null},"fnNewDone":{"editor":null},"pf":{"editor":null},"pfSum":{"editor":null},"linked":{"editor":null},"fnPfSet":{"editor":null},"fnReport":{"editor":null},"fnLink":{"editor":null},"$preview":{"width":1000,"height":1400}}'>
+<script type="text/x-dc" data-dc-script data-props='{"showNewExt":{"editor":null},"seed":{"editor":null},"fnSeedDone":{"editor":null},"fnNewDone":{"editor":null},"pf":{"editor":null},"pfSum":{"editor":null},"linked":{"editor":null},"fnPfSet":{"editor":null},"fnReport":{"editor":null},"fnLink":{"editor":null},"$preview":{"width":1000,"height":1400}}'>
 class Component extends DCLogic {
   norm(ps) { const DEF = ['overview', 'fin', 'crm', 'ads', 'tasks', 'course', 'board']; return (ps || []).map(p => { const secs = DEF.concat(p.type === 'service' ? ['time'] : []).concat(p.secs || []).filter((x, i, a) => a.indexOf(x) === i); return Object.assign({}, p, { secs, stage: p.stage || 'Идея' }); }); }
   withDemo(ps) { const init = this.init(), list = (ps || []).filter(p => !p.demo); return this.norm([init.projects[0]].concat(list)); }
@@ -366,6 +366,7 @@ class Component extends DCLogic {
     const STG = ['Лид', 'Переговоры', 'Счёт выставлен', 'Оплачено'], STC = [['var(--soft)', 'var(--ink2)'], ['var(--accent-soft)', 'var(--accent-text)'], ['var(--warn-soft)', 'var(--warn)'], ['var(--ok-soft)', 'var(--ok)']];
     const money = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+$)/g, ' ') + ' ₽';
     const TN = {}; TYPES.forEach(t => { TN[t[0]] = t; });
+    if (XP.seed && XP.seed.id && this._sd !== XP.seed.id) { const sd = XP.seed; this._sd = sd.id; setTimeout(() => { const n = this.L.projects.length, t = TN[sd.kind === 'biz' ? 'biz' : 'startup'], d = Object.assign({}, this.L.d); d[n + ':tasks'] = (sd.tasks || []).map(x => ({ t: x, c: 0 })); d[n + ':docs'] = [{ t: 'Материалы курса «' + sd.name + '»', tag: 'из раздела «Курсы и обучение»', d: false }]; this.set({ projects: this.L.projects.concat(this.norm([{ id: 'p' + Date.now().toString(36), name: sd.name, type: t[0], stage: 'Идея', secs: t[3].slice() }])), d, view: 'detail', cur: n, sec: 'tasks' }); if (XP.fnSeedDone) XP.fnSeedDone(); }, 0); }
     const pr = L.projects[L.cur], isDetail = L.view === 'detail' && !!pr;
     const key = (s) => L.cur + ':' + s, lst = (s) => L.d[key(s)] || [];
     const put = (s, arr, extra) => { const d = Object.assign({}, this.L.d); d[this.L.cur + ':' + s] = arr; this.set(Object.assign({ d }, extra || {})); };
