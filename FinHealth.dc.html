@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Фин здоровье</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
+:root{
+  --bg-fb:#F6F7FA;--card-fb:#FFFFFF;--ink-fb:#151B2B;--shadow:0 1px 2px rgba(16,24,40,.06);
+  --bg:var(--tg-theme-secondary-bg-color,var(--bg-fb));
+  --card:var(--tg-theme-bg-color,var(--card-fb));
+  --ink:var(--tg-theme-text-color,var(--ink-fb));
+  --accent:var(--tg-theme-button-color,#2F6FED);
+  --on-accent:var(--tg-theme-button-text-color,#FFFFFF);
+  --ink2:color-mix(in srgb,var(--ink) 80%,var(--card));
+  --muted:color-mix(in srgb,var(--ink) 64%,var(--card));
+  --line:color-mix(in srgb,var(--ink) 10%,var(--card));
+  --line2:color-mix(in srgb,var(--ink) 18%,var(--card));
+  --field:color-mix(in srgb,var(--ink) 3%,var(--card));
+  --soft:color-mix(in srgb,var(--ink) 6%,var(--card));
+  --accent-text:color-mix(in srgb,var(--accent) 80%,var(--ink));
+  --accent-soft:color-mix(in srgb,var(--accent) 11%,var(--card));
+  --accent-line:color-mix(in srgb,var(--accent) 38%,var(--card));
+  --ok:color-mix(in srgb,#17A06B 72%,var(--ink));
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,var(--card));
+  --ok-line:color-mix(in srgb,var(--ok) 32%,var(--card));
+  --bad:color-mix(in srgb,#D63A4F 85%,var(--ink));
+  --bad-soft:color-mix(in srgb,var(--bad) 11%,var(--card));
+  --bad-line:color-mix(in srgb,var(--bad) 30%,var(--card));
+  --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
+  --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
+  --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
+  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
+button{cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+button:hover{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--ink) 5%,transparent)}
+button:active{transform:scale(.97)}
+div,span{transition:background-color .15s ease,border-color .15s ease,color .15s ease,width .3s ease}
+svg{transition:opacity .15s ease}
+input{transition:border-color .15s ease}
+input:focus{border-color:var(--accent) !important}
+@keyframes dc-open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/*DARK-THEME*/
+:root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
+--ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+body{background:var(--bg) !important;position:relative}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
+
+/* плавность: появление, раскрытие, нажатие */
+@keyframes dcIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes dc-open{from{opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top center}to{opacity:1;transform:none}}
+@keyframes dcShine{0%{background-position:0% 50%}100%{background-position:240% 50%}}button,
+a,
+summary{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease,opacity .22s ease,transform .2s cubic-bezier(.2,.8,.2,1) !important}
+div,
+span,
+i{transition:background-color .25s ease,border-color .25s ease,color .25s ease,width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease}
+
+/* шрифт: Inter с переливом на заголовках */
+[style*="Archivo"],.h{font-family:'Inter',system-ui,sans-serif !important;font-weight:600 !important;letter-spacing:-.025em !important}h1,
+.h:not([style*="color:"]):not([style*="color: "]),
+[style*="Archivo"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 18px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 20px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 22px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 24px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 26px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 28px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size:32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]),
+b[style*="font-size: 32px"]:not([style*="color:"]):not([style*="color: "]):not([style*="background"]):not([style*="background"]){
+  background-image:linear-gradient(100deg,#ffffff 0%,#8d93a1 20%,#ffffff 38%,#c6c9d3 58%,#ffffff 78%,#8d93a1 100%) !important;background-size:240% 100% !important;
+  -webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent;color:transparent;animation:dcShine 10s linear infinite}
+[style*="Archivo"][style*="color:var(--ok)"],
+[style*="Archivo"][style*="color: var(--ok)"],
+[style*="Archivo"][style*="color:var(--bad)"],
+[style*="Archivo"][style*="color: var(--bad)"],
+[style*="Archivo"][style*="color:var(--warn)"],
+[style*="Archivo"][style*="color: var(--warn)"]{text-shadow:0 0 22px currentColor}
+
+/* стекло: карточки, меню, поля, вторичные кнопки */
+.card,div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"]{
+  background-color:rgba(255,255,255,.045) !important;background-image:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,0) 55%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 24px 48px -30px rgba(0,0,0,.9) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both}.card:not([style*="solid var(--accent)"]):not([style*="solid var(--accent)"]),
+div[style*="border:1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:20px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 20px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border:1px solid var(--line)"][style*="border-radius: 18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius:18px"],
+div[style*="border: 1px solid var(--line)"][style*="border-radius: 18px"]{border-color:rgba(255,255,255,.12) !important}
+div[style*="border-radius:16px"][style*="background:var(--card)"],
+div[style*="border-radius:16px"][style*="background: var(--card)"],
+div[style*="border-radius: 16px"][style*="background:var(--card)"],
+div[style*="border-radius: 16px"][style*="background: var(--card)"],
+div[style*="border-radius:14px"][style*="background:var(--card)"],
+div[style*="border-radius:14px"][style*="background: var(--card)"],
+div[style*="border-radius: 14px"][style*="background:var(--card)"],
+div[style*="border-radius: 14px"][style*="background: var(--card)"],
+.tile,
+.item{background-color:rgba(255,255,255,.035) !important;border-color:rgba(255,255,255,.09) !important;animation:dcIn .3s cubic-bezier(.2,.8,.2,1) both}
+[role=menu]{background:rgba(14,16,20,.82) !important;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14) !important;border-radius:18px !important;box-shadow:0 30px 60px -20px rgba(0,0,0,.9) !important}
+input:not([type=checkbox]):not([type=range]):not([type=radio]),
+textarea,
+select,
+.inp{background-color:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.14) !important;border-radius:14px;color-scheme:dark}
+.btn2,
+.chip,
+button[style*="background:var(--card)"],
+button[style*="background: var(--card)"],
+.ib{background-color:rgba(255,255,255,.06) !important;border-color:rgba(255,255,255,.16) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.btn2,
+.ib,
+button[style*="border:1.5px solid var(--line2)"],
+button[style*="border: 1.5px solid var(--line2)"]{border-radius:999px !important}
+
+/* главные кнопки: белая таблетка со свечением */
+.btn,button[style*="background:var(--accent);"]{border-radius:999px !important;font-weight:600 !important;box-shadow:0 0 0 1px rgba(255,255,255,.35),0 10px 28px -12px rgba(255,255,255,.45) !important}.btn:hover,
+button[style*="background:var(--accent);"]:hover,
+button[style*="background: var(--accent);"]:hover{box-shadow:0 0 0 1px #fff,0 12px 32px -10px rgba(255,255,255,.6) !important}
+
+/* полоски вкладок: стеклянная таблетка */
+div[style*="display:inline-flex"][style*="padding:4px"]{background-color:rgba(255,255,255,.05) !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:999px !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}div[style*="display:inline-flex"][style*="padding:4px"] button,
+div[style*="display:inline-flex"][style*="padding: 4px"] button,
+div[style*="display: inline-flex"][style*="padding:4px"] button,
+div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
+
+@media (max-width:1500px){body::after{display:none}}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+</style>
+</helmet>
+
+<div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+    <div style="display:flex;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px"><sc-for list="{{views}}" as="v" hint-placeholder-count="3"><button type="button" onClick="{{v.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:12px;padding:8px 14px;border-radius:999px;background:{{v.bg}};color:{{v.fg}}">{{v.name}}</button></sc-for></div>
+    <sc-if value="{{navOn}}" hint-placeholder-val="{{true}}"><div style="display:flex;align-items:center;gap:6px"><button type="button" onClick="{{prev}}" aria-label="Месяц раньше" style="cursor:pointer;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:15px;padding:0">‹</button><b style="font-size:13px;min-width:104px;text-align:center">{{monthName}}</b><button type="button" onClick="{{next}}" aria-label="Месяц позже" style="cursor:pointer;width:30px;height:30px;border-radius:8px;border:1px solid var(--line2);background:var(--card);font-size:15px;padding:0;opacity:{{nextOp}}">›</button></div></sc-if>
+  </div>
+
+  <sc-if value="{{noBase}}" hint-placeholder-val="{{false}}"><div style="padding:16px;border-radius:14px;border:1.5px dashed var(--line2);color:var(--muted);font-size:13.5px;line-height:1.5;text-align:center">Чтобы посчитать здоровье, нужен доход. Укажите зарплату в «Экономике» или добавьте доход там. Траты уже можно смотреть ниже.</div></sc-if>
+
+  <sc-if value="{{hasScore}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 16px;border-radius:16px;background:{{hl.soft}};border:1px solid {{hl.line}}">
+      <div style="display:flex;align-items:baseline;gap:4px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:44px;line-height:1;font-weight:800;color:{{hl.color}}">{{hl.score}}</b><span style="font-size:16px;color:var(--muted);font-weight:600">/ 10</span></div>
+      <div style="display:flex;flex-direction:column;gap:2px;flex:1 1 180px;min-width:0"><b style="font-size:15px;color:{{hl.color}}">{{hl.verdict}}, {{hl.pct}}%</b><span style="font-size:12.5px;color:var(--muted);line-height:1.4">{{hl.caption}}</span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isW}}" hint-placeholder-val="{{true}}">
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{weeks}}" as="w" hint-placeholder-count="4">
+      <button type="button" onClick="{{w.pick}}" style="cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;padding:11px 14px;border-radius:14px;border:1.5px solid {{w.bd}};background:var(--field);color:var(--ink)">
+        <span style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b style="font-size:13.5px">{{w.label}}</b><span style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:700">{{w.spend}}</span><span style="min-width:44px;text-align:center;font-size:12px;font-weight:800;padding:3px 8px;border-radius:999px;background:{{w.soft}};color:{{w.color}}">{{w.score}}</span></span></span>
+        <span style="height:6px;border-radius:999px;background:var(--line);overflow:hidden;display:block"><span style="display:block;height:100%;width:{{w.bar}}%;background:{{w.color}};border-radius:999px"></span></span>
+        <span style="font-size:11.5px;color:var(--muted)">{{w.sub}}</span>
+      </button>
+    </sc-for></div>
+    <sc-if value="{{selDaysOn}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">По дням выбранной недели</span>
+      <sc-for list="{{selDays}}" as="d" hint-placeholder-count="7"><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:84px;color:var(--muted)">{{d.label}}</span><span style="flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden"><span style="display:block;height:100%;width:{{d.bar}}%;background:{{d.color}};border-radius:999px"></span></span><b style="min-width:84px;text-align:right">{{d.sum}}</b></div></sc-for>
+    </div></sc-if>
+  </sc-if>
+
+  <sc-if value="{{isD}}" hint-placeholder-val="{{false}}">
+    <span style="font-size:12px;color:var(--muted)">{{dayNote}}</span>
+    <div style="display:flex;flex-direction:column;gap:6px"><sc-for list="{{days}}" as="d" hint-placeholder-count="7"><div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:96px;color:var(--muted)">{{d.label}}</span><span style="flex:1;height:8px;border-radius:999px;background:var(--line);overflow:hidden"><span style="display:block;height:100%;width:{{d.bar}}%;background:{{d.color}};border-radius:999px"></span></span><b style="min-width:84px;text-align:right">{{d.sum}}</b></div></sc-for></div>
+  </sc-if>
+
+  <sc-if value="{{isM}}" hint-placeholder-val="{{false}}">
+    <div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{months}}" as="m" hint-placeholder-count="6">
+      <button type="button" onClick="{{m.pick}}" style="cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--field);color:var(--ink)">
+        <span style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b style="font-size:13.5px">{{m.label}}</b><span style="display:flex;align-items:center;gap:8px"><span style="font-size:13px;font-weight:700">{{m.spend}}</span><span style="min-width:44px;text-align:center;font-size:12px;font-weight:800;padding:3px 8px;border-radius:999px;background:{{m.soft}};color:{{m.color}}">{{m.score}}</span></span></span>
+        <span style="height:6px;border-radius:999px;background:var(--line);overflow:hidden;display:block"><span style="display:block;height:100%;width:{{m.bar}}%;background:{{m.color}};border-radius:999px"></span></span>
+        <span style="font-size:11.5px;color:var(--muted)">{{m.sub}}</span>
+      </button>
+    </sc-for></div>
+  </sc-if>
+
+  <sc-if value="{{empty}}" hint-placeholder-val="{{false}}"><div style="padding:16px;border-radius:14px;border:1.5px dashed var(--line2);color:var(--muted);font-size:13.5px;line-height:1.5;text-align:center">Пока нет трат за этот период. Добавьте их в «Экономике», и здесь появятся недели, дни и оценка.</div></sc-if>
+  <span style="font-size:11.5px;color:var(--muted);line-height:1.45">Оценка: траты за период к норме. Норма это 70% дохода, остальное откладывается. Траты в норме дают 7–10, перерасход снижает оценку.</span>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"ops":{"editor":null},"salary":{"editor":null},"$preview":{"width":900,"height":700}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, view: 'w', off: 0, selW: -1 }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
+
+  renderVals() {
+    const P = this.props, L = this.L, now = new Date();
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    const MN = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+    const MS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+    const WD = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+    const ymOf = (y, m) => y + '-' + String(m + 1).padStart(2, '0');
+    const curYm = ymOf(now.getFullYear(), now.getMonth());
+    const ops = (P.ops || []).map(o => Object.assign({}, o, { ym: o.ym || curYm }));
+    const salary = +P.salary || 0;
+    const base = new Date(now.getFullYear(), now.getMonth() + L.off, 1);
+    const sym = ymOf(base.getFullYear(), base.getMonth()), dim = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+    const isCur = L.off === 0, last = isCur ? now.getDate() : dim;
+    const mOps = ops.filter(o => o.ym === sym);
+    const sp = [], inc = [];
+    for (let d = 0; d <= dim; d++) { sp.push(0); inc.push(0); }
+    mOps.forEach(o => { if (o.d >= 1 && o.d <= dim) { if (o.kind === 'out') sp[o.d] += o.sum; else if (o.kind === 'in') inc[o.d] += o.sum; } });
+    const incM = inc.reduce((a, b) => a + b, 0), spM = sp.reduce((a, b) => a + b, 0);
+    const I = Math.max(incM, salary);
+    const score = (spend, allow) => { if (!(allow > 0)) return null; const r = spend / allow; const s = r <= 1 ? 10 - r * 3 : Math.max(0, 7 - (r - 1) * 7); return Math.round(s * 10) / 10; };
+    const tone = (s) => s == null ? ['var(--muted)', 'var(--soft)', 'var(--line)', 'нет данных'] : s >= 8 ? ['var(--ok)', 'var(--ok-soft)', 'var(--ok-line)', 'Отлично'] : s >= 6 ? ['var(--accent-text)', 'var(--accent-soft)', 'var(--accent-line)', 'Нормально'] : s >= 4 ? ['var(--warn)', 'var(--warn-soft)', 'var(--warn-line)', 'Внимание'] : ['var(--bad)', 'var(--bad-soft)', 'var(--bad-line)', 'Перерасход'];
+    const sTxt = (s) => s == null ? '—' : String(s).replace('.', ',');
+    const dayNorm = I * 0.7 / dim;
+    // недели месяца
+    const ranges = [[1, 7], [8, 14], [15, 21], [22, 28]]; if (dim > 28) ranges.push([29, dim]);
+    const wk = ranges.filter(r => r[0] <= last).map((r, i) => { const to = Math.min(r[1], last), n = to - r[0] + 1; let s = 0; for (let d = r[0]; d <= to; d++) s += sp[d]; const sc = score(s, dayNorm * n), tn = tone(sc); return { i, from: r[0], to, n, spend: s, sc, tn }; });
+    const curWi = wk.length - 1;
+    const selW = L.selW >= 0 && L.selW < wk.length ? L.selW : curWi;
+    const maxW = Math.max.apply(null, wk.map(w => w.spend).concat([1]));
+    const weeks = wk.slice().reverse().map(w => ({ label: w.from + '–' + w.to + ' ' + MS[base.getMonth()] + (w.i === curWi && isCur ? ' · сейчас' : ''), spend: fmt(w.spend), score: sTxt(w.sc), bar: Math.round(w.spend / maxW * 100), color: w.tn[0], soft: w.tn[1], bd: w.i === selW ? 'var(--accent)' : 'var(--line)', sub: w.n + ' дн.' + (dayNorm > 0 ? ', норма ' + fmt(dayNorm * w.n) : '') + ', в день ' + fmt(w.spend / w.n), pick: () => this.set({ selW: w.i }) }));
+    const sw = wk[selW];
+    const maxD = Math.max.apply(null, sp.concat([dayNorm, 1]));
+    const dlabel = (d) => d + ' ' + MS[base.getMonth()] + ', ' + WD[new Date(base.getFullYear(), base.getMonth(), d).getDay()];
+    const dcol = (v) => dayNorm > 0 && v > dayNorm ? 'var(--bad)' : 'var(--ok)';
+    const selDays = sw ? (() => { const a = []; for (let d = sw.from; d <= sw.to; d++) a.push({ label: dlabel(d), bar: Math.round(sp[d] / maxD * 100), color: dcol(sp[d]), sum: fmt(sp[d]) }); return a; })() : [];
+    const days = (() => { const a = []; for (let d = last; d >= 1; d--) a.push({ label: dlabel(d), bar: Math.round(sp[d] / maxD * 100), color: dcol(sp[d]), sum: fmt(sp[d]) }); return a; })();
+    // месяцы (последние 6)
+    const months = (() => { const a = []; for (let k = 0; k < 6; k++) { const b = new Date(now.getFullYear(), now.getMonth() - k, 1), y = ymOf(b.getFullYear(), b.getMonth()), os = ops.filter(o => o.ym === y); const s = os.filter(o => o.kind === 'out').reduce((x, o) => x + o.sum, 0), i2 = os.filter(o => o.kind === 'in').reduce((x, o) => x + o.sum, 0); const inc2 = Math.max(i2, salary); const dm = new Date(b.getFullYear(), b.getMonth() + 1, 0).getDate(); const part = k === 0 ? now.getDate() / dm : 1; const sc = os.length ? score(s, inc2 * 0.7 * part) : null, tn = tone(sc); a.push({ label: MN[b.getMonth()] + ' ' + b.getFullYear(), s, i2, inc2, sc, tn, k }); } const mx = Math.max.apply(null, a.map(m => m.s).concat([1])); return a.map(m => ({ label: m.label, spend: fmt(m.s), score: sTxt(m.sc), bar: Math.round(m.s / mx * 100), color: m.tn[0], soft: m.tn[1], sub: m.sc == null ? 'нет данных' : 'доход ' + fmt(m.inc2) + ', осталось ' + fmt(m.inc2 - m.s), pick: () => this.set({ off: -m.k, view: 'w', selW: -1 }) })); })();
+    // главная оценка
+    let hlScore = null, hlCap = '';
+    if (L.view === 'w' && sw) { hlScore = sw.sc; hlCap = 'Неделя ' + sw.from + '–' + sw.to + ' ' + MS[base.getMonth()] + ': потрачено ' + fmt(sw.spend) + (dayNorm > 0 ? ' при норме ' + fmt(dayNorm * sw.n) : ''); }
+    else { const part = isCur ? last / dim : 1; hlScore = score(spM, I * 0.7 * part); hlCap = MN[base.getMonth()] + ': потрачено ' + fmt(spM) + (I > 0 ? ' при норме ' + fmt(I * 0.7 * part) : ''); }
+    const tn = tone(hlScore);
+    const views = [['w', 'Недели'], ['d', 'Даты'], ['m', 'Месяцы']].map(v => ({ name: v[1], bg: L.view === v[0] ? 'var(--accent)' : 'transparent', fg: L.view === v[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ view: v[0] }) }));
+    const hasAny = mOps.length > 0, anyOps = ops.length > 0;
+    return {
+      views, navOn: L.view !== 'm', monthName: MN[base.getMonth()] + ' ' + base.getFullYear(), nextOp: L.off >= 0 ? .35 : 1,
+      prev: () => { if (this.L.off > -11) this.set({ off: this.L.off - 1, selW: -1 }); }, next: () => { if (this.L.off < 0) this.set({ off: this.L.off + 1, selW: -1 }); },
+      isW: L.view === 'w' && hasAny, isD: L.view === 'd' && hasAny, isM: L.view === 'm' && anyOps, empty: (L.view === 'm' ? !anyOps : !hasAny),
+      noBase: !(I > 0) && hasAny, hasScore: hlScore != null && (L.view === 'm' ? anyOps : hasAny),
+      hl: { score: sTxt(hlScore), pct: hlScore == null ? 0 : Math.round(hlScore * 10), verdict: tn[3], color: tn[0], soft: tn[1], line: tn[2], caption: hlCap },
+      weeks, selDays, selDaysOn: selDays.length > 0, days, months, dayNote: dayNorm > 0 ? 'Красный: потратили больше дневной нормы (' + fmt(dayNorm) + ').' : 'Траты по дням выбранного месяца.'
+    };
+  }
+}
+</script>
+</body>
+</html>
