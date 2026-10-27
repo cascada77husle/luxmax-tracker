@@ -164,7 +164,7 @@ div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:9
 
 @media (max-width:1500px){body::after{display:none}}
 button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
-@keyframes pkIn{from{opacity:0}to{opacity:1}}@keyframes pkOut{from{opacity:1}to{opacity:0}}@keyframes pkCardIn{from{opacity:0;transform:translateY(16px) scale(.94);box-shadow:0 0 0 1px rgba(255,255,255,0),0 0 0 rgba(255,255,255,0)}to{opacity:1;transform:none}}@keyframes pkCardOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(10px) scale(.96)}}@keyframes bkPop{0%{transform:scale(.93)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes pkIn{from{opacity:0}to{opacity:1}}@keyframes pkOut{from{opacity:1}to{opacity:0}}@keyframes pkCardIn{from{opacity:0;transform:translateY(16px) scale(.94);box-shadow:0 0 0 1px rgba(255,255,255,0),0 0 0 rgba(255,255,255,0)}to{opacity:1;transform:none}}@keyframes pkCardOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(10px) scale(.96)}}@keyframes bkPop{0%{transform:scale(.93)}55%{transform:scale(1.06)}100%{transform:scale(1)}}@keyframes bkPop2{0%{transform:scale(.93)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes acUp{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes acBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .ac-card{animation:acUp .55s cubic-bezier(.22,1,.36,1) both;transition:transform .25s ease,box-shadow .3s ease}
@@ -400,7 +400,7 @@ class Component extends DCLogic {
       };
     });
     const closeAdd = () => { if (this.L.addOut) return; this.set({ addOut: true }); setTimeout(() => this.set({ addOpen: false, addOut: false }), 230); };
-    const banks = BANKS.map((b, bi) => { const on = L.aBank === b[0]; const ic = icon({ bank: b[0], type: b[0] === 'Наличные' ? 'cash' : (b[0] === 'Bybit' ? 'crypto' : 'bank') }); return { name: b[0], delay: bi * 40, ic: ic.ico, icf: ic.fg, letter: ic.letter, border: mix(ic.color, on ? 85 : 35) + 'var(--line))', bg: 'linear-gradient(145deg,' + mix(ic.color, on ? 40 : 18) + 'var(--card)),var(--card) 85%)', fg: on ? '#ffffff' : '#D5D9E3', sh: on ? '0 0 0 2px ' + ic.color + ',0 0 26px 2px ' + mix(ic.color, 70) + 'transparent),0 10px 30px -8px ' + ic.color : 'none', an: on ? 'bkPop .42s cubic-bezier(.22,1,.36,1) both' : 'none', pick: () => this.set({ aBank: b[0] }) }; });
+    const banks = BANKS.map((b, bi) => { const on = L.aBank === b[0]; const ic = icon({ bank: b[0], type: b[0] === 'Наличные' ? 'cash' : (b[0] === 'Bybit' ? 'crypto' : 'bank') }); return { name: b[0], delay: bi * 40, ic: ic.ico, icf: ic.fg, letter: ic.letter, border: mix(ic.color, on ? 85 : 35) + 'var(--line))', bg: 'linear-gradient(145deg,' + mix(ic.color, on ? 40 : 18) + 'var(--card)),var(--card) 85%)', fg: on ? '#ffffff' : '#D5D9E3', sh: on ? '0 0 0 2px ' + ic.color + ',0 0 26px 2px ' + mix(ic.color, 70) + 'transparent),0 10px 30px -8px ' + ic.color : 'none', an: on ? (((L.bkN || 0) % 2) ? 'bkPop' : 'bkPop2') + ' .42s cubic-bezier(.22,1,.36,1) both' : 'none', pick: () => this.set({ aBank: b[0], bkN: (L.bkN || 0) + 1 }) }; });
     const aOk = num(L.aBal) >= 0 && L.aBal !== '';
 
     // ---------- выписка
