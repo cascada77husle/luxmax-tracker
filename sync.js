@@ -21,12 +21,12 @@
     Storage.prototype.setItem = function (k, v) {
       set0.call(this, k, v);
       if (this === LS && !applying && PRE.test(k)) {
-        if (!ready) { boot[k] = 1; return; }
+        if (!ready) { boot[k] = 1; set0.call(LS, 'sync:at:' + k, String(Date.now())); return; }
         set0.call(LS, 'sync:at:' + k, String(Date.now())); schedule(k);
       }
     };
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState !== 'hidden') return;
+      if (document.visibilityState !== 'hidden') return; try { if (window.__trackerFlush) window.__trackerFlush(); } catch (e) { }
       Object.keys(timers).forEach(function (k) { clearTimeout(timers[k]); push(k, true); }); timers = {};
     });
     var finish = function (items) {
