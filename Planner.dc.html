@@ -154,7 +154,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 <div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
 
 <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
-  <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Расписание</b><span style="font-size:14px;color:var(--muted)">Неделя 19–25 октября</span></div>
+  <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Расписание</b><span style="font-size:14px;color:var(--muted)">{{weekLabel}}</span></div>
   <div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{modes}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>
 </div>
 <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
@@ -198,12 +198,13 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":1300}}'>
 class Component extends DCLogic {
-  init() { return { ready: false, mode: 'day', sel: 0, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {} }; }
+  init() { return { ready: false, mode: 'day', sel: (new Date().getDay() + 6) % 7, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {} }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
   renderVals() {
     const L = this.L, START = 420, END = 1380, PX = 0.9;
     const CAT = { work: ['Работа', 'var(--accent-soft)', 'var(--accent)', 'var(--accent-text)'], sport: ['Спорт', 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))', 'var(--cat-violet)', '#5B4DB8'], life: ['Личное', 'var(--ok-soft)', 'var(--ok)', 'var(--ok)'], study: ['Учёба', 'color-mix(in srgb,var(--cat-pink) 13%,var(--card))', 'var(--cat-pink)', '#A63A6B'], pay: ['Платёж', 'var(--warn-soft)', 'var(--warn)', 'var(--warn)'] };
+    const MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'], T0 = new Date(), M0 = new Date(T0.getFullYear(), T0.getMonth(), T0.getDate() - ((T0.getDay() + 6) % 7)), DT = [0, 1, 2, 3, 4, 5, 6].map(i => new Date(M0.getFullYear(), M0.getMonth(), M0.getDate() + i)), weekLabel = 'Неделя ' + DT[0].getDate() + (DT[0].getMonth() === DT[6].getMonth() ? '' : ' ' + MON[DT[0].getMonth()]) + '–' + DT[6].getDate() + ' ' + MON[DT[6].getMonth()];
     const WD = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], WF = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
     const tm = (s) => { const m = /^(\d{1,2}):(\d{2})$/.exec((s || '').trim()); if (!m) return null; const h = +m[1], q = +m[2]; return (h < 24 && q < 60) ? h * 60 + q : null; };
     const hm = (n) => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
@@ -221,15 +222,16 @@ class Component extends DCLogic {
       maxEnd = Math.max(maxEnd, x.e);
     });
     let busy = 0, cur = null; day.forEach(x => { const a = Math.max(START, x.s), b = Math.min(END, x.e); if (b <= a) return; if (!cur || a > cur[1]) { if (cur) busy += cur[1] - cur[0]; cur = [a, b]; } else cur[1] = Math.max(cur[1], b); }); if (cur) busy += cur[1] - cur[0];
-    const weekRows = []; WD.forEach((w, d) => { const a = evs(d); weekRows.push({ hdrDisplay: 'block', hdr: WF[d] + ', ' + (19 + d) + ' октября', evDisplay: 'none', emptyDisplay: a.length ? 'none' : 'block', time: '', name: '', cat: '', bg: 'var(--card)', line: 'var(--card)', fg: 'var(--ink2)', remove: () => {} }); a.forEach(x => { const c = CAT[x.c]; weekRows.push({ hdrDisplay: 'none', hdr: '', evDisplay: 'flex', emptyDisplay: 'none', time: hm(x.s) + '–' + hm(x.e), name: x.n, cat: c[0], bg: c[1], line: c[2], fg: c[3], remove: rm(d, x.so) }); }); });
-    const pays = []; WD.forEach((w, d) => (L.ev[d] || []).forEach(e => { if (e.c === 'pay') pays.push({ name: e.n, when: w + ', ' + (19 + d) + ' окт' }); }));
+    const weekRows = []; WD.forEach((w, d) => { const a = evs(d); weekRows.push({ hdrDisplay: 'block', hdr: WF[d] + ', ' + DT[d].getDate() + ' ' + MON[DT[d].getMonth()], evDisplay: 'none', emptyDisplay: a.length ? 'none' : 'block', time: '', name: '', cat: '', bg: 'var(--card)', line: 'var(--card)', fg: 'var(--ink2)', remove: () => {} }); a.forEach(x => { const c = CAT[x.c]; weekRows.push({ hdrDisplay: 'none', hdr: '', evDisplay: 'flex', emptyDisplay: 'none', time: hm(x.s) + '–' + hm(x.e), name: x.n, cat: c[0], bg: c[1], line: c[2], fg: c[3], remove: rm(d, x.so) }); }); });
+    const pays = []; WD.forEach((w, d) => (L.ev[d] || []).forEach(e => { if (e.c === 'pay') pays.push({ name: e.n, when: w + ', ' + DT[d].getDate() + ' ' + MON[DT[d].getMonth()].slice(0, 3) }); }));
     const cats = Object.keys(CAT).map(k => ({ name: CAT[k][0], bg: L.cat === k ? CAT[k][2] : 'var(--card)', fg: L.cat === k ? 'var(--on-accent)' : 'var(--ink2)', border: L.cat === k ? CAT[k][2] : 'var(--line)', pick: () => this.set({ cat: k }) }));
     return {
       modes: [['day', 'День'], ['week', 'Неделя']].map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ mode: m[0] }) })),
       isDay: L.mode === 'day', isWeek: L.mode === 'week',
       dayEmptyDisplay: day.length ? 'none' : 'block',
-      dayChips: WD.map((w, i) => { const n = (L.ev[i] || []).length, on = L.sel === i; return { wd: w, num: 19 + i, count: n ? n + ' дел' : 'свободно', bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ sel: i }) }; }),
-      dayTitle: WF[L.sel] + ', ' + (19 + L.sel) + ' октября', freeText: 'Занято ' + dur(busy) + ', свободно ' + dur(END - START - busy) + ' (с 07:00 до 23:00)',
+      weekLabel,
+      dayChips: WD.map((w, i) => { const n = (L.ev[i] || []).length, on = L.sel === i; return { wd: w, num: DT[i].getDate(), count: n ? n + ' дел' : '—', bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ sel: i }) }; }),
+      dayTitle: WF[L.sel] + ', ' + DT[L.sel].getDate() + ' ' + MON[DT[L.sel].getMonth()], freeText: 'Занято ' + dur(busy) + ', свободно ' + dur(END - START - busy) + ' (с 07:00 до 23:00)',
       agenda, segs,
       weekRows, pays, noPaysDisplay: pays.length ? 'none' : 'block', cats, selName: WF[L.sel].toLowerCase().replace(/а$/, 'у').replace(/я$/, 'ю'),
       fn: L.fn, fs: L.fs, fe: L.fe, typeN: (e) => this.set({ fn: e.target.value }), typeS: (e) => this.set({ fs: e.target.value }), typeE: (e) => this.set({ fe: e.target.value }), errDisplay: L.err ? 'block' : 'none',
