@@ -484,8 +484,8 @@ class Component extends DCLogic {
     const nonBill = outs.filter(o => !o.planId).reduce((a, o) => a + o.sum, 0), forecast = spent + nonBill / TODAY * LEFT + unpaidSum;
     const saveRate = income ? Math.round((income - forecast) / income * 100) : 0;
     const total = accs.reduce((a, x) => a + x.bal, 0), liquid = accs.filter(a => a.type !== 'crypto').reduce((a, x) => a + x.bal, 0);
-    const hAcc = accs.find(a => a.id === L.heroAcc) || null, hOps = hAcc ? ops.filter(o => o.acc === hAcc.id) : ops;
-    const hIncome = hOps.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0), hSpent = hOps.filter(o => o.kind === 'out').reduce((a, o) => a + o.sum, 0);
+    const hAcc = accs.find(a => a.id === L.heroAcc) || null, hAccOps = hAcc ? ops.filter(o => o.acc === hAcc.id) : ops;
+    const hIncome = hAccOps.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0), hSpent = hAccOps.filter(o => o.kind === 'out').reduce((a, o) => a + o.sum, 0);
     const accFull = (a) => [a.bank, a.name].filter((x, i, ar) => x && ar.indexOf(x) === i).join(' · ');
     const accChip = (a) => a.bank ? a.bank + (accs.filter(x => x.bank === a.bank).length > 1 ? ' · ' + a.name : '') : a.name;
     const qAccId = (accs.find(a => a.id === L.qAcc) ? L.qAcc : (hAcc ? hAcc.id : (accs[0] ? accs[0].id : '')));
