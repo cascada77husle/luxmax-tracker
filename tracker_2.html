@@ -16,6 +16,7 @@ if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){addEvent
 
 <title>ARQON</title>
 <script src="./support.js"></script>
+<script src="./persist.js"></script>
 </head>
 <body>
 <x-dc>
@@ -1546,7 +1547,7 @@ class Component extends DCLogic {
     let ls = null; try { ls = JSON.parse(localStorage.getItem('tracker:v1') || 'null'); } catch (e) { ls = null; }
     const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'wsets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); this.setState(Object.assign({}, this.L, p, { ready: true })); };
     if (ls) apply(ls);
-    this.loadedAt = ls ? (ls.at || 0) : 0; this.loaded = true;
+    this.loadedAt = ls ? (ls.at || 0) : 0; this.loaded = true; window.__trackerFlush = () => { if (this.dirty) this.flush(); }; try { document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') window.__trackerFlush(); }); window.addEventListener('pagehide', () => window.__trackerFlush()); } catch (e) { }
     const c = (typeof window !== 'undefined') ? window.claude : null;
     if (!c || !c.use) return;
     c.use('db').then((db) => {
