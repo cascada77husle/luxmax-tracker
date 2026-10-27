@@ -148,6 +148,8 @@ button[style*="background: var(--card)"],
 .chip,.btn,.btn2,.ib,button{transition:background-color .22s ease,color .22s ease,border-color .22s ease,transform .15s ease,box-shadow .25s ease}
 .chip:active,.btn:active,.btn2:active,.ib:active{transform:scale(.95)}
 .card{animation:dcIn .32s cubic-bezier(.22,1,.36,1) both}
+.chip.sber{color:#5FD38A;border-color:rgba(95,211,138,.5)}
+.chip.on.sber{background-color:#21A038 !important;border-color:#21A038 !important;color:#ffffff !important}
 .chip.on{background-color:#ffffff !important;border-color:#ffffff !important;color:#0A0B0E !important}
 .btn2,
 .ib,
@@ -490,7 +492,7 @@ class Component extends DCLogic {
     const hIncome = hAccOps.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0), hSpent = hAccOps.filter(o => o.kind === 'out').reduce((a, o) => a + o.sum, 0);
     const BCOL = ['#2E9E6B', '#C98A00', '#D6453D', '#2F6FD6', '#8A55D6', '#D6781F', '#1FA8B8', '#C2447A'];
     const bdg = (a) => { const s = a.bank || a.name || '?'; let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 997; return { ic: a.type === 'cash' ? '₽' : a.type === 'crypto' ? '₿' : s.charAt(0).toUpperCase(), icBg: BCOL[(bi => bi >= 0 ? bi : h)(BANKS.findIndex(x => (x[2] || x[3]) === s)) % BCOL.length], icD: 'inline-flex' }; };
-    const sbr = (a, on) => /сбер/i.test((a.bank || '') + ' ' + (a.name || '')) ? (on ? { bg: '#21A038', fg: '#fff', bc: '#21A038' } : { bg: '', fg: '#5FD38A', bc: 'rgba(95,211,138,.5)' }) : { bg: '', fg: '', bc: '' };
+    const sbr = (a, on) => /сбер/i.test((a.bank || '') + ' ' + (a.name || '')) ? { cls: (on ? 'on ' : '') + 'sber' } : {};
     const accFull = (a) => [a.bank, a.name].filter((x, i, ar) => x && ar.indexOf(x) === i).join(' · ');
     const accChip = (a) => a.bank ? a.bank + (accs.filter(x => x.bank === a.bank).length > 1 ? ' · ' + a.name : '') : a.name;
     const qAccId = (accs.find(a => a.id === L.qAcc) ? L.qAcc : (hAcc ? hAcc.id : (accs[0] ? accs[0].id : '')));
