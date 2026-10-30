@@ -117,7 +117,7 @@ div[style*="display: inline-flex"][style*="padding:4px"] button,
 div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
 
 @media (max-width:1500px){body::after{display:none}}
-button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span:not([style*="url("]),button[style*="background: var(--accent)"] span:not([style*="url("]){-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
 </style>
 </helmet>
 <div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
