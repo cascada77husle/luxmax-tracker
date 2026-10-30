@@ -21,7 +21,7 @@
     Storage.prototype.setItem = function (k, v) {
       set0.call(this, k, v);
       if (this === LS && !applying && PRE.test(k)) {
-        if (!ready) { boot[k] = 1; set0.call(LS, 'sync:at:' + k, String(Date.now())); return; }
+        if (!ready) { boot[k] = 1; return; } /* запись до ответа сервера не считается правкой: иначе пустое состояние нового устройства затирало бы данные на сервере */
         set0.call(LS, 'sync:at:' + k, String(Date.now())); schedule(k);
       }
     };
@@ -49,7 +49,16 @@
         if (Date.now() - last > 60000) { try { sessionStorage.setItem('sync:rl', String(Date.now())); } catch (e) { /* ok */ } location.reload(); }
       }
     };
-    var timeout = setTimeout(function () { if (!ready) finish({}); }, 5000);
-    post('pull', {}).then(function (r) { clearTimeout(timeout); if (!ready) finish(r && r.ok ? r.items : {}); }).catch(function () { clearTimeout(timeout); if (!ready) finish({}); });
+    /* Пока сервер не ответил, ничего не отправляем: иначе пустое состояние нового устройства или сбой связи затрут данные на сервере. Пробуем снова. */
+    var tries = 0;
+    var pull = function () {
+      post('pull', {}).then(function (r) {
+        if (ready) return;
+        if (r && r.ok) finish(r.items || {}); else retry();
+      }).catch(retry);
+    };
+    var retry = function () { if (ready) return; tries++; setTimeout(pull, Math.min(30000, 3000 * tries)); };
+    pull();
+    window.__trackerSync = function () { return { ready: ready, tries: tries }; };
   } catch (e) { /* синхронизация не должна ломать трекер */ }
 })();
