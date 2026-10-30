@@ -163,7 +163,7 @@ div[style*="display: inline-flex"][style*="padding:4px"] button,
 div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:999px !important}
 
 @media (max-width:1500px){body::after{display:none}}
-button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span,button[style*="background: var(--accent)"] span{-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span:not([style*="url("]),button[style*="background: var(--accent)"] span:not([style*="url("]){-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
 @keyframes pkIn{from{opacity:0}to{opacity:1}}@keyframes pkOut{from{opacity:1}to{opacity:0}}@keyframes pkCardIn{from{opacity:0;transform:translateY(16px) scale(.94);box-shadow:0 0 0 1px rgba(255,255,255,0),0 0 0 rgba(255,255,255,0)}to{opacity:1;transform:none}}@keyframes pkCardOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(10px) scale(.96)}}@keyframes bkPop{0%{transform:scale(.93)}55%{transform:scale(1.06)}100%{transform:scale(1)}}@keyframes bkPop2{0%{transform:scale(.93)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes acUp{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes acBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
