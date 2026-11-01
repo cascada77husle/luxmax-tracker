@@ -1,8 +1,8 @@
-/* Сохранение данных разделов, у которых нет своего хранилища (учёба, спорт, питание, расписание, обучение, бизнес-инструменты).
+/* Сохранение данных разделов, у которых нет своего хранилища (спорт, питание, расписание, бизнес-инструменты).
    Состояние кладётся в localStorage под ключом tracker:c:<имя>, поэтому sync.js сам переносит его на сервер внутри Telegram. */
 (function () {
-  var WL = { Study: 1, Sport: 1, Nutrition: 1, Library: 1, Languages: 1, Learning: 1, Planner: 1, BizTools: 1 };
-  var EX = { Planner: ['sel', 'err', 'fs', 'fe', 'fn'], Learning: ['nName'], Languages: ['nw', 'nt', 'newLang'] };
+  var WL = { Sport: 1, Nutrition: 1, Library: 1, Planner: 1, BizTools: 1 };
+  var EX = { Planner: ['sel', 'err', 'fs', 'fe', 'fn'] };
   var PRE = 'tracker:c:';
   function go() {
     var D = window.DCLogic; if (!D || !D.prototype) return false;
