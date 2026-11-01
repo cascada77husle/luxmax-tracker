@@ -1,16 +1,29 @@
-/* Синхронизация данных трекера с сервером бота (только внутри Telegram, по подписи initData).
+/* Синхронизация данных трекера с сервером бота (внутри Telegram по подписи initData, в обычном браузере по токену из ссылки бота).
    Всё, что трекер хранит в localStorage (tracker:, projects:, board:, boardlist:, boardcur:),
    дублируется на сервер и подтягивается на другом устройстве. Без сервера всё работает как раньше. */
 (function () {
   try {
     var API = window.TRACKER_API || 'https://api.45-67-56-65.sslip.io';
-    var tg = window.Telegram && window.Telegram.WebApp, init = tg && tg.initData;
-    if (!init || !window.fetch) return;
+    var tg = window.Telegram && window.Telegram.WebApp, init = tg && tg.initData, WK = 'arqon:web', web = '';
+    try { web = window.localStorage.getItem(WK) || ''; } catch (e) { web = ''; }
+    /* Вход из обычного браузера: ссылка из бота (#login=…) меняется на сессионный токен, дальше он заменяет initData. */
+    var lm = /[#&]login=([^&]+)/.exec(location.hash || '');
+    if (!init && lm && window.fetch) {
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { }
+      fetch(API + '/api/tracker/web_login', { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ link: decodeURIComponent(lm[1]) }) })
+        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          if (r && r.ok && r.token) { try { window.localStorage.setItem(WK, r.token); } catch (e) { } }
+          if (r && r.ok) location.reload();
+        }).catch(function () { });
+      return;
+    }
+    if ((!init && !web) || !window.fetch) return;
     var LS = window.localStorage, PRE = /^(tracker:|projects:|board:|boardlist:|boardcur:)/;
     var set0 = Storage.prototype.setItem, ready = false, applying = false, boot = {}, timers = {};
     var atOf = function (k) { return +(LS.getItem('sync:at:' + k) || 0); };
     var post = function (path, body, keep) {
-      body.initData = init;
+      if (init) body.initData = init; else body.webToken = web;
       return fetch(API + '/api/tracker/' + path, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), keepalive: !!keep }).then(function (r) { return r.json(); });
     };
     var push = function (k, keep) {
