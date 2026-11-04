@@ -154,14 +154,23 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 <div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
 
 <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
-  <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Расписание</b><span style="font-size:14px;color:var(--muted)">{{weekLabel}}</span></div>
-  <div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{modes}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div>
+  <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:700">Расписание</b><span style="font-size:14px;color:var(--muted)">{{subLabel}}</span></div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><button type="button" onClick="{{prev}}" aria-label="Назад" style="cursor:pointer;width:34px;height:34px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;padding:0">‹</button><button type="button" onClick="{{today}}" style="cursor:pointer;height:34px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:13px;font-weight:600;padding:0 14px">Сегодня</button><button type="button" onClick="{{next}}" aria-label="Вперёд" style="cursor:pointer;width:34px;height:34px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;padding:0">›</button>
+  <div style="display:inline-flex;align-self:flex-start;max-width:100%;overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;gap:3px"><sc-for list="{{modes}}" as="t" hint-placeholder-count="6"><button type="button" onClick="{{t.pick}}" style="border:0;cursor:pointer;font-weight:600;font-size:13px;padding:8px 16px;border-radius:12px;white-space:nowrap;background:{{t.bg}};color:{{t.fg}}">{{t.name}}</button></sc-for></div></div>
 </div>
+<sc-if value="{{notMonth}}" hint-placeholder-val="{{false}}">
 <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
   <sc-for list="{{dayChips}}" as="d" hint-placeholder-count="7"><button type="button" onClick="{{d.pick}}" style="cursor:pointer;border:1.5px solid {{d.border}};background:{{d.bg}};color:{{d.fg}};border-radius:20px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:12px;font-weight:600">{{d.wd}}</span><b style="font-size:20px;font-weight:800;color:{{d.fg}}">{{d.num}}</b><span style="font-size:11px;opacity:.85">{{d.count}}</span></button></sc-for>
 </div>
+</sc-if>
 <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
   <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:12px">
+    <sc-if value="{{isMonth}}" hint-placeholder-val="{{true}}">
+      <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px"><sc-for list="{{wdHead}}" as="h" hint-placeholder-count="7"><span style="text-align:center;font-size:12px;font-weight:600;color:var(--muted);padding:2px 0">{{h.t}}</span></sc-for></div>
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px"><sc-for list="{{cells}}" as="c" hint-placeholder-count="35"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;min-height:58px;border-radius:14px;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};opacity:{{c.op}};padding:6px 2px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:2px"><b style="font-size:15px;font-weight:700;color:{{c.fg}}">{{c.num}}</b><span style="display:flex;gap:3px;height:6px;align-items:center"><i style="display:{{c.d1}};width:6px;height:6px;border-radius:50%;background:{{c.c1}}"></i><i style="display:{{c.d2}};width:6px;height:6px;border-radius:50%;background:{{c.c2}}"></i><i style="display:{{c.d3}};width:6px;height:6px;border-radius:50%;background:{{c.c3}}"></i></span></button></sc-for></div>
+      </div>
+    </sc-if>
     <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
       <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px;padding:16px;gap:16px">
         <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">{{dayTitle}}</b><span style="font-size:13px;color:var(--muted)">{{freeText}}</span></div>
@@ -198,44 +207,49 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":1300}}'>
 class Component extends DCLogic {
-  init() { return { ready: false, mode: 'day', sel: (new Date().getDay() + 6) % 7, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {} }; }
+  init() { return { ready: false, mode: 'month', sd: '', sel: (new Date().getDay() + 6) % 7, cat: 'work', fs: '', fe: '', fn: '', err: false, ev: {} }; }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
   renderVals() {
-    const L = this.L, START = 420, END = 1380, PX = 0.9;
+    const T00 = () => Date.now(), L = this.L, START = 420, END = 1380, PX = 0.9;
     const CAT = { work: ['Работа', 'var(--accent-soft)', 'var(--accent)', 'var(--accent-text)'], sport: ['Спорт', 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))', 'var(--cat-violet)', '#5B4DB8'], life: ['Личное', 'var(--ok-soft)', 'var(--ok)', 'var(--ok)'], study: ['Учёба', 'color-mix(in srgb,var(--cat-pink) 13%,var(--card))', 'var(--cat-pink)', '#A63A6B'], pay: ['Платёж', 'var(--warn-soft)', 'var(--warn)', 'var(--warn)'] };
-    const MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'], T0 = new Date(), M0 = new Date(T0.getFullYear(), T0.getMonth(), T0.getDate() - ((T0.getDay() + 6) % 7)), DT = [0, 1, 2, 3, 4, 5, 6].map(i => new Date(M0.getFullYear(), M0.getMonth(), M0.getDate() + i)), weekLabel = 'Неделя ' + DT[0].getDate() + (DT[0].getMonth() === DT[6].getMonth() ? '' : ' ' + MON[DT[0].getMonth()]) + '–' + DT[6].getDate() + ' ' + MON[DT[6].getMonth()];
+    const pad2 = (n) => String(n).padStart(2, '0'), iso = (d) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()), TD = new Date(T00()), SD0 = (() => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(L.sd || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(TD.getFullYear(), TD.getMonth(), TD.getDate()); })(), SEL = (SD0.getDay() + 6) % 7;
+    const MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'], T0 = new Date(), CW = new Date(T0.getFullYear(), T0.getMonth(), T0.getDate() - ((T0.getDay() + 6) % 7)), M0 = new Date(SD0.getFullYear(), SD0.getMonth(), SD0.getDate() - SEL), DT = [0, 1, 2, 3, 4, 5, 6].map(i => new Date(M0.getFullYear(), M0.getMonth(), M0.getDate() + i)), weekLabel = 'Неделя ' + DT[0].getDate() + (DT[0].getMonth() === DT[6].getMonth() ? '' : ' ' + MON[DT[0].getMonth()]) + '–' + DT[6].getDate() + ' ' + MON[DT[6].getMonth()];
     const WD = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], WF = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
     const tm = (s) => { const m = /^(\d{1,2}):(\d{2})$/.exec((s || '').trim()); if (!m) return null; const h = +m[1], q = +m[2]; return (h < 24 && q < 60) ? h * 60 + q : null; };
     const hm = (n) => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
     const dur = (m) => (m >= 60 ? Math.floor(m / 60) + ' ч' + (m % 60 ? ' ' + (m % 60) + ' м' : '') : m + ' м');
-    const evs = (d) => (L.ev[d] || []).map((e, i) => ({ i, s: tm(e.s), e: tm(e.e), n: e.n, c: e.c, so: e })).sort((a, b) => a.s - b.s);
-    const rm = (d, e) => () => { const m = Object.assign({}, this.L.ev); m[d] = (m[d] || []).filter(x => x !== e); this.set({ ev: m }); };
-    const day = evs(L.sel);
+    const curW = (dt) => iso(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() - ((dt.getDay() + 6) % 7))) === iso(CW), evD = (dt) => (L.ev[iso(dt)] || []).concat(curW(dt) ? (L.ev[(dt.getDay() + 6) % 7] || []) : []), evs = (d) => evD(DT[d]).map((e, i) => ({ i, s: tm(e.s), e: tm(e.e), n: e.n, c: e.c, so: e })).sort((a, b) => a.s - b.s);
+    const rm = (d, e) => () => { const m = Object.assign({}, this.L.ev), k = iso(DT[d]), k2 = (DT[d].getDay() + 6) % 7; m[k] = (m[k] || []).filter(x => x !== e); if (m[k2]) m[k2] = m[k2].filter(x => x !== e); this.set({ ev: m }); };
+    const day = evs(SEL);
     const now = 13 * 60 + 20, agenda = [], segs = [];
     let maxEnd = START;
     day.forEach((x, k) => {
       const c = CAT[x.c], clash = k > 0 && x.s < maxEnd;
       if (!clash && x.s - maxEnd >= 15 && (k > 0 || x.s - START >= 60)) { const g = x.s - maxEnd, gs = maxEnd; agenda.push({ evDisplay: 'none', gapDisplay: 'flex', gapText: dur(g), fill: () => this.set({ fs: hm(gs), fe: hm(Math.min(gs + 60, x.s)) }), start: '', end: '', name: '', sub: '', bg: 'var(--card)', line: 'var(--card)', fg: 'var(--on-accent)', nowDisplay: 'none', clashDisplay: 'none', remove: () => {} }); }
-      agenda.push({ evDisplay: 'flex', gapDisplay: 'none', gapText: '', fill: () => {}, start: hm(x.s), end: hm(x.e), name: x.n, sub: c[0] + ' · ' + dur(Math.max(0, x.e - x.s)), bg: c[1], line: c[2], fg: c[3], nowDisplay: (L.sel === 0 && x.s <= now && now < x.e) ? 'inline-block' : 'none', clashDisplay: clash ? 'inline-block' : 'none', remove: rm(L.sel, x.so) });
+      agenda.push({ evDisplay: 'flex', gapDisplay: 'none', gapText: '', fill: () => {}, start: hm(x.s), end: hm(x.e), name: x.n, sub: c[0] + ' · ' + dur(Math.max(0, x.e - x.s)), bg: c[1], line: c[2], fg: c[3], nowDisplay: (iso(DT[SEL]) === iso(TD) && x.s <= now && now < x.e) ? 'inline-block' : 'none', clashDisplay: clash ? 'inline-block' : 'none', remove: rm(SEL, x.so) });
       segs.push({ left: Math.round((Math.max(x.s, START) - START) / (END - START) * 1000) / 10, width: Math.max(0.8, Math.round((Math.min(x.e, END) - Math.max(x.s, START)) / (END - START) * 1000) / 10), color: c[2] });
       maxEnd = Math.max(maxEnd, x.e);
     });
     let busy = 0, cur = null; day.forEach(x => { const a = Math.max(START, x.s), b = Math.min(END, x.e); if (b <= a) return; if (!cur || a > cur[1]) { if (cur) busy += cur[1] - cur[0]; cur = [a, b]; } else cur[1] = Math.max(cur[1], b); }); if (cur) busy += cur[1] - cur[0];
     const weekRows = []; WD.forEach((w, d) => { const a = evs(d); weekRows.push({ hdrDisplay: 'block', hdr: WF[d] + ', ' + DT[d].getDate() + ' ' + MON[DT[d].getMonth()], evDisplay: 'none', emptyDisplay: a.length ? 'none' : 'block', time: '', name: '', cat: '', bg: 'var(--card)', line: 'var(--card)', fg: 'var(--ink2)', remove: () => {} }); a.forEach(x => { const c = CAT[x.c]; weekRows.push({ hdrDisplay: 'none', hdr: '', evDisplay: 'flex', emptyDisplay: 'none', time: hm(x.s) + '–' + hm(x.e), name: x.n, cat: c[0], bg: c[1], line: c[2], fg: c[3], remove: rm(d, x.so) }); }); });
-    const pays = []; WD.forEach((w, d) => (L.ev[d] || []).forEach(e => { if (e.c === 'pay') pays.push({ name: e.n, when: w + ', ' + DT[d].getDate() + ' ' + MON[DT[d].getMonth()].slice(0, 3) }); }));
+    const pays = []; WD.forEach((w, d) => evs(d).forEach(x => { const e = x.so; if (e.c === 'pay') pays.push({ name: e.n, when: w + ', ' + DT[d].getDate() + ' ' + MON[DT[d].getMonth()].slice(0, 3) }); }));
+    const first = new Date(SD0.getFullYear(), SD0.getMonth(), 1), gs = new Date(first.getFullYear(), first.getMonth(), 1 - ((first.getDay() + 6) % 7)), nCells = Math.ceil((((first.getDay() + 6) % 7) + new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate()) / 7) * 7;
+    const MN = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    const cells = []; for (let i = 0; i < nCells; i++) { const dt = new Date(gs.getFullYear(), gs.getMonth(), gs.getDate() + i), a = evD(dt).map(e => CAT[e.c] ? CAT[e.c][2] : 'var(--accent)'), on = iso(dt) === iso(SD0), td = iso(dt) === iso(TD); cells.push({ num: dt.getDate(), op: dt.getMonth() === SD0.getMonth() ? 1 : 0.4, bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : (td ? 'var(--ok)' : 'var(--line)'), d1: a.length > 0 ? 'inline-block' : 'none', d2: a.length > 1 ? 'inline-block' : 'none', d3: a.length > 2 ? 'inline-block' : 'none', c1: a[0] || 'transparent', c2: a[1] || 'transparent', c3: a[2] || 'transparent', pick: () => this.set({ sd: iso(dt) }) }); }
+    const shift = (k) => () => { const m = this.L.mode, b = SD0; let n; if (m === 'month') { const tm1 = new Date(b.getFullYear(), b.getMonth() + k, 1), last = new Date(tm1.getFullYear(), tm1.getMonth() + 1, 0).getDate(); n = new Date(tm1.getFullYear(), tm1.getMonth(), Math.min(b.getDate(), last)); } else n = new Date(b.getFullYear(), b.getMonth(), b.getDate() + k * (m === 'week' ? 7 : 1)); this.set({ sd: iso(n) }); };
     const cats = Object.keys(CAT).map(k => ({ name: CAT[k][0], bg: L.cat === k ? CAT[k][2] : 'var(--card)', fg: L.cat === k ? 'var(--on-accent)' : 'var(--ink2)', border: L.cat === k ? CAT[k][2] : 'var(--line)', pick: () => this.set({ cat: k }) }));
     return {
-      modes: [['day', 'День'], ['week', 'Неделя']].map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ mode: m[0] }) })),
-      isDay: L.mode === 'day', isWeek: L.mode === 'week',
+      modes: [['month', 'Месяц'], ['week', 'Неделя'], ['day', 'День']].map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ mode: m[0] }) })),
+      isDay: L.mode !== 'week', isWeek: L.mode === 'week', isMonth: L.mode === 'month', notMonth: L.mode !== 'month', cells, wdHead: WD.map(t => ({ t })), prev: shift(-1), next: shift(1), today: () => this.set({ sd: '' }), subLabel: L.mode === 'month' ? MN[SD0.getMonth()] + ' ' + SD0.getFullYear() : weekLabel,
       dayEmptyDisplay: day.length ? 'none' : 'block',
       weekLabel,
-      dayChips: WD.map((w, i) => { const n = (L.ev[i] || []).length, on = L.sel === i; return { wd: w, num: DT[i].getDate(), count: n ? n + ' дел' : '—', bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ sel: i }) }; }),
-      dayTitle: WF[L.sel] + ', ' + DT[L.sel].getDate() + ' ' + MON[DT[L.sel].getMonth()], freeText: 'Занято ' + dur(busy) + ', свободно ' + dur(END - START - busy) + ' (с 07:00 до 23:00)',
+      dayChips: WD.map((w, i) => { const n = evs(i).length, on = SEL === i; return { wd: w, num: DT[i].getDate(), count: n ? n + ' дел' : '—', bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : 'var(--line)', pick: () => this.set({ sd: iso(DT[i]) }) }; }),
+      dayTitle: WF[SEL] + ', ' + DT[SEL].getDate() + ' ' + MON[DT[SEL].getMonth()], freeText: 'Занято ' + dur(busy) + ', свободно ' + dur(END - START - busy) + ' (с 07:00 до 23:00)',
       agenda, segs,
-      weekRows, pays, noPaysDisplay: pays.length ? 'none' : 'block', cats, selName: WF[L.sel].toLowerCase().replace(/а$/, 'у').replace(/я$/, 'ю'),
+      weekRows, pays, noPaysDisplay: pays.length ? 'none' : 'block', cats, selName: WF[SEL].toLowerCase().replace(/а$/, 'у').replace(/я$/, 'ю'),
       fn: L.fn, fs: L.fs, fe: L.fe, typeN: (e) => this.set({ fn: e.target.value }), typeS: (e) => this.set({ fs: e.target.value }), typeE: (e) => this.set({ fe: e.target.value }), errDisplay: L.err ? 'block' : 'none',
-      add: () => { const n = (this.L.fn || '').trim(), s = tm(this.L.fs); if (!n || s === null) { this.set({ err: true }); return; } let e = tm(this.L.fe); if (e === null || e <= s) e = Math.min(1439, s + 60); const m = Object.assign({}, this.L.ev), d = this.L.sel; m[d] = (m[d] || []).concat([{ s: hm(s), e: hm(e), n, c: this.L.cat }]); this.set({ ev: m, fn: '', fs: '', fe: '', err: false }); }
+      add: () => { const n = (this.L.fn || '').trim(), s = tm(this.L.fs); if (!n || s === null) { this.set({ err: true }); return; } let e = tm(this.L.fe); if (e === null || e <= s) e = Math.min(1439, s + 60); const m = Object.assign({}, this.L.ev), d = iso(DT[SEL]); m[d] = (m[d] || []).concat([{ s: hm(s), e: hm(e), n, c: this.L.cat }]); this.set({ ev: m, fn: '', fs: '', fe: '', err: false }); }
     };
   }
 }
