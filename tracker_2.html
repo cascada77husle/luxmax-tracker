@@ -353,6 +353,38 @@ input,textarea,select{background-color:rgba(255,255,255,.035) !important;border-
 .dvA .dvBars i,.dvBars i{background:linear-gradient(180deg,#f29a52,#c8652b)}
 .dvWk i{background:linear-gradient(180deg,#e9b84f,#c18a22)}
 </style>
+<style id="arqSkin3">
+/* ===== ARQON skin v30: тёплый графит + оранжевый акцент ===== */
+html{background:#0a0605 !important}html:root:root{--bg:transparent}html body{background:transparent !important}
+html::before{opacity:1;inset:-6%;filter:blur(36px);animation:arqAuroraW 50s ease-in-out infinite alternate;
+ background:
+  radial-gradient(55% 42% at 50% -8%,rgba(255,106,42,.34),transparent 72%),
+  radial-gradient(42% 40% at 104% 104%,rgba(255,84,24,.30),transparent 72%),
+  radial-gradient(38% 40% at -6% 70%,rgba(150,60,22,.34),transparent 72%),
+  radial-gradient(34% 30% at 78% 40%,rgba(255,150,60,.10),transparent 72%)}
+@keyframes arqAuroraW{0%{transform:translate3d(-3%,-2%,0) scale(1)}50%{transform:translate3d(3%,3%,0) scale(1.08)}100%{transform:translate3d(-1%,4%,0) scale(1.04)}}
+html::after{background:radial-gradient(130% 100% at 50% 50%,transparent 55%,rgba(0,0,0,.55))}
+body::before{opacity:.07}
+.card,.tkCat,.arqWc,.wvc-pn,
+div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"],
+.pg div[style*="background: var(--card)"][style*="box-shadow: var(--shadow)"],
+html.lt .card,html.lt .tkCat,html.lt .arqWc,html.lt .wvc-pn,html.lt .pg .card,
+html.lt .pg div[style*="border-radius:22px"][style*="background:var(--card)"],html.lt .pg div[style*="border-radius:20px"][style*="background:var(--card)"],html.lt .pg div[style*="border-radius:18px"][style*="background:var(--card)"],
+html.lt .pg div[style*="background: var(--card)"][style*="box-shadow: var(--shadow)"]{
+ background-color:rgba(11,9,9,.84) !important;
+ background-image:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 30%),linear-gradient(160deg,rgba(255,106,42,.07),rgba(255,106,42,0) 55%) !important;
+ border-color:rgba(255,255,255,.06) !important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 20px 44px -24px rgba(0,0,0,.95) !important;animation:dcIn .34s cubic-bezier(.2,.8,.2,1) both !important}
+.arqAn,.arqT,.arqAhH,.arqAhK,.arqAhA,div[style*="background:var(--field)"],div[style*="background: var(--field)"]{background-color:rgba(255,255,255,.03) !important}
+button[style*="background:var(--accent)"],button[style*="background: var(--accent)"],.btn{
+ background:linear-gradient(180deg,#ff7d3e 0%,#f2561b 100%) !important;color:#fff !important;border:0 !important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 22px -10px rgba(255,92,28,.7) !important}
+.arqNb[aria-current="page"],.arqNb[aria-current="true"]{background:linear-gradient(180deg,#ff7d3e,#f2561b) !important;color:#fff !important;box-shadow:0 6px 18px -8px rgba(255,92,28,.8) !important}
+.arqNav{background:rgba(12,9,8,.78) !important;border-right-color:rgba(255,255,255,.06) !important}
+#arqRG3 stop{stop-color:#ffb02e}#arqRG3 stop:nth-child(2){stop-color:#ff8a3c}#arqRG3 stop:nth-child(3){stop-color:#ff6a2a}#arqRG3 stop:nth-child(4){stop-color:#ffcf70}
+#arqThm,#thTg{background:rgba(255,255,255,.05) !important}
+.arqAhB i{border-color:#ff7d3e;background:rgba(255,125,62,.2)}
+</style>
 </head>
 <body>
 <x-dc>
