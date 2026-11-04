@@ -207,34 +207,49 @@ if(S().end)run();render();
 var st=document.createElement('style');st.textContent='@media (min-width:1000px){#arqFocus{bottom:24px !important;right:24px !important}}';document.head.appendChild(st)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()}catch(e){}})();</script>
 <style id="arqSkin">
-/* ARQON: оформление карточек и виджетов по референсу (палитра прежняя) */
+/* ARQON: оформление в духе референса — глянцевые графитовые карточки, пассивные цвета */
 .card,.tkCat,.arqWc,.wvc-pn,
 div[style*="border-radius:22px"][style*="background:var(--card)"],div[style*="border-radius:20px"][style*="background:var(--card)"],div[style*="border-radius:18px"][style*="background:var(--card)"],
 .pg div[style*="background: var(--card)"][style*="box-shadow: var(--shadow)"],
 html.lt .card,html.lt .tkCat,html.lt .arqWc,html.lt .wvc-pn,html.lt .pg .card,
 html.lt .pg div[style*="border-radius:22px"][style*="background:var(--card)"],html.lt .pg div[style*="border-radius:20px"][style*="background:var(--card)"],html.lt .pg div[style*="border-radius:18px"][style*="background:var(--card)"],
 html.lt .pg div[style*="background: var(--card)"][style*="box-shadow: var(--shadow)"]{
- border-radius:26px !important;border:1px solid rgba(255,255,255,.055) !important;
- background-color:#0d0e12 !important;
- background-image:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,0) 42%) !important;
+ border-radius:28px !important;border:1px solid rgba(255,255,255,.06) !important;
+ background-color:#0c0d11 !important;
+ background-image:radial-gradient(110% 80% at 0% 0%,rgba(255,255,255,.06),rgba(255,255,255,0) 58%),linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0) 45%) !important;
  -webkit-backdrop-filter:none !important;backdrop-filter:none !important;
- box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 44px -30px rgba(0,0,0,.95) !important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 0 0 1px rgba(255,255,255,.015),0 28px 50px -32px rgba(0,0,0,.95) !important;
  animation:dcIn .3s ease both !important}
-.tkCat{border-radius:22px !important}.arqWc{border-radius:20px !important}
-.arqAn,.arqT,.arqAhH,.arqAhK,.arqAhA,div[style*="background:var(--field)"],div[style*="background: var(--field)"]{border-radius:18px !important;background-color:#121318 !important;border-color:rgba(255,255,255,.05) !important}
+.tkCat{border-radius:24px !important}.arqWc{border-radius:20px !important}
+.arqAn,.arqT,div[style*="background:var(--field)"],div[style*="background: var(--field)"]{border-radius:20px !important;background-color:#111217 !important;border-color:rgba(255,255,255,.05) !important}
 button[style*="background:var(--accent)"],button[style*="background: var(--accent)"],.btn{border-radius:999px !important}
 button[style*="border:1px solid var(--line2)"],button[style*="border: 1px solid var(--line2)"]{border-radius:999px !important;border-color:rgba(255,255,255,.08) !important;background-color:rgba(255,255,255,.035) !important}
-input,textarea,select{border-radius:14px !important;background-color:#121318 !important;border:1px solid rgba(255,255,255,.07) !important}
+input,textarea,select{border-radius:16px !important;background-color:#111217 !important;border:1px solid rgba(255,255,255,.07) !important}
 .arqNb{border-radius:16px !important}
-.arqNb[aria-current="page"],.arqNb[aria-current="true"]{background:#f4f5f7 !important;color:#0a0b0e !important}
-.arqNav{background:#0b0c10 !important;border-right-color:rgba(255,255,255,.05) !important}
+.arqNb[aria-current="page"],.arqNb[aria-current="true"]{background:#f1f2f5 !important;color:#0a0b0e !important}
+.arqNav{background:#0a0b0f !important;border-right-color:rgba(255,255,255,.05) !important}
+
+/* шапка волны: крупные глянцевые карточки-показатели */
+div[style*="waveIn"][style*="16px 18px"]{border-radius:32px !important;padding:22px 24px !important;gap:18px !important;background:#0b0c10 !important;background-image:radial-gradient(70% 90% at 100% 0%,rgba(255,255,255,.05),transparent 60%) !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 30px 60px -36px #000 !important}
+div[style*="minmax(170px"]{--ok:#cdb27c;gap:14px !important}
+div[style*="minmax(170px"]>div{position:relative;min-height:132px;padding:18px 20px !important;border-radius:28px !important;border:1px solid rgba(255,255,255,.07) !important;overflow:hidden;
+ background:linear-gradient(165deg,#1b1c22 0%,#0d0e12 62%) !important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 22px 40px -26px #000 !important;justify-content:space-between}
+div[style*="minmax(170px"]>div::before{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.14),rgba(255,255,255,0) 68%);pointer-events:none}
+div[style*="minmax(170px"]>div:nth-child(3)::before{background:radial-gradient(circle,rgba(205,178,124,.20),rgba(205,178,124,0) 68%)}
+div[style*="minmax(170px"] b{font-weight:300 !important;font-size:40px !important;letter-spacing:-.035em !important;line-height:1 !important}
+div[style*="minmax(170px"] span[style*="uppercase"]{font-size:12px !important;letter-spacing:.04em !important;text-transform:none !important;font-weight:500 !important}
+#arqRG2 stop,#arqRG3 stop{stop-color:#ece7dc}#arqRG2 stop:nth-child(2),#arqRG3 stop:nth-child(2){stop-color:#cdb27c}#arqRG2 stop:nth-child(3),#arqRG3 stop:nth-child(3){stop-color:#a99466}#arqRG2 stop:nth-child(4),#arqRG3 stop:nth-child(4){stop-color:#f4efe4}
+
+/* чипы и метки: пассивные цвета */
+.tkRow span[style*="border-radius"],.tkRow a,.tkRow .tkLn,.tkRow button[style*="border-radius"]{filter:saturate(.22)}
+.tkRow span[style*="border-radius"]{background:rgba(255,255,255,.06) !important;border-color:transparent !important}
+.tkGrid .tkCat{background-image:radial-gradient(120% 70% at 0% 0%,rgba(255,255,255,.05),transparent 60%) !important}
+.arqWc,.wvc-pn,.wvic{filter:saturate(.4)}
 </style>
 <style id="arqMuted">
-/* строго графитовая палитра: статусные цвета приглушены */
-html:root:root{--ok:#86ae9b;--bad:#c88c95;--warn:#c8a66d;--cat-blue:#7f93ad;--cat-violet:#8a8ba8;--cat-indigo:#7c86a6;--cat-pink:#b08a9a;--cat-violet-ink:#aeb1c6}
-#arqRG3 stop{stop-color:#f2f3f6}#arqRG3 stop:nth-child(2){stop-color:#c9ccd5}#arqRG3 stop:nth-child(3){stop-color:#a9adb9}#arqRG3 stop:nth-child(4){stop-color:#e4e6ec}
+html:root:root{--ok:#8fae9f;--bad:#c4929a;--warn:#c9ab76;--cat-blue:#8394ab;--cat-violet:#8e8fa9;--cat-indigo:#808aa6;--cat-pink:#ad8e9c;--cat-violet-ink:#b0b3c6}
 .arqAnG{--ok:#d5d8e0}
-.arqWc,.arqWvCard,[class*="wvCard"]{filter:saturate(.45)}
 </style>
 </head>
 <body>
