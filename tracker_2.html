@@ -1,6 +1,63 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script>
+/* Демо-волна: открыть ссылку с ?demo=1, создаётся волна «Пример: всё заполнено». Остальные данные не меняются. */
+(function(){try{
+if(!/[?&]demo(=|&|$)/.test(location.search))return;
+var K='tracker:v1',raw=localStorage.getItem(K),S=raw?JSON.parse(raw):{v:1};
+var p2=function(n){return(n<10?'0':'')+n},iso=function(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())};
+var now=new Date(),day=function(o){return iso(new Date(now.getFullYear(),now.getMonth(),now.getDate()+o))};
+var start=day(-9);
+var img=function(a,b,t){return'data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs><rect width="480" height="300" fill="url(#g)"/><text x="240" y="165" font-size="44" text-anchor="middle" fill="#fff" font-family="sans-serif">'+t+'</text></svg>')};
+var T={
+'':[
+{t:'Утренняя зарядка',m:15,prio:'mid',s:'07:30',e:'07:45',dp:'m',rb:10,rep:'daily',n:'Разминка шеи, плечи, 20 приседаний',subs:['Шея','Плечи','Приседания']},
+{t:'Погулять с собакой',m:45,prio:'mid',s:'08:00',e:'08:45',dp:'m',loc:'ул. Тверская, парк Горького',geo:{lat:55.7287,lon:37.6017},rb:10,rep:'daily',n:'Маршрут: от Тверской до набережной',img:img('#34d399','#0ea5e9','🐕 Маршрут')},
+{t:'Купить продукты',m:40,prio:'low',s:'18:30',dp:'e',loc:'Супермаркет на Арбате',geo:{lat:55.7522,lon:37.5922},subs:['Молоко','Хлеб','Овощи','Яйца'],only:day(0)},
+{t:'Позвонить маме',m:20,prio:'high',s:'20:00',dp:'e',rb:30,rep:'weekly',n:'Спросить про выходные'},
+{t:'Вечерняя уборка',m:30,prio:'low',s:'21:00',dp:'e',subs:['Посуда','Пол','Мусор']}],
+'Фокус':[
+{t:'Главное дело: питч для клиента',m:120,prio:'urg',s:'10:00',e:'12:00',dp:'m',star:true,rb:15,n:'Структура: проблема, решение, цена. Отправить до 13:00',subs:['Структура','Слайды','Репетиция','Отправить'],links:['https://docs.google.com/presentation'],nx:['Уточнить бюджет','Добавить кейс'],img:img('#7c6cff','#38bdf8','Питч')},
+{t:'Разобрать почту',m:30,prio:'mid',s:'09:00',e:'09:30',dp:'m',rep:'daily'},
+{t:'Созвон с командой',m:45,prio:'high',s:'15:00',e:'15:45',dp:'d',rb:10,loc:'Zoom / офис на Лубянке',geo:{lat:55.7597,lon:37.6279},links:['https://zoom.us']},
+{t:'Ночное планирование завтра',m:15,prio:'low',s:'23:00',dp:'n',rep:'daily',n:'Выбрать 3 главных дела'}],
+'Спорт':[
+{t:'Тренировка: грудь и трицепс',m:60,prio:'high',s:'18:00',e:'19:00',dp:'e',rb:30,loc:'Фитнес-клуб, Новослободская',geo:{lat:55.7797,lon:37.5976},subs:['Жим лёжа 4×8','Отжимания на брусьях','Разводка','Планка'],img:img('#ff5fa2','#f97316','💪 Зал')},
+{t:'Пробежка 5 км',m:30,prio:'mid',s:'06:45',dp:'m',loc:'Лужники, набережная',geo:{lat:55.7158,lon:37.5539},rep:'weekly'},
+{t:'Растяжка перед сном',m:15,prio:'low',s:'22:15',dp:'n'}],
+'Учёба':[
+{t:'Английский: 20 новых слов',m:25,prio:'mid',s:'13:00',dp:'d',rep:'daily',subs:['Карточки','Повторение','Диктант']},
+{t:'Курс по продажам: урок 5',m:60,prio:'high',s:'16:00',e:'17:00',dp:'d',links:['https://example.com/course'],nx:['Конспект в заметки']},
+{t:'Прочитать 30 страниц',m:40,prio:'low',s:'21:30',dp:'e',n:'Книга «Атомные привычки»'}],
+'Работа':[
+{t:'Отчёт по неделе',m:60,prio:'high',s:'14:00',dp:'d',rb:30,rep:'weekly',subs:['Цифры','Выводы','Планы']},
+{t:'Встреча с клиентом',m:90,prio:'urg',s:'11:00',e:'12:30',dp:'m',loc:'Кафе «Пушкин», Тверской бульвар, 26А',geo:{lat:55.7648,lon:37.6055},rb:60,img:img('#ffb02e','#ef4444','Встреча')},
+{t:'Счёт для подрядчика',m:20,prio:'mid',s:'17:30',dp:'e',only:day(1)}]
+};
+var H=[
+{id:'hd1',t:'Вода',f:'daily',cr:start,n:'Стакан воды сразу после подъёма',ty:'qty',q:8,qu:'стаканов'},
+{id:'hd2',t:'Зарядка',f:'daily',cr:start,n:'',rm:'07:20'},
+{id:'hd3',t:'Чтение',f:'daily',cr:start,n:'Любая книга',ty:'dur',q:30,qu:'мин'},
+{id:'hd4',t:'Подъём до 7:00',f:'daily',cr:start,n:'',ty:'time',tm:'07:00'},
+{id:'hd5',t:'Тренировка',f:'week',fn:3,cr:start,n:'Три раза в неделю'},
+{id:'hd6',t:'Йога',f:'days',fd:[1,3,5],cr:start,n:'Вт, Чт, Сб'},
+{id:'hd7',t:'Без сахара',f:'daily',cr:start,n:'Без сладкого и газировки'},
+{id:'hd8',t:'Медитация 10 минут',f:'daily',cr:start,n:'',ty:'dur',q:10,qu:'мин'}];
+var done={},hs={},hq={},ht={};
+for(var o=-9;o<=-1;o++){var d=day(o);
+ ['hd1','hd2','hd3','hd4','hd7','hd8'].forEach(function(id,i){var r=(o*7+i*3+20)%5;if(r===0)return;var k=d+'|H|'+id;
+  if(r===1){hs[k]='part';if(id==='hd1')hq[k]=5;return}
+  done[k]=true;if(id==='hd1')hq[k]=8;if(id==='hd3')hq[k]=30;if(id==='hd8')hq[k]=10;if(id==='hd4')ht[k]='06:'+p2(40+((o+20)%15))});}
+var tz=3;if(S.waves&&S.waves[0]&&S.waves[0].tz!=null)tz=S.waves[0].tz;
+var W={id:'wdemo',kind:'own',name:'Пример: всё заполнено',dirs:['Фокус и работа','Спорт','Учёба'],dk:['focus','sport','study'],blocks:['Фокус','Спорт','Учёба','Работа'],start:start,tz:tz,tasks:T,done:done,hs:hs,hq:hq,ht:ht,habits:H,gc:'#7c6cff',gi:'🚀'};
+if(S.dm==null)S.dm=2;if(S.em==null)S.em=1;if(S.wv==null)S.wv=3;if(S.wd==null)S.wd=2;
+S.waves=(S.waves||[]).filter(function(w){return w.id!=='wdemo'}).concat([W]);
+S.waveCur='wdemo';S.waveOpen=true;S.mode='day';S.at=Date.now();
+localStorage.setItem(K,JSON.stringify(S));
+}catch(e){}})();
+</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0c10">
@@ -31,10 +88,14 @@ html.lt .pg div[style*="background: var(--card)"][style*="box-shadow: var(--shad
 .arqWv{display:none}
 @media (min-width:1000px){.arqWv{display:flex;flex-direction:column;gap:3px;margin-top:6px;padding-top:12px;border-top:1px solid var(--line)}}
 .arqWv>span{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 14px 6px}
-.arqWv button{cursor:pointer;display:flex;align-items:center;gap:10px;border:0;border-radius:12px;padding:9px 14px;min-height:0;text-align:left;font-size:13px;font-weight:600;transition:background-color .25s ease,transform .16s ease}
-.arqWv button:hover{background:rgba(255,255,255,.06) !important}
-.arqWv i{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 10px currentColor}
-.arqWv em{font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arqWv{gap:8px}
+.arqWv button.arqWc{--base:#0a0c14;position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:56px;padding:9px 12px;border-radius:18px;text-align:left;color:#fff;border:1px solid color-mix(in srgb,var(--g) 55%,rgba(255,255,255,.25));background:repeating-linear-gradient(115deg,rgba(255,255,255,.07) 0 2px,transparent 2px 14px),radial-gradient(90% 90% at 100% 0%,color-mix(in srgb,var(--g) 85%,#fff 10%),transparent 70%),linear-gradient(150deg,color-mix(in srgb,var(--g) 62%,var(--base)),color-mix(in srgb,var(--g) 16%,var(--base)));box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -18px 28px -20px rgba(0,0,0,.45),0 12px 24px -16px color-mix(in srgb,var(--g) 80%,transparent);transition:transform .25s cubic-bezier(.22,.8,.3,1),box-shadow .25s ease}
+.arqWv button.arqWc::after{content:"";position:absolute;top:-30%;bottom:-30%;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.34),transparent);transform:translateX(0) skewX(-18deg);animation:wvShine 5.5s ease-in-out infinite;pointer-events:none}
+.arqWv button.arqWc:hover{background-color:transparent;transform:translateY(-2px)}
+.arqWc-ic{width:34px;height:34px;flex:none;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.arqWc-tx{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.arqWc-tx b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arqWc-tx span{font-size:11.5px;opacity:.78}
 .wv-card{transition:transform .35s cubic-bezier(.22,.8,.3,1),box-shadow .35s ease !important}
 .wv-card:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 22px 50px -20px color-mix(in srgb,var(--g) 70%,transparent) !important;border-color:color-mix(in srgb,var(--g) 55%,transparent) !important}
 </style>
@@ -56,6 +117,9 @@ html.lt .pg div[style*="background: var(--card)"][style*="box-shadow: var(--shad
 .wvc-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.65),#fff);box-shadow:0 0 12px rgba(255,255,255,.7)}
 .wvc-ed{position:absolute;top:12px;right:12px;width:36px;height:36px;min-width:36px;min-height:36px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;font-size:15px;cursor:pointer;z-index:2}
 .wvic{display:inline-block}
+button[aria-label="Выше"],button[aria-label="Ниже"]{background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 55%,rgba(120,140,255,.10))!important;border:1px solid rgba(255,255,255,.22)!important;color:rgba(255,255,255,.85)!important;border-radius:9px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -6px 10px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.28),0 0 10px rgba(130,150,255,.14);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:box-shadow .2s,transform .12s}
+button[aria-label="Выше"]:hover,button[aria-label="Ниже"]:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -6px 10px rgba(0,0,0,.18),0 2px 10px rgba(0,0,0,.3),0 0 16px rgba(130,150,255,.4)}
+button[aria-label="Выше"]:active,button[aria-label="Ниже"]:active{transform:scale(.93)}
 button.arqCk,button[style*="width: 24px"]:not([style*="position"]),button[style*="width: 28px"]:not([style*="position"]),button[style*="width: 30px"]:not([style*="position"]),button[style*="width:24px"]:not([style*="position"]),button[style*="width:30px"]:not([style*="position"]),button[style*="width:28px"]:not([style*="position"]){position:relative}
 button.arqCk::after,button[style*="width: 24px"]:not([style*="position"])::after,button[style*="width: 28px"]:not([style*="position"])::after,button[style*="width: 30px"]:not([style*="position"])::after,button[style*="width:24px"]:not([style*="position"])::after,button[style*="width:30px"]:not([style*="position"])::after,button[style*="width:28px"]:not([style*="position"])::after{content:"";position:absolute;inset:-8px}
 html.lt .wvic{filter:invert(1) hue-rotate(180deg)}
@@ -1818,7 +1882,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
     <nav aria-label="Разделы" style="max-width:640px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px">
       <sc-for list="{{navItems}}" as="n" hint-placeholder-count="5"><button type="button" class="arqNb" onClick="{{n.pick}}" aria-current="{{n.cur}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:{{n.bg}};border-radius:12px;padding:8px 2px;color:{{n.fg}};font-size:11px;font-weight:{{n.w}};transition:background-color .35s ease,color .3s ease,transform .2s ease"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg><span style="white-space:nowrap;line-height:1.25">{{n.name}}</span></button></sc-for>
     </nav>
-    <div class="arqWv"><span>Волны</span><sc-for list="{{navWaves}}" as="w" hint-placeholder-count="3"><button type="button" onClick="{{w.pick}}" style="background:{{w.bg}};color:{{w.fg}}"><i style="background:{{w.dot}};color:{{w.dot}}"></i><em>{{w.name}}</em></button></sc-for></div>
+    <div class="arqWv"><span>Волны</span><sc-for list="{{navWaves}}" as="w" hint-placeholder-count="3"><button type="button" class="arqWc" onClick="{{w.pick}}" style="--g:{{w.dot}};box-shadow:{{w.ring}}"><span class="arqWc-ic"><span class="wvic">{{w.icon}}</span></span><span class="arqWc-tx"><b>{{w.name}}</b><span>{{w.day}}</span></span></button></sc-for></div>
   </div>
 </div>
 </x-dc>
@@ -2375,7 +2439,7 @@ class Component extends DCLogic {
         const act = mode === 'me' ? 'dash' : mode;
         return NV.map(n => ({ name: n[1], icon: n[2], cur: act === n[0] ? 'page' : 'false', bg: act === n[0] ? 'var(--accent-soft)' : 'transparent', fg: act === n[0] ? 'var(--accent-text)' : 'var(--muted)', w: act === n[0] ? 700 : 600, pick: () => this.set(Object.assign({}, n[0] === 'day' ? { mode: 'day', menu: '', waveOpen: false } : { mode: n[0], menu: '' })) }));
       })(),
-      navWaves: (L.waves || []).map((w, wi) => { const on = mode === 'day' && !!L.waveOpen && L.waveCur === w.id; return { name: w.name, dot: w.gc || WGC[wHash(w.id) % WGC.length], bg: on ? 'rgba(255,255,255,.09)' : 'transparent', fg: on ? 'var(--ink)' : 'var(--muted)', pick: () => { const td = this.todayDate(L), t = td.getFullYear() + '-' + String(td.getMonth() + 1).padStart(2, '0') + '-' + String(td.getDate()).padStart(2, '0'), d0 = t < w.start ? w.start : t, off = Math.round((Date.parse(d0) - Date.parse(t)) / 864e5); this.set({ mode: 'day', menu: '', waveCur: w.id, waveOpen: true, wDate: d0, dayOff: Math.max(-60, Math.min(30, off)) }); } }; }),
+      navWaves: (L.waves || []).map((w, wi) => { const on = mode === 'day' && !!L.waveOpen && L.waveCur === w.id; const td0 = this.todayDate(L), t0 = td0.getFullYear() + '-' + String(td0.getMonth() + 1).padStart(2, '0') + '-' + String(td0.getDate()).padStart(2, '0'), dn = Math.round((Date.parse(t0) - Date.parse(w.start)) / 864e5) + 1; return { name: w.name, icon: w.gi || WIC[wHash(w.id) % WIC.length], day: dn >= 1 ? 'День ' + dn : 'старт ' + w.start.slice(8, 10) + '.' + w.start.slice(5, 7), ring: on ? '0 0 0 2px rgba(255,255,255,.9),0 0 18px color-mix(in srgb,var(--g) 70%,transparent)' : '', dot: w.gc || WGC[wHash(w.id) % WGC.length], bg: '', fg: '', pick: () => { const td = this.todayDate(L), t = td.getFullYear() + '-' + String(td.getMonth() + 1).padStart(2, '0') + '-' + String(td.getDate()).padStart(2, '0'), d0 = t < w.start ? w.start : t, off = Math.round((Date.parse(d0) - Date.parse(t)) / 864e5); this.set({ mode: 'day', menu: '', waveCur: w.id, waveOpen: true, wDate: d0, dayOff: Math.max(-60, Math.min(30, off)) }); } }; }),
       ...((() => {
     const CH = [['Запишите, кем хотите стать через 30 дней, и свою точку А по сну, телу, деньгам и работе', 'Напишите одному близкому человеку о своей цели'], ['Выберите время отбоя и подъёма и поставьте два будильника', 'Предупредите близких о новом режиме'], ['Соберите утро из 4 шагов: вода, свет, движение, план дня', 'Поздоровайтесь первым с тремя людьми'], ['Рассчитайте норму воды и белка, уберите сладкие напитки', 'Позовите кого-то на совместный обед'], ['Короткая тренировка на всё тело по видео или по плану', 'Расскажите другу о тренировке'], ['Проверьте осанку у стены, 5 минут дыхания животом', 'Держите прямую спину в разговоре'], ['Обзор недели: сон, тренировки, питание, фокус', 'Попросите обратную связь у близкого'], ['Белок в каждый приём пищи, порции по ладони', 'Обсудите с кем-то рецепт или продукт'], ['Один блок 50 минут над самым важным делом без телефона', 'Скажите коллеге, когда вы недоступны для связи'], ['Запишите веса и повторы, добавьте в силовой чуть больше', 'Позанимайтесь с партнёром или в зале рядом с людьми'], ['Удалите лишние приложения, отключите уведомления, режим «Не беспокоить» на ночь', 'Один разговор без телефона в руках'], ['Умывание, крем с SPF, чистая одежда, ногти, причёска', 'Спросите знакомого честно про ваш образ'], ['Походка, плечи, взгляд: 10 минут перед зеркалом', 'Держите зрительный контакт в трёх разговорах'], ['Обзор недели 2: тело, питание, привычки', 'Поблагодарите одного человека лично'], ['Задайте 5 открытых вопросов в разговорах', 'Пересказывайте услышанное своими словами'], ['Читайте вслух 5 минут, замедлите речь, делайте паузы', 'Запишите свой голос и послушайте'], ['Изучите открытую позу, руки, дистанцию', 'Сравните закрытую и открытую позу в разговоре'], ['Придумайте 3 вводные фразы для знакомства', 'Заговорите с одним новым человеком'], ['Дыхание 4-6, прогулка без телефона, отключение вечером', 'Назначьте встречу с тем, кто восстанавливает'], ['Запишите доходы и расходы, определите «подушку» на 3 месяца', 'Обсудите бюджет с партнёром или другом'], ['Обзор недели 3: общение, деньги, энергия', 'Напишите тому, с кем давно не общались'], ['Разберите гардероб: оставьте то, что сидит и нравится', 'Попросите оценку образа у человека со вкусом'], ['Потренируйте вежливый отказ вслух', 'Скажите «нет» одному ненужному предложению'], ['Выпишите свой круг общения: кто даёт энергию, кто забирает', 'Пригласите одного человека на встречу'], ['Сформулируйте дело на 90 дней и первый шаг', 'Расскажите о деле одному человеку'], ['Утренний свет, кофеин до 14:00, экран выключить за час до сна', 'Тихая беседа вечером без экранов'], ['Подготовьте разговор: факт, чувство, просьба', 'Проведите один сложный разговор спокойно'], ['Обзор недели 4: что работает, что убрать', 'Поделитесь итогами с близким'], ['Соберите свою систему: утро, работа, тело, вечер на одной странице', 'Попросите близкого помогать вам по системе'], ['Итоги 30 дней: цифры, фото, выводы, следующий цикл', 'Поблагодарите тех, кто вас поддержал']];
     const mkChange = (i) => {
