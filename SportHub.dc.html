@@ -32,14 +32,7 @@
 </helmet>
 <div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
 
-<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
-  <div style="display:flex;flex-direction:column;gap:2px"><b class="sH" style="font-size:24px">Спорт</b><span style="font-size:14px;color:var(--muted)">{{subLabel}}</span></div>
-  <div style="display:flex;align-items:center;gap:8px"><button type="button" onClick="{{prev}}" aria-label="Неделя назад" class="sRound">‹</button><button type="button" onClick="{{today}}" class="sBtn" style="height:34px">Сегодня</button><button type="button" onClick="{{next}}" aria-label="Неделя вперёд" class="sRound">›</button></div>
-</div>
-
-<div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
-  <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><button type="button" onClick="{{d.pick}}" class="sDay" style="border-color:{{d.border}};background:{{d.bg}};color:{{d.fg}}"><span style="font-size:12px;font-weight:600;opacity:.8">{{d.wd}}</span><b style="font-size:20px;font-weight:800;color:{{d.fg}}">{{d.num}}</b><span class="sDayN" style="color:{{d.fg}}">{{d.plan}}</span><span style="width:100%;max-width:44px;height:4px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden"><span style="display:block;height:100%;width:{{d.pct}}%;background:{{d.bar}};border-radius:99px"></span></span></button></sc-for>
-</div>
+<div style="display:flex;flex-direction:column;gap:2px"><b class="sH" style="font-size:24px">Питание и вода</b><span style="font-size:14px;color:var(--muted)">Сегодня</span></div>
 
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
   <div class="card sCard" style="flex-direction:row;align-items:center;gap:14px">
@@ -55,30 +48,9 @@
     <b class="sBig" style="color:#8fbfe0">{{wText}}</b>
     <div style="display:flex;gap:5px;flex-wrap:nowrap;gap:3px"><sc-for list="{{glasses}}" as="g" hint-placeholder-count="10"><button type="button" onClick="{{g.pick}}" aria-label="Стаканов воды: {{g.n}}" style="cursor:pointer;border:0;background:transparent;padding:1px;display:flex"><svg width="19" height="25" viewBox="0 0 26 34" aria-hidden="true"><path d="M3 3h20l-2.5 27a3 3 0 01-3 2.7h-9a3 3 0 01-3-2.7z" fill="{{g.fill}}" stroke="#8fbfe0" stroke-width="2" stroke-linejoin="round"></path></svg></button></sc-for></div>
   </div>
-  <div class="card sCard">
-    <span class="sM">Неделя</span>
-    <div style="display:flex;align-items:baseline;gap:8px"><b class="sBig">{{wkDone}}</b><span style="font-size:14px;color:var(--muted)">{{wkOf}}</span></div>
-    <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2)"><span>Объём <b>{{wkVol}}</b></span><span>Время <b>{{wkTime}}</b></span></div>
-    <div style="display:flex;align-items:flex-end;gap:6px;height:44px"><sc-for list="{{vols}}" as="v" hint-placeholder-count="4"><div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%"><div style="width:100%;border-radius:6px;background:{{v.col}};height:{{v.h}}px;min-height:3px"></div><span style="font-size:10px;color:var(--muted)">{{v.lab}}</span></div></sc-for></div>
   </div>
-</div>
 
 <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
-
-<div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:16px">
-  <div class="card sCard">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div style="display:flex;align-items:center;gap:10px"><span class="fiBox" style="background:rgba(182,168,224,.16);color:#c3b8ea"><i class="fi" style="--fi:{{icDumb}}"></i></span><div style="display:flex;flex-direction:column"><b class="sH">{{trTitle}}</b><span class="sM">{{trSub}}</span></div></div><span style="font-size:13px;color:var(--muted)">{{trProg}}</span></div>
-    <div style="height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden"><div style="height:100%;width:{{trPct}}%;background:#b6a8e0;border-radius:99px;transition:width .5s cubic-bezier(.22,.8,.3,1)"></div></div>
-    <sc-for list="{{exs}}" as="x" hint-placeholder-count="5"><div class="sEx"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div style="display:flex;flex-direction:column;min-width:0"><b style="font-size:14px">{{x.name}}</b><span class="sM">{{x.sub}}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{x.sets}}" as="s" hint-placeholder-count="4"><button type="button" onClick="{{s.pick}}" aria-label="Подход {{s.n}}" class="sSet" style="background:{{s.bg}};border-color:{{s.bd}};color:{{s.fg}}">{{s.t}}</button></sc-for><button type="button" onClick="{{x.rm}}" aria-label="Убрать" class="sX" style="display:{{x.rmD}}"><i class="ai ai-x"></i></button></div></div></div></sc-for>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:4px"><input type="text" value="{{xn}}" onInput="{{typeXn}}" placeholder="Своё упражнение, например «Тяга гантели»" aria-label="Упражнение" class="sInp" style="flex:1 1 200px"><input type="text" inputmode="decimal" value="{{xw}}" onInput="{{typeXw}}" placeholder="кг" aria-label="Вес" class="sInp" style="width:64px"><input type="text" inputmode="numeric" value="{{xr}}" onInput="{{typeXr}}" placeholder="повт." aria-label="Повторы" class="sInp" style="width:72px"><button type="button" onClick="{{addEx}}" class="sPri">Добавить</button></div>
-  </div>
-
-  <div class="card sCard">
-    <b class="sH">Личные рекорды</b>
-    <sc-for list="{{recs}}" as="r" hint-placeholder-count="5"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--soft)"><span style="display:flex;align-items:center;gap:10px"><span class="fiBox" style="width:32px;height:32px;border-radius:10px;background:rgba(217,196,143,.14);color:#d9c48f"><i class="fi" style="width:17px;height:17px;--fi:{{icTrophy}}"></i></span><span style="font-size:14px;font-weight:600">{{r.name}}</span></span><span style="display:flex;flex-direction:column;align-items:flex-end"><b style="font-size:14px">{{r.val}}</b><span class="sM">{{r.when}}</span></span></div></sc-for>
-    <span style="display:{{recEmptyD}};font-size:13px;color:var(--muted)">Рекорды появятся, когда начнёте записывать подходы.</span>
-  </div>
-</div>
 
 <div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:16px">
   <div class="card sCard">
