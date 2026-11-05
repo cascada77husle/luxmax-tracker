@@ -178,9 +178,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:var(--muted);font-weight:600">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em;color:{{s.color}}">{{s.value}}</b><span style="font-size:12px;color:var(--muted)">{{s.sub}}</span></div>
         </sc-for>
       </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:1px;background:var(--soft)"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Тренировка сегодня</b><span style="font-size:13px;color:var(--muted)">Подходов выполнено: <b style="color:var(--cat-violet)">{{setsDone}}</b> из {{setsTotal}}</span></div>
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <sc-for list="{{templates}}" as="t" hint-placeholder-count="4">
@@ -234,18 +232,14 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
       <sc-for list="{{cardioLog}}" as="l" hint-placeholder-count="2">
         <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--cat-violet) 13%,var(--card));font-size:13px"><b style="color:var(--cat-violet-ink)">{{l.name}}</b><span>{{l.text}}</span></div>
       </sc-for>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:1px;background:var(--soft)"></div>
       <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Объём по неделям</b>
       <div style="display:flex;align-items:flex-end;gap:12px;height:130px">
         <sc-for list="{{volumes}}" as="v" hint-placeholder-count="4">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%"><span style="font-size:11px;color:var(--muted)">{{v.label}}</span><div style="width:100%;border-radius:12px 10px 4px 4px;background:{{v.color}};height:{{v.h}}px"></div><span style="font-size:11px;font-weight:600">{{v.name}}</span></div>
         </sc-for>
       </div>
-    </div>
-
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:8px">
+      <div style="height:1px;background:var(--soft)"></div>
       <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Личные рекорды</b>
       <sc-for list="{{records}}" as="p" hint-placeholder-count="3">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--soft)"><span style="font-size:14px;font-weight:600">{{p.name}}</span><span style="display:flex;align-items:baseline;gap:8px"><b style="font-size:14px">{{p.value}}</b><span style="font-size:11px;color:var(--ok);font-weight:700">{{p.delta}}</span></span></div>
