@@ -486,6 +486,9 @@ class Component extends DCLogic {
     const CUR = (((P.cfg || L.cfg || {}).profile) || {}).cur || '₽';
     const rub = (n) => fmt(n) + ' ' + CUR;
     const TODAY = new Date().getDate(), DIM = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(), LEFT = DIM - TODAY;
+    const MGN = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][new Date().getMonth()];
+    const _pfs = ((((P.cfg || L.cfg || {}).profile) || {}).start) || '', _sd0 = _pfs ? new Date(_pfs + 'T00:00:00') : null, _inM = !!(_sd0 && !isNaN(_sd0) && _sd0.getFullYear() === new Date().getFullYear() && _sd0.getMonth() === new Date().getMonth() && _sd0.getDate() <= TODAY);
+    const ELAPSED = _inM ? Math.max(1, TODAY - _sd0.getDate() + 1) : TODAY, PERIOD = _inM ? DIM - _sd0.getDate() + 1 : DIM;
     const QCOL = { 'Жильё': '#1D4ED8', 'Еда': '#2F6FED', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': '#1E9E6B', 'Финансы': '#5B6475', 'Личное': '#C97A16', 'Доход': '#1E9E6B' };
     const QEXP = [['Аренда или ипотека', 'Жильё'], ['Коммунальные услуги', 'Жильё'], ['Интернет и связь', 'Жильё'], ['Продукты', 'Еда'], ['Кафе и доставка', 'Еда'], ['Топливо', 'Транспорт'], ['Такси и общественный', 'Транспорт'], ['Врачи и аптека', 'Здоровье'], ['Спорт и зал', 'Здоровье'], ['Семья и дети', 'Семья'], ['Подарки', 'Семья'], ['Кредиты и долги', 'Финансы'], ['Подписки', 'Финансы'], ['Одежда', 'Личное'], ['Развлечения', 'Личное'], ['Обучение', 'Личное'], ['Прочее', 'Личное']];
     const QINC = [['Зарплата', 'Доход'], ['Подработка', 'Доход'], ['Другой доход', 'Доход'], ['Подарок или возврат', 'Доход'], ['Возврат долга', 'Доход']];
@@ -504,7 +507,7 @@ class Component extends DCLogic {
     const unpaid = plans.filter(p => !p.paid), unpaidSum = unpaid.reduce((a, p) => a + p.sum, 0);
     const free = income - spent - unpaidSum, perDay = Math.max(0, free) / LEFT;
     const plur = (n) => { const a = n % 100, b = n % 10; return n + (a > 10 && a < 15 ? ' операций' : b === 1 ? ' операция' : b > 1 && b < 5 ? ' операции' : ' операций'); };
-    const nonBill = outs.filter(o => !o.planId).reduce((a, o) => a + o.sum, 0), forecast = spent + nonBill / TODAY * LEFT + unpaidSum;
+    const nonBill = outs.filter(o => !o.planId).reduce((a, o) => a + o.sum, 0), forecast = spent + nonBill / ELAPSED * LEFT + unpaidSum;
     const saveRate = income ? Math.round((income - forecast) / income * 100) : 0;
     const total = accs.reduce((a, x) => a + x.bal, 0), liquid = accs.filter(a => a.type !== 'crypto').reduce((a, x) => a + x.bal, 0);
     const hAcc = accs.find(a => a.id === L.heroAcc) || null, hAccOps = hAcc ? ops.filter(o => o.acc === hAcc.id) : ops;
@@ -526,11 +529,11 @@ class Component extends DCLogic {
 
     const kpis = [
       { label: 'Всего денег', value: rub(total), sub: 'на всех счетах', color: 'var(--ink)' },
-      { label: 'Доход за месяц', value: rub(income), sub: 'с 1 октября', color: 'var(--ok)' },
-      { label: 'Расходы за месяц', value: rub(spent), sub: 'с 1 октября', color: 'var(--ink)' },
+      { label: 'Доход за месяц', value: rub(income), sub: 'с ' + (_inM ? _sd0.getDate() : 1) + ' ' + MGN, color: 'var(--ok)' },
+      { label: 'Расходы за месяц', value: rub(spent), sub: 'с ' + (_inM ? _sd0.getDate() : 1) + ' ' + MGN, color: 'var(--ink)' },
       { label: 'Свободно до конца месяца', value: rub(free), sub: 'после всех платежей', color: free >= 0 ? 'var(--ok)' : 'var(--bad)' },
       { label: 'Можно тратить в день', value: rub(perDay), sub: 'на ' + LEFT + ' оставшихся дней', color: 'var(--accent)' },
-      { label: 'Прогноз расходов', value: rub(forecast), sub: 'к 31 октября в том же темпе', color: forecast > income ? 'var(--bad)' : 'var(--ink)' },
+      { label: 'Прогноз расходов', value: rub(forecast), sub: 'к ' + DIM + ' ' + MGN + ' в том же темпе', color: forecast > income ? 'var(--bad)' : 'var(--ink)' },
       { label: 'Норма сбережений', value: saveRate + '%', sub: 'от дохода, по прогнозу на конец месяца. Хорошо от 20%', color: saveRate >= 20 ? 'var(--ok)' : saveRate >= 0 ? 'var(--warn)' : 'var(--bad)' },
       { label: 'Подушка безопасности', value: cushion.toFixed(1).replace('.', ',') + ' мес.', sub: 'хватит накоплений, цель 6', color: cushion >= 6 ? 'var(--ok)' : 'var(--warn)' }
     ];
@@ -546,7 +549,7 @@ class Component extends DCLogic {
     const months = HIST.concat([['Окт', Math.round(income / 1000), Math.round(spent / 1000)]]).map((h, i) => ({ m: h[0] + (i === 5 ? '*' : ''), inV: h[1] + 'k', outV: h[2] + 'k', inH: Math.round(h[1] / mx * 100), outH: Math.round(h[2] / mx * 100), sav: h[1] - h[2] }));
     const monthsSav = months.map(m => ({ m: m.m, v: (m.sav >= 0 ? '+' : '−') + Math.abs(m.sav) + 'k', color: m.sav >= 0 ? 'var(--ok)' : 'var(--bad)' }));
 
-    const byGrp = GROUPS.map(g => { const sp = outs.filter(o => o.grp === g).reduce((a, o) => a + o.sum, 0), pace = sp / TODAY * DIM, dl = SEP[g] ? Math.round((pace / SEP[g] - 1) * 100) : 0; return { name: g, color: COL[g], sum: rub(sp), pct: spent ? Math.round(sp / spent * 100) : 0, sp, vs: g === 'Жильё' || g === 'Финансы' ? 'регулярные платежи' : (dl > 0 ? '+' : dl < 0 ? '−' : '') + Math.abs(dl) + '% к сентябрю при таком темпе', vsColor: g === 'Жильё' || g === 'Финансы' ? 'var(--muted)' : dl > 10 ? 'var(--bad)' : dl < -5 ? 'var(--ok)' : 'var(--muted)' }; }).sort((a, b) => b.sp - a.sp);
+    const byGrp = GROUPS.map(g => { const sp = outs.filter(o => o.grp === g).reduce((a, o) => a + o.sum, 0), pace = sp / ELAPSED * PERIOD, dl = SEP[g] ? Math.round((pace / SEP[g] - 1) * 100) : 0; return { name: g, color: COL[g], sum: rub(sp), pct: spent ? Math.round(sp / spent * 100) : 0, sp, vs: g === 'Жильё' || g === 'Финансы' ? 'регулярные платежи' : (dl > 0 ? '+' : dl < 0 ? '−' : '') + Math.abs(dl) + '% к сентябрю при таком темпе', vsColor: g === 'Жильё' || g === 'Финансы' ? 'var(--muted)' : dl > 10 ? 'var(--bad)' : dl < -5 ? 'var(--ok)' : 'var(--muted)' }; }).sort((a, b) => b.sp - a.sp);
     const sk = L.sk === 'in' ? 'in' : 'out';
     const incOps = ops.filter(o => o.kind === 'in'), incTot = incOps.reduce((a, o) => a + o.sum, 0), IC = ['#6FCBA6', '#1E9E6B', '#7FD8B8', '#2F6FED', '#C97A16', '#5B6475'];
     const incGrp = (() => { const m = {}; incOps.forEach(o => { m[o.cat] = (m[o.cat] || 0) + o.sum; }); return Object.keys(m).map(k => ({ name: k, sp: m[k] })).sort((a, b) => b.sp - a.sp).map((g, i) => ({ name: g.name, color: IC[i % IC.length], sum: rub(g.sp), pct: incTot ? Math.round(g.sp / incTot * 100) : 0, sp: g.sp })); })();
@@ -562,7 +565,7 @@ class Component extends DCLogic {
     const dayKeys = Object.keys(days), worstDay = dayKeys.sort((a, b) => days[b] - days[a])[0];
     const food = byGrp.find(x => x.name === 'Еда');
     const stats = [
-      { label: 'Средний расход в день', value: rub(nonBill / TODAY), sub: 'без регулярных платежей' },
+      { label: 'Средний расход в день', value: rub(nonBill / ELAPSED), sub: 'без регулярных платежей' },
       { label: 'Средний чек', value: rub(outs.length ? spent / outs.length : 0), sub: plur(outs.length) },
       { label: 'Самый дорогой день', value: worstDay ? worstDay + ' окт' : '—', sub: rub(worstDay ? days[worstDay] : 0) },
       { label: 'Подписки в год', value: rub(plans.filter(p => p.kind === 'sub').reduce((a, p) => a + p.sum, 0) * 12), sub: 'сейчас ' + rub(plans.filter(p => p.kind === 'sub').reduce((a, p) => a + p.sum, 0)) + ' в месяц' }
@@ -785,14 +788,14 @@ class Component extends DCLogic {
       qzBackOn: qzS > 0, qzBack: () => this.set({ qzS: Math.max(0, qzS - 1), qzErr: false }), qzNextText: qzS === 3 ? 'Запустить экономику' : 'Далее', qzNext: () => { if (qzS === 2 && pfSt !== 'none' && !(parseInt(L.pfS !== undefined ? L.pfS : (prof && prof.sal) || '0', 10) > 0)) { this.set({ qzErr: true }); return; } if (qzS < 3) this.set({ qzS: qzS + 1, qzErr: false }); else pfSaveFn(); },
       qzCancelOn: !!prof, qzCancel: () => this.set(qzClear),
       tcDate: nowD.getDate() + ' ' + MON[nowD.getMonth()] + ' ' + nowD.getFullYear(), tcWd: WDN[nowD.getDay()], tcMonthN: 'Месяц ' + monthsN, tcSince: 'с ' + stD.getDate() + ' ' + MON[stD.getMonth()] + ' ' + stD.getFullYear(),
-      tcDay: 'День ' + TODAY + ' из ' + DIM, tcLeft: LEFT === 0 ? 'последний день месяца' : 'до конца месяца ' + LEFT + ' дн.', tcPct: Math.round(TODAY / DIM * 100), tcStrip,
+      tcDay: 'День ' + ELAPSED + ' из ' + PERIOD, tcLeft: LEFT === 0 ? 'последний день месяца' : 'до конца месяца ' + LEFT + ' дн.', tcPct: Math.round(ELAPSED / PERIOD * 100), tcStrip,
       moreW, moreT, moreWEmpty: moreW.length === 0, profSal: (prof && prof.sal) || 0,
       qAuto: { bg: qForce === '' ? 'rgba(255,255,255,.16)' : 'rgba(255,255,255,.04)', bd: qForce === '' ? '#fff' : 'rgba(255,255,255,.3)', fg: qForce === '' ? '#fff' : '#D5D9E3', pick: () => this.set({ qForce: '' }) },
       qForceRows: GRPS.map((g, i, arr) => [g, g, (arr.length % 2 && i === arr.length - 1) ? 'span 2' : 'auto']).map(g => ({ span: g[2], name: g[1], bg: qForce === g[0] ? 'rgba(255,255,255,.16)' : 'rgba(255,255,255,.05)', bd: qForce === g[0] ? '#fff' : 'rgba(255,255,255,.3)', fg: qForce === g[0] ? '#fff' : '#D5D9E3', pick: () => this.set({ qForce: g[0] }) })),
       qForceHint: qForce ? 'Расходы запишутся в группу «' + qForce + '».' : 'Авто: группа подбирается по словам (кофе, такси, аптека…).',
       dayModes, dayCols, hTitle, hOut: hOutT, hIn: hInT, hPrev: () => this.set({ hm: hmOff - 1 }), hNext: () => { if (hmOff < 0) this.set({ hm: hmOff + 1 }); }, hNextOp: hmOff < 0 ? 1 : 0.3, hModes, hRows, hEmpty: hRows.length === 0,
       pfSave: pfSaveFn, cur: CUR, qDone: L.qDone || '', qDoneOn: !!L.qDone, qDoneClose: () => this.set({ qDone: '' }),
-      tcDate: (WDN[nowD.getDay()].charAt(0).toUpperCase() + WDN[nowD.getDay()].slice(1)) + ', ' + nowD.getDate() + ' ' + MON[nowD.getMonth()], tcSub: 'День ' + TODAY + ' из ' + DIM + ' · осталось ' + LEFT + ' дн.', tcMo: 'Месяц ' + monthsN, calRot: calOpen ? 180 : 0,
+      tcDate: (WDN[nowD.getDay()].charAt(0).toUpperCase() + WDN[nowD.getDay()].slice(1)) + ', ' + nowD.getDate() + ' ' + MON[nowD.getMonth()], tcSub: 'День ' + ELAPSED + ' из ' + PERIOD + ' · осталось ' + LEFT + ' дн.', tcMo: 'Месяц ' + monthsN, calRot: calOpen ? 180 : 0,
       grpTabs, subOn: subTabs.length > 0, subTabs,
       sKinds, sList, sEmpty: !sList.length || !sTot, sEmptyT: sk === 'in' ? 'Доходов пока нет. Нажмите «＋ Доход».' : 'Трат пока нет. Нажмите «＋ Трата».', sTitle: sk === 'in' ? 'Откуда приходят деньги' : 'Куда уходят деньги', sLbl: sk === 'in' ? 'Доходы' : 'Расходы', sAdd: () => this.set({ qOpen: true, qOut: false, qAcc: '', qKind: sk, qAmt: '', qCat: '', qNote: '', qSay: '', qForce: '', qListen: false, qErr: '', qManual: false }), sAddText: sk === 'in' ? '＋ Доход' : '＋ Трата',
       donutBg: (() => { const sg = sList.filter(g => g.sp > 0); if (!sTot || !sg.length) return 'var(--line)'; let a = 0; return 'conic-gradient(' + sg.map(g => { const s = a; a += g.sp / sTot * 100; return g.color + ' ' + s + '% ' + a + '%'; }).join(',') + ')'; })(), donutSum: rub(sTot),
