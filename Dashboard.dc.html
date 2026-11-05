@@ -632,7 +632,7 @@ class Component extends DCLogic {
     const ops = P.ops || [], plans = P.plans || [], tasks = P.tasks || [], habits = P.habits || [];
     const on = P.blocksOn || {}, lib = P.lib || [];
     const go = (t) => () => { if (P.fnGo) P.fnGo(t); };
-    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const fmt = (n) => { const r0 = Math.round(n); return (r0 < 0 ? '−' : '') + String(Math.abs(r0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
     const clamp = (v) => Math.max(0, Math.min(100, Math.round(v)));
 
     const income = ops.filter(o => o.kind === 'in').reduce((a, o) => a + o.sum, 0);
