@@ -313,7 +313,7 @@ class Component extends DCLogic {
     const ops = P.ops || [], plans = P.plans || [], accs = P.accounts || [];
     const DEFLIM = {};
     const LIM = Object.assign({}, P.limits || {});
-    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const fmt = (n) => { const r = Math.round(n); return (r < 0 ? '−' : '') + String(Math.abs(r)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
     const rub = (n) => fmt(n) + ' ' + CUR;
     const num = (s) => parseFloat(String(s).replace(',', '.').replace(/\s/g, '')) || 0;
     const COL = { 'Жильё': '#1D4ED8', 'Еда': '#2F6FED', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': '#1E9E6B', 'Финансы': '#5B6475', 'Личное': '#C97A16', 'Доход': '#1E9E6B' };
