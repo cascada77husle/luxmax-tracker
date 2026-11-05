@@ -150,13 +150,33 @@ div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:9
 @media (max-width:1500px){body::after{display:none}}
 button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span:not([style*="url("]),button[style*="background: var(--accent)"] span:not([style*="url("]){-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
 </style>
+<style>
+.sH{font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700}
+.sIn{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sIn{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sM{font-size:12px;color:var(--muted)}
+.sBig{font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.sCard{padding:16px;border-radius:20px;border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:var(--shadow)}
+.fi{display:inline-block;width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--fi) center/contain no-repeat;mask:var(--fi) center/contain no-repeat}
+.fiBox{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.sRound{cursor:pointer;width:34px;height:34px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;padding:0}
+.sBtn{cursor:pointer;border:1.5px solid var(--line2);background:transparent;color:var(--ink2);font-weight:600;font-size:12px;padding:7px 14px;border-radius:999px;white-space:nowrap}
+.sPri{cursor:pointer;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;padding:10px 20px}
+.sInp{border:1.5px solid var(--line2);border-radius:14px;padding:10px 12px;font-size:14px;background:var(--field);color:var(--ink);min-width:0;box-sizing:border-box}
+.sDay{cursor:pointer;border:1.5px solid var(--line);border-radius:20px;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.sDayN{font-size:11px;font-weight:600;opacity:.78;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:14px}
+.sEx{padding:12px 0 2px;border-top:1px solid var(--soft)}
+.sSet{cursor:pointer;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line2);font-size:12px;font-weight:700;padding:0;box-sizing:border-box;display:flex;align-items:center;justify-content:center}
+.sX{cursor:pointer;width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:var(--muted);padding:0;display:flex;align-items:center;justify-content:center;opacity:.6}
+.sX:hover{opacity:1}
+.sFood{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.sFoodBtn{cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);color:var(--ink);text-align:left;min-width:0}
+@media (max-width:640px){.sDayN{display:none}}
+</style>
 </helmet>
-<div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
-
-  <div style="flex:1 1 580px;min-width:0;display:flex;flex-direction:column;gap:16px">
-
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:14px">
-      <div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Мои тренировочные дни</b><span style="font-size:13px;color:var(--muted)">Нажмите на день, чтобы поставить или снять галочку.</span></div>
+<div style="background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
+  <div class="card sCard" style="gap:14px">
+<div style="display:flex;flex-direction:column;gap:2px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Мои тренировочные дни</b><span style="font-size:13px;color:var(--muted)">Нажмите на день, чтобы поставить или снять галочку.</span></div>
       <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
         <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
           <button type="button" onClick="{{d.pick}}" aria-pressed="{{d.pressed}}" aria-label="{{d.label}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0 10px;border-radius:12px;background:{{d.bg}};border:1.5px solid {{d.border}};color:var(--ink);min-width:0">
@@ -178,7 +198,9 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:var(--muted);font-weight:600">{{s.label}}</span><b style="font-family:'Archivo',system-ui,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.02em;color:{{s.color}}">{{s.value}}</b><span style="font-size:12px;color:var(--muted)">{{s.sub}}</span></div>
         </sc-for>
       </div>
-      <div style="height:1px;background:var(--soft)"></div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+    <div class="card sCard" style="flex:1 1 480px;min-width:0;gap:14px">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><b style="font-family:'Archivo',system-ui,sans-serif;font-size:20px;font-weight:700">Тренировка сегодня</b><span style="font-size:13px;color:var(--muted)">Подходов выполнено: <b style="color:var(--cat-violet)">{{setsDone}}</b> из {{setsTotal}}</span></div>
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <sc-for list="{{templates}}" as="t" hint-placeholder-count="4">
@@ -212,12 +234,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
           </sc-for>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div style="flex:0 1 400px;width:100%;max-width:400px;min-width:0;display:flex;flex-direction:column;gap:16px">
-
-    <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px;display:flex;flex-direction:column;gap:12px">
+      <div style="height:1px;background:var(--soft)"></div>
       <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Кардио</b>
       <div style="display:flex;flex-wrap:wrap;gap:6px">
         <sc-for list="{{cardioTypes}}" as="c" hint-placeholder-count="4">
@@ -233,17 +250,45 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
         <div style="display:flex;justify-content:space-between;padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--cat-violet) 13%,var(--card));font-size:13px"><b style="color:var(--cat-violet-ink)">{{l.name}}</b><span>{{l.text}}</span></div>
       </sc-for>
       <div style="height:1px;background:var(--soft)"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px"><div style="display:flex;flex-direction:column;gap:8px">
       <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Объём по неделям</b>
       <div style="display:flex;align-items:flex-end;gap:12px;height:130px">
         <sc-for list="{{volumes}}" as="v" hint-placeholder-count="4">
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%"><span style="font-size:11px;color:var(--muted)">{{v.label}}</span><div style="width:100%;border-radius:12px 10px 4px 4px;background:{{v.color}};height:{{v.h}}px"></div><span style="font-size:11px;font-weight:600">{{v.name}}</span></div>
         </sc-for>
       </div>
-      <div style="height:1px;background:var(--soft)"></div>
+</div><div style="display:flex;flex-direction:column;gap:4px">
       <b style="font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700">Личные рекорды</b>
       <sc-for list="{{records}}" as="p" hint-placeholder-count="3">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--soft)"><span style="font-size:14px;font-weight:600">{{p.name}}</span><span style="display:flex;align-items:baseline;gap:8px"><b style="font-size:14px">{{p.value}}</b><span style="font-size:11px;color:var(--ok);font-weight:700">{{p.delta}}</span></span></div>
       </sc-for>
+</div></div>
+    </div>
+    <div class="card sCard" style="flex:1 1 480px;min-width:0;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px"><span class="fiBox" style="background:rgba(217,196,143,.16);color:#d9c48f"><i class="fi" style="--fi:{{icBowl}}"></i></span><div style="display:flex;flex-direction:column"><b class="sH">Питание и вода</b><span class="sM">{{foodSub}}</span></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px">
+        <div class="sIn" style="flex-direction:row;align-items:center;gap:14px">
+          <div style="position:relative;width:88px;height:88px;flex:none"><svg width="88" height="88" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="9"></circle><circle cx="50" cy="50" r="44" fill="none" stroke="#d9c48f" stroke-width="9" stroke-linecap="round" stroke-dasharray="{{kRing}}" transform="rotate(-90 50 50)" style="transition:stroke-dasharray .6s cubic-bezier(.22,.8,.3,1)"></circle></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1"><b style="font-size:18px;font-weight:700;color:var(--ink)">{{kNum}}</b><span style="font-size:9px;color:var(--muted)">съедено</span></div></div>
+          <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="sM">Калории</span><b class="sBig">{{kLeft}}</b><span class="sM">{{kGoalText}}</span></div>
+        </div>
+        <div class="sIn" style="gap:9px"><span class="sM">Белки · жиры · углеводы</span>
+          <sc-for list="{{macros}}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px"><div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:600">{{m.name}}</span><span style="color:var(--muted)">{{m.text}}</span></div><div style="height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden"><div style="height:100%;width:{{m.pct}}%;background:{{m.col}};border-radius:99px;transition:width .5s cubic-bezier(.22,.8,.3,1)"></div></div></div></sc-for>
+        </div>
+        <div class="sIn"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="sM">Вода</span><span class="sM">{{wGoalText}}</span></div>
+          <b class="sBig" style="color:#8fbfe0">{{wText}}</b>
+          <div style="display:flex;flex-wrap:wrap;gap:3px"><sc-for list="{{glasses}}" as="g" hint-placeholder-count="10"><button type="button" onClick="{{g.pick}}" aria-label="Стаканов воды: {{g.n}}" style="cursor:pointer;border:0;background:transparent;padding:1px;display:flex"><svg width="19" height="25" viewBox="0 0 26 34" aria-hidden="true"><path d="M3 3h20l-2.5 27a3 3 0 01-3 2.7h-9a3 3 0 01-3-2.7z" fill="{{g.fill}}" stroke="#8fbfe0" stroke-width="2" stroke-linejoin="round"></path></svg></button></sc-for></div>
+        </div>
+      </div>
+      <div style="height:1px;background:var(--soft)"></div>
+      <sc-for list="{{groups}}" as="g" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><span>{{g.title}}</span><span>{{g.kcal}}</span></div>
+        <sc-for list="{{g.items}}" as="i" hint-placeholder-count="3"><div class="sFood"><span class="fiBox" style="width:34px;height:34px;background:{{i.bg}};color:{{i.col}}"><i class="fi" style="width:19px;height:19px;--fi:{{i.ic}}"></i></span><div style="display:flex;flex-direction:column;min-width:0;flex:1"><b style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{i.name}}</b><span class="sM">{{i.q}} · Б {{i.p}} · Ж {{i.f}} · У {{i.c}}</span></div><b style="font-size:14px;white-space:nowrap">{{i.k}}</b><button type="button" onClick="{{i.rm}}" aria-label="Убрать" class="sX"><i class="ai ai-x"></i></button></div></sc-for>
+        <span style="display:{{g.emptyD}};font-size:13px;color:var(--muted);padding:2px 2px 4px">Пока пусто</span></div></sc-for>
+      <div style="height:1px;background:var(--soft)"></div>
+      <b class="sH">Добавить еду</b>
+      <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{mealPick}}" as="m" hint-placeholder-count="4"><button type="button" onClick="{{m.pick}}" class="sBtn" style="background:{{m.bg}};color:{{m.fg}};border-color:{{m.bd}}">{{m.name}}</button></sc-for></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"><sc-for list="{{foods}}" as="f" hint-placeholder-count="12"><button type="button" onClick="{{f.pick}}" class="sFoodBtn"><span class="fiBox" style="width:34px;height:34px;background:{{f.bg}};color:{{f.col}}"><i class="fi" style="width:19px;height:19px;--fi:{{f.ic}}"></i></span><span style="display:flex;flex-direction:column;align-items:flex-start;min-width:0"><b style="font-size:13px;font-weight:600;text-align:left">{{f.name}}</b><span class="sM">{{f.k}}</span></span></button></sc-for></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" value="{{cn}}" onInput="{{typeCn}}" placeholder="Своё блюдо" aria-label="Блюдо" class="sInp" style="flex:1 1 160px"><input type="text" inputmode="numeric" value="{{ck}}" onInput="{{typeCk}}" placeholder="ккал" aria-label="Калории" class="sInp" style="width:70px"><input type="text" inputmode="decimal" value="{{cp}}" onInput="{{typeCp}}" placeholder="Б" aria-label="Белки" class="sInp" style="width:52px"><input type="text" inputmode="decimal" value="{{cf}}" onInput="{{typeCf}}" placeholder="Ж" aria-label="Жиры" class="sInp" style="width:52px"><input type="text" inputmode="decimal" value="{{cc}}" onInput="{{typeCc}}" placeholder="У" aria-label="Углеводы" class="sInp" style="width:52px"><button type="button" onClick="{{addCustom}}" class="sPri">Добавить</button></div>
+      <span style="display:{{errD}};font-size:12px;color:var(--bad)">Введите название и калории.</span>
     </div>
   </div>
 </div>
@@ -252,8 +297,57 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 class Component extends DCLogic {
   init() {
     const mk = (name, sets) => ({ name, sets });
-    return { ready: false, days: [0, 0, 0, 0, 0, 0, 0], times: ['18:00', '18:00', '18:00', '18:00', '18:00', '10:00', '10:00'], sel: (new Date().getDay() + 6) % 7, newEx: '', myEx: [], last: {}, nid: 20, tpl: '', cardio: 'Бег', minutes: 0, km: 0, cardioLog: [],
-      ex: [] };
+    return { ready: false, days: [1, 1, 0, 1, 1, 1, 0], times: ['18:00', '18:00', '18:00', '18:00', '18:00', '10:00', '10:00'], sel: (new Date().getDay() + 6) % 7, newEx: '', myEx: [], last: {}, nid: 20, tpl: 'Грудь и трицепс', cardio: 'Бег', minutes: 35, km: 5, cardioLog: [{ name: 'Бег', text: '35 мин · 5,0 км · вчера' }, { name: 'Велосипед', text: '50 мин · 18,0 км · 2 дня назад' }],
+      meals: this.nl().meals || {}, water: this.nl().water || {}, fm: 'b', cn: '', ck: '', cp: '', cf: '', cc: '', err: false,
+      ex: [{ id: 1, name: 'Жим лёжа', sets: [{ kg: 80, reps: 8, done: true }, { kg: 80, reps: 8, done: true }, { kg: 80, reps: 8, done: true }, { kg: 80, reps: 8, done: false }] }, { id: 2, name: 'Жим гантелей на наклонной', sets: [{ kg: 30, reps: 10, done: true }, { kg: 30, reps: 10, done: true }, { kg: 30, reps: 10, done: false }] }, { id: 3, name: 'Отжимания на брусьях', sets: [{ kg: 0, reps: 12, done: false }, { kg: 0, reps: 12, done: false }, { kg: 0, reps: 12, done: false }] }] };
+  }
+  nl() { try { const j = JSON.parse(localStorage.getItem('sport:nut:v1') || 'null'); return j && typeof j === 'object' ? j : {}; } catch (z) { return {}; } }
+  nut() {
+    const KEY = 'sport:nut:v1', S = this.L, DEMO = true;
+    const pad2 = (n) => String(n).padStart(2, '0'), iso = (d) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+    const now = new Date(), SD = new Date(now.getFullYear(), now.getMonth(), now.getDate()), TI = iso(SD), SI = TI;
+    const upd = (p) => { const n = Object.assign({}, this.L, p); try { localStorage.setItem(KEY, JSON.stringify({ meals: n.meals, water: n.water })); } catch (z) { } this.set(p); };
+    const rnd = (q) => { let x = q | 0; x = Math.imul(x ^ (x >>> 15), 2246822519); x = Math.imul(x ^ (x >>> 13), 3266489917); return ((x ^ (x >>> 16)) >>> 0) / 4294967296; };
+    const seedOf = (dt) => dt.getFullYear() * 10000 + dt.getMonth() * 100 + dt.getDate();
+    // ---- иконки
+    const SVG = { dumb: "<path d='M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12'/>", bowl: "<path d='M3 11h18a9 9 0 01-18 0zM8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4'/>", trophy: "<path d='M8 4h8v5a4 4 0 01-8 0zM8 6H4c0 3 1 4 4 5M16 6h4c0 3-1 4-4 5M12 13v4M8 20h8M9 17h6'/>", egg: "<path d='M12 3c3.5 0 6 6 6 10a6 6 0 01-12 0c0-4 2.5-10 6-10z'/>", apple: "<path d='M12 8c-2-2-6-1-6 4 0 4 2 9 4 9 1 0 1-.6 2-.6s1 .6 2 .6c2 0 4-5 4-9 0-5-4-6-6-4zM12 8c0-2 1-3 3-4'/>", bread: "<path d='M5 10a4 4 0 012-7h10a4 4 0 012 7v9a1 1 0 01-1 1H6a1 1 0 01-1-1z'/>", chicken: "<path d='M14.5 4a5 5 0 013.8 8.2L15 15.5 9.5 10zM9.5 10l-4.2 4.2a2 2 0 002.8 2.8l.4.4a2 2 0 002.8-2.8l.3-.3'/>", fish: "<path d='M3 12c3-5 9-6 13-2l5-3v10l-5-3c-4 4-10 3-13-2z'/><circle cx='8' cy='11' r='.9'/>", leaf: "<path d='M5 19C5 10 10 5 20 4c0 10-5 15-14 15zM5 19l8-8'/>", cheese: "<path d='M3 17l18-3V9L3 6zM9 11.5h.01M14 11h.01M16 14h.01'/>", milk: "<path d='M6 3h12l-1.5 17a1 1 0 01-1 1h-7a1 1 0 01-1-1zM6.5 9h11'/>", coffee: "<path d='M4 9h12v6a5 5 0 01-5 5H9a5 5 0 01-5-5zM16 10h2a2 2 0 010 5h-2M8 3v3M12 3v3'/>", banana: "<path d='M4 8c2 8 8 12 16 10-1 2-4 3-7 3-6 0-10-5-9-13zM4 8c0-2 1-3 2-3'/>", wheat: "<path d='M12 21V8M12 8c-3 0-4-2-4-4 3 0 4 2 4 4zM12 8c3 0 4-2 4-4-3 0-4 2-4 4zM12 14c-3 0-4-2-4-4 3 0 4 2 4 4zM12 14c3 0 4-2 4-4-3 0-4 2-4 4z'/>", nut: "<path d='M12 3c4 3 6 8 4 13-1 3-3 5-4 5s-3-2-4-5C6 11 8 6 12 3zM12 8v9'/>", steak: "<path d='M5 10c0-4 5-6 9-5s6 4 5 8-5 6-9 6-5-4-5-9zM14 10a2.5 2.5 0 110 .1'/>", shaker: "<path d='M7 8h10l-1 12a1 1 0 01-1 1H9a1 1 0 01-1-1zM8 4h8v4H8zM9 13h6'/>" };
+    const IC = (k) => 'url(data:image/svg+xml,' + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'>" + SVG[k] + "</svg>").replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29') + ')';
+    // ---- еда
+    const FOOD = {
+      egg: ['Яйца варёные', 'egg', '2 шт', 156, 13, 11, 1], oat: ['Овсянка с бананом', 'bowl', '250 г', 320, 9, 6, 56], curd: ['Творог 5%', 'milk', '200 г', 242, 34, 10, 6], chick: ['Куриная грудка', 'chicken', '200 г', 330, 62, 7, 0], rice: ['Рис с овощами', 'wheat', '250 г', 330, 7, 3, 70], salmon: ['Лосось запечённый', 'fish', '150 г', 310, 30, 20, 0], salad: ['Греческий салат', 'leaf', '200 г', 190, 5, 16, 8], apple: ['Яблоко', 'apple', '180 г', 95, 0, 0, 25], banana: ['Банан', 'banana', '120 г', 105, 1, 0, 27], almond: ['Миндаль', 'nut', '30 г', 175, 6, 15, 6], bread: ['Хлеб цельнозерновой', 'bread', '2 ломтика', 160, 6, 2, 30], steak: ['Стейк из говядины', 'steak', '180 г', 400, 45, 24, 0], yog: ['Греческий йогурт', 'milk', '170 г', 130, 17, 4, 6], coffee: ['Кофе с молоком', 'coffee', '250 мл', 60, 3, 3, 5], shake: ['Протеиновый коктейль', 'shaker', '300 мл', 160, 30, 3, 6], cheese: ['Сыр', 'cheese', '40 г', 150, 10, 12, 0], pasta: ['Паста с индейкой', 'bowl', '300 г', 480, 36, 12, 58] };
+    const COL = { egg: '#d9c48f', bowl: '#d3b48a', milk: '#a9c4dc', chicken: '#d6a98c', wheat: '#cdbf8e', fish: '#e0a595', leaf: '#9cc7a6', apple: '#d98f8f', banana: '#dcc86f', nut: '#c9a67e', bread: '#d1b17f', steak: '#cf8f8a', coffee: '#b89b83', shaker: '#a6b4de', cheese: '#e0c46c' };
+    const itemOf = (id, m) => { const f = FOOD[id]; return { m, n: f[0], ic: f[1], q: f[2], k: f[3], p: f[4], f: f[5], c: f[6] }; };
+    const demoMeals = (dt) => { const di = iso(dt); if (di > TI) return []; const r = rnd(seedOf(dt) * 5 + 1), o = [];
+      o.push(itemOf('oat', 'b'), itemOf(r < .5 ? 'egg' : 'bread', 'b'), itemOf('coffee', 'b'));
+      o.push(itemOf('chick', 'l'), itemOf('rice', 'l'), itemOf('salad', 'l'));
+      o.push(itemOf(r < .5 ? 'curd' : 'yog', 's'), itemOf(r < .5 ? 'apple' : 'almond', 's'));
+      if (di !== TI) o.push(itemOf(r < .5 ? 'salmon' : 'steak', 'd'), itemOf(r < .5 ? 'salad' : 'rice', 'd'), itemOf('shake', 'd'));
+      return o; };
+    const mealsOf = (dt) => { const v = S.meals[iso(dt)]; return v !== undefined ? v : (DEMO ? demoMeals(dt) : []); };
+    const MT = [['b', 'Завтрак'], ['l', 'Обед'], ['s', 'Перекус'], ['d', 'Ужин']];
+    const GK = 2400, GP = 160, GF = 75, GC = 280, GW = 10;
+    const ml = mealsOf(SD), sum = (k) => ml.reduce((a, x) => a + (x[k] || 0), 0), K = sum('k'), P = sum('p'), F = sum('f'), C = sum('c');
+    const setMeals = (arr) => upd({ meals: Object.assign({}, S.meals, { [SI]: arr }) });
+    const mkRm = (idx) => () => { const a = mealsOf(SD).slice(); a.splice(idx, 1); setMeals(a); };
+    const groups = MT.map(g => { const items = []; let kk = 0; ml.forEach((x, idx) => { if (x.m !== g[0]) return; kk += x.k; const col = COL[x.ic === 'bowl' ? 'bowl' : x.ic] || '#d9c48f'; items.push({ name: x.n, q: x.q, k: x.k + ' ккал', p: Math.round(x.p), f: Math.round(x.f), c: Math.round(x.c), ic: IC(x.ic), col, bg: 'color-mix(in srgb,' + col + ' 16%,transparent)', rm: mkRm(idx) }); }); return { title: g[1], kcal: kk ? kk + ' ккал' : '', items, emptyD: items.length ? 'none' : 'block' }; });
+    const addItem = (it) => setMeals(mealsOf(SD).concat([it]));
+    const foods = Object.keys(FOOD).map(id => { const f = FOOD[id], col = COL[f[1]] || '#d9c48f'; return { name: f[0], k: f[2] + ' · ' + f[3] + ' ккал', ic: IC(f[1]), col, bg: 'color-mix(in srgb,' + col + ' 16%,transparent)', pick: () => addItem(itemOf(id, this.L.fm || 'b')) }; });
+    const num = (s) => { const v = parseFloat(String(s || '').replace(',', '.')); return isFinite(v) ? v : 0; };
+    // ---- вода
+    const waterOf = (dt) => { const v = S.water[iso(dt)]; if (v !== undefined) return v; if (!DEMO) return 0; const di = iso(dt); if (di > TI) return 0; if (di === TI) return 6; return 7 + Math.floor(rnd(seedOf(dt) * 3 + 2) * 4); };
+    const W = Math.min(waterOf(SD), 14);
+    const C0 = 2 * Math.PI * 44, kp = Math.min(1, K / GK);
+    return {
+      kRing: (kp * C0).toFixed(1) + ' ' + C0.toFixed(1), kNum: String(K), kLeft: K > GK ? '+' + (K - GK) + ' ккал' : (GK - K) + ' ккал', kGoalText: (K > GK ? 'выше нормы ' : 'осталось до нормы ') + GK,
+      macros: [['Белки', P, GP, '#9db4d8'], ['Жиры', F, GF, '#d9c48f'], ['Углеводы', C, GC, '#9cc7a6']].map(m => ({ name: m[0], text: Math.round(m[1]) + ' из ' + m[2] + ' г', pct: Math.min(100, Math.round(m[1] / m[2] * 100)), col: m[3] })),
+      wText: (W * 0.25).toFixed(2).replace('.', ',').replace(/0$/, '') + ' л', wGoalText: 'норма ' + (GW * 0.25).toFixed(1).replace('.', ',') + ' л',
+      glasses: Array.from({ length: GW }, (_, i) => ({ n: i + 1, fill: i < W ? 'rgba(143,191,224,.75)' : 'transparent', pick: () => upd({ water: Object.assign({}, S.water, { [SI]: W === i + 1 ? i : i + 1 }) }) })),
+      foodSub: K + ' из ' + GK + ' ккал · Б ' + Math.round(P) + ' · Ж ' + Math.round(F) + ' · У ' + Math.round(C),
+      groups, mealPick: MT.map(m => { const on = (S.fm || 'b') === m[0]; return { name: m[1], bg: on ? 'var(--accent)' : 'transparent', fg: on ? 'var(--on-accent)' : 'var(--ink2)', bd: on ? 'var(--accent)' : 'var(--line2)', pick: () => this.set({ fm: m[0] }) }; }), foods: foods.slice(0, 12),
+      cn: S.cn, ck: S.ck, cp: S.cp, cf: S.cf, cc: S.cc, typeCn: (e) => this.set({ cn: e.target.value }), typeCk: (e) => this.set({ ck: e.target.value }), typeCp: (e) => this.set({ cp: e.target.value }), typeCf: (e) => this.set({ cf: e.target.value }), typeCc: (e) => this.set({ cc: e.target.value }), errD: S.err ? 'block' : 'none',
+      addCustom: () => { const x = this.L, n = (x.cn || '').trim(), k = Math.round(num(x.ck)); if (!n || k <= 0) { this.set({ err: true }); return; } addItem({ m: x.fm || 'b', n, ic: 'bowl', q: 'порция', k, p: num(x.cp), f: num(x.cf), c: num(x.cc) }); this.set({ cn: '', ck: '', cp: '', cf: '', cc: '', err: false }); },
+      icBowl: IC('bowl')
+    };
   }
   get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
@@ -284,20 +378,21 @@ class Component extends DCLogic {
       pick: () => this.set({ sel: i, days: this.L.days.map((x, z) => z === i ? (x ? 0 : 1) : x) }) }; });
     const selD = dt(L.sel), selTitle = (L.sel === tIdx ? 'Сегодня' : WDL[L.sel][0].toUpperCase() + WDL[L.sel].slice(1)) + ', ' + selD.getDate() + ' ' + MON[selD.getMonth()];
     const planned = L.days.map((x, i) => x ? WD[i] + ' ' + L.times[i] : '').filter(Boolean), nPlan = planned.length;
-    const baseVol = 0;
-    const stats = [{ label: 'Тренировок в неделю', value: String(nPlan), color: 'var(--cat-violet)', sub: nPlan ? 'в плане на неделе' : 'отметьте дни выше' }, { label: 'Объём недели', value: Math.round((baseVol + todayVol) / 100) / 10 + ' т', color: 'var(--ink)', sub: 'сегодня ' + todayVol + ' кг' }, { label: 'Время', value: '—', color: 'var(--ink)', sub: 'пока нет данных' }];
+    const baseVol = 9400;
+    const stats = [{ label: 'Тренировок в неделю', value: String(nPlan), color: 'var(--cat-violet)', sub: nPlan ? 'в плане на неделе' : 'отметьте дни выше' }, { label: 'Объём недели', value: Math.round((baseVol + todayVol) / 100) / 10 + ' т', color: 'var(--ink)', sub: 'сегодня ' + todayVol + ' кг' }, { label: 'Время', value: '4 ч 20 м', color: 'var(--ink)', sub: 'тренировки и кардио' }];
     const pill = (on) => ({ bg: on ? 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))' : 'var(--card)', border: on ? 'var(--cat-violet)' : 'var(--line)', fg: on ? 'var(--cat-violet-ink)' : 'var(--ink2)' });
     const templates = Object.keys(TPL).map(n => Object.assign({ name: n, pick: () => this.set({ tpl: n, nid: this.L.nid + 10, ex: TPL[n].map((e, i) => ({ id: this.L.nid + i, name: e[0], sets: mkSets(e[1], e[2]) })) }) }, pill(L.tpl === n)));
     const addNamed = (n) => this.set({ nid: this.L.nid + 1, ex: this.L.ex.concat([{ id: this.L.nid, name: n, sets: mkSets(this.L.last[n] || 0, 10) }]) });
     const library = LIB.concat(L.myEx.filter(x => LIB.indexOf(x) < 0)).map(n => ({ name: n, pick: () => addNamed(n) }));
     const cardioTypes = ['Бег', 'Велосипед', 'Плавание', 'Ходьба'].map(n => Object.assign({ name: n, pick: () => this.set({ cardio: n }) }, pill(L.cardio === n)));
-    const volumes = [['Нед. 1', 0], ['Нед. 2', 0], ['Нед. 3', 0], ['Эта', (baseVol + todayVol) / 1000]].map((v, i) => ({ name: v[0], label: v[1].toFixed(1) + ' т', h: Math.max(4, Math.round(v[1] / 17 * 90)), color: i === 3 ? 'var(--cat-violet)' : 'var(--line2)' }));
+    const volumes = [['Нед. 1', 10.8], ['Нед. 2', 13.1], ['Нед. 3', 12.2], ['Эта', (baseVol + todayVol) / 1000]].map((v, i) => ({ name: v[0], label: v[1].toFixed(1) + ' т', h: Math.max(4, Math.round(v[1] / 17 * 90)), color: i === 3 ? 'var(--cat-violet)' : 'var(--line2)' }));
     return {
       week, stats, rows, templates, library, selTitle, selOn: !!L.days[L.sel], selOff: !L.days[L.sel], selTime: L.times[L.sel], planText: nPlan ? 'Тренировки: ' + planned.join(' · ') : 'Дни тренировок пока не выбраны.', setTime: (ev) => { const v = ev.target.value; if (v) this.set({ times: this.L.times.map((x, z) => z === this.L.sel ? v : x) }); },
       newEx: L.newEx, typeEx: (ev) => this.set({ newEx: ev.target.value }), addEx: () => { const n = (this.L.newEx || '').trim(); if (!n) return; this.set({ newEx: '', myEx: this.L.myEx.indexOf(n) < 0 ? this.L.myEx.concat([n]) : this.L.myEx, nid: this.L.nid + 1, ex: this.L.ex.concat([{ id: this.L.nid, name: n, sets: mkSets(this.L.last[n] || 0, 10) }]) }); }, setsDone: done, setsTotal: setsAll.length, cardioTypes, minutes: L.minutes, km: L.km.toFixed(1).replace('.', ','), cardioLog: L.cardioLog,
       minMinus: () => this.set({ minutes: Math.max(0, this.L.minutes - 5) }), minPlus: () => this.set({ minutes: this.L.minutes + 5 }), kmMinus: () => this.set({ km: Math.max(0, this.L.km - 0.5) }), kmPlus: () => this.set({ km: this.L.km + 0.5 }),
       logCardio: () => { const l = this.L; if (!l.minutes) return; this.set({ cardioLog: [{ name: l.cardio, text: l.minutes + ' мин · ' + l.km.toFixed(1).replace('.', ',') + ' км · сегодня' }].concat(l.cardioLog).slice(0, 3) }); },
-      volumes, records: []
+      volumes, records: [{ name: 'Жим лёжа', value: '100 кг × 3', delta: '+5 кг' }, { name: 'Присед', value: '130 кг × 3', delta: '+10 кг' }, { name: 'Становая тяга', value: '150 кг × 2', delta: '+5 кг' }, { name: 'Подтягивания', value: '14 раз', delta: '+2' }, { name: 'Бег 5 км', value: '24:10', delta: '−0:40' }],
+      ...this.nut()
     };
   }
 }
