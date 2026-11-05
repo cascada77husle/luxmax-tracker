@@ -149,6 +149,7 @@ div[style*="display: inline-flex"][style*="padding: 4px"] button{border-radius:9
 
 @media (max-width:1500px){body::after{display:none}}
 button[style*="background:var(--accent)"] b,button[style*="background: var(--accent)"] b,button[style*="background:var(--accent)"] span:not([style*="url("]),button[style*="background: var(--accent)"] span:not([style*="url("]){-webkit-text-fill-color:currentColor !important;background-image:none !important;animation:none !important;color:inherit}
+.pDots{display:none}.pCell{transition:transform .15s ease,border-color .15s ease}.pCell:hover{transform:translateY(-1px);border-color:var(--line2) !important}@media (max-width:640px){.pChW,.pCnt{display:none !important}.pDots{display:flex}.pCell{min-height:58px !important;align-items:center !important;justify-content:space-between !important}}
 </style>
 </helmet>
 <div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
@@ -168,7 +169,7 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
     <sc-if value="{{isMonth}}" hint-placeholder-val="{{true}}">
       <div style="background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:8px">
         <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px"><sc-for list="{{wdHead}}" as="h" hint-placeholder-count="7"><span style="text-align:center;font-size:12px;font-weight:600;color:var(--muted);padding:2px 0">{{h.t}}</span></sc-for></div>
-        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px"><sc-for list="{{cells}}" as="c" hint-placeholder-count="35"><button type="button" onClick="{{c.pick}}" style="cursor:pointer;min-height:58px;border-radius:14px;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};opacity:{{c.op}};padding:6px 2px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:2px"><b style="font-size:15px;font-weight:700;color:{{c.fg}}">{{c.num}}</b><span style="display:flex;gap:3px;height:6px;align-items:center"><i style="display:{{c.d1}};width:6px;height:6px;border-radius:50%;background:{{c.c1}}"></i><i style="display:{{c.d2}};width:6px;height:6px;border-radius:50%;background:{{c.c2}}"></i><i style="display:{{c.d3}};width:6px;height:6px;border-radius:50%;background:{{c.c3}}"></i></span></button></sc-for></div>
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px"><sc-for list="{{cells}}" as="c" hint-placeholder-count="35"><button type="button" class="pCell" onClick="{{c.pick}}" style="cursor:pointer;min-height:112px;border-radius:14px;border:1.5px solid {{c.border}};background:{{c.bg}};color:{{c.fg}};opacity:{{c.op}};padding:7px 6px 6px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:5px;text-align:left;min-width:0;overflow:hidden"><span style="display:flex;align-items:center;justify-content:space-between;gap:4px"><b style="font-size:15px;font-weight:700;color:{{c.fg}}">{{c.num}}</b><span class="pCnt" style="font-size:10.5px;font-weight:600;opacity:.65;color:{{c.fg}}">{{c.cnt}}</span></span><span class="pChW" style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="display:{{c.h1}};align-items:center;min-width:0;padding:2px 5px;border-radius:7px;background:{{c.b1}};border-left:3px solid {{c.c1}};font-size:10.5px;line-height:1.3;font-weight:600;color:var(--ink)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{c.t1}}</span></span><span style="display:{{c.h2}};align-items:center;min-width:0;padding:2px 5px;border-radius:7px;background:{{c.b2}};border-left:3px solid {{c.c2}};font-size:10.5px;line-height:1.3;font-weight:600;color:var(--ink)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{c.t2}}</span></span><span style="display:{{c.h3}};align-items:center;min-width:0;padding:2px 5px;border-radius:7px;background:{{c.b3}};border-left:3px solid {{c.c3}};font-size:10.5px;line-height:1.3;font-weight:600;color:var(--ink)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{c.t3}}</span></span><span style="display:{{c.md}};font-size:10.5px;font-weight:600;opacity:.65;color:{{c.fg}};padding-left:3px">{{c.mr}}</span></span><span class="pDots" style="gap:3px;height:6px;align-items:center;justify-content:center;margin-top:auto"><i style="display:{{c.d1}};width:6px;height:6px;border-radius:50%;background:{{c.c1}}"></i><i style="display:{{c.d2}};width:6px;height:6px;border-radius:50%;background:{{c.c2}}"></i><i style="display:{{c.d3}};width:6px;height:6px;border-radius:50%;background:{{c.c3}}"></i></span></button></sc-for></div>
       </div>
     </sc-if>
     <sc-if value="{{isDay}}" hint-placeholder-val="{{true}}">
@@ -219,8 +220,33 @@ class Component extends DCLogic {
     const tm = (s) => { const m = /^(\d{1,2}):(\d{2})$/.exec((s || '').trim()); if (!m) return null; const h = +m[1], q = +m[2]; return (h < 24 && q < 60) ? h * 60 + q : null; };
     const hm = (n) => String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
     const dur = (m) => (m >= 60 ? Math.floor(m / 60) + ' ч' + (m % 60 ? ' ' + (m % 60) + ' м' : '') : m + ' м');
-    const curW = (dt) => iso(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() - ((dt.getDay() + 6) % 7))) === iso(CW), evD = (dt) => (L.ev[iso(dt)] || []).concat(curW(dt) ? (L.ev[(dt.getDay() + 6) % 7] || []) : []), evs = (d) => evD(DT[d]).map((e, i) => ({ i, s: tm(e.s), e: tm(e.e), n: e.n, c: e.c, so: e })).sort((a, b) => a.s - b.s);
-    const rm = (d, e) => () => { const m = Object.assign({}, this.L.ev), k = iso(DT[d]), k2 = (DT[d].getDay() + 6) % 7; m[k] = (m[k] || []).filter(x => x !== e); if (m[k2]) m[k2] = m[k2].filter(x => x !== e); this.set({ ev: m }); };
+    const DEMO = !!window.__arqDemoWave, rnd = (q) => { let x = q | 0; x = Math.imul(x ^ (x >>> 15), 2246822519); x = Math.imul(x ^ (x >>> 13), 3266489917); return ((x ^ (x >>> 16)) >>> 0) / 4294967296; };
+    const demoEv = (dt) => { const wd = (dt.getDay() + 6) % 7, d = dt.getDate(), sd = dt.getFullYear() * 10000 + dt.getMonth() * 100 + d, r = (k) => rnd(sd * 31 + k), pk = (a, k) => a[Math.floor(r(k) * a.length)], o = [], ad = (s, e, n, c) => o.push({ s, e, n, c });
+      if (wd < 5) {
+        if (r(1) < .8) ad('07:15', '08:00', pk(['Пробежка', 'Зарядка', 'Тренировка', 'Растяжка'], 2), 'sport');
+        ad('09:00', '09:30', pk(['Разбор почты', 'Планёрка', 'Планирование дня'], 3), 'work');
+        if (r(4) < .9) ad('10:00', '11:00', pk(['Созвон с командой', 'Встреча с клиентом', 'Разбор задач'], 5), 'work');
+        ad('11:30', '13:00', pk(['Глубокая работа', 'Питч для клиента', 'Работа над проектом', 'Контент-план'], 6), 'work');
+        ad('13:00', '13:45', 'Обед', 'life');
+        if (r(7) < .85) ad('14:30', '15:30', pk(['Ревью и правки', 'Созвон по проекту', 'Монтаж ролика'], 8), 'work');
+        if (r(9) < .7) ad('16:00', '17:00', pk(['Встреча с партнёром', 'Работа с аудиторией', 'Аналитика недели'], 10), 'work');
+        if (r(11) < .5) ad('18:00', '19:00', pk(['Английский', 'Курс по маркетингу', 'Чтение книги'], 12), 'study'); else ad('18:00', '19:00', pk(['Зал', 'Йога', 'Бассейн'], 13), 'sport');
+        if (r(14) < .75) ad('19:30', '20:30', pk(['Ужин с семьёй', 'Прогулка', 'Звонок близким'], 15), 'life');
+        if (r(16) < .6) ad('21:00', '21:40', pk(['Планирование завтра', 'Дневник дня', 'Чтение'], 17), 'study');
+      } else {
+        ad('09:00', '10:00', pk(['Тренировка', 'Пробежка в парке', 'Йога'], 2), 'sport');
+        ad('10:30', '11:30', 'Завтрак и планы', 'life');
+        if (r(3) < .7) ad('12:00', '14:00', pk(['Встреча с друзьями', 'Поездка за город', 'Кино'], 4), 'life');
+        if (r(5) < .8) ad('15:00', '16:30', pk(['Английский', 'Курс по маркетингу', 'Разбор недели'], 6), 'study');
+        ad('17:00', '18:00', pk(['Уборка и закупки', 'Прогулка', 'Домашние дела'], 7), 'life');
+        if (r(8) < .6) ad('19:00', '20:30', pk(['Ужин', 'Кино дома', 'Встреча с родными'], 9), 'life');
+      }
+      const PY = { 1: 'Абонемент в зал', 5: 'Оплата аренды', 12: 'Интернет и связь', 20: 'Подписки', 28: 'Налоги и сборы' };
+      if (PY[d]) ad('09:30', '09:45', PY[d], 'pay');
+      return o; };
+    const base = (dt) => { const v = L.ev[iso(dt)]; return v !== undefined ? v : (DEMO ? demoEv(dt) : []); };
+    const curW = (dt) => iso(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() - ((dt.getDay() + 6) % 7))) === iso(CW), evD = (dt) => base(dt).concat(curW(dt) ? (L.ev[(dt.getDay() + 6) % 7] || []) : []), evs = (d) => evD(DT[d]).map((e, i) => ({ i, s: tm(e.s), e: tm(e.e), n: e.n, c: e.c, so: e })).sort((a, b) => a.s - b.s);
+    const rm = (d, e) => () => { const m = Object.assign({}, this.L.ev), k = iso(DT[d]), k2 = (DT[d].getDay() + 6) % 7; const fl = (x) => !(x.n === e.n && x.s === e.s); m[k] = base(DT[d]).filter(fl); if (m[k2]) m[k2] = m[k2].filter(fl); this.set({ ev: m }); };
     const day = evs(SEL);
     const now = 13 * 60 + 20, agenda = [], segs = [];
     let maxEnd = START;
@@ -236,7 +262,7 @@ class Component extends DCLogic {
     const pays = []; WD.forEach((w, d) => evs(d).forEach(x => { const e = x.so; if (e.c === 'pay') pays.push({ name: e.n, when: w + ', ' + DT[d].getDate() + ' ' + MON[DT[d].getMonth()].slice(0, 3) }); }));
     const first = new Date(SD0.getFullYear(), SD0.getMonth(), 1), gs = new Date(first.getFullYear(), first.getMonth(), 1 - ((first.getDay() + 6) % 7)), nCells = Math.ceil((((first.getDay() + 6) % 7) + new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate()) / 7) * 7;
     const MN = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-    const cells = []; for (let i = 0; i < nCells; i++) { const dt = new Date(gs.getFullYear(), gs.getMonth(), gs.getDate() + i), a = evD(dt).map(e => CAT[e.c] ? CAT[e.c][2] : 'var(--accent)'), on = iso(dt) === iso(SD0), td = iso(dt) === iso(TD); cells.push({ num: dt.getDate(), op: dt.getMonth() === SD0.getMonth() ? 1 : 0.4, bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : (td ? 'var(--ok)' : 'var(--line)'), d1: a.length > 0 ? 'inline-block' : 'none', d2: a.length > 1 ? 'inline-block' : 'none', d3: a.length > 2 ? 'inline-block' : 'none', c1: a[0] || 'transparent', c2: a[1] || 'transparent', c3: a[2] || 'transparent', pick: () => this.set({ sd: iso(dt) }) }); }
+    const cells = []; for (let i = 0; i < nCells; i++) { const dt = new Date(gs.getFullYear(), gs.getMonth(), gs.getDate() + i), lst = evD(dt).slice().sort((p, q) => (tm(p.s) || 0) - (tm(q.s) || 0)), a = lst.map(e => CAT[e.c] ? CAT[e.c][2] : 'var(--accent)'), ch = (k) => { const e = lst[k], c = e && CAT[e.c] ? CAT[e.c] : null; return { ['h' + (k + 1)]: e ? 'flex' : 'none', ['t' + (k + 1)]: e ? e.s + ' ' + e.n : '', ['b' + (k + 1)]: c ? c[1] : 'transparent' }; }, on = iso(dt) === iso(SD0), td = iso(dt) === iso(TD); cells.push(Object.assign({ cnt: lst.length ? String(lst.length) : '', md: lst.length > 3 ? 'block' : 'none', mr: lst.length > 3 ? '+' + (lst.length - 3) + ' ещё' : '' }, ch(0), ch(1), ch(2), { num: dt.getDate(), op: dt.getMonth() === SD0.getMonth() ? 1 : 0.4, bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : (td ? 'var(--ok)' : 'var(--line)'), d1: a.length > 0 ? 'inline-block' : 'none', d2: a.length > 1 ? 'inline-block' : 'none', d3: a.length > 2 ? 'inline-block' : 'none', c1: a[0] || 'transparent', c2: a[1] || 'transparent', c3: a[2] || 'transparent', pick: () => this.set({ sd: iso(dt) }) })); }
     const shift = (k) => () => { const m = this.L.mode, b = SD0; let n; if (m === 'month') { const tm1 = new Date(b.getFullYear(), b.getMonth() + k, 1), last = new Date(tm1.getFullYear(), tm1.getMonth() + 1, 0).getDate(); n = new Date(tm1.getFullYear(), tm1.getMonth(), Math.min(b.getDate(), last)); } else n = new Date(b.getFullYear(), b.getMonth(), b.getDate() + k * (m === 'week' ? 7 : 1)); this.set({ sd: iso(n) }); };
     const cats = Object.keys(CAT).map(k => ({ name: CAT[k][0], bg: L.cat === k ? CAT[k][2] : 'var(--card)', fg: L.cat === k ? 'var(--on-accent)' : 'var(--ink2)', border: L.cat === k ? CAT[k][2] : 'var(--line)', pick: () => this.set({ cat: k }) }));
     return {
@@ -249,7 +275,7 @@ class Component extends DCLogic {
       agenda, segs,
       weekRows, pays, noPaysDisplay: pays.length ? 'none' : 'block', cats, selName: WF[SEL].toLowerCase().replace(/а$/, 'у').replace(/я$/, 'ю'),
       fn: L.fn, fs: L.fs, fe: L.fe, typeN: (e) => this.set({ fn: e.target.value }), typeS: (e) => this.set({ fs: e.target.value }), typeE: (e) => this.set({ fe: e.target.value }), errDisplay: L.err ? 'block' : 'none',
-      add: () => { const n = (this.L.fn || '').trim(), s = tm(this.L.fs); if (!n || s === null) { this.set({ err: true }); return; } let e = tm(this.L.fe); if (e === null || e <= s) e = Math.min(1439, s + 60); const m = Object.assign({}, this.L.ev), d = iso(DT[SEL]); m[d] = (m[d] || []).concat([{ s: hm(s), e: hm(e), n, c: this.L.cat }]); this.set({ ev: m, fn: '', fs: '', fe: '', err: false }); }
+      add: () => { const n = (this.L.fn || '').trim(), s = tm(this.L.fs); if (!n || s === null) { this.set({ err: true }); return; } let e = tm(this.L.fe); if (e === null || e <= s) e = Math.min(1439, s + 60); const m = Object.assign({}, this.L.ev), d = iso(DT[SEL]); m[d] = (m[d] !== undefined ? m[d] : base(DT[SEL])).concat([{ s: hm(s), e: hm(e), n, c: this.L.cat }]); this.set({ ev: m, fn: '', fs: '', fe: '', err: false }); }
     };
   }
 }
