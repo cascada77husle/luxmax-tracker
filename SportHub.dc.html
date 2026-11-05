@@ -10,6 +10,7 @@
 <helmet>
 <style>
 .sH{font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700}
+.sIn{display:flex;flex-direction:column;gap:12px;min-width:0}
 .sM{font-size:12px;color:var(--muted)}
 .sBig{font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:800;letter-spacing:-.02em}
 .sCard{padding:16px;border-radius:20px;border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:var(--shadow)}
@@ -34,16 +35,16 @@
 
 <div style="display:flex;flex-direction:column;gap:2px"><b class="sH" style="font-size:24px">Питание и вода</b><span style="font-size:14px;color:var(--muted)">Сегодня</span></div>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
-  <div class="card sCard" style="flex-direction:row;align-items:center;gap:14px">
+<div class="card sCard" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px">
+  <div class="sIn" style="flex-direction:row;align-items:center;gap:14px">
     <div style="position:relative;width:96px;height:96px;flex:none"><svg width="96" height="96" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="9"></circle><circle cx="50" cy="50" r="44" fill="none" stroke="#d9c48f" stroke-width="9" stroke-linecap="round" stroke-dasharray="{{kRing}}" transform="rotate(-90 50 50)" style="transition:stroke-dasharray .6s cubic-bezier(.22,.8,.3,1)"></circle></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1"><b style="font-size:19px;font-weight:700;color:var(--ink)">{{kNum}}</b><span style="font-size:9px;color:var(--muted)">съедено</span></div></div>
     <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="sM">Калории</span><b class="sBig">{{kLeft}}</b><span class="sM">{{kGoalText}}</span></div>
   </div>
-  <div class="card sCard">
+  <div class="sIn">
     <span class="sM">Белки · жиры · углеводы</span>
     <sc-for list="{{macros}}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px"><div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:600">{{m.name}}</span><span style="color:var(--muted)">{{m.text}}</span></div><div style="height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden"><div style="height:100%;width:{{m.pct}}%;background:{{m.col}};border-radius:99px;transition:width .5s cubic-bezier(.22,.8,.3,1)"></div></div></div></sc-for>
   </div>
-  <div class="card sCard">
+  <div class="sIn">
     <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="sM">Вода</span><span class="sM">{{wGoalText}}</span></div>
     <b class="sBig" style="color:#8fbfe0">{{wText}}</b>
     <div style="display:flex;gap:5px;flex-wrap:nowrap;gap:3px"><sc-for list="{{glasses}}" as="g" hint-placeholder-count="10"><button type="button" onClick="{{g.pick}}" aria-label="Стаканов воды: {{g.n}}" style="cursor:pointer;border:0;background:transparent;padding:1px;display:flex"><svg width="19" height="25" viewBox="0 0 26 34" aria-hidden="true"><path d="M3 3h20l-2.5 27a3 3 0 01-3 2.7h-9a3 3 0 01-3-2.7z" fill="{{g.fill}}" stroke="#8fbfe0" stroke-width="2" stroke-linejoin="round"></path></svg></button></sc-for></div>
@@ -58,9 +59,7 @@
     <sc-for list="{{groups}}" as="g" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><span>{{g.title}}</span><span>{{g.kcal}}</span></div>
       <sc-for list="{{g.items}}" as="i" hint-placeholder-count="3"><div class="sFood"><span class="fiBox" style="background:{{i.bg}};color:{{i.col}}"><i class="fi" style="--fi:{{i.ic}}"></i></span><div style="display:flex;flex-direction:column;min-width:0;flex:1"><b style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{i.name}}</b><span class="sM">{{i.q}} · Б {{i.p}} · Ж {{i.f}} · У {{i.c}}</span></div><b style="font-size:14px;white-space:nowrap">{{i.k}}</b><button type="button" onClick="{{i.rm}}" aria-label="Убрать" class="sX"><i class="ai ai-x"></i></button></div></sc-for>
       <span style="display:{{g.emptyD}};font-size:13px;color:var(--muted);padding:2px 2px 4px">Пока пусто</span></div></sc-for>
-  </div>
-
-  <div class="card sCard">
+    <div style="height:1px;background:var(--soft)"></div>
     <b class="sH">Добавить еду</b>
     <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{mealPick}}" as="m" hint-placeholder-count="4"><button type="button" onClick="{{m.pick}}" class="sBtn" style="background:{{m.bg}};color:{{m.fg}};border-color:{{m.bd}}">{{m.name}}</button></sc-for></div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"><sc-for list="{{foods}}" as="f" hint-placeholder-count="12"><button type="button" onClick="{{f.pick}}" class="sFoodBtn"><span class="fiBox" style="width:34px;height:34px;background:{{f.bg}};color:{{f.col}}"><i class="fi" style="width:19px;height:19px;--fi:{{f.ic}}"></i></span><span style="display:flex;flex-direction:column;align-items:flex-start;min-width:0"><b style="font-size:13px;font-weight:600;text-align:left">{{f.name}}</b><span class="sM">{{f.k}}</span></span></button></sc-for></div>
