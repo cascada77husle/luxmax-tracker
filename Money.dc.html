@@ -482,7 +482,7 @@ class Component extends DCLogic {
     const L = this.L, P = this.props;
     const curG = () => this.props.goals || this.L.goals, curD = () => this.props.debts || this.L.debts;
     const upd = (p) => { const rest = Object.assign({}, p); if (p.goals && this.props.fnSetGoals) { this.props.fnSetGoals(p.goals); delete rest.goals; } if (p.debts && this.props.fnSetDebts) { this.props.fnSetDebts(p.debts); delete rest.debts; } if (Object.keys(rest).length) this.set(rest); };
-    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const fmt = (n) => { const r = Math.round(n); return (r < 0 ? '−' : '') + String(Math.abs(r)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
     const CUR = (((P.cfg || L.cfg || {}).profile) || {}).cur || '₽';
     const rub = (n) => fmt(n) + ' ' + CUR;
     const TODAY = new Date().getDate(), DIM = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate(), LEFT = DIM - TODAY;
