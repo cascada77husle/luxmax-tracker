@@ -296,14 +296,16 @@ button[style*="background:var(--accent)"] b,button[style*="background: var(--acc
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1200}}'>
 class Component extends DCLogic {
   init() {
-    const mk = (name, sets) => ({ name, sets });
-    return { ready: false, days: [1, 1, 0, 1, 1, 1, 0], times: ['18:00', '18:00', '18:00', '18:00', '18:00', '10:00', '10:00'], sel: (new Date().getDay() + 6) % 7, newEx: '', myEx: [], last: {}, nid: 20, tpl: 'Грудь и трицепс', cardio: 'Бег', minutes: 35, km: 5, cardioLog: [{ name: 'Бег', text: '35 мин · 5,0 км · вчера' }, { name: 'Велосипед', text: '50 мин · 18,0 км · 2 дня назад' }],
+    const DEMO = !!window.__arqDemoWave;
+    const o = { ready: false, dm: DEMO, days: [1, 1, 0, 1, 1, 1, 0], times: ['18:00', '18:00', '18:00', '18:00', '18:00', '10:00', '10:00'], sel: (new Date().getDay() + 6) % 7, newEx: '', myEx: [], last: {}, nid: 20, tpl: 'Грудь и трицепс', cardio: 'Бег', minutes: 35, km: 5, cardioLog: [{ name: 'Бег', text: '35 мин · 5,0 км · вчера' }, { name: 'Велосипед', text: '50 мин · 18,0 км · 2 дня назад' }],
       meals: this.nl().meals || {}, water: this.nl().water || {}, fm: 'b', lis: '', vm: '', vk: '', cn: '', ck: '', cp: '', cf: '', cc: '', err: false,
       ex: [{ id: 1, name: 'Жим лёжа', sets: [{ kg: 80, reps: 8, done: true }, { kg: 80, reps: 8, done: true }, { kg: 80, reps: 8, done: true }, { kg: 80, reps: 8, done: false }] }, { id: 2, name: 'Жим гантелей на наклонной', sets: [{ kg: 30, reps: 10, done: true }, { kg: 30, reps: 10, done: true }, { kg: 30, reps: 10, done: false }] }, { id: 3, name: 'Отжимания на брусьях', sets: [{ kg: 0, reps: 12, done: false }, { kg: 0, reps: 12, done: false }, { kg: 0, reps: 12, done: false }] }] };
+    if (!DEMO) Object.assign(o, { days: [0, 0, 0, 0, 0, 0, 0], tpl: '', minutes: 0, km: 0, cardioLog: [], ex: [] });
+    return o;
   }
-  nl() { try { const j = JSON.parse(localStorage.getItem('sport:nut:v1') || 'null'); return j && typeof j === 'object' ? j : {}; } catch (z) { return {}; } }
+  nl() { try { const j = JSON.parse(localStorage.getItem(('sport:nut:v1' + (window.__arqDemoWave ? ':demo' : ''))) || 'null'); return j && typeof j === 'object' ? j : {}; } catch (z) { return {}; } }
   nut() {
-    const KEY = 'sport:nut:v1', S = this.L, DEMO = true;
+    const KEY = ('sport:nut:v1' + (window.__arqDemoWave ? ':demo' : '')), S = this.L, DEMO = !!window.__arqDemoWave;
     const pad2 = (n) => String(n).padStart(2, '0'), iso = (d) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
     const now = new Date(), SD = new Date(now.getFullYear(), now.getMonth(), now.getDate()), TI = iso(SD), SI = TI;
     const upd = (p) => { const n = Object.assign({}, this.L, p); try { localStorage.setItem(KEY, JSON.stringify({ meals: n.meals, water: n.water })); } catch (z) { } this.set(p); };
@@ -383,7 +385,7 @@ class Component extends DCLogic {
       vm: S.vm || '', vmFoodD: S.vm && S.vk === 'food' ? 'block' : 'none', vmExD: S.vm && S.vk === 'ex' ? 'block' : 'none'
     };
   }
-  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  get L() { return (this.state && this.state.ready && this.state.dm === !!window.__arqDemoWave) ? this.state : this.init(); }
   set(p) { this.setState(Object.assign({}, this.L, p, { ready: true })); }
 
   renderVals() {
@@ -412,20 +414,20 @@ class Component extends DCLogic {
       pick: () => this.set({ sel: i, days: this.L.days.map((x, z) => z === i ? (x ? 0 : 1) : x) }) }; });
     const selD = dt(L.sel), selTitle = (L.sel === tIdx ? 'Сегодня' : WDL[L.sel][0].toUpperCase() + WDL[L.sel].slice(1)) + ', ' + selD.getDate() + ' ' + MON[selD.getMonth()];
     const planned = L.days.map((x, i) => x ? WD[i] + ' ' + L.times[i] : '').filter(Boolean), nPlan = planned.length;
-    const baseVol = 9400;
-    const stats = [{ label: 'Тренировок в неделю', value: String(nPlan), color: 'var(--cat-violet)', sub: nPlan ? 'в плане на неделе' : 'отметьте дни выше' }, { label: 'Объём недели', value: Math.round((baseVol + todayVol) / 100) / 10 + ' т', color: 'var(--ink)', sub: 'сегодня ' + todayVol + ' кг' }, { label: 'Время', value: '4 ч 20 м', color: 'var(--ink)', sub: 'тренировки и кардио' }];
+    const baseVol = window.__arqDemoWave ? 9400 : 0;
+    const stats = [{ label: 'Тренировок в неделю', value: String(nPlan), color: 'var(--cat-violet)', sub: nPlan ? 'в плане на неделе' : 'отметьте дни выше' }, { label: 'Объём недели', value: Math.round((baseVol + todayVol) / 100) / 10 + ' т', color: 'var(--ink)', sub: 'сегодня ' + todayVol + ' кг' }, { label: 'Время', value: window.__arqDemoWave ? '4 ч 20 м' : '—', color: 'var(--ink)', sub: window.__arqDemoWave ? 'тренировки и кардио' : 'пока нет данных' }];
     const pill = (on) => ({ bg: on ? 'color-mix(in srgb,var(--cat-violet) 13%,var(--card))' : 'var(--card)', border: on ? 'var(--cat-violet)' : 'var(--line)', fg: on ? 'var(--cat-violet-ink)' : 'var(--ink2)' });
     const templates = Object.keys(TPL).map(n => Object.assign({ name: n, pick: () => this.set({ tpl: n, nid: this.L.nid + 10, ex: TPL[n].map((e, i) => ({ id: this.L.nid + i, name: e[0], sets: mkSets(e[1], e[2]) })) }) }, pill(L.tpl === n)));
     const addNamed = (n) => this.set({ nid: this.L.nid + 1, ex: this.L.ex.concat([{ id: this.L.nid, name: n, sets: mkSets(this.L.last[n] || 0, 10) }]) });
     const library = LIB.concat(L.myEx.filter(x => LIB.indexOf(x) < 0)).map(n => ({ name: n, pick: () => addNamed(n) }));
     const cardioTypes = ['Бег', 'Велосипед', 'Плавание', 'Ходьба'].map(n => Object.assign({ name: n, pick: () => this.set({ cardio: n }) }, pill(L.cardio === n)));
-    const volumes = [['Нед. 1', 10.8], ['Нед. 2', 13.1], ['Нед. 3', 12.2], ['Эта', (baseVol + todayVol) / 1000]].map((v, i) => ({ name: v[0], label: v[1].toFixed(1) + ' т', h: Math.max(4, Math.round(v[1] / 17 * 90)), color: i === 3 ? 'var(--cat-violet)' : 'var(--line2)' }));
+    const volumes = [['Нед. 1', window.__arqDemoWave ? 10.8 : 0], ['Нед. 2', window.__arqDemoWave ? 13.1 : 0], ['Нед. 3', window.__arqDemoWave ? 12.2 : 0], ['Эта', (baseVol + todayVol) / 1000]].map((v, i) => ({ name: v[0], label: v[1].toFixed(1) + ' т', h: Math.max(4, Math.round(v[1] / 17 * 90)), color: i === 3 ? 'var(--cat-violet)' : 'var(--line2)' }));
     return {
       week, stats, rows, templates, library, selTitle, selOn: !!L.days[L.sel], selOff: !L.days[L.sel], selTime: L.times[L.sel], planText: nPlan ? 'Тренировки: ' + planned.join(' · ') : 'Дни тренировок пока не выбраны.', setTime: (ev) => { const v = ev.target.value; if (v) this.set({ times: this.L.times.map((x, z) => z === this.L.sel ? v : x) }); },
       newEx: L.newEx, typeEx: (ev) => this.set({ newEx: ev.target.value }), addEx: () => { const n = (this.L.newEx || '').trim(); if (!n) return; this.set({ newEx: '', myEx: this.L.myEx.indexOf(n) < 0 ? this.L.myEx.concat([n]) : this.L.myEx, nid: this.L.nid + 1, ex: this.L.ex.concat([{ id: this.L.nid, name: n, sets: mkSets(this.L.last[n] || 0, 10) }]) }); }, setsDone: done, setsTotal: setsAll.length, cardioTypes, minutes: L.minutes, km: L.km.toFixed(1).replace('.', ','), cardioLog: L.cardioLog,
       minMinus: () => this.set({ minutes: Math.max(0, this.L.minutes - 5) }), minPlus: () => this.set({ minutes: this.L.minutes + 5 }), kmMinus: () => this.set({ km: Math.max(0, this.L.km - 0.5) }), kmPlus: () => this.set({ km: this.L.km + 0.5 }),
       logCardio: () => { const l = this.L; if (!l.minutes) return; this.set({ cardioLog: [{ name: l.cardio, text: l.minutes + ' мин · ' + l.km.toFixed(1).replace('.', ',') + ' км · сегодня' }].concat(l.cardioLog).slice(0, 3) }); },
-      volumes, records: [{ name: 'Жим лёжа', value: '100 кг × 3', delta: '+5 кг' }, { name: 'Присед', value: '130 кг × 3', delta: '+10 кг' }, { name: 'Становая тяга', value: '150 кг × 2', delta: '+5 кг' }, { name: 'Подтягивания', value: '14 раз', delta: '+2' }, { name: 'Бег 5 км', value: '24:10', delta: '−0:40' }],
+      volumes, records: !window.__arqDemoWave ? [] : [{ name: 'Жим лёжа', value: '100 кг × 3', delta: '+5 кг' }, { name: 'Присед', value: '130 кг × 3', delta: '+10 кг' }, { name: 'Становая тяга', value: '150 кг × 2', delta: '+5 кг' }, { name: 'Подтягивания', value: '14 раз', delta: '+2' }, { name: 'Бег 5 км', value: '24:10', delta: '−0:40' }],
       ...this.nut()
     };
   }
