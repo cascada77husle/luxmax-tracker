@@ -195,7 +195,7 @@ class Component extends DCLogic {
     const P = this.props, L = this.L;
     const accs = P.accounts || [];
     const canEdit = !P.compact;
-    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const fmt = (n) => { const r0 = Math.round(n); return (r0 < 0 ? '−' : '') + String(Math.abs(r0)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
     const num = (s) => parseFloat(String(s).replace(',', '.').replace(/\s/g, '')) || 0;
     const BANKS = [['Сбербанк', '#1E9E6B'], ['Альфа-Банк', '#C8384B'], ['Т-Банк', '#B58A00'], ['ВТБ', '#2F6FED'], ['Райффайзен', '#7A869A'], ['Газпромбанк', '#4F8BFF'], ['Другой банк', '#6B7484'], ['Наличные', '#C97A16'], ['Bybit', '#8A93A5']];
     const COLOR = {}; BANKS.forEach(b => { COLOR[b[0]] = b[1]; });
