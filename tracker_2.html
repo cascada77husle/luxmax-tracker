@@ -2951,7 +2951,7 @@ class Component extends DCLogic {
             const pcol = (p) => p == null ? 'var(--line2)' : p >= 70 ? 'var(--ok)' : p >= 40 ? 'var(--warn)' : 'var(--bad)';
             const tintH = (k, a0) => { let x = 0; for (const ch of k) x = (x * 31 + ch.charCodeAt(0)) >>> 0; const al = a0 + (x % 19) / 100, cc = [[56, 189, 248], [99, 162, 240], [45, 212, 191], [129, 140, 248], [148, 163, 184]][x % 5]; return 'linear-gradient(160deg,rgba(' + cc + ',' + (al + .07).toFixed(2) + '),rgba(' + cc + ',' + (al * .4).toFixed(2) + '))'; };
             const cellStyle = (h, d) => {
-              const st = d > TODAY ? 'off' : stOf(h, d), a = amtOf(h, d); let bg = 'transparent', bd = 'var(--line2)', fg = 'var(--on-accent)', txt = '';
+              let st = d > TODAY ? 'off' : stOf(h, d); if (st === 'wk' && d < TODAY) st = 'miss'; const a = amtOf(h, d); let bg = 'transparent', bd = 'var(--line2)', fg = 'var(--on-accent)', txt = '';
               if (st === 'done') { bg = 'var(--ok)'; bd = 'var(--ok)'; txt = '✓'; } else if (st === 'part') { bg = 'color-mix(in srgb,var(--warn) 24%,transparent)'; bd = 'var(--warn)'; fg = 'var(--warn)'; txt = h.q > 0 ? String(a) : '½'; } else if (st === 'skip') { bg = 'color-mix(in srgb,var(--ink) 7%,transparent)'; fg = 'var(--muted)'; txt = '–'; } else if (st === 'miss') { bg = 'var(--bad)'; bd = 'var(--bad)'; fg = '#fff'; txt = '−'; } else if (st === 'off' || st === 'pz' || st === 'ar') { bd = 'transparent'; bg = tintH(h.id + d, .08); } else if (st === 'todo') { bg = 'linear-gradient(160deg,rgba(56,189,248,.2),rgba(56,189,248,.07))'; bd = 'rgba(56,189,248,.42)'; } else if (st === 'wk') { bg = tintH(h.id + d, .1); }
               return { st, bg, bd, fg, txt, op: d > TODAY ? .55 : d < cur.start ? .9 : 1 };
             };
