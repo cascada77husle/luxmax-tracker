@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Спорт</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+.sH{font-family:'Archivo',system-ui,sans-serif;font-size:18px;font-weight:700}
+.sM{font-size:12px;color:var(--muted)}
+.sBig{font-family:'Archivo',system-ui,sans-serif;font-size:26px;font-weight:800;letter-spacing:-.02em}
+.sCard{padding:16px;border-radius:20px;border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;background:var(--card);box-shadow:var(--shadow)}
+.fi{display:inline-block;width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--fi) center/contain no-repeat;mask:var(--fi) center/contain no-repeat}
+.fiBox{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.sRound{cursor:pointer;width:34px;height:34px;border-radius:999px;border:1px solid var(--line2);background:var(--card);color:var(--ink);font-size:16px;padding:0}
+.sBtn{cursor:pointer;border:1.5px solid var(--line2);background:transparent;color:var(--ink2);font-weight:600;font-size:12px;padding:7px 14px;border-radius:999px;white-space:nowrap}
+.sPri{cursor:pointer;border:0;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:13px;padding:10px 20px}
+.sInp{border:1.5px solid var(--line2);border-radius:14px;padding:10px 12px;font-size:14px;background:var(--field);color:var(--ink);min-width:0;box-sizing:border-box}
+.sDay{cursor:pointer;border:1.5px solid var(--line);border-radius:20px;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.sDayN{font-size:11px;font-weight:600;opacity:.78;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:14px}
+.sEx{padding:12px 0 2px;border-top:1px solid var(--soft)}
+.sSet{cursor:pointer;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line2);font-size:12px;font-weight:700;padding:0;box-sizing:border-box;display:flex;align-items:center;justify-content:center}
+.sX{cursor:pointer;width:28px;height:28px;border-radius:50%;border:0;background:transparent;color:var(--muted);padding:0;display:flex;align-items:center;justify-content:center;opacity:.6}
+.sX:hover{opacity:1}
+.sFood{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.sFoodBtn{cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);color:var(--ink);text-align:left;min-width:0}
+@media (max-width:640px){.sDayN{display:none}}
+</style>
+</helmet>
+<div style="font-family:'Inter',system-ui,sans-serif;color:var(--ink);display:flex;flex-direction:column;gap:16px">
+
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+  <div style="display:flex;flex-direction:column;gap:2px"><b class="sH" style="font-size:24px">Спорт</b><span style="font-size:14px;color:var(--muted)">{{subLabel}}</span></div>
+  <div style="display:flex;align-items:center;gap:8px"><button type="button" onClick="{{prev}}" aria-label="Неделя назад" class="sRound">‹</button><button type="button" onClick="{{today}}" class="sBtn" style="height:34px">Сегодня</button><button type="button" onClick="{{next}}" aria-label="Неделя вперёд" class="sRound">›</button></div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px">
+  <sc-for list="{{days}}" as="d" hint-placeholder-count="7"><button type="button" onClick="{{d.pick}}" class="sDay" style="border-color:{{d.border}};background:{{d.bg}};color:{{d.fg}}"><span style="font-size:12px;font-weight:600;opacity:.8">{{d.wd}}</span><b style="font-size:20px;font-weight:800;color:{{d.fg}}">{{d.num}}</b><span class="sDayN" style="color:{{d.fg}}">{{d.plan}}</span><span style="width:100%;max-width:44px;height:4px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden"><span style="display:block;height:100%;width:{{d.pct}}%;background:{{d.bar}};border-radius:99px"></span></span></button></sc-for>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
+  <div class="card sCard" style="flex-direction:row;align-items:center;gap:14px">
+    <div style="position:relative;width:96px;height:96px;flex:none"><svg width="96" height="96" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="9"></circle><circle cx="50" cy="50" r="44" fill="none" stroke="#d9c48f" stroke-width="9" stroke-linecap="round" stroke-dasharray="{{kRing}}" transform="rotate(-90 50 50)" style="transition:stroke-dasharray .6s cubic-bezier(.22,.8,.3,1)"></circle></svg><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1"><b style="font-size:19px;font-weight:700;color:var(--ink)">{{kNum}}</b><span style="font-size:9px;color:var(--muted)">съедено</span></div></div>
+    <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span class="sM">Калории</span><b class="sBig">{{kLeft}}</b><span class="sM">{{kGoalText}}</span></div>
+  </div>
+  <div class="card sCard">
+    <span class="sM">Белки · жиры · углеводы</span>
+    <sc-for list="{{macros}}" as="m" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px"><div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:600">{{m.name}}</span><span style="color:var(--muted)">{{m.text}}</span></div><div style="height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden"><div style="height:100%;width:{{m.pct}}%;background:{{m.col}};border-radius:99px;transition:width .5s cubic-bezier(.22,.8,.3,1)"></div></div></div></sc-for>
+  </div>
+  <div class="card sCard">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="sM">Вода</span><span class="sM">{{wGoalText}}</span></div>
+    <b class="sBig" style="color:#8fbfe0">{{wText}}</b>
+    <div style="display:flex;gap:5px;flex-wrap:nowrap;gap:3px"><sc-for list="{{glasses}}" as="g" hint-placeholder-count="10"><button type="button" onClick="{{g.pick}}" aria-label="Стаканов воды: {{g.n}}" style="cursor:pointer;border:0;background:transparent;padding:1px;display:flex"><svg width="19" height="25" viewBox="0 0 26 34" aria-hidden="true"><path d="M3 3h20l-2.5 27a3 3 0 01-3 2.7h-9a3 3 0 01-3-2.7z" fill="{{g.fill}}" stroke="#8fbfe0" stroke-width="2" stroke-linejoin="round"></path></svg></button></sc-for></div>
+  </div>
+  <div class="card sCard">
+    <span class="sM">Неделя</span>
+    <div style="display:flex;align-items:baseline;gap:8px"><b class="sBig">{{wkDone}}</b><span style="font-size:14px;color:var(--muted)">{{wkOf}}</span></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2)"><span>Объём <b>{{wkVol}}</b></span><span>Время <b>{{wkTime}}</b></span></div>
+    <div style="display:flex;align-items:flex-end;gap:6px;height:44px"><sc-for list="{{vols}}" as="v" hint-placeholder-count="4"><div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%"><div style="width:100%;border-radius:6px;background:{{v.col}};height:{{v.h}}px;min-height:3px"></div><span style="font-size:10px;color:var(--muted)">{{v.lab}}</span></div></sc-for></div>
+  </div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+
+<div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:16px">
+  <div class="card sCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div style="display:flex;align-items:center;gap:10px"><span class="fiBox" style="background:rgba(182,168,224,.16);color:#c3b8ea"><i class="fi" style="--fi:{{icDumb}}"></i></span><div style="display:flex;flex-direction:column"><b class="sH">{{trTitle}}</b><span class="sM">{{trSub}}</span></div></div><span style="font-size:13px;color:var(--muted)">{{trProg}}</span></div>
+    <div style="height:7px;border-radius:99px;background:rgba(255,255,255,.09);overflow:hidden"><div style="height:100%;width:{{trPct}}%;background:#b6a8e0;border-radius:99px;transition:width .5s cubic-bezier(.22,.8,.3,1)"></div></div>
+    <sc-for list="{{exs}}" as="x" hint-placeholder-count="5"><div class="sEx"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div style="display:flex;flex-direction:column;min-width:0"><b style="font-size:14px">{{x.name}}</b><span class="sM">{{x.sub}}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{x.sets}}" as="s" hint-placeholder-count="4"><button type="button" onClick="{{s.pick}}" aria-label="Подход {{s.n}}" class="sSet" style="background:{{s.bg}};border-color:{{s.bd}};color:{{s.fg}}">{{s.t}}</button></sc-for><button type="button" onClick="{{x.rm}}" aria-label="Убрать" class="sX" style="display:{{x.rmD}}"><i class="ai ai-x"></i></button></div></div></div></sc-for>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:4px"><input type="text" value="{{xn}}" onInput="{{typeXn}}" placeholder="Своё упражнение, например «Тяга гантели»" aria-label="Упражнение" class="sInp" style="flex:1 1 200px"><input type="text" inputmode="decimal" value="{{xw}}" onInput="{{typeXw}}" placeholder="кг" aria-label="Вес" class="sInp" style="width:64px"><input type="text" inputmode="numeric" value="{{xr}}" onInput="{{typeXr}}" placeholder="повт." aria-label="Повторы" class="sInp" style="width:72px"><button type="button" onClick="{{addEx}}" class="sPri">Добавить</button></div>
+  </div>
+
+  <div class="card sCard">
+    <b class="sH">Личные рекорды</b>
+    <sc-for list="{{recs}}" as="r" hint-placeholder-count="5"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--soft)"><span style="display:flex;align-items:center;gap:10px"><span class="fiBox" style="width:32px;height:32px;border-radius:10px;background:rgba(217,196,143,.14);color:#d9c48f"><i class="fi" style="width:17px;height:17px;--fi:{{icTrophy}}"></i></span><span style="font-size:14px;font-weight:600">{{r.name}}</span></span><span style="display:flex;flex-direction:column;align-items:flex-end"><b style="font-size:14px">{{r.val}}</b><span class="sM">{{r.when}}</span></span></div></sc-for>
+    <span style="display:{{recEmptyD}};font-size:13px;color:var(--muted)">Рекорды появятся, когда начнёте записывать подходы.</span>
+  </div>
+</div>
+
+<div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:16px">
+  <div class="card sCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><div style="display:flex;align-items:center;gap:10px"><span class="fiBox" style="background:rgba(217,196,143,.16);color:#d9c48f"><i class="fi" style="--fi:{{icBowl}}"></i></span><div style="display:flex;flex-direction:column"><b class="sH">Питание</b><span class="sM">{{foodSub}}</span></div></div></div>
+    <sc-for list="{{groups}}" as="g" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em"><span>{{g.title}}</span><span>{{g.kcal}}</span></div>
+      <sc-for list="{{g.items}}" as="i" hint-placeholder-count="3"><div class="sFood"><span class="fiBox" style="background:{{i.bg}};color:{{i.col}}"><i class="fi" style="--fi:{{i.ic}}"></i></span><div style="display:flex;flex-direction:column;min-width:0;flex:1"><b style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{i.name}}</b><span class="sM">{{i.q}} · Б {{i.p}} · Ж {{i.f}} · У {{i.c}}</span></div><b style="font-size:14px;white-space:nowrap">{{i.k}}</b><button type="button" onClick="{{i.rm}}" aria-label="Убрать" class="sX"><i class="ai ai-x"></i></button></div></sc-for>
+      <span style="display:{{g.emptyD}};font-size:13px;color:var(--muted);padding:2px 2px 4px">Пока пусто</span></div></sc-for>
+  </div>
+
+  <div class="card sCard">
+    <b class="sH">Добавить еду</b>
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{mealPick}}" as="m" hint-placeholder-count="4"><button type="button" onClick="{{m.pick}}" class="sBtn" style="background:{{m.bg}};color:{{m.fg}};border-color:{{m.bd}}">{{m.name}}</button></sc-for></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"><sc-for list="{{foods}}" as="f" hint-placeholder-count="12"><button type="button" onClick="{{f.pick}}" class="sFoodBtn"><span class="fiBox" style="width:34px;height:34px;background:{{f.bg}};color:{{f.col}}"><i class="fi" style="width:19px;height:19px;--fi:{{f.ic}}"></i></span><span style="display:flex;flex-direction:column;align-items:flex-start;min-width:0"><b style="font-size:13px;font-weight:600;text-align:left">{{f.name}}</b><span class="sM">{{f.k}}</span></span></button></sc-for></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:4px"><input type="text" value="{{cn}}" onInput="{{typeCn}}" placeholder="Своё блюдо" aria-label="Блюдо" class="sInp" style="flex:1 1 160px"><input type="text" inputmode="numeric" value="{{ck}}" onInput="{{typeCk}}" placeholder="ккал" aria-label="Калории" class="sInp" style="width:70px"><input type="text" inputmode="decimal" value="{{cp}}" onInput="{{typeCp}}" placeholder="Б" aria-label="Белки" class="sInp" style="width:52px"><input type="text" inputmode="decimal" value="{{cf}}" onInput="{{typeCf}}" placeholder="Ж" aria-label="Жиры" class="sInp" style="width:52px"><input type="text" inputmode="decimal" value="{{cc}}" onInput="{{typeCc}}" placeholder="У" aria-label="Углеводы" class="sInp" style="width:52px"><button type="button" onClick="{{addCustom}}" class="sPri">Добавить</button></div>
+    <span style="display:{{errD}};font-size:12px;color:var(--bad)">Введите название и калории.</span>
+  </div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1000,"height":1400}}'>
+class Component extends DCLogic {
+  init() { return { ready: false, sd: '', fm: 'b', xn: '', xw: '', xr: '', cn: '', ck: '', cp: '', cf: '', cc: '', err: false, meals: {}, water: {}, done: {}, extra: {}, kk: '' }; }
+  get L() { return (this.state && this.state.ready) ? this.state : this.init(); }
+  renderVals() {
+    const DEMO = !!window.__arqDemoWave, KEY = 'sport:hub:' + (DEMO ? 'demo' : 'real');
+    const load = () => { try { const j = JSON.parse(localStorage.getItem(KEY) || 'null'); return j && typeof j === 'object' ? j : {}; } catch (z) { return {}; } };
+    const cur = () => { const x = this.L; return x.kk === KEY ? x : Object.assign({}, x, { meals: {}, water: {}, done: {}, extra: {} }, load(), { kk: KEY }); };
+    const upd = (p) => { const n = Object.assign({}, cur(), p, { ready: true }); try { localStorage.setItem(KEY, JSON.stringify({ meals: n.meals, water: n.water, done: n.done, extra: n.extra })); } catch (z) { } this.setState(n); };
+    const S = cur();
+    const pad2 = (n) => String(n).padStart(2, '0'), iso = (d) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+    const now = new Date(), TD = new Date(now.getFullYear(), now.getMonth(), now.getDate()), TI = iso(TD);
+    const SD = (() => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(S.sd || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : TD; })(), SI = iso(SD), SEL = (SD.getDay() + 6) % 7;
+    const M0 = new Date(SD.getFullYear(), SD.getMonth(), SD.getDate() - SEL), DT = [0, 1, 2, 3, 4, 5, 6].map(i => new Date(M0.getFullYear(), M0.getMonth(), M0.getDate() + i));
+    const WD = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'], WF = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'], MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const rnd = (q) => { let x = q | 0; x = Math.imul(x ^ (x >>> 15), 2246822519); x = Math.imul(x ^ (x >>> 13), 3266489917); return ((x ^ (x >>> 16)) >>> 0) / 4294967296; };
+    const seedOf = (dt) => dt.getFullYear() * 10000 + dt.getMonth() * 100 + dt.getDate();
+    // ---- иконки
+    const SVG = { dumb: "<path d='M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12'/>", bowl: "<path d='M3 11h18a9 9 0 01-18 0zM8 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4'/>", trophy: "<path d='M8 4h8v5a4 4 0 01-8 0zM8 6H4c0 3 1 4 4 5M16 6h4c0 3-1 4-4 5M12 13v4M8 20h8M9 17h6'/>", egg: "<path d='M12 3c3.5 0 6 6 6 10a6 6 0 01-12 0c0-4 2.5-10 6-10z'/>", apple: "<path d='M12 8c-2-2-6-1-6 4 0 4 2 9 4 9 1 0 1-.6 2-.6s1 .6 2 .6c2 0 4-5 4-9 0-5-4-6-6-4zM12 8c0-2 1-3 3-4'/>", bread: "<path d='M5 10a4 4 0 012-7h10a4 4 0 012 7v9a1 1 0 01-1 1H6a1 1 0 01-1-1z'/>", chicken: "<path d='M14.5 4a5 5 0 013.8 8.2L15 15.5 9.5 10zM9.5 10l-4.2 4.2a2 2 0 002.8 2.8l.4.4a2 2 0 002.8-2.8l.3-.3'/>", fish: "<path d='M3 12c3-5 9-6 13-2l5-3v10l-5-3c-4 4-10 3-13-2z'/><circle cx='8' cy='11' r='.9'/>", leaf: "<path d='M5 19C5 10 10 5 20 4c0 10-5 15-14 15zM5 19l8-8'/>", cheese: "<path d='M3 17l18-3V9L3 6zM9 11.5h.01M14 11h.01M16 14h.01'/>", milk: "<path d='M6 3h12l-1.5 17a1 1 0 01-1 1h-7a1 1 0 01-1-1zM6.5 9h11'/>", coffee: "<path d='M4 9h12v6a5 5 0 01-5 5H9a5 5 0 01-5-5zM16 10h2a2 2 0 010 5h-2M8 3v3M12 3v3'/>", banana: "<path d='M4 8c2 8 8 12 16 10-1 2-4 3-7 3-6 0-10-5-9-13zM4 8c0-2 1-3 2-3'/>", wheat: "<path d='M12 21V8M12 8c-3 0-4-2-4-4 3 0 4 2 4 4zM12 8c3 0 4-2 4-4-3 0-4 2-4 4zM12 14c-3 0-4-2-4-4 3 0 4 2 4 4zM12 14c3 0 4-2 4-4-3 0-4 2-4 4z'/>", nut: "<path d='M12 3c4 3 6 8 4 13-1 3-3 5-4 5s-3-2-4-5C6 11 8 6 12 3zM12 8v9'/>", steak: "<path d='M5 10c0-4 5-6 9-5s6 4 5 8-5 6-9 6-5-4-5-9zM14 10a2.5 2.5 0 110 .1'/>", shaker: "<path d='M7 8h10l-1 12a1 1 0 01-1 1H9a1 1 0 01-1-1zM8 4h8v4H8zM9 13h6'/>" };
+    const IC = (k) => 'url(data:image/svg+xml,' + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'>" + SVG[k] + "</svg>").replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29') + ')';
+    // ---- план тренировок
+    const PLAN = [
+      { n: 'Грудь и трицепс', ex: [['Жим лёжа', 4, 80, 8], ['Жим гантелей на наклонной', 3, 30, 10], ['Разводка гантелей', 3, 16, 12], ['Отжимания на брусьях', 3, 0, 12], ['Французский жим', 3, 35, 12]] },
+      { n: 'Спина и бицепс', ex: [['Подтягивания', 4, 0, 8], ['Тяга штанги в наклоне', 4, 70, 8], ['Тяга верхнего блока', 3, 60, 10], ['Сгибания со штангой', 3, 35, 10], ['Гиперэкстензия', 3, 0, 15]] },
+      { n: 'Отдых и растяжка', rest: true, ex: [['Ходьба, мин', 1, 0, 40], ['Растяжка, мин', 1, 0, 15]] },
+      { n: 'Ноги', ex: [['Приседания со штангой', 4, 100, 8], ['Жим ногами', 4, 180, 10], ['Румынская тяга', 3, 80, 10], ['Выпады с гантелями', 3, 20, 12], ['Подъём на носки', 4, 60, 15]] },
+      { n: 'Плечи и пресс', ex: [['Жим стоя', 4, 50, 8], ['Махи в стороны', 3, 10, 15], ['Тяга к подбородку', 3, 35, 12], ['Скручивания', 3, 0, 20], ['Планка, сек', 3, 0, 60]] },
+      { n: 'Кардио', rest: true, ex: [['Бег, мин', 1, 0, 35], ['Растяжка, мин', 1, 0, 10]] },
+      { n: 'Отдых', rest: true, ex: [['Прогулка, мин', 1, 0, 60]] }];
+    const exOf = (dt) => PLAN[(dt.getDay() + 6) % 7].ex.concat(S.extra[iso(dt)] || []);
+    const doneN = (dt, k, sets) => { const key = iso(dt) + '|' + k, o = S.done[key]; if (o !== undefined) return Math.min(o, sets); if (!DEMO) return 0; const di = iso(dt); if (di > TI) return 0; if (k >= PLAN[(dt.getDay() + 6) % 7].ex.length) return 0; if (di === TI) return k < 2 ? sets : k === 2 ? Math.min(2, sets) : 0; return rnd(seedOf(dt) * 7 + 3) < .12 ? 0 : sets; };
+    const dayStat = (dt) => { const ex = exOf(dt); let t = 0, d = 0, vol = 0; ex.forEach((e, k) => { const n = doneN(dt, k, e[1]); t += e[1]; d += n; vol += n * e[2] * e[3]; }); return { t, d, vol, pct: t ? Math.round(d / t * 100) : 0 }; };
+    // ---- еда
+    const FOOD = {
+      egg: ['Яйца варёные', 'egg', '2 шт', 156, 13, 11, 1], oat: ['Овсянка с бананом', 'bowl', '250 г', 320, 9, 6, 56], curd: ['Творог 5%', 'milk', '200 г', 242, 34, 10, 6], chick: ['Куриная грудка', 'chicken', '200 г', 330, 62, 7, 0], rice: ['Рис с овощами', 'wheat', '250 г', 330, 7, 3, 70], salmon: ['Лосось запечённый', 'fish', '150 г', 310, 30, 20, 0], salad: ['Греческий салат', 'leaf', '200 г', 190, 5, 16, 8], apple: ['Яблоко', 'apple', '180 г', 95, 0, 0, 25], banana: ['Банан', 'banana', '120 г', 105, 1, 0, 27], almond: ['Миндаль', 'nut', '30 г', 175, 6, 15, 6], bread: ['Хлеб цельнозерновой', 'bread', '2 ломтика', 160, 6, 2, 30], steak: ['Стейк из говядины', 'steak', '180 г', 400, 45, 24, 0], yog: ['Греческий йогурт', 'milk', '170 г', 130, 17, 4, 6], coffee: ['Кофе с молоком', 'coffee', '250 мл', 60, 3, 3, 5], shake: ['Протеиновый коктейль', 'shaker', '300 мл', 160, 30, 3, 6], cheese: ['Сыр', 'cheese', '40 г', 150, 10, 12, 0], pasta: ['Паста с индейкой', 'bowl', '300 г', 480, 36, 12, 58] };
+    const COL = { egg: '#d9c48f', bowl: '#d3b48a', milk: '#a9c4dc', chicken: '#d6a98c', wheat: '#cdbf8e', fish: '#e0a595', leaf: '#9cc7a6', apple: '#d98f8f', banana: '#dcc86f', nut: '#c9a67e', bread: '#d1b17f', steak: '#cf8f8a', coffee: '#b89b83', shaker: '#a6b4de', cheese: '#e0c46c' };
+    const itemOf = (id, m) => { const f = FOOD[id]; return { m, n: f[0], ic: f[1], q: f[2], k: f[3], p: f[4], f: f[5], c: f[6] }; };
+    const demoMeals = (dt) => { const di = iso(dt); if (di > TI) return []; const r = rnd(seedOf(dt) * 5 + 1), o = [];
+      o.push(itemOf('oat', 'b'), itemOf(r < .5 ? 'egg' : 'bread', 'b'), itemOf('coffee', 'b'));
+      o.push(itemOf('chick', 'l'), itemOf('rice', 'l'), itemOf('salad', 'l'));
+      o.push(itemOf(r < .5 ? 'curd' : 'yog', 's'), itemOf(r < .5 ? 'apple' : 'almond', 's'));
+      if (di !== TI) o.push(itemOf(r < .5 ? 'salmon' : 'steak', 'd'), itemOf(r < .5 ? 'salad' : 'rice', 'd'), itemOf('shake', 'd'));
+      return o; };
+    const mealsOf = (dt) => { const v = S.meals[iso(dt)]; return v !== undefined ? v : (DEMO ? demoMeals(dt) : []); };
+    const MT = [['b', 'Завтрак'], ['l', 'Обед'], ['s', 'Перекус'], ['d', 'Ужин']];
+    const GK = 2400, GP = 160, GF = 75, GC = 280, GW = 10;
+    const ml = mealsOf(SD), sum = (k) => ml.reduce((a, x) => a + (x[k] || 0), 0), K = sum('k'), P = sum('p'), F = sum('f'), C = sum('c');
+    const setMeals = (arr) => upd({ meals: Object.assign({}, S.meals, { [SI]: arr }) });
+    const mkRm = (idx) => () => { const a = mealsOf(SD).slice(); a.splice(idx, 1); setMeals(a); };
+    const groups = MT.map(g => { const items = []; let kk = 0; ml.forEach((x, idx) => { if (x.m !== g[0]) return; kk += x.k; const col = COL[x.ic === 'bowl' ? 'bowl' : x.ic] || '#d9c48f'; items.push({ name: x.n, q: x.q, k: x.k + ' ккал', p: Math.round(x.p), f: Math.round(x.f), c: Math.round(x.c), ic: IC(x.ic), col, bg: 'color-mix(in srgb,' + col + ' 16%,transparent)', rm: mkRm(idx) }); }); return { title: g[1], kcal: kk ? kk + ' ккал' : '', items, emptyD: items.length ? 'none' : 'block' }; });
+    const addItem = (it) => setMeals(mealsOf(SD).concat([it]));
+    const foods = Object.keys(FOOD).map(id => { const f = FOOD[id], col = COL[f[1]] || '#d9c48f'; return { name: f[0], k: f[2] + ' · ' + f[3] + ' ккал', ic: IC(f[1]), col, bg: 'color-mix(in srgb,' + col + ' 16%,transparent)', pick: () => addItem(itemOf(id, this.L.fm || 'b')) }; });
+    const num = (s) => { const v = parseFloat(String(s || '').replace(',', '.')); return isFinite(v) ? v : 0; };
+    // ---- вода
+    const waterOf = (dt) => { const v = S.water[iso(dt)]; if (v !== undefined) return v; if (!DEMO) return 0; const di = iso(dt); if (di > TI) return 0; if (di === TI) return 6; return 7 + Math.floor(rnd(seedOf(dt) * 3 + 2) * 4); };
+    const W = Math.min(waterOf(SD), 14);
+    // ---- тренировка выбранного дня
+    const exs = exOf(SD).map((e, k) => { const dn = doneN(SD, k, e[1]), isEx = k >= PLAN[SEL].ex.length, unit = /мин|сек/.test(e[0]);
+      const sub = unit ? e[1] > 1 ? e[1] + ' × ' + e[3] + (/сек/.test(e[0]) ? ' сек' : ' мин') : e[3] + (/сек/.test(e[0]) ? ' сек' : ' мин') : e[1] + ' × ' + e[3] + (e[2] ? ' · ' + e[2] + ' кг' : ' · свой вес');
+      const nm = e[0].replace(/, (мин|сек)$/, '');
+      return { name: nm, sub, rmD: isEx ? 'flex' : 'none', rm: () => { const a = (S.extra[SI] || []).slice(); a.splice(k - PLAN[SEL].ex.length, 1); upd({ extra: Object.assign({}, S.extra, { [SI]: a }) }); },
+        sets: Array.from({ length: e[1] }, (_, j) => { const on = j < dn; return { n: j + 1, t: on ? '✓' : String(j + 1), bg: on ? 'rgba(156,199,166,.9)' : 'transparent', bd: on ? 'rgba(156,199,166,.9)' : 'var(--line2)', fg: on ? '#0c1a12' : 'var(--ink2)', pick: () => upd({ done: Object.assign({}, S.done, { [SI + '|' + k]: dn === j + 1 ? j : j + 1 }) }) }; }) }; });
+    const st = dayStat(SD), pl = PLAN[SEL];
+    // ---- неделя
+    const stats = DT.map(dayStat); let wDone = 0, wTotal = 0, wVol = 0, wTime = 0;
+    DT.forEach((dt, i) => { if (PLAN[i].rest) return; wTotal++; if (stats[i].pct >= 80) { wDone++; wTime += 55 + Math.round(rnd(seedOf(dt)) * 20); } wVol += stats[i].vol; });
+    const vols = [3, 2, 1, 0].map(b => { const m0 = new Date(M0.getFullYear(), M0.getMonth(), M0.getDate() - b * 7); let v = 0; for (let i = 0; i < 7; i++) v += dayStat(new Date(m0.getFullYear(), m0.getMonth(), m0.getDate() + i)).vol; return { v, lab: b === 0 ? 'Эта' : 'Нед −' + b }; });
+    const vMax = Math.max.apply(null, vols.map(x => x.v).concat([1]));
+    const fmtT = (kg) => (kg / 1000).toFixed(1).replace('.', ',') + ' т';
+    const dTitle = WF[SEL] + ', ' + SD.getDate() + ' ' + MON[SD.getMonth()];
+    const C0 = 2 * Math.PI * 44, kp = Math.min(1, K / GK);
+    const shiftW = (k) => () => upd({ sd: iso(new Date(SD.getFullYear(), SD.getMonth(), SD.getDate() + 7 * k)) });
+    return {
+      subLabel: dTitle + ' · ' + pl.n, prev: shiftW(-1), next: shiftW(1), today: () => upd({ sd: '' }),
+      days: DT.map((dt, i) => { const on = iso(dt) === SI, s = stats[i], it = iso(dt) === TI; return { wd: WD[i], num: dt.getDate(), plan: PLAN[i].n.split(' ')[0], pct: s.pct, bar: s.pct >= 80 ? '#9cc7a6' : '#b6a8e0', bg: on ? 'var(--accent)' : 'var(--card)', fg: on ? 'var(--on-accent)' : 'var(--ink)', border: on ? 'var(--accent)' : it ? 'var(--accent-line)' : 'var(--line)', pick: () => upd({ sd: iso(dt) }) }; }),
+      kRing: (kp * C0).toFixed(1) + ' ' + C0.toFixed(1), kNum: String(K), kLeft: K > GK ? '+' + (K - GK) + ' ккал' : (GK - K) + ' ккал', kGoalText: (K > GK ? 'выше нормы ' : 'осталось до нормы ') + GK,
+      macros: [['Белки', P, GP, '#9db4d8'], ['Жиры', F, GF, '#d9c48f'], ['Углеводы', C, GC, '#9cc7a6']].map(m => ({ name: m[0], text: Math.round(m[1]) + ' из ' + m[2] + ' г', pct: Math.min(100, Math.round(m[1] / m[2] * 100)), col: m[3] })),
+      wText: (W * 0.25).toFixed(2).replace('.', ',').replace(/0$/, '') + ' л', wGoalText: 'норма ' + (GW * 0.25).toFixed(1).replace('.', ',') + ' л',
+      glasses: Array.from({ length: GW }, (_, i) => ({ n: i + 1, fill: i < W ? 'rgba(143,191,224,.75)' : 'transparent', pick: () => upd({ water: Object.assign({}, S.water, { [SI]: W === i + 1 ? i : i + 1 }) }) })),
+      wkDone: wDone + ' из ' + wTotal, wkOf: 'тренировок', wkVol: fmtT(wVol), wkTime: Math.floor(wTime / 60) + ' ч ' + (wTime % 60) + ' м',
+      vols: vols.map((v, i) => ({ lab: v.lab, h: Math.round(v.v / vMax * 36), col: i === 3 ? '#b6a8e0' : 'rgba(182,168,224,.38)' })),
+      trTitle: pl.n, trSub: pl.rest ? 'Лёгкая активность и восстановление' : exOf(SD).reduce((a, e) => a + e[1], 0) + ' подходов · ' + exOf(SD).length + ' упражнений', trProg: 'Выполнено ' + st.d + ' из ' + st.t, trPct: st.pct,
+      exs, xn: S.xn, xw: S.xw, xr: S.xr, typeXn: (e) => this.set({ xn: e.target.value }), typeXw: (e) => this.set({ xw: e.target.value }), typeXr: (e) => this.set({ xr: e.target.value }),
+      addEx: () => { const n = (this.L.xn || '').trim(); if (!n) return; const a = (S.extra[SI] || []).concat([[n, 3, num(this.L.xw), Math.max(1, Math.round(num(this.L.xr)) || 10)]]); upd({ extra: Object.assign({}, S.extra, { [SI]: a }), xn: '', xw: '', xr: '' }); },
+      recs: DEMO ? [['Жим лёжа', '100 кг × 3', '12 окт'], ['Приседания со штангой', '130 кг × 3', '29 окт'], ['Становая тяга', '150 кг × 2', '22 окт'], ['Подтягивания', '14 повторов', '3 нояб'], ['Бег 5 км', '24:10', '1 нояб']].map(r => ({ name: r[0], val: r[1], when: r[2] })) : [], recEmptyD: DEMO ? 'none' : 'block',
+      foodSub: K + ' из ' + GK + ' ккал · Б ' + Math.round(P) + ' · Ж ' + Math.round(F) + ' · У ' + Math.round(C),
+      groups, mealPick: MT.map(m => { const on = (S.fm || 'b') === m[0]; return { name: m[1], bg: on ? 'var(--accent)' : 'transparent', fg: on ? 'var(--on-accent)' : 'var(--ink2)', bd: on ? 'var(--accent)' : 'var(--line2)', pick: () => this.set({ fm: m[0] }) }; }), foods,
+      cn: S.cn, ck: S.ck, cp: S.cp, cf: S.cf, cc: S.cc, typeCn: (e) => this.set({ cn: e.target.value }), typeCk: (e) => this.set({ ck: e.target.value }), typeCp: (e) => this.set({ cp: e.target.value }), typeCf: (e) => this.set({ cf: e.target.value }), typeCc: (e) => this.set({ cc: e.target.value }), errD: S.err ? 'block' : 'none',
+      addCustom: () => { const x = this.L, n = (x.cn || '').trim(), k = Math.round(num(x.ck)); if (!n || k <= 0) { this.set({ err: true }); return; } addItem({ m: x.fm || 'b', n, ic: 'bowl', q: 'порция', k, p: num(x.cp), f: num(x.cf), c: num(x.cc) }); this.set({ cn: '', ck: '', cp: '', cf: '', cc: '', err: false }); },
+      icDumb: IC('dumb'), icBowl: IC('bowl'), icTrophy: IC('trophy')
+    };
+  }
+}
+</script>
+</body>
+</html>
