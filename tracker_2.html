@@ -3600,15 +3600,29 @@ html .arqEco div[style*="pointer-events: none"][style*="rotateY"] .ac-card{box-s
 </style>
 <script>(function(){setInterval(function(){try{var b=[].slice.call(document.querySelectorAll('button')).filter(function(x){return /^(Анализ|Деньги|Планы)$/.test(x.textContent.trim())});var old=document.querySelector('.arqEco');if(b.length!==3){if(old){old.classList.remove('arqEco');old.removeAttribute('data-tab')}return}var c=b[0].parentElement.parentElement;if(old&&old!==c){old.classList.remove('arqEco');old.removeAttribute('data-tab')}if(!c.classList.contains('arqEco'))c.classList.add('arqEco');var ix=0;for(var i=0;i<3;i++){if(/rgb\(255, 255, 255\)/.test(b[i].getAttribute('style')||'')){ix=i;break}}if(c.getAttribute('data-tab')!==String(ix))c.setAttribute('data-tab',ix)}catch(e){}},500)})();</script>
 <style id="arqGraphite5">
-html:not(.lt){background:#09090A}
-html:not(.lt) body{background:transparent !important}
-#arqWaves{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.95}
-html.lt #arqWaves{display:none}
-html:not(.lt) .arqNav{background:rgba(20,22,24,.62) !important;-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3)}
-html:not(.lt) .card,html:not(.lt) .arqWc{background-color:rgba(36,40,43,.66) !important;-webkit-backdrop-filter:blur(14px) saturate(1.25);backdrop-filter:blur(14px) saturate(1.25)}
-html:not(.lt) div[style*="waveIn"][style*="16px 18px"]{background-color:rgba(28,31,34,.6) !important;-webkit-backdrop-filter:blur(14px) saturate(1.25);backdrop-filter:blur(14px) saturate(1.25)}
+html:root:root{background:#09090A}
+html:root body{background:transparent !important}
+#arqWaves{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.arqNav{isolation:isolate}
+.arqNav>canvas.arqWn{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;border-radius:inherit}
+html .arqNav{background:rgba(20,22,24,.5) !important}
+html .card,html .arqWc,html div[style*="waveIn"][style*="16px 18px"]{-webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25)}
+html .card,html .arqWc{background-color:rgba(34,38,41,.55) !important}
+html div[style*="waveIn"][style*="16px 18px"]{background-color:rgba(26,29,31,.52) !important}
+html div[style*="border-radius:22px"][style*="background:var(--card)"],html div[style*="border-radius:20px"][style*="background:var(--card)"],html div[style*="border-radius:18px"][style*="background:var(--card)"],html .pg div[style*="background: var(--card)"][style*="box-shadow: var(--shadow)"],html div[style*="background:var(--card);border:1px solid var(--line);border-radius:20px"]{background-color:rgba(34,38,41,.55) !important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+html .tkGrid .tkCat{background-color:rgba(24,27,29,.58) !important}
+html .arqAn,html .arqT{background-color:rgba(24,27,29,.55) !important}
+div[style*="repeat(16,1fr)"]{grid-template-rows:repeat(7,14px) !important;gap:3px !important}
+div[style*="repeat(16,1fr)"]>button{aspect-ratio:auto !important;height:14px !important;border-radius:6px !important}
 html .arqEco[data-tab="0"] .card{border:1.5px solid #4D575C !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 20px 40px -22px #000 !important}
 html .arqEco[data-tab="0"] .arqDrum{height:310px !important}
+html .arqEco[data-tab="0"] .card:nth-child(3){justify-content:space-between;padding:18px 20px 20px}
+html .arqEco[data-tab="0"] .card:nth-child(3)>b{font-size:66px !important;font-weight:300 !important;letter-spacing:-.035em !important;line-height:1 !important;text-shadow:0 0 34px rgba(166,180,165,.25) !important}
+html .arqEco[data-tab="0"] .card:nth-child(3)>div[style*="repeat(3"]{gap:10px !important}
+html .arqEco[data-tab="0"] .card:nth-child(3)>div[style*="repeat(3"]>div{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:12px 14px;gap:4px !important}
+html .arqEco[data-tab="0"] .card:nth-child(3)>div[style*="repeat(3"] b{font-size:22px !important;font-weight:600}
+html .arqEco[data-tab="0"] .card:nth-child(3) div[style*="height: 8px"],html .arqEco[data-tab="0"] .card:nth-child(3) div[style*="height:8px"]{height:12px !important}
+html .arqEco[data-tab="0"] .card:nth-child(3) button{min-height:52px !important;font-size:15px !important;border-radius:16px !important}
 html .arqEco .ac-card{--bc:#6C777C;border:1.5px solid color-mix(in srgb,var(--bc) 50%,#566066) !important;filter:none !important;background:linear-gradient(150deg,color-mix(in srgb,var(--bc) 20%,#2A2F32),#181B1D 75%) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 36px -8px color-mix(in srgb,var(--bc) 60%,transparent),0 26px 44px -20px #000 !important}
 html .arqEco .arqDrum div[style*="rotateY"] .ac-card{transform:scale(.8);transform-origin:50% 50%}
 html .arqEco .arqDrum div.arqBk .ac-card{transform:scaleX(-1) scale(.8)}
@@ -3616,29 +3630,36 @@ html .arqEco .arqDrum div:not([style*="rotateY(0deg)"]) .ac-card{opacity:.95}
 html .arqEco .ac-card span[data-logo]{box-shadow:0 0 18px -4px var(--bc),inset 0 0 0 1px rgba(255,255,255,.18) !important;border-radius:13px !important}
 </style>
 <script id="arqG5js">(function(){
-var cv=document.createElement('canvas');cv.id='arqWaves';document.body.insertBefore(cv,document.body.firstChild);
-var gl=cv.getContext('webgl',{antialias:false,alpha:false});
-if(gl){
- var vs='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
- var fs='precision mediump float;varying vec2 v;uniform float t;uniform vec2 r;'+
- 'float nz(vec2 c){vec2 q=2.71828*sin(2.71828*c);return fract(q.x*q.y*(1.+c.x));}'+
- 'void main(){vec2 uv=v*vec2(r.x/r.y,1.)*1.1;float to=t;uv.y+=.05*sin(6.*uv.x-to);'+
- 'float a=.5+.5*sin(4.*(uv.x+uv.y+cos(2.5*uv.x+4.*uv.y)+.03*to)+sin(14.*(uv.x+uv.y-.08*to)));'+
- 'float b=.5+.5*sin(3.*uv.x-2.*uv.y+cos(5.*uv.y-.4*to)*1.4);'+
- 'float k=pow(a,1.8)*(.55+.45*b);'+
- 'vec3 c=mix(vec3(.03,.032,.036),vec3(.50,.60,.56),k*.5)+vec3(.04,.07,.10)*b*k*.5;'+
- 'float vg=smoothstep(1.3,.1,length(v-vec2(.6,.4)));c*=.45+.75*vg;c-=nz(gl_FragCoord.xy)/90.;gl_FragColor=vec4(c,1.);}';
- var sh=function(ty,s){var o=gl.createShader(ty);gl.shaderSource(o,s);gl.compileShader(o);return o};
- var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+var FS='precision mediump float;varying vec2 v;uniform float t;uniform vec2 r;uniform float s;uniform vec3 c;uniform float k;'+
+'float nz(vec2 c){vec2 q=2.71828*sin(2.71828*c);return fract(q.x*q.y*(1.+c.x));}'+
+'void main(){vec2 uv=v*vec2(r.x/r.y,1.)*s;float to=t;uv.y+=.05*sin(6.*uv.x-to);'+
+'float a=.5+.5*sin(4.*(uv.x+uv.y+cos(2.5*uv.x+4.*uv.y)+.03*to)+sin(14.*(uv.x+uv.y-.08*to)));'+
+'float b=.5+.5*sin(3.*uv.x-2.*uv.y+cos(5.*uv.y-.4*to)*1.4);'+
+'float q=pow(a,1.8)*(.55+.45*b);'+
+'vec3 col=mix(vec3(.03,.032,.036),c,q*k)+vec3(.04,.07,.10)*b*q*k;'+
+'float vg=smoothstep(1.3,.1,length(v-vec2(.6,.4)));col*=.45+.75*vg;col-=nz(gl_FragCoord.xy)/90.;gl_FragColor=vec4(col,1.);}';
+function mk(cv,o){
+ var gl=cv.getContext('webgl',{antialias:false,alpha:false});if(!gl)return null;
+ var sh=function(ty,s){var x=gl.createShader(ty);gl.shaderSource(x,s);gl.compileShader(x);return x};
+ var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
  var bf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,bf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
  var lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
- var ut=gl.getUniformLocation(pr,'t'),ur=gl.getUniformLocation(pr,'r');
- var S=.4;function rs(){var w=Math.max(2,Math.round(innerWidth*S)),h=Math.max(2,Math.round(innerHeight*S));if(cv.width!==w){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}}
- var t0=performance.now(),last=0,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
- function fr(n){if(!document.hidden&&n-last>33&&!document.documentElement.classList.contains('lt')){last=n;rs();gl.uniform1f(ut,(n-t0)/1000*.55);gl.uniform2f(ur,cv.width,cv.height);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
-  if(!still)requestAnimationFrame(fr)}
- requestAnimationFrame(fr);if(still)setTimeout(function(){fr(100)},50);
-}
+ var U=function(n){return gl.getUniformLocation(pr,n)};var ut=U('t'),ur=U('r'),us=U('s'),uc=U('c'),uk=U('k');
+ return function(t){var w=Math.max(2,Math.round(cv.clientWidth*o.q)),h=Math.max(2,Math.round(cv.clientHeight*o.q));if(!w||!h)return;
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}
+  gl.uniform1f(ut,t*o.sp+o.ph);gl.uniform2f(ur,w,h);gl.uniform1f(us,o.s);gl.uniform3f(uc,o.c[0],o.c[1],o.c[2]);gl.uniform1f(uk,o.k);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}}
+var cv=document.createElement('canvas');cv.id='arqWaves';document.body.insertBefore(cv,document.body.firstChild);
+var dMain=mk(cv,{q:.4,s:1.1,c:[.50,.60,.56],k:.8,sp:.55,ph:0}),dNav=null,nc=null;
+var t0=performance.now(),last=0,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fr(n){
+ if(!document.hidden&&n-last>33){last=n;var t=(n-t0)/1000;
+  if(dMain)dMain(t);
+  var nav=document.querySelector('.arqNav');
+  if(nav&&(!nc||nc.parentNode!==nav)){nc=document.createElement('canvas');nc.className='arqWn';nav.insertBefore(nc,nav.firstChild);dNav=mk(nc,{q:.6,s:2.0,c:[.50,.58,.72],k:.95,sp:.75,ph:9})}
+  if(dNav)dNav(t)}
+ if(!still)requestAnimationFrame(fr)}
+requestAnimationFrame(fr);if(still)setTimeout(function(){fr(100)},80);
 var LG={
  'Сбер':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#fff"/><defs><linearGradient id="a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1fa44a"/><stop offset=".55" stop-color="#8fd13a"/><stop offset="1" stop-color="#f2d21b"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2d21b"/><stop offset=".5" stop-color="#27b3e0"/><stop offset="1" stop-color="#1a7fd0"/></linearGradient></defs><path d="M12 36a21 21 0 0 1 36-17" fill="none" stroke="url(#a)" stroke-width="6" stroke-linecap="round"/><path d="M52 28a21 21 0 0 1-35 21" fill="none" stroke="url(#b)" stroke-width="6" stroke-linecap="round"/><path d="M22 33l8 8 15-18" fill="none" stroke="#21a038" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
  'Альфа':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4a3c"/><stop offset="1" stop-color="#d91d12"/></linearGradient></defs><rect width="64" height="64" fill="url(#r)"/><path fill="#fff" fill-rule="evenodd" d="M32 11L51 54H42L39 46.5H25L22 54H13ZM32 27L28 38H36Z"/></svg>',
