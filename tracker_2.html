@@ -3599,5 +3599,15 @@ html .arqEco div[style*="rotateY(0deg)"] .ac-card{box-shadow:inset 0 1px 0 rgba(
 html .arqEco div[style*="pointer-events: none"][style*="rotateY"] .ac-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 26px -10px rgba(166,180,165,.22),0 24px 40px -22px #000 !important}
 </style>
 <script>(function(){setInterval(function(){try{var b=[].slice.call(document.querySelectorAll('button')).filter(function(x){return /^(Анализ|Деньги|Планы)$/.test(x.textContent.trim())});var old=document.querySelector('.arqEco');if(b.length!==3){if(old){old.classList.remove('arqEco');old.removeAttribute('data-tab')}return}var c=b[0].parentElement.parentElement;if(old&&old!==c){old.classList.remove('arqEco');old.removeAttribute('data-tab')}if(!c.classList.contains('arqEco'))c.classList.add('arqEco');var ix=0;for(var i=0;i<3;i++){if(/rgb\(255, 255, 255\)/.test(b[i].getAttribute('style')||'')){ix=i;break}}if(c.getAttribute('data-tab')!==String(ix))c.setAttribute('data-tab',ix)}catch(e){}},500)})();</script>
+<style id="arqGraphite5">
+html .arqEco[data-tab="0"] .card,html .arqEco[data-tab="0"] div[style*="border-radius"][style*="background"]{border:1.5px solid #5A6368 !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),inset 0 0 0 1px rgba(0,0,0,.5),0 20px 40px -22px #000 !important}
+html .arqEco[data-tab="0"] .card div[style*="border-radius"][style*="border"],html .arqEco[data-tab="0"] div[style*="minmax"]>div,html .arqEco[data-tab="0"] div[style*="minmax"] div[style*="border-radius"]{border:1.5px solid #4C555A !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07) !important}
+html .arqEco[data-tab="0"] button{border:1.5px solid #5A6368 !important}
+html .arqEco[data-tab="0"] .ac-card{border:2px solid #6C777C !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(0,0,0,.45),0 24px 44px -20px #000 !important;filter:none !important}
+html .arqEco .arqDrum div:not([style*="rotateY(0deg)"])>.ac-card{filter:brightness(.95) !important;border-color:#586267 !important}
+html .arqEco .arqDrum div[style*="rotateY(180deg)"]{opacity:.95 !important}
+html .arqEco .arqDrum div[style*="rotateY(0deg)"] .ac-card{transform:scale(.8);transform-origin:50% 100%}
+html .arqEco .arqDrum div[style*="rotateY(180deg)"] .ac-card{transform:scaleX(-1) scale(.8);transform-origin:50% 100%}
+</style>
 </body>
 </html>
