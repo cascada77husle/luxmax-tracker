@@ -3636,7 +3636,7 @@ html .arqEco[data-tab="0"] .card:nth-child(3)>div[style*="repeat(3"] b{font-size
 html .arqEco[data-tab="0"] .card:nth-child(3) div[style*="height: 8px"],html .arqEco[data-tab="0"] .card:nth-child(3) div[style*="height:8px"]{height:12px !important}
 html .arqEco[data-tab="0"] .card:nth-child(3) button{min-height:52px !important;font-size:15px !important;border-radius:16px !important}
 html .arqEco .ac-card{--bc:#6C777C;border:1.5px solid color-mix(in srgb,var(--bc) 72%,#566066) !important;filter:none !important;background:linear-gradient(150deg,color-mix(in srgb,var(--bc) 34%,#2A2F32),#161A1B 78%) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 26px -10px color-mix(in srgb,var(--bc) 55%,transparent),0 0 46px -6px color-mix(in srgb,var(--bc) 78%,transparent),0 26px 44px -20px #000 !important}
-html .arqEco .arqDrum{overflow:visible !important;clip-path:inset(-70px 0 -70px 0)}
+html .arqEco .arqDrum{overflow:visible !important;clip-path:inset(-70px -440px -70px -440px);position:relative;z-index:1}
 html .arqEco .arqDrum div[style*="opacity"]:not([style*="rotateY(0deg)"]){opacity:.94 !important}
 html .arqEco .arqDrum div:not([style*="rotateY(0deg)"]) .ac-card{filter:saturate(1.25) !important}
 html .arqEco .arqDrum div[style*="rotateY"] .ac-card{transform:scale(.8);transform-origin:50% 50%}
@@ -3647,6 +3647,7 @@ html .arqEco .ac-card span[data-logo]{box-shadow:0 0 18px -4px var(--bc),inset 0
 html div[style*="position: sticky"][style*="z-index: 30"]{background:rgba(9,9,10,.38) !important;-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
 #arqMono{position:fixed;inset:0;z-index:2147483000;pointer-events:none;display:none;-webkit-backdrop-filter:grayscale(1);backdrop-filter:grayscale(1)}
 html.mono #arqMono{display:block}
+html .arqEco .card:nth-child(3){position:relative;z-index:3}
 html .arqEco .arqDrum div.arqAway{opacity:0 !important;visibility:hidden !important;pointer-events:none !important}
 
 
