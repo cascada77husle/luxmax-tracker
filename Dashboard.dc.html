@@ -37,7 +37,7 @@
   --warn:color-mix(in srgb,#C97A16 66%,var(--ink));
   --warn-soft:color-mix(in srgb,var(--warn) 13%,var(--card));
   --warn-line:color-mix(in srgb,var(--warn) 32%,var(--card));
-  --cat-blue:#2F8FED;--cat-violet:#7C6FD6;--cat-indigo:#4F5FD6;--cat-pink:#D6709A;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
+  --cat-blue:#8fa3a8;--cat-violet:#8a9b89;--cat-indigo:#7f8c8b;--cat-pink:#b5a39e;--cat-violet-ink:color-mix(in srgb,var(--cat-violet) 80%,var(--ink));--cat-violet-soft:color-mix(in srgb,var(--cat-violet) 45%,var(--card));
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}}
 :root[data-theme="dark"]{--bg-fb:#0E131D;--card-fb:#171E2C;--ink-fb:#E8ECF4;--shadow:none;color-scheme:dark}
@@ -56,7 +56,7 @@ button{font-family:inherit}
 @media (prefers-reduced-motion:reduce){[data-fold]{transition:none!important}}
 /*DARK-THEME*/
 :root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
---ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
+--ok:#9db59e;--bad:#c4929a;--warn:#c9ab76;--cat-violet-ink:#b9c6b8}html{background:#07080B}
 body{background:var(--bg) !important;position:relative}
 body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%);background-size:100% 100%;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
 body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
@@ -724,7 +724,7 @@ class Component extends DCLogic {
 
     // groups
     const gOrder = ['Жильё', 'Еда', 'Транспорт', 'Здоровье', 'Семья', 'Финансы', 'Личное'];
-    const gCol = { 'Жильё': 'var(--accent-text)', 'Еда': 'var(--accent)', 'Транспорт': '#7FA6F5', 'Здоровье': '#6FCBA6', 'Семья': 'var(--ok)', 'Финансы': 'var(--ink)', 'Личное': 'var(--warn)' };
+    const gCol = { 'Жильё': 'var(--accent-text)', 'Еда': 'var(--accent)', 'Транспорт': '#8fa3a8', 'Здоровье': '#9db59e', 'Семья': 'var(--ok)', 'Финансы': 'var(--ink)', 'Личное': 'var(--warn)' };
     const gSum = gOrder.map(n => ({ name: n, color: gCol[n], v: out.filter(o => o.grp === n).reduce((a, o) => a + o.sum, 0) })).filter(g => g.v > 0).sort((a, b) => b.v - a.v);
     const rr = 72, CC = 2 * Math.PI * rr;
     let acc = 0;
