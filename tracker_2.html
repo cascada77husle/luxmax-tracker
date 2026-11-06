@@ -2613,7 +2613,7 @@ class Component extends DCLogic {
       addOp: l_addOp, delOp: l_delOp, togglePlan: l_togglePlan, addPlan: l_addPlan, delPlan: l_delPlan, addAccount: l_addAccount, updAccount: l_updAccount, delAccount: l_delAccount, importOps: l_importOps, setLimits: l_setLimits, setMcfg: l_setMcfg, setAcfg: l_setAcfg, acfg: L.acfg || {}, newMonth: l_newMonth, linkProject: l_linkProject, moneyProjects, pfMap: L.pf || {}, pfSums, linkedMap: L.linked || {}, pfSet: l_pfSet, reportProjects: l_report, limits: LIM, mcfg: (L.mcfg && Object.keys(L.mcfg).length) ? L.mcfg : null, setGoals: (g2) => this.set({ goals: g2 }), setDebts: (d2) => this.set({ debts: d2 }),
       modes: TABS2.map(m => ({ name: m[1], bg: mode === m[0] ? 'var(--accent)' : 'transparent', fg: mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
 
-      bsOn: false, bsTabs: [], pageTitle: ({ dash: 'Кабинет', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: 'Курсы и обучение', _study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Кабинет',
+      bsOn: false, bsTabs: [], pageTitle: ({ dash: 'Dashboard', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: 'Курсы и обучение', _study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Dashboard',
       showBack: special || mode === 'me',
       menuCreate: L.menu === 'create', menuMore: L.menu === 'more', menuClose: () => this.set({ menu: '', createKind: '', createText: '', createDate: '', createTime: '', createP: '', createBody: '' }),
       createForm: L.menu === 'create' && !!L.createKind, createList: L.menu === 'create' && !L.createKind,
@@ -2661,7 +2661,7 @@ class Component extends DCLogic {
         return MI;
       })(),
       navItems: (() => {
-        const NV = [['dash', 'Кабинет', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'], ['day', 'Моя волна', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4']]
+        const NV = [['dash', 'Dashboard', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'], ['day', 'Моя волна', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4']]
           .concat(L.sec.money ? [['money', 'Экономика', 'M4 7h16v12H4zM4 7l3-3h10l3 3M15 13h2']] : []);
         const act = mode === 'me' ? 'dash' : (mode === 'day' && L.waveOpen) ? '' : mode;
         return NV.map(n => ({ name: n[1], icon: n[2], cur: act === n[0] ? 'page' : 'false', bg: act === n[0] ? 'var(--accent-soft)' : 'transparent', fg: act === n[0] ? 'var(--accent-text)' : 'var(--muted)', w: act === n[0] ? 700 : 600, pick: () => this.set(Object.assign({}, n[0] === 'day' ? { mode: 'day', menu: '', waveOpen: false } : { mode: n[0], menu: '' })) }));
