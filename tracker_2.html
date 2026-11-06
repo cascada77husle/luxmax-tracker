@@ -3626,8 +3626,7 @@ div[style*="repeat(16,1fr)"]{grid-template-rows:repeat(7,14px) !important;gap:3p
 div[style*="repeat(16,1fr)"]>button{aspect-ratio:auto !important;height:14px !important;border-radius:6px !important}
 html .arqEco[data-tab="0"] .card{border:1.5px solid #4D575C !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 20px 40px -22px #000 !important}
 html .arqEco[data-tab="0"] .arqDrum{height:310px !important}
-html .arqEco[data-tab="0"] .card[data-bc]{border-color:color-mix(in srgb,var(--bc) 70%,#4D575C) !important;background-image:linear-gradient(160deg,color-mix(in srgb,var(--bc) 26%,transparent),transparent 60%) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 40px -14px color-mix(in srgb,var(--bc) 55%,transparent),0 0 50px -8px color-mix(in srgb,var(--bc) 70%,transparent),0 20px 40px -22px #000 !important}
-html .arqEco[data-tab="0"] .card[data-bc]>b{text-shadow:0 0 34px color-mix(in srgb,var(--bc) 55%,transparent) !important}
+html .arqEco .card button[data-bcb]{border-color:color-mix(in srgb,var(--bc) 75%,#4D575C) !important;background-image:linear-gradient(135deg,color-mix(in srgb,var(--bc) 30%,transparent),transparent 72%) !important;box-shadow:0 0 22px -4px color-mix(in srgb,var(--bc) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.1) !important}
 
 html .arqEco[data-tab="0"] .card:nth-child(3){justify-content:space-between;padding:18px 20px 20px}
 html .arqEco[data-tab="0"] .card:nth-child(3)>b{font-size:66px !important;font-weight:300 !important;letter-spacing:-.035em !important;line-height:1 !important;text-shadow:0 0 34px rgba(166,180,165,.25) !important}
@@ -3737,9 +3736,9 @@ function gs(){
  if(!o){o=document.createElement('div');o.id='arqMono';H.appendChild(o)}
  if(!m)return;
  var W=innerWidth,Hh=innerHeight,p='M0 0H'+W+'V'+Hh+'H0Z';
- document.querySelectorAll('.arqEco .ac-card,.arqEco .card[data-bc],span[data-logo],.arqEco .card span[style*="width: 24px"][style*="height: 24px"]').forEach(function(e){
+ document.querySelectorAll('.arqEco .ac-card,.arqEco .card button[data-bcb],span[data-logo],.arqEco .card span[style*="width: 24px"][style*="height: 24px"]').forEach(function(e){
   var r=e.getBoundingClientRect();if(r.width<2||r.bottom<0||r.top>Hh||r.right<0||r.left>W)return;
-  var x1=Math.round(r.left),y1=Math.round(r.top),x2=Math.round(r.right),y2=Math.round(r.bottom),q=e.classList.contains('card')?22:e.classList.contains('ac-card')?15:(r.width>30?11:7);
+  var x1=Math.round(r.left),y1=Math.round(r.top),x2=Math.round(r.right),y2=Math.round(r.bottom),q=e.tagName==='BUTTON'?12:e.classList.contains('ac-card')?15:(r.width>30?11:7);
   q=Math.min(q,(x2-x1)/2,(y2-y1)/2);
   p+='M'+(x1+q)+' '+y1+'H'+(x2-q)+'A'+q+' '+q+' 0 0 1 '+x2+' '+(y1+q)+'V'+(y2-q)+'A'+q+' '+q+' 0 0 1 '+(x2-q)+' '+y2+'H'+(x1+q)+'A'+q+' '+q+' 0 0 1 '+x1+' '+(y2-q)+'V'+(y1+q)+'A'+q+' '+q+' 0 0 1 '+(x1+q)+' '+y1+'Z';
  });
@@ -3749,9 +3748,10 @@ function gs(){
 setInterval(gs,220);gs();window.addEventListener('scroll',function(){if(window.__gsq)return;window.__gsq=requestAnimationFrame(function(){window.__gsq=0;gs()})},true);
 setInterval(palBtn,500);palBtn();
 
-setInterval(function(){var mc=document.querySelector('.arqEco .card:nth-child(3)');if(!mc)return;var sb=mc.querySelector('button'),nm=sb?sb.innerText.trim():'',col='';
- if(nm&&nm.indexOf('Все счета')<0){document.querySelectorAll('.arqEco .ac-card').forEach(function(c){if(!col&&c.innerText.indexOf(nm)>-1)col=c.style.getPropertyValue('--bc')})}
- if(col){if(mc.style.getPropertyValue('--bc')!==col)mc.style.setProperty('--bc',col);if(!mc.hasAttribute('data-bc'))mc.setAttribute('data-bc','1')}else if(mc.hasAttribute('data-bc'))mc.removeAttribute('data-bc')},300);
+setInterval(function(){var mc=document.querySelector('.arqEco .card:nth-child(3)');if(!mc)return;var cs=document.querySelectorAll('.arqEco .ac-card');
+ mc.querySelectorAll('button').forEach(function(b){var nm=b.innerText.trim(),col='';
+  if(nm&&nm.length<28&&nm.indexOf('Все счета')<0&&b.querySelector('span[style*="width: 24px"]')){for(var i=0;i<cs.length;i++){if(cs[i].innerText.indexOf(nm)>-1){col=cs[i].style.getPropertyValue('--bc');break}}}
+  if(col){if(b.style.getPropertyValue('--bc')!==col)b.style.setProperty('--bc',col);if(!b.hasAttribute('data-bcb'))b.setAttribute('data-bcb','1')}else if(b.hasAttribute('data-bcb'))b.removeAttribute('data-bcb')})},300);
 setInterval(pass,400);pass();
 })();</script>
 </body>
