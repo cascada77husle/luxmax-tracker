@@ -58,7 +58,7 @@ button{font-family:inherit}
 :root:root{--bg:#07080B;--card:#0F1115;--ink:#F4F5F7;--accent:#FFFFFF;--on-accent:#0A0B0E;--shadow:0 24px 48px -30px rgba(0,0,0,.9);color-scheme:dark;
 --ok:#6FD6A8;--bad:#FF8A98;--warn:#F2B866;--cat-violet-ink:#B8B0F0}html{background:#07080B}
 body{background:var(--bg) !important;position:relative}
-body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%),linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,56px 56px,56px 56px;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
+body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background-image:radial-gradient(ellipse 70% 38% at 50% -6%,rgba(255,255,255,.11),transparent 70%);background-size:100% 100%;-webkit-mask-image:linear-gradient(#000 0,#000 35%,transparent 85%);mask-image:linear-gradient(#000 0,#000 35%,transparent 85%)}
 body::after{content:"";position:fixed;top:14px;right:18px;width:22px;height:22px;z-index:51;pointer-events:none;opacity:.55;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M12 0c.6 6.6 4.8 10.8 12 12-7.2 1.2-11.4 5.4-12 12-.6-6.6-4.8-10.8-12-12C7.2 10.8 11.4 6.6 12 0z'/></svg>") center/contain no-repeat}
 
 /* плавность: появление, раскрытие, нажатие */
