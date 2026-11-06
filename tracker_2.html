@@ -3634,6 +3634,11 @@ html .arqEco .arqDrum div[style*="rotateY"] .ac-card{transform:scale(.8);transfo
 html .arqEco .arqDrum div.arqBk .ac-card{transform:scaleX(-1) scale(.8)}
 html .arqEco .arqDrum div:not([style*="rotateY(0deg)"]) .ac-card{opacity:.95}
 html .arqEco .ac-card span[data-logo]{box-shadow:0 0 18px -4px var(--bc),inset 0 0 0 1px rgba(255,255,255,.18) !important;border-radius:13px !important}
+
+html div[style*="position: sticky"][style*="z-index: 30"]{background:rgba(9,9,10,.38) !important;-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
+html.mono{filter:grayscale(1) contrast(1.06)}
+html.mono.lt{filter:invert(1) hue-rotate(180deg) grayscale(1) contrast(1.06)}
+#arqPal svg{display:block}
 </style>
 <script id="arqG5js">(function(){
 var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
@@ -3703,6 +3708,20 @@ setInterval(function(){var f=window.__tkRes;if(!f||f.__w)return;var W=function(g
  before.forEach(function(b){var c=b[0];if(!done[c.getAttribute('data-gn')]&&c.__oy==null&&Math.round(c.offsetTop)!==Math.round(b[2])){c.__oy=b[2];c.__ox=b[1]}});
  return r||ch};
  W.__w=1;window.__tkRes=W},400);
+
+try{if(localStorage.getItem('arqPal')==='mono')document.documentElement.classList.add('mono')}catch(e){}
+function palBtn(){
+ var eb=document.querySelector('button[aria-label="Ещё"]');if(!eb||document.getElementById('arqPal'))return;
+ var wr=eb.parentElement,b=document.createElement('button');b.id='arqPal';b.type='button';
+ b.style.cssText='cursor:pointer;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line2);background:var(--card);color:var(--ink);padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0';
+ b.setAttribute('aria-label','Палитра');
+ b.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3a9 9 0 0 1 0 18z" fill="#A6B4A5"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" opacity=".85"/></svg>';
+ var up=function(){var m=document.documentElement.classList.contains('mono');b.title=m?'Палитра: чёрно-белая. Нажмите, чтобы вернуть зелёную':'Палитра: зелёная. Нажмите для чёрно-белой'};
+ up();
+ b.addEventListener('click',function(){var m=document.documentElement.classList.toggle('mono');try{localStorage.setItem('arqPal',m?'mono':'green')}catch(e){}up()});
+ wr.parentNode.insertBefore(b,wr);
+}
+setInterval(palBtn,500);palBtn();
 setInterval(pass,400);pass();
 })();</script>
 </body>
