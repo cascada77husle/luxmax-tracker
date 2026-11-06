@@ -3608,7 +3608,7 @@ html:root body{background:transparent !important}
 html .arqNav{background:rgba(20,22,24,.5) !important}
 html #dc-root div[style*="min-height: 100vh"][style*="background: var(--bg)"]{background:transparent !important}
 html.lt .arqNav>canvas.arqWn{opacity:.4;filter:brightness(.8)}
-html.lt #arqWaves{filter:brightness(1.25);opacity:.9}
+html.lt #arqWaves{filter:brightness(1.3);opacity:.7}
 html.lt .arqNb{color:#262A2C !important}
 html .card,html .arqWc,html div[style*="waveIn"][style*="16px 18px"]{-webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25)}
 html .card,html .arqWc{background-color:rgba(34,38,41,.55) !important}
@@ -3635,13 +3635,13 @@ html .arqEco .ac-card span[data-logo]{box-shadow:0 0 18px -4px var(--bc),inset 0
 </style>
 <script id="arqG5js">(function(){
 var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
-var FS='precision mediump float;varying vec2 v;uniform float t;uniform vec2 r;uniform float s;uniform vec3 c;uniform float k;'+
+var FS='precision mediump float;varying vec2 v;uniform float t;uniform vec2 r;uniform float s;uniform vec3 c;uniform vec3 d;uniform float k;'+
 'float nz(vec2 c){vec2 q=2.71828*sin(2.71828*c);return fract(q.x*q.y*(1.+c.x));}'+
 'void main(){vec2 uv=v*vec2(r.x/r.y,1.)*s;float to=t;uv.y+=.05*sin(6.*uv.x-to);'+
 'float a=.5+.5*sin(4.*(uv.x+uv.y+cos(2.5*uv.x+4.*uv.y)+.03*to)+sin(14.*(uv.x+uv.y-.08*to)));'+
 'float b=.5+.5*sin(3.*uv.x-2.*uv.y+cos(5.*uv.y-.4*to)*1.4);'+
 'float q=pow(a,1.8)*(.55+.45*b);'+
-'vec3 col=mix(vec3(.03,.032,.036),c,q*k)+vec3(.04,.07,.10)*b*q*k;'+
+'vec3 col=mix(vec3(.03,.032,.036),c,q*k)+d*b*q*k;'+
 'float vg=smoothstep(1.3,.1,length(v-vec2(.6,.4)));col*=.45+.75*vg;col-=nz(gl_FragCoord.xy)/90.;gl_FragColor=vec4(col,1.);}';
 function mk(cv,o){
  var gl=cv.getContext('webgl',{antialias:false,alpha:false});if(!gl)return null;
@@ -3649,18 +3649,18 @@ function mk(cv,o){
  var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
  var bf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,bf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
  var lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
- var U=function(n){return gl.getUniformLocation(pr,n)};var ut=U('t'),ur=U('r'),us=U('s'),uc=U('c'),uk=U('k');
+ var U=function(n){return gl.getUniformLocation(pr,n)};var ut=U('t'),ur=U('r'),us=U('s'),uc=U('c'),ud=U('d'),uk=U('k');
  return function(t){var w=Math.max(2,Math.round(cv.clientWidth*o.q)),h=Math.max(2,Math.round(cv.clientHeight*o.q));if(!w||!h)return;
   if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}
-  gl.uniform1f(ut,t*o.sp+o.ph);gl.uniform2f(ur,w,h);gl.uniform1f(us,o.s);gl.uniform3f(uc,o.c[0],o.c[1],o.c[2]);gl.uniform1f(uk,o.k);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}}
+  gl.uniform1f(ut,t*o.sp+o.ph);gl.uniform2f(ur,w,h);gl.uniform1f(us,o.s);gl.uniform3f(uc,o.c[0],o.c[1],o.c[2]);gl.uniform3f(ud,o.d[0],o.d[1],o.d[2]);gl.uniform1f(uk,o.k);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}}
 var cv=document.createElement('canvas');cv.id='arqWaves';document.body.insertBefore(cv,document.body.firstChild);
-var dMain=mk(cv,{q:.4,s:2.3,c:[.52,.64,.58],k:.7,sp:.6,ph:0}),dNav=null,nc=null;
+var dMain=mk(cv,{q:.4,s:1.0,c:[.40,.46,.43],d:[0,.012,.008],k:.33,sp:.13,ph:0}),dNav=null,nc=null;
 var t0=performance.now(),last=0,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function fr(n){
  if(!document.hidden&&n-last>33){last=n;var t=(n-t0)/1000;
   if(dMain)dMain(t);
   var nav=document.querySelector('.arqNav');
-  if(nav&&(!nc||nc.parentNode!==nav)){nc=document.createElement('canvas');nc.className='arqWn';nav.insertBefore(nc,nav.firstChild);dNav=mk(nc,{q:.6,s:2.0,c:[.50,.58,.72],k:.8,sp:.75,ph:9})}
+  if(nav&&(!nc||nc.parentNode!==nav)){nc=document.createElement('canvas');nc.className='arqWn';nav.insertBefore(nc,nav.firstChild);dNav=mk(nc,{q:.6,s:2.0,c:[.50,.58,.72],d:[.04,.07,.10],k:.9,sp:.75,ph:9})}
   if(dNav)dNav(t)}
  if(!still)requestAnimationFrame(fr)}
 requestAnimationFrame(fr);if(still)setTimeout(function(){fr(100)},80);
