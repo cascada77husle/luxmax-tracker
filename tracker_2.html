@@ -3609,7 +3609,8 @@ html .arqNav{background:rgba(20,22,24,.5) !important}
 html #dc-root div[style*="min-height: 100vh"][style*="background: var(--bg)"]{background:transparent !important}
 html.lt .arqNav>canvas.arqWn{opacity:.4;filter:brightness(.8)}
 html.lt #arqWaves{filter:brightness(1.3);opacity:.7}
-html.lt .arqNb{color:#262A2C !important}
+html:root .arqNb:not([aria-current="page"]):not([aria-current="true"]){color:#C9CECC !important;font-weight:600}
+html:root .arqNb:not([aria-current="page"]):not([aria-current="true"]) svg{opacity:1}
 html.lt .arqHmG i{filter:hue-rotate(-60deg) saturate(.35) brightness(.9) invert(1) hue-rotate(180deg) !important}
 html .card,html .arqWc,html div[style*="waveIn"][style*="16px 18px"]{-webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25)}
 html .card,html .arqWc{background-color:rgba(34,38,41,.55) !important}
@@ -3661,7 +3662,7 @@ function fr(n){
  if(!document.hidden&&n-last>33&&n>(window.__arqBU||0)){last=n;var t=(n-t0)/1000;
   if(dMain)dMain(t);
   var nav=document.querySelector('.arqNav');
-  if(nav&&(!nc||nc.parentNode!==nav)){nc=document.createElement('canvas');nc.className='arqWn';nav.insertBefore(nc,nav.firstChild);dNav=mk(nc,{q:.6,s:2.0,c:[.50,.58,.72],d:[.04,.07,.10],k:.9,sp:.75,ph:9})}
+  if(nav&&(!nc||nc.parentNode!==nav)){nc=document.createElement('canvas');nc.className='arqWn';nav.insertBefore(nc,nav.firstChild);dNav=mk(nc,{q:.6,s:2.0,c:[.42,.62,.50],d:[0,.02,.01],k:.9,sp:.75,ph:9})}
   if(dNav)dNav(t)}
  if(!still)requestAnimationFrame(fr)}
 requestAnimationFrame(fr);if(still)setTimeout(function(){fr(100)},80);
