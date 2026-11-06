@@ -3754,6 +3754,8 @@ function gs(){
  if(o.__cp!==cp){o.__cp=cp;o.style.clipPath=cp;o.style.webkitClipPath=cp}
 }
 setInterval(gs,220);gs();window.addEventListener('scroll',function(){if(window.__gsq)return;window.__gsq=requestAnimationFrame(function(){window.__gsq=0;gs()})},true);
+
+setInterval(function(){var b=document.querySelector('.tkGrid.tkBoard');if(!b||b.clientWidth<500)return;var bad=false,cs=b.querySelectorAll('.tkCat');cs.forEach(function(c){if(c.offsetWidth<120||c.offsetWidth>b.clientWidth+4)bad=true});if(!bad||(window.__tkFixT&&Date.now()-window.__tkFixT<8000))return;var btn=[].slice.call(document.querySelectorAll('button')).filter(function(x){return /Сбросить расположение/.test(x.textContent)})[0];if(btn){window.__tkFixT=Date.now();btn.click()}},900);
 setInterval(palBtn,500);palBtn();
 
 setInterval(function(){var mc=document.querySelector('.arqEco .card:nth-child(3)');if(!mc)return;var cs=document.querySelectorAll('.arqEco .ac-card');
