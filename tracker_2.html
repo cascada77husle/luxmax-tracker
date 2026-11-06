@@ -3647,6 +3647,11 @@ html .arqEco .ac-card span[data-logo]{box-shadow:0 0 18px -4px var(--bc),inset 0
 html div[style*="position: sticky"][style*="z-index: 30"]{background:rgba(9,9,10,.38) !important;-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
 #arqMono{position:fixed;inset:0;z-index:2147483000;pointer-events:none;display:none;-webkit-backdrop-filter:grayscale(1) contrast(1.06);backdrop-filter:grayscale(1) contrast(1.06)}
 html.mono #arqMono{display:block}
+html.mono #arqWaves{filter:grayscale(1) blur(5px)}
+html.mono.lt #arqWaves{filter:grayscale(1) blur(4px)}
+html.mono .arqNav>canvas.arqWn{filter:grayscale(1) blur(7px)}
+html.mono.lt .arqNav>canvas.arqWn{filter:grayscale(1) brightness(.8) blur(7px)}
+
 #arqPal svg{display:block}
 </style>
 <script id="arqG5js">(function(){
@@ -3738,7 +3743,7 @@ function gs(){
  var W=innerWidth,Hh=innerHeight,p='M0 0H'+W+'V'+Hh+'H0Z';
  document.querySelectorAll('.arqEco .ac-card,.arqEco .card button[data-bcb],span[data-logo],.arqEco .card span[style*="width: 24px"][style*="height: 24px"]').forEach(function(e){
   var r=e.getBoundingClientRect();if(r.width<2||r.bottom<0||r.top>Hh||r.right<0||r.left>W)return;
-  var x1=Math.round(r.left),y1=Math.round(r.top),x2=Math.round(r.right),y2=Math.round(r.bottom),q=e.tagName==='BUTTON'?12:e.classList.contains('ac-card')?15:(r.width>30?11:7);
+  if(e.classList.contains('ac-card')&&(r.width<180||r.height<80))return;var ins=e.classList.contains('ac-card')?5:0,x1=Math.round(r.left)+ins,y1=Math.round(r.top)+ins,x2=Math.round(r.right)-ins,y2=Math.round(r.bottom)-ins,q=e.tagName==='BUTTON'?12:e.classList.contains('ac-card')?15:(r.width>30?11:7);
   q=Math.min(q,(x2-x1)/2,(y2-y1)/2);
   p+='M'+(x1+q)+' '+y1+'H'+(x2-q)+'A'+q+' '+q+' 0 0 1 '+x2+' '+(y1+q)+'V'+(y2-q)+'A'+q+' '+q+' 0 0 1 '+(x2-q)+' '+y2+'H'+(x1+q)+'A'+q+' '+q+' 0 0 1 '+x1+' '+(y2-q)+'V'+(y1+q)+'A'+q+' '+q+' 0 0 1 '+(x1+q)+' '+y1+'Z';
  });
