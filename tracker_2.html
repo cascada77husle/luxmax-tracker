@@ -3608,7 +3608,8 @@ html:root body{background:transparent !important}
 html .arqNav{background:rgba(20,22,24,.5) !important}
 html #dc-root div[style*="min-height: 100vh"][style*="background: var(--bg)"]{background:transparent !important}
 html.lt .arqNav>canvas.arqWn{opacity:.4;filter:brightness(.8) blur(7px)}
-html.lt #arqWaves{filter:contrast(1.45) brightness(1.55) blur(4px);opacity:.9}
+html.lt #arqWaves{filter:blur(4px);opacity:1}
+html.lt .card,html.lt .arqWc{background-color:rgba(34,38,41,.42) !important}
 html:root .arqNb:not([aria-current="page"]):not([aria-current="true"]){color:#C9CECC !important;font-weight:600}
 html:root .arqNb:not([aria-current="page"]):not([aria-current="true"]) svg{opacity:1}
 html svg linearGradient[id^="arqRG"] stop:nth-child(odd){stop-color:#7E8F7D !important}
@@ -3662,7 +3663,7 @@ function mk(cv,o){
  var U=function(n){return gl.getUniformLocation(pr,n)};var ut=U('t'),ur=U('r'),us=U('s'),uc=U('c'),ud=U('d'),uk=U('k');
  return function(t){var w=Math.max(2,Math.round(cv.clientWidth*o.q)),h=Math.max(2,Math.round(cv.clientHeight*o.q));if(!w||!h)return;
   if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}
-  gl.uniform1f(ut,t*o.sp+o.ph);gl.uniform2f(ur,w,h);gl.uniform1f(us,o.s);gl.uniform3f(uc,o.c[0],o.c[1],o.c[2]);gl.uniform3f(ud,o.d[0],o.d[1],o.d[2]);gl.uniform1f(uk,o.k);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}}
+  gl.uniform1f(ut,t*o.sp+o.ph);gl.uniform2f(ur,w,h);gl.uniform1f(us,o.s);gl.uniform3f(uc,o.c[0],o.c[1],o.c[2]);gl.uniform3f(ud,o.d[0],o.d[1],o.d[2]);gl.uniform1f(uk,o.k*(document.documentElement.classList.contains('lt')?2.8:1));gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}}
 var cv=document.createElement('canvas');cv.id='arqWaves';document.body.insertBefore(cv,document.body.firstChild);
 var dMain=mk(cv,{q:.4,s:1.0,c:[.40,.46,.43],d:[0,.012,.008],k:.33,sp:.13,ph:0}),dNav=null,nc=null;
 var t0=performance.now(),last=0,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
