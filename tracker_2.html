@@ -2753,7 +2753,7 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
         const wDate0 = L.wDate || TODAY, wDate = cur && wDate0 < cur.start ? cur.start : wDate0;
         const goDate = (dt) => this.set({ wDate: dt, dayOff: Math.max(-60, Math.min(30, diff(TODAY, dt))) });
         const setWz = (p) => this.set({ wz: Object.assign({ open: true, kind: 'own', dirs: {}, tpl: '', name: '', start: TODAY }, this.L.wz || {}, p) });
-        const patchW = (id, fn, msg) => { if (id === 'wdemo') { this.set({ vToast: 'ПРИМЕР: можно смотреть и нажимать, но свои данные здесь не сохраняются. Создайте свою волну.' }); return; } this.set(Object.assign({ waves: (this.L.waves || []).map(w => w.id === id ? fn(w) : w) }, msg ? { uSnap: this.L.waves, uMsg: msg } : {})); };
+        const patchW = (id, fn, msg) => { if (id === 'wdemo') { const w0 = (this.L.waves || []).find(w => w.id === id); const w1 = w0 && fn(w0); const OKK = ['done', 'hs', 'hq', 'ht', 'tm', 'miss', 'ddone']; const bad = !w1 || Object.keys(w1).some(k => OKK.indexOf(k) < 0 && w1[k] !== w0[k] && JSON.stringify(w1[k]) !== JSON.stringify(w0[k])); if (bad) { this.set({ vToast: 'ПРИМЕР: можно смотреть и нажимать, но свои данные здесь не сохраняются. Создайте свою волну.' }); return; } } this.set(Object.assign({ waves: (this.L.waves || []).map(w => w.id === id ? fn(w) : w) }, msg ? { uSnap: this.L.waves, uMsg: msg } : {})); };
         const dayOf = (w, n) => {
           if (n < 0) return null;
           if (w.tpl) { const T = TPL[w.tpl]; if (!T || n >= T.days.length) return null; if (w.tpl === 'change') return mkChange(n); if (w.tpl === 'discipline') return mkDisc(n); return [{ b: 'Урок', items: [T.days[n][0] + ' (' + T.days[n][1] + ' мин)'] }, { b: 'Практика', items: ['Применить на практике сегодня', 'Конспект в 3 строки своими словами'] }, { b: 'Повторение', items: ['Карточки на 10 минут'] }]; }
@@ -2771,6 +2771,7 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
           const sv = (w.hs || {})[key];
           if (sv === 'skip') return 'skip';
           if (sv === 'miss') return 'miss';
+          if (sv === 'part') return 'part';
           if (date < crOf(w, h)) return 'off';
           const f = h.f || 'daily';
           if (f === 'days' && (h.fd || []).indexOf((pd(date).getDay() + 6) % 7) < 0) return 'off';
@@ -3001,10 +3002,10 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
               if (w.rows) { const r = pctOf(nw, dt), n = diff(w.start, dt), dd = Object.assign({}, w.ddone || {}); if (n >= 0) dd[n] = r.a > 0 && r.d === r.a; nw.ddone = dd; }
               return nw;
             });
-            const canTap = (h, d) => { const st = stOf(h, d); return d >= cur.start && d <= TODAY && st !== 'pz' && st !== 'ar'; };
+            const canTap = (h, d) => { const st = stOf(h, d); return d <= TODAY && st !== 'pz' && st !== 'ar'; };
             const amtOf = (h, d) => { const k = d + '|H|' + h.id; return hq[k] || (dnn[k] ? (h.q || 0) : 0); };
             const setQ = (h, d, n) => { if (!canTap(h, d)) return; n = Math.max(0, n); if (n <= 0) setHab(h, d, 'none'); else if (n >= h.q) setHab(h, d, 'done', n); else setHab(h, d, 'part', n); };
-            const cyc = (h, d) => { if (!canTap(h, d)) return; const st = stOf(h, d); if (h.q > 0) { const a = amtOf(h, d); setQ(h, d, a >= h.q ? 0 : h.q); return; } setHab(h, d, st === 'done' ? 'part' : st === 'part' ? 'skip' : st === 'skip' ? 'none' : 'done'); };
+            const cyc = (h, d) => { if (!canTap(h, d)) return; const st = stOf(h, d), ex = ((cur.hs || {})[d + '|H|' + h.id]) === 'miss'; const nx = st === 'done' ? 'part' : st === 'part' ? 'miss' : ((ex || st === 'skip') && d >= TODAY) ? 'none' : 'done'; setHab(h, d, nx, nx === 'done' ? (h.q || 0) : nx === 'part' ? Math.floor((h.q || 0) / 2) : undefined); };
             const reg = (h, a, b) => {
               const f = h.f || 'daily', s0 = crOf(cur, h); if (a < s0) a = s0; if (a < cur.start) a = cur.start; if (b > TODAY) b = TODAY;
               const r = { p: null, np: null, done: 0, due: 0, part: 0, skip: 0, miss: 0, act: 0 }; if (b < a) return r;
@@ -3032,7 +3033,7 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
             const habCol = (k) => { let x = 0; for (const ch of String(k)) x = (x * 31 + ch.charCodeAt(0)) >>> 0; if (document.documentElement.classList.contains('mono')) return ['#9A9F9D', '#A9ADA9', '#8C9391'][x % 3]; return ['#7FA6D9', '#A78BDA', '#D9A862', '#6FB8A8', '#D98FA6', '#9DB872'][x % 6]; };
             const tintH = (k, a0) => { let x = 0; for (const ch of k) x = (x * 31 + ch.charCodeAt(0)) >>> 0; const al = a0 + (x % 19) / 100, cc = [[56, 189, 248], [99, 162, 240], [45, 212, 191], [129, 140, 248], [148, 163, 184]][x % 5]; return 'linear-gradient(160deg,rgba(' + cc + ',' + (al + .07).toFixed(2) + '),rgba(' + cc + ',' + (al * .4).toFixed(2) + '))'; };
             const cellStyle = (h, d) => {
-              let st = d > TODAY ? 'off' : stOf(h, d); if (d < TODAY && (st === 'wk' || st === 'off' || st === 'pz' || st === 'ar')) st = 'miss'; if (cur.id === 'wdemo' && d < cur.start && d < TODAY) { let x = 7; for (const ch of h.id + d) x = (x * 31 + ch.charCodeAt(0)) >>> 0; const r = x % 100; st = r < 60 ? 'done' : r < 80 ? 'miss' : r < 90 ? 'part' : 'skip'; } const a = amtOf(h, d); let bg = 'transparent', bd = 'var(--line2)', fg = 'var(--on-accent)', txt = '';
+              let st = d > TODAY ? 'off' : stOf(h, d); if (d < TODAY && (st === 'wk' || st === 'off' || st === 'pz' || st === 'ar')) st = 'miss'; if (cur.id === 'wdemo' && d < cur.start && d < TODAY && !(cur.done || {})[d + '|H|' + h.id] && !(cur.hs || {})[d + '|H|' + h.id]) { let x = 7; for (const ch of h.id + d) x = (x * 31 + ch.charCodeAt(0)) >>> 0; const r = x % 100; st = r < 60 ? 'done' : r < 80 ? 'miss' : r < 90 ? 'part' : 'skip'; } const a = amtOf(h, d); let bg = 'transparent', bd = 'var(--line2)', fg = 'var(--on-accent)', txt = '';
               if (st === 'done') { bg = 'var(--ok)'; bd = 'var(--ok)'; txt = '✓'; } else if (st === 'part') { bg = 'color-mix(in srgb,var(--warn) 24%,transparent)'; bd = 'var(--warn)'; fg = 'var(--warn)'; txt = '½'; } else if (st === 'skip') { bg = 'color-mix(in srgb,var(--ink) 7%,transparent)'; fg = 'var(--muted)'; txt = '–'; } else if (st === 'miss') { bg = 'var(--bad)'; bd = 'var(--bad)'; fg = '#fff'; txt = '−'; } else if (st === 'off' || st === 'pz' || st === 'ar') { bd = 'transparent'; bg = tintH(h.id + d, .08); } else if (st === 'todo') { bg = 'linear-gradient(160deg,rgba(56,189,248,.2),rgba(56,189,248,.07))'; bd = 'rgba(56,189,248,.42)'; } else if (st === 'wk') { bg = tintH(h.id + d, .1); }
               { if (st === 'done') { bg = 'var(--hcDb)'; bd = 'var(--hcDd)'; fg = 'var(--hcDf)'; } else if (st === 'miss') { bg = 'var(--hcMb)'; bd = 'var(--hcMb)'; fg = 'var(--hcMf)'; } else if (st === 'part') { bg = 'var(--hcPb)'; bd = 'var(--hcPd)'; fg = 'var(--hcPf)'; } }
               return { st, bg: d > TODAY ? 'rgba(255,255,255,.05)' : bg, bd: d > TODAY ? 'var(--line)' : bd, fg, txt: d > TODAY ? '' : txt, op: d > TODAY ? .8 : 1 };
