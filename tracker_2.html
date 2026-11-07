@@ -292,7 +292,7 @@ div[style*="minmax(170px"] b{font-weight:300 !important;font-size:40px !importan
 div[style*="minmax(170px"] span[style*="uppercase"]{font-size:12px !important;letter-spacing:.04em !important;text-transform:none !important;font-weight:500 !important}
 
 /* чипы и метки: пассивные цвета */
-.tkRow span[style*="border-radius"],.tkRow a,.tkRow .tkLn,.tkRow button[style*="border-radius"]{filter:saturate(.7)}
+.tkRow span[style*="border-radius"],.tkRow a,.tkRow .tkLn,.tkRow button[style*="border-radius"]{filter:saturate(.22)}
 .tkRow span[style*="border-radius"]{background:rgba(255,255,255,.06) !important;border-color:transparent !important}
 .tkGrid .tkCat{background-image:radial-gradient(120% 70% at 0% 0%,rgba(255,255,255,.05),transparent 60%) !important}
 .arqWc,.wvc-pn,.wvic{filter:saturate(.4)}
@@ -3029,7 +3029,7 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
             const act = hbs.filter(h => !h.ar), arc = hbs.filter(h => h.ar);
             const groupsOf = (list, fn) => { const names = cats.concat(['']), out = []; names.forEach(n => { const l = list.filter(h => catOf(h) === n); if (l.length) out.push({ name: n || 'Без категории', nameD: cats.length ? 'block' : 'none', rows: l.map(fn) }); }); return out; };
             const pcol = (p) => p == null ? 'var(--line2)' : p >= 70 ? 'var(--ok)' : p >= 40 ? 'var(--warn)' : 'var(--bad)';
-            const habCol = (k) => { let x = 0; for (const ch of String(k)) x = (x * 31 + ch.charCodeAt(0)) >>> 0; return ['#7FA6D9', '#A78BDA', '#D9A862', '#6FB8A8', '#D98FA6', '#9DB872'][x % 6]; };
+            const habCol = (k) => { let x = 0; for (const ch of String(k)) x = (x * 31 + ch.charCodeAt(0)) >>> 0; if (document.documentElement.classList.contains('mono')) return ['#9A9F9D', '#A9ADA9', '#8C9391'][x % 3]; return ['#7FA6D9', '#A78BDA', '#D9A862', '#6FB8A8', '#D98FA6', '#9DB872'][x % 6]; };
             const tintH = (k, a0) => { let x = 0; for (const ch of k) x = (x * 31 + ch.charCodeAt(0)) >>> 0; const al = a0 + (x % 19) / 100, cc = [[56, 189, 248], [99, 162, 240], [45, 212, 191], [129, 140, 248], [148, 163, 184]][x % 5]; return 'linear-gradient(160deg,rgba(' + cc + ',' + (al + .07).toFixed(2) + '),rgba(' + cc + ',' + (al * .4).toFixed(2) + '))'; };
             const cellStyle = (h, d) => {
               let st = d > TODAY ? 'off' : stOf(h, d); if (d < TODAY && (st === 'wk' || st === 'off' || st === 'pz' || st === 'ar')) st = 'miss'; if (cur.id === 'wdemo' && d < cur.start && d < TODAY) { let x = 7; for (const ch of h.id + d) x = (x * 31 + ch.charCodeAt(0)) >>> 0; const r = x % 100; st = r < 60 ? 'done' : r < 80 ? 'miss' : r < 90 ? 'part' : 'skip'; } const a = amtOf(h, d); let bg = 'transparent', bd = 'var(--line2)', fg = 'var(--on-accent)', txt = '';
@@ -3541,7 +3541,7 @@ html .arqNb[aria-current="page"] svg,html .arqNb[aria-current="true"] svg{stroke
 @media (min-width:1000px){html .arqNb{position:relative}html .arqNb[aria-current="page"]::before,html .arqNb[aria-current="true"]::before{content:"";position:absolute;left:-12px;top:22%;bottom:22%;width:3px;border-radius:0 3px 3px 0;background:var(--sage)}}
 html .arqRing circle:first-of-type{stroke:#26292C !important}
 html .arqRing circle:nth-of-type(2){stroke:var(--sage) !important;stroke-linecap:round}
-html .arqHmG i,html .arqHmK i{filter:saturate(.85)}
+html .arqHmG i,html .arqHmK i{filter:hue-rotate(-60deg) saturate(.32) brightness(.86)}
 html .aiT{filter:saturate(.35);border-radius:10px}
 html input,html textarea,html select{background-color:#101112 !important;border:1px solid #26292C !important;color:#E7E8E5}
 html input:focus,html textarea:focus,html select:focus{border-color:rgba(var(--sage-rgb),.6) !important;outline:0;box-shadow:0 0 0 3px rgba(var(--sage-rgb),.14)}
@@ -3551,7 +3551,7 @@ html .arqWv button.arqWc{--g:#7E8F7D !important}html .arqWv button.arqWc::after{
 html:root:root{--cat-blue:#8FA3A8;--cat-violet:#8A9B89;--cat-indigo:#7F8C8B;--cat-pink:#B5A39E;--cat-violet-ink:#B9C6B8;--cat-violet-soft:rgba(138,155,137,.3)}
 html.lt .arqRing circle:first-of-type{stroke:#D3D6D4 !important}html.lt .arqRing circle:nth-of-type(2){stroke:#7C8F7B !important}
 html .tkGrid .tkCat .tkRow,html.lt .tkGrid .tkCat .tkRow{border-left-color:color-mix(in srgb,var(--tkac,#777F80) 26%,#7A8381) !important}
-html .aiT{filter:saturate(.7) !important}
+html .aiT{--c:#A1A6A5 !important;filter:none !important}html .aiT:nth-of-type(3n+1){--c:#A6B4A5 !important}html .aiT:nth-of-type(3n+2){--c:#8FA3A8 !important}html .aiT:nth-of-type(3n){--c:#B5A99A !important}
 html .tkRow span[style*="border-radius:999px"],html .tkRow span[style*="border-radius: 999px"]{filter:grayscale(.75) !important}html input[type=checkbox]{accent-color:var(--sage)}
 </style>
 <style id="arqGraphite2">
@@ -3574,7 +3574,7 @@ html button[style*="addShine"]:hover{border-color:rgba(var(--sage-rgb),.45) !imp
 html .wvc{--g:#7E8F7D !important;background:linear-gradient(160deg,#2B3033 0%,#1B1E20 58%,#121415 100%) !important;border:1px solid #363C40 !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 44px -22px #000 !important;filter:none !important}
 html .wvc::after{display:none !important}html .wvc::before{opacity:.35 !important}
 html svg[stroke="currentColor"][stroke-width="2"],html svg[stroke="currentColor"][stroke-width="1.8"],html svg[stroke="currentColor"][stroke-width="2.2"],html svg[stroke="currentColor"][stroke-width="1.5"]{stroke-width:1.6}
-html .arqHmG i,html .arqHmK i{filter:saturate(.85)}
+html .arqHmG i,html .arqHmK i{filter:hue-rotate(-60deg) saturate(.3) brightness(.74)}
 @keyframes arqSkd{to{stroke-dashoffset:0}}
 </style>
 <script>(function(){function pts(){var cs=[].slice.call(document.querySelectorAll('.arqHmG i[title]')).filter(function(c){return /выполнено\s+(\d+)%/.test(c.title)});return cs.slice(-14).map(function(c){return +c.title.match(/выполнено\s+(\d+)%/)[1]})}
@@ -3616,8 +3616,8 @@ html:root .arqNb:not([aria-current="page"]):not([aria-current="true"]){color:#C9
 html:root .arqNb:not([aria-current="page"]):not([aria-current="true"]) svg{opacity:1}
 html svg linearGradient[id^="arqRG"] stop:nth-child(odd){stop-color:#7E8F7D !important}
 html svg linearGradient[id^="arqRG"] stop:nth-child(even){stop-color:var(--sage) !important}
-html.lt .arqHmK i{filter:saturate(.85) !important}
-html.lt .arqHmG i{filter:saturate(.85) invert(1) hue-rotate(180deg) !important}
+html.lt .arqHmK i{filter:hue-rotate(-60deg) saturate(.35) brightness(.9) !important}
+html.lt .arqHmG i{filter:hue-rotate(-60deg) saturate(.35) brightness(.9) invert(1) hue-rotate(180deg) !important}
 html .card,html .arqWc,html div[style*="waveIn"][style*="16px 18px"]{-webkit-backdrop-filter:blur(12px) saturate(1.25);backdrop-filter:blur(12px) saturate(1.25)}
 html .card,html .arqWc{background-color:rgba(34,38,41,.55) !important}
 html div[style*="waveIn"][style*="16px 18px"]{background-color:rgba(26,29,31,.52) !important}
