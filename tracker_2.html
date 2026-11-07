@@ -4,7 +4,7 @@
 <script>
 /* Демо-волна: открыть ссылку с ?example=1, создаётся волна «Пример: всё заполнено». Остальные данные не меняются. */
 (function(){try{
-var isEx=/[?&]example(=|&|$)/.test(location.search);
+var isEx=/[?&]example(=|&|$)/.test(location.search); if(!localStorage.getItem('tracker:v1'))window.__arqFirst=true;
 var K='tracker:v1',raw=localStorage.getItem(K),S=raw?JSON.parse(raw):{v:1};
 var p2=function(n){return(n<10?'0':'')+n},iso=function(d){return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())};
 var now=new Date(),day=function(o){return iso(new Date(now.getFullYear(),now.getMonth(),now.getDate()+o))};
@@ -2248,7 +2248,7 @@ class Component extends DCLogic {
   componentDidMount() {
     let ls = null; try { ls = JSON.parse(localStorage.getItem('tracker:v1') || 'null'); } catch (e) { ls = null; }
     const apply = (d) => { if (!d) return; const KEEP = ['seen', 'uname', 'skin', 'card', 'widgets', 'wsets', 'daySecs', 'sec']; const p = {}; Component.KEYS().forEach(k => { if (d.wv !== 3 && KEEP.indexOf(k) < 0) return; if (k === 'widgets' && d.wd !== 2) return; if ((k === 'added' || k === 'diary') && d.dm !== 2) return; if (['ops', 'plans', 'accounts', 'goals', 'debts', 'limits'].indexOf(k) >= 0 && d.em !== 1) return; if (d[k] !== undefined) p[k] = d[k]; }); this.setState(Object.assign({}, this.L, p, { ready: true })); };
-    if (ls) apply(ls); try { if (ls && /[?&]example(=|&|$)/.test(location.search) && (ls.waves || []).some(w => w.id === 'wdemo')) this.setState(Object.assign({}, this.L, { mode: 'day', waveCur: 'wdemo', waveOpen: true, wDate: '', dayOff: 0 })); } catch (e) {}
+    if (ls) apply(ls); try { if (ls && (/[?&]example(=|&|$)/.test(location.search) || window.__arqFirst) && (ls.waves || []).some(w => w.id === 'wdemo')) this.setState(Object.assign({}, this.L, { mode: 'day', waveCur: 'wdemo', waveOpen: true, wDate: '', dayOff: 0 })); } catch (e) {}
     this.loadedAt = ls ? (ls.at || 0) : 0; this.loaded = true; window.__trackerFlush = () => { if (this.dirty) this.flush(); }; try { document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') { if (this.L.shT) this.set({ shT: null }); else if (this.L.menu) this.set({ menu: '' }); } }); } catch (e) { } try { document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') window.__trackerFlush(); }); window.addEventListener('pagehide', () => window.__trackerFlush()); } catch (e) { }
     const c = (typeof window !== 'undefined') ? window.claude : null;
     if (!c || !c.use) return;
