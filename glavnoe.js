@@ -226,7 +226,7 @@ function go(t){
   var name={tasks:"Задачи",cal:"Календарь",sport:"Спорт",habits:"Задачи"}[t],bs=row.querySelectorAll("button");
   for(var i=0;i<bs.length;i++)if(bs[i].textContent.trim()===name){bs[i].click();break}
   fr(function(){fin(cur);
-   if(t==="habits"){var r2=rowEl(),q=r2&&r2.parentElement;if(q){var k=[].slice.call(q.children);for(var i=0;i<k.length;i++){if(/Привычки\s*сегодня/.test(tx(k[i]))&&k[i].getBoundingClientRect().height>0){k[i].scrollIntoView({behavior:"auto",block:"start"});break}}}}})})},30);
+   if(t==="habits"){var hs=document.querySelectorAll("div,span");for(var i=0;i<hs.length;i++){var h=hs[i];if(h.children.length<4&&h.textContent.length<40&&/^Привычки\s*сегодня/.test(h.textContent.trim())&&!h.closest(".gl-page")&&h.getBoundingClientRect().height>0){window.scrollTo({top:Math.max(0,h.getBoundingClientRect().top+window.scrollY-90),behavior:"instant"});break}}}})})},30);
  setTimeout(function(){if(busy)fin(cur)},5500)}
 function setOn(v){if(on===v)return;on=v;sigPrev="";var n=navEl();
  if(!v){if(page&&page.parentNode)page.parentNode.removeChild(page);
