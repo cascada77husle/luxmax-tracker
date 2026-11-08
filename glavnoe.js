@@ -180,6 +180,7 @@ var css=[
 ".gl-nh{margin-top:6px}.gl-nh input,.gl-nh button{min-height:32px}.gl-hr{padding:2px 8px 2px 0}.gl-page button.hbc{height:22px;font-size:11px}.gl-hbs{margin-top:8px}",
 ".gl-an{margin-top:8px;gap:8px}.gl-am{padding:8px 10px}.gl-wi{margin-top:8px}.gl-chs{margin-top:8px}",
 "@media (max-width:999px){.gl-page{padding:0 14px 110px}}",
+".gl-page .tkRow>div{flex-direction:row!important;align-items:center!important;flex-wrap:wrap;gap:4px 8px!important;padding:1px 0!important}.gl-page .tkRow>div>span:first-child{flex:1 1 auto;min-width:0;font-size:13px!important}.gl-page .tkRow>div>span:last-child{flex:none}.gl-page .tkRow .aiT{padding:0 6px!important}",
 "[data-glh=\"1\"]{display:none!important}"
 ].join("\n");
 function ic(p){return '<svg class="gl-ic" viewBox="0 0 24 24">'+p+'</svg>'}
