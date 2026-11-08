@@ -4,7 +4,7 @@
 if(window.__glInit)return;window.__glInit=1;
 var KEY="arq:gl:ex",LAST="arq:gl:last",SPK="arq:gl:sp";
 var on=false,sigPrev="",page=null,busy=false,hold=0;
-var ST={tf:"all",pr:"week",acc:0,lf:0,cm:"week",off:0,sel:""},HX={};
+var ST={tf:"all",pr:"week",acc:-1,lf:0,cm:"week",off:0,sel:""},HX={};
 var DAYS=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
 var DFULL=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
 var MON=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
@@ -150,6 +150,16 @@ var css=[
 ".gl-chs{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.gl-chs .gl-pill{padding:5px 12px}.gl-chs .gl-pill.on{background:color-mix(in srgb,var(--accent) 24%,transparent);box-shadow:inset 0 0 0 1px var(--accent-line)}",
 ".gl-wi{display:flex;gap:8px;margin-top:12px}.gl-wi input{flex:1;min-width:0;border:1.5px solid var(--line2);border-radius:999px;padding:0 16px;min-height:38px;font-size:13px;background:var(--field);color:var(--ink)}",
 ".gl-sec{font-family:Archivo,system-ui,sans-serif;font-size:15px;font-weight:700;margin-top:18px}",
+".gl-fbig{font-family:Archivo,system-ui,sans-serif;font-size:clamp(40px,6vw,60px);font-weight:800;letter-spacing:-.03em;line-height:1.05}",
+".gl-fa{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:14px}",
+".gl-ft{border:1.5px solid var(--line);border-radius:16px;background:var(--field);color:var(--ink);padding:10px 12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0;transition:border-color .2s,background .2s}",
+".gl-ft small{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gl-ft b{font-size:16px;font-weight:700}",
+".gl-ft.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--field))}",
+".gl-f3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px}",
+".gl-f3 div{background:var(--field);border-radius:14px;padding:11px 13px;display:flex;flex-direction:column;gap:2px;min-width:0}.gl-f3 small{font-size:12px;color:var(--muted)}",
+".gl-f3 b{font-family:Archivo,system-ui,sans-serif;font-size:18px;font-weight:800;white-space:nowrap}.gl-f3 b.ok{color:var(--ok)}",
+"@media (max-width:560px){.gl-f3{grid-template-columns:1fr}}",
+".pg>:first-child[style*=\"sticky\"]{background:transparent!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}",
 "@media (max-width:1180px){.gl-q{grid-template-columns:repeat(3,minmax(0,1fr))}}",
 "@media (max-width:999px){.gl-page{padding:0 14px 110px}.gl-top{grid-template-columns:repeat(2,minmax(0,1fr))}.gl-cols{grid-template-columns:minmax(0,1fr)}}",
 "@media (max-width:560px){.gl-q{grid-template-columns:repeat(2,minmax(0,1fr))}.gl-big{font-size:34px}.gl-wg .gl-chip small{display:none}}",
@@ -212,8 +222,8 @@ function exModel(){var t=today(),m={ex:true,score:EX.score,delta:EX.delta,week:E
  m.days=[];var i;for(i=20;i>=0;i--)m.days.push(addD(t,-i));
  m.hab=EX.hb.map(function(r,ri){return {t:r[0],c:BC[(ri+2)%BC.length],cells:EXH(r[1],ri).map(function(v,ci){var k=ri+":"+ci,x=HX[k]!==undefined?HX[k]:v;return x===2?"d":x===1?"p":(ci===20?"n":"m")})}});
  m.sport={plan:EX.sport.plan,sets:EX.sport.sets,food:EX.sport.food,ex:EX.sport.ex,an:EX.an};
- m.fin=EX.fin;m.fin.accs=EX.acc;m.pr=EX.pr;m.tiles=EX.tiles;return m}
-function realModel(){var s=S(),w=curWave(s),sp=spData(),t=today(),m={ex:false,w:!!w,delta:0},i;if(sp.dt!==iso(t)){sp.sets=null;sp.food=null;sp.ex=null}
+ m.fin={accs:EX.acc,inc:120000,exp:83400,free:36600};m.pr=EX.pr;m.tiles=EX.tiles;return m}
+function realModel(){var s=S(),w=curWave(s),sp=spData(),t=today(),m={ex:false,w:!!w,delta:0},i;sp.stale=sp.dt?(sp.dt!==iso(t)?sp.dt:""):"old";
  m.days=[];for(i=20;i>=0;i--)m.days.push(addD(t,-i));
  function repOk(task,day){if(task.rep==="weekly"&&w.start)return dow(pIso(w.start))===dow(day);return true}
  function tasksOn(day){var out=[];if(!w||!w.tasks)return out;var bl=Object.keys(w.tasks),bi,ii,arr,tk,key;
@@ -236,7 +246,7 @@ function realModel(){var s=S(),w=curWave(s),sp=spData(),t=today(),m={ex:false,w:
  var yd=Math.max(1,Math.min(365,Math.round((+t-+start)/864e5)+1)),ya=avg(yd,0),ys=[],ck=Math.max(1,Math.ceil(yd/12)),j2,j3;
  for(j2=0;j2<ya.s.length;j2+=ck){var sm=0,cn=0;for(j3=j2;j3<Math.min(ya.s.length,j2+ck);j3++){sm+=ya.s[j3];cn++}ys.push(Math.round(sm/cn))}
  m.pr={week:{v:wa.v,d:wp.c?wa.v-wp.v:0,s:wa.s},month:{v:mo.v,d:mp.c?mo.v-mp.v:0,s:mo.s},year:{v:ya.v,d:0,s:ys}};
- m.sport={plan:sp.plan||null,sets:sp.sets||null,food:sp.food||null,ex:sp.ex||[],an:anReal()};
+ m.sport={plan:sp.plan||null,sets:sp.sets||null,food:sp.food||null,ex:sp.ex||[],an:anReal(),stale:sp.stale||""};
  m.fin=finReal(s);m.fcnt=s?[(s.accounts||[]).length,(s.ops||[]).length,(s.goals||[]).length]:[0,0,0];
  var tl=[],tdn=m.tasks.filter(function(x){return x.done}).length,hdn=0;m.hab.forEach(function(r){if(r.cells[r.cells.length-1]==="d")hdn++});
  if(m.tasks.length)tl.push(["Задачи",Math.round(tdn/m.tasks.length*100),"tasks"]);
@@ -250,7 +260,18 @@ EX.acc=[{n:"Сбербанк · Основная карта",ty:"Банк",bal:6
 EX.an={lifts:[["Жим лёжа",[70,72.5,75,77.5,80,80,82.5,85]],["Присед",[90,92.5,95,95,100,102.5,105,107.5]],["Тяга",[100,105,105,110,112.5,115,117.5,120]]],food:[88,92,79,95,86,91,97,72],kg:[84.6,84.2,84,83.5,83.4,83,82.6,82.2]};
 function EXH(a,ri){var o=[],i;for(i=0;i<21;i++)o.push(i>=14?a[i-14]:a[(i*3+ri)%7]);return o}
 function rub(n){return Math.round(n).toLocaleString("ru-RU")+" ₽"}
-function finReal(s){var a=(s&&s.accounts)||[];return {accs:a.map(function(x){return {n:(x.bank?x.bank+" · ":"")+(x.name||"Счёт"),ty:({bank:"Банк",cash:"Наличные"})[x.type]||"Счёт",bal:+x.bal||0}})}}
+function finReal(s){var a=(s&&s.accounts)||[],ops=(s&&s.ops)||[],pl=(s&&s.plans)||[],inc=0,exp=0,up=0;
+ ops.forEach(function(o){if(o.kind==="in")inc+=+o.sum||0;else if(o.kind==="out")exp+=+o.sum||0});pl.forEach(function(p){if(!p.paid)up+=+p.sum||0});
+ return {accs:a.map(function(x){return {n:(x.bank?x.bank+" · ":"")+(x.name||"Счёт"),ty:({bank:"Банк",cash:"Наличные"})[x.type]||"Счёт",bal:+x.bal||0}}),inc:inc,exp:exp,free:inc-exp-up}}
+function finCard(m){var fi=m.fin||{accs:[],inc:0,exp:0,free:0},ac=fi.accs||[],h='<div class="card gl-fin"><div class="gl-h"><b>'+ICON.fin+'Мой счёт</b><button type="button" class="gl-lnk" data-a="go:eco">Экономика '+ICON.arrow+'</button></div>';
+ if(!ac.length&&!fi.inc&&!fi.exp)return h+'<div class="gl-em">Счетов пока нет<br><button type="button" class="gl-pill" data-a="go:eco">Добавить счёт</button></div></div>';
+ var sel=ST.acc>=ac.length?-1:ST.acc,tot=0;ac.forEach(function(a){tot+=a.bal});var cur=sel>=0?ac[sel]:null;
+ h+='<div class="gl-fbig">'+rub(cur?cur.bal:tot)+'</div><div class="gl-sub" style="margin-top:6px">'+(cur?"Деньги на счёте «"+esc(cur.n)+"»":"Деньги на всех счетах")+'</div>';
+ if(ac.length)h+='<div class="gl-fa"><button type="button" class="gl-ft'+(sel<0?" on":"")+'" data-a="ac:-1"><small>Все счета</small><b>'+rub(tot)+'</b></button>'+ac.map(function(a,k){return '<button type="button" class="gl-ft'+(k===sel?" on":"")+'" data-a="ac:'+k+'"><small>'+esc(a.n)+'</small><b>'+rub(a.bal)+'</b></button>'}).join("")+'</div>';
+ h+='<div class="gl-f3"><div><small>Доход</small><b class="ok">'+rub(fi.inc)+'</b></div><div><small>Расходы</small><b>'+rub(fi.exp)+'</b></div><div><small>Свободно</small><b>'+rub(fi.free)+'</b></div></div>';
+ var net=fi.inc-fi.exp,pc=fi.inc?Math.min(100,Math.round(fi.exp/fi.inc*100)):0;
+ h+='<div class="gl-bar"><b style="width:'+(fi.inc?Math.max(4,100-pc):0)+'%"></b></div><div class="gl-nt" style="margin-top:8px">Итог месяца: '+(net>=0?"+":"−")+rub(Math.abs(net))+' ('+(net>=0?"получено больше, чем потрачено":"потрачено больше, чем получено")+')</div>';
+ return h+'</div>'}
 function shRead(){var v=ls(SHK);try{return v?(JSON.parse(v)||{}):{}}catch(e){return {}}}
 function anReal(){var sh=shRead(),days=Object.keys(sh.d||{}).sort(),lifts={},food=[],kg=[];
  days.forEach(function(k){var o=sh.d[k],l=o.l||{},n;if(o.f&&o.f[1]&&o.f[0]>0)food.push(Math.round(o.f[0]/o.f[1]*100));for(n in l)(lifts[n]=lifts[n]||[]).push(l[n][0])});
@@ -324,7 +345,7 @@ function render(m){
  var Q=[["tasks","Задачи",ICON.tasks,T.length?tdn+" из "+T.length:"Открыть"],["cal","Календарь",ICON.cal,evToday?evToday+" на сегодня":"Расписание"],["habits","Привычки",ICON.habits,ha?hd+" из "+ha:"Открыть"],["sport","Спорт",ICON.sport,spn?"подходы "+spn:"Тренировки"],["eco","Финансы",ICON.fin,"Экономика"],["dash","Dashboard",ICON.dash,"Виджеты"]];
  h.push('<div class="gl-q">'+Q.map(function(x,qi){var c=CT[x[0]==="eco"?"fin":x[0]];return '<button type="button" class="gl-qb" data-a="go:'+x[0]+'" style="--c:'+c+';--i:'+qi+'"><span class="ic">'+x[2]+'</span><span class="tx"><b>'+x[1]+'</b><small>'+x[3]+'</small></span></button>'}).join("")+'</div>');
  var da=T.length,dl=tdn,pct=da?Math.round(dl/da*100):0,wk=m.week,filled=wk>0?Math.max(1,Math.round(wk/100*7)):0;
- h.push('<div class="gl-top">'
+ var TOP=('<div class="gl-top">'
  +'<div class="card gl-lk" data-a="go:tasks"><div class="gl-l">Сегодня</div><div class="gl-row">'+ring(m.score)+'<div><div class="gl-sub">Задач и привычек<br>выполнено сегодня</div>'+(ex?'<div class="gl-up">+'+m.delta+'</div>':'')+'</div></div></div>'
  +'<div class="card gl-lk" data-a="go:tasks"><div class="gl-l">Сроки</div><div class="gl-big">'+dl+' <small>из '+da+'</small></div><div class="gl-bar"><b style="width:'+pct+'%"></b></div><div class="gl-sub" style="margin-top:6px">'+pct+'%</div></div>'
  +'<div class="card gl-lk" data-a="go:cal"><div class="gl-l">Неделя'+ICON.bars+'</div><div class="gl-big">'+wk+' <small>%</small></div><div class="gl-sub" style="margin-top:6px">в среднем за 7 дней</div><div class="gl-wk">'+[0,1,2,3,4,5,6].map(function(n){return '<b class="'+(n<filled?(n===filled-1?"cur":"on"):"")+'"></b>'}).join("")+'</div></div>'
@@ -335,27 +356,21 @@ function render(m){
  var th='<div class="card"><div class="gl-h"><b>'+ICON.tasks+'Задачи на сегодня</b><button type="button" class="gl-lnk" data-a="go:tasks">'+dl+' из '+da+' '+ICON.arrow+'</button></div>'+seg([["all","Все"],["todo","Осталось"],["done","Готово"]],ST.tf,"tf");
  if(shown.length)th+='<div class="gl-ls">'+shown.slice(0,7).map(function(r,ri){return trow(r,T.indexOf(r))}).join("")+'</div>'+(shown.length>7?'<div class="gl-more" style="margin-top:8px">и ещё '+(shown.length-7)+' · <a data-a="go:tasks" style="cursor:pointer;text-decoration:underline">все задачи</a></div>':'');
  else th+='<div class="gl-em">'+(T.length?"В этом списке пусто":"На сегодня задач нет")+'<br><button type="button" class="gl-pill" data-a="go:tasks">Открыть задачи</button></div>';
- L.push(th+'</div>');
+ var TSK=th+'</div>';
  var hh='<div class="card"><div class="gl-h"><b>'+ICON.habits+'Привычки</b><button type="button" class="gl-lnk" data-a="go:habits">Все привычки '+ICON.arrow+'</button></div><div class="gl-sub">'+(ha?"сегодня "+hd+" из "+ha+" · последние "+m.days.length+" дней":"привычек пока нет")+'</div>';
  hh+='<div class="gl-nh"><input type="text" placeholder="Новая привычка" aria-label="Новая привычка" data-a="go:habits" readonly><button type="button" data-a="go:habits" aria-label="Добавить привычку">+</button></div>';
  if(ha){hh+='<div class="gl-hbs"><div class="gl-hr" style="border-top:0"><span></span>'+m.days.map(function(d){return '<span class="gl-hd1'+(+d===+t?" t":"")+'">'+DAYS[dow(d)]+'<b>'+d.getDate()+'</b></span>'}).join("")+'</div>'
   +m.hab.map(function(r,ri){return '<div class="gl-hr"><button type="button" class="gl-hn" data-a="go:habits"><i style="background:'+r.c+'"></i><span>'+esc(r.t)+'</span></button>'+r.cells.map(function(c,ci){var s=HCS[c],last=ci===r.cells.length-1;return '<button type="button" class="hbc" '+(ex&&last?'data-a="hc:'+ri+':'+ci+'"':'data-a="go:habits"')+' title="'+esc(r.t)+'" style="border:1.5px solid '+s[0]+';background:'+s[1]+';color:'+s[2]+'">'+s[3]+'</button>'}).join("")+'</div>'}).join("")+'</div>'}
  var HB=hh+'</div>';
- var fi=m.fin||{accs:[]},ac=fi.accs||[],fh='<div class="card"><div class="gl-h"><b>'+ICON.fin+'Финансы</b><button type="button" class="gl-lnk" data-a="go:eco">Экономика '+ICON.arrow+'</button></div>';
- if(ac.length){var tot=0;ac.forEach(function(a){tot+=a.bal});var ai=Math.min(ST.acc,ac.length-1),a1=ac[ai],pv=(ai+ac.length-1)%ac.length,nx=(ai+1)%ac.length;
-  fh+='<div class="gl-l" style="margin-bottom:4px">Всего на счетах</div><div class="gl-big gl-lk" data-a="go:eco">'+rub(tot)+'</div>';
-  fh+='<div class="gl-acc">'+(ac.length>1?'<button type="button" class="gl-ib" data-a="ac:'+pv+'" aria-label="Предыдущий счёт">'+ICON.left+'</button>':'')+'<div class="gl-ac" key="'+ai+'"><small>'+esc(a1.ty)+' · '+(ai+1)+' из '+ac.length+'</small><span>'+esc(a1.n)+'</span><b>'+rub(a1.bal)+'</b></div>'+(ac.length>1?'<button type="button" class="gl-ib" data-a="ac:'+nx+'" aria-label="Следующий счёт">'+ICON.arrow+'</button>':'')+'</div>';
-  if(ac.length>1)fh+='<div class="gl-dots">'+ac.map(function(x,k){return '<i class="'+(k===ai?"on":"")+'" data-a="ac:'+k+'"></i>'}).join("")+'</div>';
-  if(fi.inc)fh+='<div class="gl-kv"><span>Доходы за месяц</span><b>'+fi.inc[1]+'</b></div><div class="gl-bar"><b style="width:'+fi.inc[0]+'%"></b></div><div class="gl-kv"><span>Расходы за месяц</span><b>'+fi.exp[1]+'</b></div><div class="gl-bar w"><b style="width:'+fi.exp[0]+'%"></b></div>';
- }else{fh+='<div class="gl-em">Счетов пока нет<br><button type="button" class="gl-pill" data-a="go:eco">Добавить счёт</button></div>'}
- L.push(fh+'</div>');
- R.push(calHtml(m));
+ var FH=finCard(m);
+ var CAL=calHtml(m);
  var an=sp.an||{lifts:[],food:[],kg:[]},lf=Math.min(ST.lf,Math.max(0,an.lifts.length-1)),cl=an.lifts[lf];
  var sh='<div class="card"><div class="gl-h"><b>'+ICON.sport+'Спорт</b><button type="button" class="gl-lnk" data-a="go:sport">Тренировки '+ICON.arrow+'</button></div>'+(sp.plan?'<div class="gl-sd">'+DAYS.map(function(x,di){var v=sp.plan[di];return '<div class="'+(di===dow(t)?"t ":"")+(v?"":"r")+'">'+x+'<b>'+(v||"отдых")+'</b></div>'}).join("")+'</div>':'');
  if(sp.sets){var sp1=sp.sets[1]?Math.round(sp.sets[0]/sp.sets[1]*100):0;sh+='<div class="gl-kv" style="margin-top:0"><span>Подходов выполнено</span><b>'+sp.sets[0]+' из '+sp.sets[1]+'</b></div><div class="gl-bar"><b style="width:'+sp1+'%"></b></div>'}
  if(sp.food){var fp=sp.food[1]?Math.min(100,Math.round(sp.food[0]/sp.food[1]*100)):0;sh+='<div class="gl-kv"><span>Питание и вода</span><b>'+sp.food[0]+' из '+sp.food[1]+' ккал</b></div><div class="gl-bar w"><b style="width:'+fp+'%"></b></div>'}
  if(sp.ex&&sp.ex.length)sh+='<div class="gl-ls">'+sp.ex.map(function(x){var dn=x[2]>0&&x[1]>=x[2];return trow({t:x[0],c:CT.sport,done:dn,chips:[x[1]+" из "+x[2]+" подходов"]},-1).replace('data-a="go:tasks"','data-a="go:sport"').replace(/data-a="td:-1"/,'data-a="go:sport"')}).join("")+'</div>';
  if(!sp.plan&&!sp.sets&&!sp.food&&!(sp.ex&&sp.ex.length))sh+='<div class="gl-sub" style="text-align:center;padding:6px 0">Подходы и питание за сегодня подтянутся после захода во вкладку «Спорт»</div>';
+ if(sp.stale)sh+='<div class="gl-nt" style="margin-top:8px">'+(sp.stale==="old"?"Данные с последнего захода во вкладку «Спорт»":"Данные за "+sp.stale.slice(8,10)+"."+sp.stale.slice(5,7))+'</div>';
  sh+='<div class="gl-sec">Динамика</div>';
  if(an.lifts.length>1)sh+='<div class="gl-chs">'+an.lifts.slice(0,6).map(function(l,li){return '<button type="button" class="gl-pill'+(li===lf?" on":"")+'" data-a="lf:'+li+'">'+esc(l[0])+'</button>'}).join("")+'</div>';
  var lv=cl?cl[1]:[],ld=lv.length>1?Math.round((lv[lv.length-1]-lv[0])*10)/10:0,fv=an.food,fa=fv.length?Math.round(fv.reduce(function(p,q){return p+q},0)/fv.length):0,kv=an.kg,kd=kv.length>1?Math.round((kv[kv.length-1]-kv[0])*10)/10:0;
@@ -365,13 +380,15 @@ function render(m){
   +mini("Мой вес",kv,"кг",kv.length>1?(kd>0?"+":"")+fmtN(kd)+" кг с начала":"одно измерение",false)+'</div>';
  sh+='<div class="gl-wi"><input type="text" inputmode="decimal" placeholder="Мой вес сегодня, кг" aria-label="Мой вес сегодня"><button type="button" class="gl-pill" data-a="kg">Записать</button></div>';
  if(!ex&&!lv.length&&!fv.length&&!kv.length)sh+='<div class="gl-nt" style="margin-top:8px">История копится по дням: заходите во вкладку «Спорт» — рабочие веса и питание запоминаются, вес вводите здесь.</div>';
- R.push(sh+'</div>');
+ var SPT=sh+'</div>';
  var P=m.pr[ST.pr];
  var ph='<div class="card"><div class="gl-h"><b>'+ICON.bars+'Прогресс</b>'+seg([["week","Неделя"],["month","Месяц"],["year","Год"]],ST.pr,"pr")+'</div><div class="gl-pr">'+ring(P.v,92)+'<div><div class="gl-sub">Общий прогресс<br>за '+({week:"неделю",month:"месяц",year:"год"})[ST.pr]+'</div>'+(ex?'<div class="gl-up">+'+P.d+'%</div>':'')+'</div><div class="gl-sp">'+spark(P.s)+'</div></div>';
  if(m.tiles)ph+='<div class="gl-tl">'+m.tiles.map(function(x){return '<div class="gl-lk" data-a="go:'+(x[2]==="fin"?"eco":x[2]==="apple"||x[2]==="book"?"tasks":x[2])+'">'+ICON[x[2]]+'<b>'+x[1]+'%</b><span class="gl-nt">'+x[0]+'</span></div>'}).join("")+'</div>';
- R.push(ph+'</div>');
+ var PRG=ph+'</div>';
+ h.push('<div class="gl-cols"><div class="gl-col">'+TSK+'</div><div class="gl-col">'+CAL+'</div></div>');
+ h.push(FH);h.push(TOP);
+ h.push('<div class="gl-cols"><div class="gl-col">'+PRG+'</div><div class="gl-col">'+SPT+'</div></div>');
  h.push(HB);
- h.push('<div class="gl-cols"><div class="gl-col">'+L.join("")+'</div><div class="gl-col">'+R.join("")+'</div></div>');
  return h.join("")}
 function navEl(){return document.querySelector(".arqNav nav")}
 function nativeBtn(txt){var n=navEl();if(!n)return null;var b=n.querySelectorAll("button");for(var i=0;i<b.length;i++){if(!b[i].hasAttribute("data-glnav")&&b[i].textContent.trim()===txt)return b[i]}return null}
@@ -427,7 +444,7 @@ function onClick(e){var t=e.target.closest&&e.target.closest("[data-a]");if(!t||
  if(a[0]==="sw"){e.stopPropagation();var nx=!ex;ls(KEY,nx?"1":"0");t.setAttribute("aria-checked",nx?"true":"false");hold=Date.now()+480;setTimeout(function(){sigPrev="";tick()},500);return}
  if(a[0]==="td"){e.stopPropagation();if(!ex){go("tasks");return}var k="t"+a[1],cur=HX[k]!==undefined?HX[k]:(+a[1]===1);HX[k]=!cur}
  else if(a[0]==="hc"){e.stopPropagation();if(!ex){go("habits");return}var k2=a[1]+":"+a[2],ro=EX.hb[+a[1]][1][+a[2]],c2=HX[k2]!==undefined?HX[k2]:ro;HX[k2]=c2===2?0:2}
- else if(a[0]==="ac"){ST.acc=+a[1]}
+ else if(a[0]==="ac"){ST.acc=+a[1];var fe2=page.querySelector(".gl-fin");if(fe2){var mm=ex?exModel():realModel(),tmp=document.createElement("div");tmp.innerHTML=finCard(mm);fe2.parentNode.replaceChild(tmp.firstChild,fe2);sigPrev=JSON.stringify([mm,ST,HX,ex,iso(today())]);return}}
  else if(a[0]==="lf"){ST.lf=+a[1]}
  else if(a[0]==="kg"){if(ex){go("sport");return}var inp=page.querySelector(".gl-wi input"),kv=parseFloat(String(inp&&inp.value||"").replace(",","."));if(kv>0&&kv<400){var shh=shRead();shh.k=shh.k||{};shh.k[iso(today())]=kv;ls(SHK,JSON.stringify(shh))}}
  else if(a[0]==="tf"){ST.tf=a[1]}
