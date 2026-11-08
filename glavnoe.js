@@ -201,7 +201,8 @@ var ICON={
 };
 function tx(el){return el?el.textContent.replace(/\s+/g," "):""}
 function S(){try{return JSON.parse(localStorage.getItem("tracker:v1"))}catch(e){return null}}
-function curWave(s){if(!s||!s.waves||!s.waves.length)return null;for(var i=0;i<s.waves.length;i++)if(s.waves[i].id===s.waveCur)return s.waves[i];return s.waves[0]}
+function isDemo(w){return !!w&&(w.id==="wdemo"||/^\s*ПРИМЕР\s*$/i.test(w.name||""))}
+function curWave(s){if(!s||!s.waves||!s.waves.length)return null;var i,r=null;for(i=0;i<s.waves.length;i++)if(s.waves[i].id===s.waveCur&&!isDemo(s.waves[i]))return s.waves[i];for(i=0;i<s.waves.length;i++)if(!isDemo(s.waves[i])){r=s.waves[i];break}return r}
 function readReal(p){
  var card="",hab="",k=[].slice.call(p.children),i,m;
  for(i=0;i<k.length;i++){var t=tx(k[i]);if(!card&&/Счёт\s*дня/.test(t))card=t;if(!hab&&/Привычки\s*сегодня/.test(t))hab=t}
@@ -303,7 +304,7 @@ function anReal(){var sh=shRead(),days=Object.keys(sh.d||{}).sort(),lifts={},foo
  Object.keys(sh.k||{}).sort().forEach(function(k){kg.push(sh.k[k])});
  var names=Object.keys(lifts).sort(function(a,b){return lifts[b].length-lifts[a].length});
  return {lifts:names.map(function(n){return [n,lifts[n]]}),food:food,kg:kg}}
-function scrapeSport(){var w=document.querySelector(".arqSportWrap");if(!w||!w.getClientRects().length)return;
+function scrapeSport(){var w=document.querySelector(".arqSportWrap");if(!w||!w.getClientRects().length)return;var s0=S(),rc=s0&&s0.waves?s0.waves.filter(function(x){return x.id===s0.waveCur})[0]:null;if(!rc||isDemo(rc))return;
  var o=readSport(tx(w)),ex=[],lifts={},cur=null,wk=null,els=w.querySelectorAll("b,input"),k,e,pm,p;
  for(k=0;k<els.length;k++){e=els[k];
   if(e.tagName==="B"){p=e.parentElement;pm=p&&p.textContent.match(/(\d+)\s*из\s*(\d+)\s*подходов/);if(pm&&p.children.length<=3){cur=e.textContent.trim();ex.push([cur,+pm[1],+pm[2]]);wk=null}}
@@ -319,6 +320,7 @@ function injectSupport(){var m=document.querySelector("[role=menu]");if(!m||m.qu
  c.addEventListener("click",function(e){e.stopPropagation();e.preventDefault();openSupport();var b=document.querySelector('.pg button[aria-label="Ещё"]');if(b)b.click()});m.appendChild(c)}
 function extras(){
  if(!window.__glEx){window.__glEx=1;document.addEventListener("click",function(e){var b=e.target&&e.target.closest&&e.target.closest('button[aria-label="Ещё"]');if(b){setTimeout(injectSupport,60);setTimeout(injectSupport,260)}},true)}
+ if(!window.__glCl){window.__glCl=1;if(!ls("arq:gl:c2")){try{localStorage.removeItem(SPK);var q0=shRead();q0.d={};ls(SHK,JSON.stringify(q0))}catch(e){}ls("arq:gl:c2","1")}}
  injectSupport();scrapeSport();
  var n=navEl();if(!n)return;var db=nativeBtn("Dashboard"),gb=n.querySelector("[data-glnav]");
  if(db&&gb){var ds=db.querySelector("svg"),gs=gb.querySelector("svg");
@@ -367,6 +369,7 @@ function render(m){
  m.hab.forEach(function(r){if(r.cells[r.cells.length-1]==="d")hd++});
  var evToday=m.evOn(t).length,sp=m.sport,spn=sp.sets?sp.sets[0]+" из "+sp.sets[1]:"";
  h.push('<div class="gl-hd"><div><p>Ваш личный центр продуктивности</p></div><button type="button" class="gl-sw" role="switch" aria-checked="'+(ex?"true":"false")+'" data-a="sw">Пример<i></i></button></div>');
+ if(!ex&&!m.w)h.push('<div class="card gl-note" style="padding:10px 14px!important;font-size:13px;color:var(--muted)">Здесь пока нет ваших данных: все цифры считаются только по вашей волне и счетам. Создайте свою волну в «Моя волна» — или включите «Пример», чтобы посмотреть, как всё выглядит.</div>');
  var Q=[["tasks","Задачи",ICON.tasks,T.length?tdn+" из "+T.length:"Открыть"],["cal","Календарь",ICON.cal,evToday?evToday+" на сегодня":"Расписание"],["habits","Привычки",ICON.habits,ha?hd+" из "+ha:"Открыть"],["sport","Спорт",ICON.sport,spn?"подходы "+spn:"Тренировки"],["eco","Финансы",ICON.fin,"Экономика"],["dash","Dashboard",ICON.dash,"Виджеты"]];
  h.push('<div class="gl-q">'+Q.map(function(x,qi){var c=CT[x[0]==="eco"?"fin":x[0]];return '<button type="button" class="gl-qb" data-a="go:'+x[0]+'" style="--c:'+c+';--i:'+qi+'"><span class="ic">'+x[2]+'</span><span class="tx"><b>'+x[1]+'</b><small>'+x[3]+'</small></span></button>'}).join("")+'</div>');
  var da=T.length,dl=tdn,pct=da?Math.round(dl/da*100):0,wk=m.week,filled=wk>0?Math.max(1,Math.round(wk/100*7)):0;
@@ -482,6 +485,8 @@ document.addEventListener("click",function(e){var t=e.target;if(!t||!t.closest)r
  if(t.closest("[data-glnav]")){e.stopPropagation();e.preventDefault();setOn(true);return}
  if(on&&!busy&&t.closest(".arqNav"))setOn(false)},true);
 window.__gl={tick:tick,setOn:setOn};
+(function(){function fs(){try{var tg=window.Telegram&&Telegram.WebApp;if(!tg)return;if(tg.ready)tg.ready();if(tg.expand)tg.expand();if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();if(tg.requestFullscreen&&!tg.isFullscreen)tg.requestFullscreen()}catch(e){}}
+fs();setTimeout(fs,600);setTimeout(fs,2000);document.addEventListener("click",function f(){fs();document.removeEventListener("click",f,true)},true)})();
 setInterval(tick,600);
 tick();
 })();
