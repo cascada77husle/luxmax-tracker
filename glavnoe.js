@@ -276,8 +276,8 @@ function extras(){
  injectSupport();scrapeSport();
  var n=navEl();if(!n)return;var db=nativeBtn("Dashboard"),gb=n.querySelector("[data-glnav]");
  if(db&&gb){var ds=db.querySelector("svg"),gs=gb.querySelector("svg");
-  if(ds&&!ds.hasAttribute("data-gls")){if(!window.__glGrid)window.__glGrid=ds.innerHTML;ds.innerHTML=ICON.home;ds.setAttribute("data-gls","1")}
-  if(gs&&window.__glGrid&&!gs.hasAttribute("data-gls")){gs.innerHTML=window.__glGrid;gs.setAttribute("data-gls","1")}}}
+  if(ds&&!ds.hasAttribute("data-gls")){ds.innerHTML=ICON.bars;ds.setAttribute("data-gls","1")}
+  if(gs&&!gs.hasAttribute("data-gls")){gs.innerHTML=ICON.home;gs.setAttribute("data-gls","1")}}}
 function sparkN(a){var w=200,h=60,mn=Math.min.apply(null,a),mx=Math.max.apply(null,a),rg=mx-mn||1,n=Math.max(1,a.length-1),pts=a.map(function(y,i){return (i*(w/n)).toFixed(1)+","+(h-6-((y-mn)/rg)*(h-14)).toFixed(1)}).join(" ");
  return '<svg viewBox="0 0 200 60" preserveAspectRatio="none"><defs><linearGradient id="glg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".3"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs><polygon points="0,60 '+pts+' 200,60" fill="url(#glg2)"/><polyline points="'+pts+'" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>'}
 function fmtN(v){return String(Math.round(v*10)/10).replace(".",",")}
