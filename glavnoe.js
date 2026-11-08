@@ -224,7 +224,7 @@ function realModel(){var s=S(),w=curWave(s),sp=spData(),t=today(),m={ex:false,w:
  m.tasksOn=tasksOn;m.tasks=tasksOn(t);
  m.evOn=function(day){return tasksOn(day).filter(function(x){return x.s}).map(function(x){return {t:x.t,s:x.s,e:x.e,c:x.c}})};
  var HC=["#A78BDA","#E0A458","#6FB7A5","#D98BA0","#9CC27A","#7FB5D6","#B79CE0","#E6B36A"];
- function hst(h,day){var k=iso(day)+"|H|"+h.id;return w.done&&w.done[k]?"d":(w.hs&&w.hs[k]==="part"?"p":(+day<+t?"m":"n"))}
+ function hst(h,day){var k=iso(day)+"|H|"+h.id;return w.done&&w.done[k]?"d":(w.hs&&w.hs[k]==="part"?"p":(+day<+t&&!(w.start&&+day<+pIso(w.start))?"m":"n"))}
  m.hab=(w&&w.habits||[]).map(function(h,hi){return {t:h.t,c:HC[hi%HC.length],cells:m.days.map(function(day){return hst(h,day)})}});
  var start=w&&w.start?pIso(w.start):t;
  function dayPct(day){if(!w||+day<+start)return null;var done=0,tot=0;(w.habits||[]).forEach(function(h){tot++;var x=hst(h,day);if(x==="d")done++;else if(x==="p")done+=.5});tasksOn(day).forEach(function(x){tot++;if(x.done)done++});return tot?Math.round(done/tot*100):null}
