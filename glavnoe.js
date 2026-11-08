@@ -216,18 +216,17 @@ function fin(cur){var n=navEl();if(n){var bs=n.querySelectorAll("button");for(va
  setOn(false);
  if(n&&cur){var b2=n.querySelectorAll("button");for(var j=0;j<b2.length;j++){var x=b2[j];x.setAttribute("aria-current",x===cur?"page":"false")}}
  busy=false}
-function fr(f){requestAnimationFrame(function(){requestAnimationFrame(f)})}
+function fr(f){setTimeout(f,40)}
 function go(t){
  if(busy)return;busy=true;
  var cur=null;
  if(t==="dash"||t==="eco"){cur=nativeBtn(t==="dash"?"Dashboard":"Экономика");if(cur)cur.click();fr(function(){fin(cur)});return}
  cur=nativeBtn("Моя волна");if(cur)cur.click();
- setTimeout(function(){if(!rowEl()){var wv=document.querySelector(".arqNav .arqWv button");if(wv)wv.click()}},300);
- setTimeout(function(){waitFor(rowEl,4000,function(row){
+ setTimeout(function(){if(!rowEl()){var wv=document.querySelector(".arqNav .arqWv button");if(wv)wv.click()}waitFor(rowEl,4000,function(row){
   var name={tasks:"Задачи",cal:"Календарь",sport:"Спорт",habits:"Задачи"}[t],bs=row.querySelectorAll("button");
   for(var i=0;i<bs.length;i++)if(bs[i].textContent.trim()===name){bs[i].click();break}
   fr(function(){fin(cur);
-   if(t==="habits"){var r2=rowEl(),q=r2&&r2.parentElement;if(q){var k=[].slice.call(q.children);for(var i=0;i<k.length;i++){if(/Привычки\s*сегодня/.test(tx(k[i]))&&k[i].getBoundingClientRect().height>0){k[i].scrollIntoView({behavior:"auto",block:"start"});break}}}}})})},90);
+   if(t==="habits"){var r2=rowEl(),q=r2&&r2.parentElement;if(q){var k=[].slice.call(q.children);for(var i=0;i<k.length;i++){if(/Привычки\s*сегодня/.test(tx(k[i]))&&k[i].getBoundingClientRect().height>0){k[i].scrollIntoView({behavior:"auto",block:"start"});break}}}}})})},30);
  setTimeout(function(){if(busy)fin(cur)},5500)}
 function setOn(v){if(on===v)return;on=v;sigPrev="";var n=navEl();
  if(!v){if(page&&page.parentNode)page.parentNode.removeChild(page);
