@@ -24,6 +24,7 @@ function fm(n){n=((n%1440)+1440)%1440;return pad(Math.floor(n/60))+":"+pad(n%60)
 var css=[
 ".gl-page{max-width:1280px;margin:0 auto;padding:0 20px 96px;display:flex;flex-direction:column;gap:14px;color:var(--ink);font-family:inherit}",
 ".gl-page *{box-sizing:border-box}",
+".pg{z-index:10}",
 ".gl-page button{font-family:inherit}",
 ".gl-hd{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0 2px}",
 ".gl-hd h2{margin:0;font-family:Archivo,system-ui,sans-serif;font-size:28px;font-weight:700;letter-spacing:-.02em}",
