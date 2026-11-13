@@ -454,7 +454,7 @@ html .tkGrid.tkBoard .tkCat:has(.tkXb) .tkRow:not(:has(.tkXb)){padding-top:4px !
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap"></noscript>
 <style>
 /* Единая система: цвета, радиусы, тень. Тема берётся из Telegram (--tg-theme-*), иначе из настроек системы */
 :root{
@@ -2797,7 +2797,7 @@ html .arqNb[aria-current="page"] svg,html .arqNb[aria-current="true"] svg{stroke
 @media (min-width:1000px){html .arqNb{position:relative}html .arqNb[aria-current="page"]::before,html .arqNb[aria-current="true"]::before{content:"";position:absolute;left:-12px;top:22%;bottom:22%;width:3px;border-radius:0 3px 3px 0;background:var(--sage)}}
 html .arqRing circle:first-of-type{stroke:#26292C !important}
 html .arqRing circle:nth-of-type(2){stroke:var(--sage) !important;stroke-linecap:round}
-html .arqHmG i,html .arqHmK i{filter:hue-rotate(-60deg) saturate(.32) brightness(.86)}
+html .arqHmG{filter:hue-rotate(-60deg) saturate(.32) brightness(.86)}html .arqHmK i{filter:hue-rotate(-60deg) saturate(.32) brightness(.86)}
 html .aiT{filter:saturate(.35);border-radius:10px}
 html input,html textarea,html select{background-color:#101112 !important;border:1px solid #26292C !important;color:#E7E8E5}
 html input:focus,html textarea:focus,html select:focus{border-color:rgba(var(--sage-rgb),.6) !important;outline:0;box-shadow:0 0 0 3px rgba(var(--sage-rgb),.14)}
