@@ -135,7 +135,7 @@ var css=[
 ".gl-tl .gl-ic{width:16px;height:16px;color:var(--muted)}",
 ".gl-tl b{display:block;font-size:15px;font-weight:600;margin-top:4px}",
 ".gl-nt{font-size:11px;color:var(--muted)}",
-"[data-glon] .pg>*:not(:first-child){display:none!important}",
+"[data-glon] .pg>*:not(:first-child):not(.gl-page):not(.arqAn){display:none!important}","[data-glon] .pg>.arqAn{display:flex!important}","[data-gldash]{display:none!important}",
 "[data-glon] .pg>:first-child h1>*{display:none}",
 "[data-glon] .pg>:first-child h1:after{content:\"Главное\"}",
 "[data-glon] .pg{min-height:0!important;padding-bottom:0!important}",
@@ -371,7 +371,7 @@ function render(m){
  var evToday=m.evOn(t).length,sp=m.sport,spn=sp.sets?sp.sets[0]+" из "+sp.sets[1]:"";
  h.push('<div class="gl-hd"><div><p>Ваш личный центр продуктивности</p></div><button type="button" class="gl-sw" role="switch" aria-checked="'+(ex?"true":"false")+'" data-a="sw">Пример<i></i></button></div>');
  if(!ex&&!m.w)h.push('<div class="card gl-note" style="padding:10px 14px!important;font-size:13px;color:var(--muted)">Здесь пока нет ваших данных: все цифры считаются только по вашей волне и счетам. Создайте свою волну в «Моя волна» — или включите «Пример», чтобы посмотреть, как всё выглядит.</div>');
- var Q=[["tasks","Задачи",ICON.tasks,T.length?tdn+" из "+T.length:"Открыть"],["cal","Календарь",ICON.cal,evToday?evToday+" на сегодня":"Расписание"],["habits","Привычки",ICON.habits,ha?hd+" из "+ha:"Открыть"],["sport","Спорт",ICON.sport,spn?"подходы "+spn:"Тренировки"],["eco","Финансы",ICON.fin,"Экономика"],["dash","Dashboard",ICON.dash,"Виджеты"]];
+ var Q=[["tasks","Задачи",ICON.tasks,T.length?tdn+" из "+T.length:"Открыть"],["cal","Календарь",ICON.cal,evToday?evToday+" на сегодня":"Расписание"],["habits","Привычки",ICON.habits,ha?hd+" из "+ha:"Открыть"],["sport","Спорт",ICON.sport,spn?"подходы "+spn:"Тренировки"],["eco","Финансы",ICON.fin,"Экономика"]];
  h.push('<div class="gl-q">'+Q.map(function(x,qi){var c=CT[x[0]==="eco"?"fin":x[0]];return '<button type="button" class="gl-qb" data-a="go:'+x[0]+'" style="--c:'+c+';--i:'+qi+'"><span class="ic">'+x[2]+'</span><span class="tx"><b>'+x[1]+'</b><small>'+x[3]+'</small></span></button>'}).join("")+'</div>');
  var da=T.length,dl=tdn,pct=da?Math.round(dl/da*100):0,wk=m.week,filled=wk>0?Math.max(1,Math.round(wk/100*7)):0;
  var TOP=('<div class="gl-top">'
@@ -443,7 +443,7 @@ function setOn(v){if(on===v)return;on=v;sigPrev="";var n=navEl();
   if(n){var bs=n.querySelectorAll("button");for(var i=0;i<bs.length;i++){var b=bs[i];if(b.hasAttribute("data-glnav")){b.setAttribute("aria-current","false")}else if(b.__glc){b.setAttribute("aria-current",b.__glc);b.__glc=undefined}}}}
  tick()}
 function ensureNav(){
- var n=navEl();if(!n)return;
+ var n=navEl();if(!n)return;var dn0=nativeBtn("Dashboard");if(dn0&&!dn0.hasAttribute("data-gldash"))dn0.setAttribute("data-gldash","1");
  if(!document.getElementById("gl-css")){var s=document.createElement("style");s.id="gl-css";s.textContent=css;document.head.appendChild(s)}
  var b=n.querySelector("[data-glnav]");
  if(!b){var first=n.querySelector("button");if(!first)return;
@@ -461,7 +461,7 @@ function tick(){try{
  if(!root.__glo){root.__glo=1;new MutationObserver(function(){if(!(on||busy))return;[].slice.call(root.children).forEach(function(c){if(c!==page&&!c.classList.contains("pg")&&!c.classList.contains("arqNav")&&!c.hasAttribute("data-glh"))c.setAttribute("data-glh","1")})}).observe(root,{childList:true})}
  var kids=[].slice.call(root.children),pgs=kids.filter(function(c){return c!==page&&!c.classList.contains("pg")&&!c.classList.contains("arqNav")&&!c.hasAttribute("data-glh")});
  pgs.forEach(function(c){c.setAttribute("data-glh","1")});
- var pgE=root.querySelector(":scope>.pg");root.setAttribute("data-glon","1");if(page.parentNode!==root||(pgE&&page.previousSibling!==pgE)){root.insertBefore(page,pgE?pgE.nextSibling:root.firstChild);sigPrev=""}
+ var pgE=root.querySelector(":scope>.pg");root.setAttribute("data-glon","1");if(pgE){var h0=pgE.firstElementChild;if(page.parentNode!==pgE||page.previousElementSibling!==h0){pgE.insertBefore(page,h0?h0.nextSibling:null);sigPrev=""}}else if(page.parentNode!==root){root.insertBefore(page,root.firstChild);sigPrev=""}
  var ex=ls(KEY)==="1",m=ex?exModel():realModel();
  var sig=JSON.stringify([m,ST,HX,ex,iso(today())]);
  if(sig!==sigPrev){sigPrev=sig;var sy=window.scrollY;page.innerHTML=render(m);decorate();[].forEach.call(page.querySelectorAll(".gl-hbs"),function(q){q.scrollLeft=q.scrollWidth});if(window.scrollY!==sy)window.scrollTo(0,sy)}
@@ -483,7 +483,7 @@ function onClick(e){var hh=e.target.closest&&e.target.closest(".gl-h,.gl-sec");i
  else if(a[0]==="sel"){ST.sel=a[1];if(ST.cm==="week")ST.cm="day",ST.off=Math.round((+pIso(a[1])-+today())/864e5)}
  tick()}
 document.addEventListener("click",function(e){var t=e.target;if(!t||!t.closest)return;
- if(t.closest("[data-glnav]")){e.stopPropagation();e.preventDefault();setOn(true);return}
+ if(t.closest("[data-glnav]")){e.stopPropagation();e.preventDefault();if(!on){var dbn=nativeBtn("Dashboard");if(dbn)dbn.click()}setOn(true);return}
  if(on&&!busy&&t.closest(".arqNav"))setOn(false)},true);
 window.__gl={tick:tick,setOn:setOn};
 (function(){function fs(){try{var tg=window.Telegram&&Telegram.WebApp;if(!tg)return;if(tg.ready)tg.ready();if(tg.expand)tg.expand();if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();if(tg.requestFullscreen&&!tg.isFullscreen)tg.requestFullscreen()}catch(e){}}
