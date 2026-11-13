@@ -442,6 +442,13 @@ html.lt .arqWc .wvic{filter:none !important}
 html.lt .arqWc .arqWc-ic{background:linear-gradient(145deg,rgba(255,255,255,.34),rgba(255,255,255,.08)) !important;border-color:rgba(255,255,255,.35) !important}
 html.lt .arqWc .arqWc-ic,html.lt .arqWc .arqWc-ic *,html.lt .arqWc .arqWc-tx,html.lt .arqWc .arqWc-tx *{color:#fff !important}
 </style>
+<style>@keyframes tkXo{from{opacity:0}to{opacity:1}}.tkXb{animation:tkXo .16s ease-out !important}
+.tkGrid,.tkGrid *{transition-property:background-color,border-color,color,opacity !important}
+.tkGrid button{backdrop-filter:none !important;-webkit-backdrop-filter:none !important}
+html.bz *{animation-play-state:paused !important}
+html .tkGrid.tkBoard .tkCat:has(.tkXb){border-radius:18px;box-shadow:0 14px 34px -14px rgba(0,0,0,.6),0 0 0 1px var(--line2) !important}
+html .tkGrid.tkBoard .tkCat:has(.tkXb) .tkRow:not(:has(.tkXb)){padding-top:4px !important;padding-bottom:4px !important}</style>
+<script>(function(){var h=document.documentElement,t;document.addEventListener("pointerdown",function(){h.classList.add("bz");clearTimeout(t);t=setTimeout(function(){h.classList.remove("bz")},700)},true);document.addEventListener("click",function(e){if(!e.target.closest||!e.target.closest("[data-tkx]"))return;setTimeout(function(){var b=document.querySelector(".tkXb");if(!b)return;var r=b.getBoundingClientRect(),H=window.innerHeight,d=r.bottom-H+24;if(d>0){d=Math.min(d,r.top-12);if(d>0)window.scrollBy(0,d)}},80)},false)})()</script>
 </head>
 <body>
 <x-dc>
