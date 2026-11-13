@@ -2824,7 +2824,8 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
           return { n, day, once, habits: (w.habits || []).map(h => { const st = hSt(w, h, date); if (st === 'ar' || st === 'pz') return null; return { key: date + '|H|' + h.id, id: h.id, t: h.t, n: h.n || '', st, off: st === 'skip' || st === 'off' || st === 'wk' }; }).filter(Boolean), blocks: keys.map(b => ({ b, items: res[b] })), paused, plan: actP };
         };
         const pctOf = (w, date) => { const r = itemsFor(w, date); let a = 0, d = 0, m = 0; const cn = (it) => { if (it.off) return; a++; if ((w.done || {})[it.key]) d++; else if ((w.miss || {})[it.key]) m++; }; r.blocks.forEach(bl => bl.items.forEach(cn)); r.once.forEach(cn); r.habits.forEach(cn); return { a, d, m, p: a ? Math.round(d / a * 100) : 0 }; };
-        const hmInfo = (() => {
+        const memoW = (name, extra, fn) => { const c = this.__mw || (this.__mw = {}), e = c[name]; if (e && e.x === extra && e.n === wavesA.length && wavesA.every((w, i) => w === e.w[i])) return e.v; const v = fn(); c[name] = { x: extra, n: wavesA.length, w: wavesA.slice(), v }; return v; };
+        const hmInfo = memoW('hm', TODAY, () => {
           const cnt = {}; let total = 0;
           wavesA.forEach(w => Object.keys(w.done || {}).forEach(k => { if (!(w.done || {})[k]) return; const d = k.split('|')[0]; if (/^\d{4}-\d{2}-\d{2}$/.test(d)) { cnt[d] = (cnt[d] || 0) + 1; total++; } }));
           const WK = 80, dow = (pd(TODAY).getDay() + 6) % 7, start = add(TODAY, -(dow + (WK - 1) * 7)), LV = [0, 30, 50, 75, 100], cells = [];
@@ -2833,7 +2834,7 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
           const mk = TODAY.slice(0, 7); let mTotal = 0; Object.keys(cnt).forEach(d => { if (d.slice(0, 7) === mk) mTotal += cnt[d]; });
           const pl = (n, a, b, c) => { const x = n % 100, y = n % 10; return x > 10 && x < 15 ? c : y === 1 ? a : y > 1 && y < 5 ? b : c; };
           return { cells, ml: monLbl(start, WK, cnt), total, mTotal, streak, sub: 'за месяц ' + mTotal + ' · серия ' + streak + ' ' + pl(streak, 'день', 'дня', 'дней') };
-        })();
+        });
         const dwAgg = (ws) => {
           const cnt = {}; let total = 0;
           ws.forEach(w => Object.keys(w.done || {}).forEach(k => { if (!w.done[k]) return; const d = k.split('|')[0]; if (/^\d{4}-\d{2}-\d{2}$/.test(d)) { cnt[d] = (cnt[d] || 0) + 1; total++; } }));
@@ -2862,7 +2863,7 @@ const shortD = (s) => pd(s).getDate() + ' ' + MNG[pd(s).getMonth()].slice(0, 3);
           return { cells, ml: monLbl(st0, WK, cnt), bars, barsTitle, streak, best, total, mTot, modes: [['day', 'День'], ['week', 'Неделя'], ['month', 'Месяц']].map(m => ({ name: m[1], bg: mode === m[0] ? 'var(--accent)' : 'transparent', fg: mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set({ dwMode: m[0], dwOff: 0 }) })), perLbl: mode === 'day' ? 'За день' : mode === 'week' ? 'За неделю' : 'За месяц', perVal: cur.p + '%', cmpLbl: mode === 'day' ? 'К прошлому дню' : mode === 'week' ? 'К прошлой неделе' : 'К прошлому месяцу', delta: prv.a ? (delta > 0 ? '+' : '') + delta + ' п.п.' : '—', dFg: delta > 0 ? 'var(--ok)' : delta < 0 ? 'var(--bad)' : 'var(--ink2)', rd: Math.round(cur.p * 3.6), rp: cur.p, dn: cur.a ? cur.d + ' из ' + cur.a : 'дел нет', miss: cur.m, dl: R0.label, dprev: () => this.set({ dwOff: Math.max(lim, (this.L.dwOff || 0) - 1) }), dnext: () => this.set({ dwOff: Math.min(0, (this.L.dwOff || 0) + 1) }), pO: off > lim ? 1 : .3, nO: off < 0 ? 1 : .3, todayP: pcs(TODAY).p };
         };
         const dwInfo = (w) => { const r = dwAgg([w]), n0 = diff(w.start, TODAY), len = lenOf(w); r.dayN = n0 < 0 ? 'старт ' + shortD(w.start) : 'День ' + (n0 + 1) + (len ? ' из ' + len : ''); return r; };
-        const waAll = dwAgg(wavesA);
+        const waAll = memoW('wa', TODAY + '|' + L.dwMode + '|' + (L.dwOff || 0), () => dwAgg(wavesA));
 
         const dd2 = (d) => { if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) return d; const n = +d; return n > 0 && n < 32 ? TODAY.slice(0, 8) + String(n).padStart(2, '0') : ''; };
         const finItems = (ops || []).filter(o => o.kind === 'in' || o.kind === 'out').map(o => ({ d: dd2(o.d), k: o.kind, s: +o.sum || 0, a: o.acc })).filter(o => o.d);
