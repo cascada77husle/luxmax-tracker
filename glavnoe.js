@@ -135,7 +135,7 @@ var css=[
 ".gl-tl .gl-ic{width:16px;height:16px;color:var(--muted)}",
 ".gl-tl b{display:block;font-size:15px;font-weight:600;margin-top:4px}",
 ".gl-nt{font-size:11px;color:var(--muted)}",
-"[data-glon] .pg>*:not(:first-child):not(.gl-page):not(.arqAn){display:none!important}","[data-glon] .pg>.arqAn{display:flex!important}","[data-gldash]{display:none!important}","[data-glon] .pg>.arqAn{min-width:0;max-width:100%;box-sizing:border-box}","[data-glon] .arqAn>div{min-width:0;max-width:100%;overflow-x:auto;scrollbar-width:none}",
+"[data-glon] .pg>*:not(:first-child):not(.gl-page):not(.arqAn){display:none!important}","[data-glon] .pg>.arqAn{display:flex!important}","[data-gldash]{display:none!important}","[data-glon] .pg>.arqAn{align-items:stretch!important;min-width:0;max-width:100%;box-sizing:border-box;overflow:hidden}","[data-glon] .arqAn>*{min-width:0!important;max-width:100%!important;box-sizing:border-box}","[data-glon] .arqAn>div:last-child{overflow-x:auto;scrollbar-width:none}",
 "[data-glon] .pg>:first-child h1>*{display:none}",
 "[data-glon] .pg>:first-child h1:after{content:\"Главное\"}",
 "[data-glon] .pg{min-height:0!important;padding-bottom:0!important}",
@@ -452,7 +452,7 @@ function ensureNav(){
   n.insertBefore(b,n.firstChild)}
  if(on&&!busy){var bs=n.querySelectorAll("button");for(var i=0;i<bs.length;i++){var x=bs[i];if(x===b)continue;var c=x.getAttribute("aria-current");if(c&&c!=="false"){x.__glc=c;x.setAttribute("aria-current","false")}}b.setAttribute("aria-current","page")}}
 function tick(){try{
- ensureNav();extras();
+ ensureNav();extras();[].forEach.call(document.querySelectorAll(".arqAn>div:last-child"),function(q){if(!q.__gls&&q.scrollWidth>q.clientWidth+4){q.scrollLeft=q.scrollWidth;q.__gls=1}});
  var r=rowEl();if(r&&r.parentElement){var sp0=readSport(tx(r.parentElement));if(sp0.sets||sp0.food||sp0.plan){var o=spData();if(sp0.sets)o.sets=sp0.sets;if(sp0.food)o.food=sp0.food;if(sp0.plan)o.plan=sp0.plan;var j=JSON.stringify(o);if(j!==window.__glSpJ){window.__glSpJ=j;ls(SPK,j)}}}
  if(!on)return;
  if(Date.now()<hold)return;
