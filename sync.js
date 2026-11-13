@@ -24,12 +24,19 @@
     var atOf = function (k) { return +(LS.getItem('sync:at:' + k) || 0); };
     var post = function (path, body, keep) {
       if (init) body.initData = init; else body.webToken = web;
-      return fetch(API + '/api/tracker/' + path, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), keepalive: !!keep }).then(function (r) { return r.json(); });
+      return fetch(API + '/api/tracker/' + path, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), keepalive: !!keep }).then(function (r) {
+        if (!r.ok) { var e = new Error('http ' + r.status); e.status = r.status; throw e; } /* 4xx/5xx — это ошибка, а не успех */
+        return r.json();
+      });
     };
     /* Очередь отправки по ключу: одновременно в полёте один запрос на ключ (порядок сохраняется), одинаковое значение повторно не шлём,
        при сбое сети повторяем с нарастающей паузой и сразу при возврате online. */
-    var sent = {}, busy = {}, dirty = {}, fails = {};
-    var fail = function (k) { fails[k] = (fails[k] || 0) + 1; setTimeout(function () { push(k); }, Math.min(30000, 2000 * fails[k])); };
+    var sent = {}, busy = {}, dirty = {}, fails = {}, rt = {};
+    var fail = function (k, e) {
+      fails[k] = (fails[k] || 0) + 1;
+      var s = e && e.status; if (s >= 400 && s < 500 && s !== 408 && s !== 429) return; /* сервер отклонил запрос: бесконечно не повторяем, следующая правка отправит снова */
+      clearTimeout(rt[k]); rt[k] = setTimeout(function () { push(k); }, Math.min(30000, 2000 * fails[k]));
+    };
     var push = function (k, keep) {
       var v = LS.getItem(k); if (v == null) return;
       if (sent[k] === v) return;
@@ -38,8 +45,11 @@
       post('push', { key: k, value: v, at: atOf(k) }, keep && v.length < 60000).then(function () {
         busy[k] = 0; sent[k] = v; fails[k] = 0;
         if (dirty[k]) { dirty[k] = 0; push(k); }
-      }).catch(function () { busy[k] = 0; dirty[k] = 0; fail(k); });
+      }).catch(function (e) { busy[k] = 0; dirty[k] = 0; fail(k, e); });
     };
+    window.addEventListener('pagehide', function () { /* закрытие/перезагрузка: отправить всё неотправленное */
+      for (var i = 0; i < LS.length; i++) { var k = LS.key(i); if (PRE.test(k)) { clearTimeout(timers[k]); push(k, true); } }
+    });
     window.addEventListener('online', function () {
       for (var i = 0; i < LS.length; i++) { var k = LS.key(i); if (PRE.test(k)) push(k); }
     });
