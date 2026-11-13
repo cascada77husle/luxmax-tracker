@@ -26,12 +26,26 @@
       if (init) body.initData = init; else body.webToken = web;
       return fetch(API + '/api/tracker/' + path, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body), keepalive: !!keep }).then(function (r) { return r.json(); });
     };
+    /* Очередь отправки по ключу: одновременно в полёте один запрос на ключ (порядок сохраняется), одинаковое значение повторно не шлём,
+       при сбое сети повторяем с нарастающей паузой и сразу при возврате online. */
+    var sent = {}, busy = {}, dirty = {}, fails = {};
+    var fail = function (k) { fails[k] = (fails[k] || 0) + 1; setTimeout(function () { push(k); }, Math.min(30000, 2000 * fails[k])); };
     var push = function (k, keep) {
       var v = LS.getItem(k); if (v == null) return;
-      post('push', { key: k, value: v, at: atOf(k) }, keep && v.length < 60000).catch(function () {});
+      if (sent[k] === v) return;
+      if (busy[k] && !keep) { dirty[k] = 1; return; }
+      busy[k] = 1;
+      post('push', { key: k, value: v, at: atOf(k) }, keep && v.length < 60000).then(function () {
+        busy[k] = 0; sent[k] = v; fails[k] = 0;
+        if (dirty[k]) { dirty[k] = 0; push(k); }
+      }).catch(function () { busy[k] = 0; dirty[k] = 0; fail(k); });
     };
+    window.addEventListener('online', function () {
+      for (var i = 0; i < LS.length; i++) { var k = LS.key(i); if (PRE.test(k)) push(k); }
+    });
     var schedule = function (k) { clearTimeout(timers[k]); timers[k] = setTimeout(function () { push(k); }, 1500); };
     Storage.prototype.setItem = function (k, v) {
+      if (ready && this === LS && !applying && PRE.test(k) && LS.getItem(k) === String(v)) return; /* то же значение: не пишем и не отправляем */
       set0.call(this, k, v);
       if (this === LS && !applying && PRE.test(k)) {
         if (!ready) { boot[k] = 1; return; } /* запись до ответа сервера не считается правкой: иначе пустое состояние нового устройства затирало бы данные на сервере */
