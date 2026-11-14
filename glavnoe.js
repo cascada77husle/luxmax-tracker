@@ -517,6 +517,7 @@ document.addEventListener("click",function(e){var t=e.target;if(!t||!t.closest)r
  if(t.closest("[data-glnav]")){e.stopPropagation();e.preventDefault();if(!on){var dbn=nativeBtn("Dashboard");if(dbn)dbn.click()}setOn(true);return}
  if(on&&!busy&&t.closest(".arqNav"))setOn(false)},true);
 window.__gl={tick:tick,setOn:setOn};
+(function(){var n=0,iv=setInterval(function(){n++;try{var b=nativeBtn("Dashboard")||document.querySelector("[data-gldash]");if(b||n>70){clearInterval(iv);if(b&&b.getAttribute("aria-current")==="page"&&!on&&!busy)setOn(true)}}catch(e){clearInterval(iv)}},100)})();
 (function(){function fs(){try{var tg=window.Telegram&&Telegram.WebApp;if(!tg)return;if(tg.ready)tg.ready();if(tg.expand)tg.expand();if(tg.disableVerticalSwipes)tg.disableVerticalSwipes();if(tg.requestFullscreen&&!tg.isFullscreen)tg.requestFullscreen()}catch(e){}}
 fs();setTimeout(fs,600);setTimeout(fs,2000);document.addEventListener("click",function f(){fs();document.removeEventListener("click",f,true)},true)})();
 setInterval(tick,600);
