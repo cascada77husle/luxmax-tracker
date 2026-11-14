@@ -528,3 +528,25 @@ fs();setTimeout(fs,600);setTimeout(fs,2000);document.addEventListener("click",fu
 setInterval(tick,600);
 tick();
 })();
+(function(){var WK="arq:wx",C={"Europe/Moscow":[55.75,37.62],"Europe/Kaliningrad":[54.71,20.51],"Europe/Samara":[53.2,50.15],"Asia/Yekaterinburg":[56.84,60.6],"Asia/Omsk":[54.99,73.37],"Asia/Novosibirsk":[55.03,82.92],"Asia/Krasnoyarsk":[56.01,92.85],"Asia/Irkutsk":[52.29,104.3],"Asia/Yakutsk":[62.03,129.73],"Asia/Vladivostok":[43.12,131.89],"Europe/Kiev":[50.45,30.52],"Europe/Kyiv":[50.45,30.52],"Europe/Minsk":[53.9,27.57],"Asia/Almaty":[43.24,76.89],"Europe/Berlin":[52.52,13.4],"Europe/London":[51.5,-0.12],"Europe/Paris":[48.85,2.35],"Asia/Tashkent":[41.3,69.24],"Asia/Dubai":[25.2,55.27],"Europe/Istanbul":[41.01,28.98]};
+function kind(c,day){if(c==null)return day?"clear":"night";if(c>=95)return"storm";if(c>=71&&c<=77||c===85||c===86)return"snow";if(c>=51&&c<=67||c>=80&&c<=82)return"rain";if(c===45||c===48)return"fog";if(c>=2)return"cloud";if(c===1&&day)return"fair";return day?"clear":"night"}
+var cl='<path d="M30 74h60a16 16 0 000-32 22 22 0 00-42-6A17 17 0 0030 74z" fill="#fff" fill-opacity=".92"/>';
+var cd='<path d="M30 74h60a16 16 0 000-32 22 22 0 00-42-6A17 17 0 0030 74z" fill="#8d97a3"/>';
+var SC={
+clear:'<defs><radialGradient id="wxs"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#ffcf5a" stop-opacity="0"/></radialGradient></defs><circle cx="116" cy="34" r="34" fill="url(#wxs)"/><circle cx="116" cy="34" r="15" fill="#ffd96a"/>',
+fair:'<defs><radialGradient id="wxs"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#ffcf5a" stop-opacity="0"/></radialGradient></defs><circle cx="122" cy="30" r="32" fill="url(#wxs)"/><circle cx="122" cy="30" r="14" fill="#ffd96a"/><g transform="translate(34 12) scale(.72)">'+cl+'</g>',
+cloud:'<g transform="translate(46 4) scale(.7)" opacity=".7">'+cd+'</g><g transform="translate(26 14)">'+cl+'</g>',
+rain:'<g transform="translate(24 -2) scale(.95)">'+cd+'</g><g stroke="#9fc4e8" stroke-width="3" stroke-linecap="round"><path d="M44 78l-4 12M62 78l-4 12M80 78l-4 12M98 78l-4 12"/></g>',
+snow:'<g transform="translate(24 -2) scale(.95)">'+cd+'</g><g fill="#fff"><circle cx="42" cy="84" r="3"/><circle cx="62" cy="90" r="3"/><circle cx="82" cy="83" r="3"/><circle cx="100" cy="90" r="3"/></g>',
+storm:'<g transform="translate(24 -2) scale(.95)"><path d="M30 74h60a16 16 0 000-32 22 22 0 00-42-6A17 17 0 0030 74z" fill="#5d6673"/></g><path d="M66 70l-9 16h9l-5 14 16-20h-9l6-10z" fill="#ffd54a"/>',
+fog:'<g transform="translate(30 4) scale(.85)" opacity=".8">'+cl+'</g><g stroke="#fff" stroke-opacity=".7" stroke-width="4" stroke-linecap="round"><path d="M24 82h86M40 92h70"/></g>',
+night:'<circle cx="118" cy="34" r="15" fill="#f4efd6"/><circle cx="125" cy="30" r="13" fill="#1d2430"/><g fill="#fff" fill-opacity=".8"><circle cx="80" cy="20" r="1.6"/><circle cx="64" cy="44" r="1.3"/><circle cx="96" cy="60" r="1.4"/><circle cx="140" cy="62" r="1.2"/></g>'};
+var SKY={clear:["#8ec9ff","#dff1ff"],fair:["#8ec9ff","#e8f4ff"],cloud:["#9fb4c8","#d7e0ea"],rain:["#5b6b80","#8795a8"],snow:["#a9b8c9","#e4ebf3"],storm:["#2f3745","#586377"],fog:["#aab4bd","#dde2e7"],night:["#101a2e","#2b3a58"]};
+var cur="fair",got=0;
+function html(k){var g=SKY[k];return '<svg viewBox="0 0 150 100" preserveAspectRatio="xMaxYMid slice"><defs><linearGradient id="wxg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+g[0]+'"/><stop offset="1" stop-color="'+g[1]+'"/></linearGradient></defs><rect width="150" height="100" fill="url(#wxg)"/>'+SC[k]+'</svg>'}
+function put(){var el=document.querySelectorAll(".wkC")[1];if(!el)return;var w=el.querySelector(".wkWx");if(!w){w=document.createElement("div");w.className="wkWx";el.appendChild(w);w.__k=""}var k=cur;if(w.__k!==k){w.__k=k;w.innerHTML=html(k);w.setAttribute("data-k",k)}}
+function load(){try{var j=JSON.parse(localStorage.getItem(WK)||"null");if(j&&Date.now()-j.t<1800000){cur=j.k;return}}catch(e){}
+ if(got++>0&&got>3)return;var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone}catch(e){}var c=C[tz]||C["Europe/Moscow"];
+ try{fetch("https://api.open-meteo.com/v1/forecast?latitude="+c[0]+"&longitude="+c[1]+"&current=weather_code,is_day").then(function(r){return r.json()}).then(function(d){var k=kind(d.current.weather_code,d.current.is_day===1);cur=k;try{localStorage.setItem(WK,JSON.stringify({t:Date.now(),k:k}))}catch(e){}put()}).catch(function(){})}catch(e){}}
+load();setInterval(function(){put()},700);setInterval(load,600000);
+})();
