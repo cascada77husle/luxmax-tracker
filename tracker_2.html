@@ -94,7 +94,7 @@ var T={
 {t:'Ночное планирование завтра',m:15,prio:'low',s:'23:00',dp:'n',rep:'daily',n:'Выбрать 3 главных дела'},
 {t:'План на неделю',m:30,prio:'high',s:'11:30',dp:'m',rb:15,subs:['Цели','Встречи','Резерв'],n:'Три главных результата недели',img:'https://commons.wikimedia.org/wiki/Special:FilePath/MIBC%202025%2001.jpg?width=960'}],
 'Спорт':[
-{t:'Тренировка: грудь и трицепс',m:60,prio:'high',s:'18:00',e:'19:00',dp:'e',rb:30,loc:'Фитнес-клуб, Новослободская',geo:{lat:55.7797,lon:37.5976},subs:['Жим лёжа 4×8','Отжимания на брусьях','Разводка','Планка'],img:'https://commons.wikimedia.org/wiki/Special:FilePath/Luzhniki%20Stadium%2C%20Moscow%2C%20Russia.jpg?width=960'},
+{t:'Тренировка: грудь и трицепс',m:60,prio:'high',star:true,s:'18:00',e:'19:00',dp:'e',rb:30,loc:'Фитнес-клуб, Новослободская',geo:{lat:55.7797,lon:37.5976},subs:['Жим лёжа 4×8','Отжимания на брусьях','Разводка','Планка'],img:'https://commons.wikimedia.org/wiki/Special:FilePath/Luzhniki%20Stadium%2C%20Moscow%2C%20Russia.jpg?width=960'},
 {t:'Пробежка 5 км',m:30,prio:'mid',s:'06:45',dp:'m',loc:'Лужники, набережная',geo:{lat:55.7158,lon:37.5539},img:'https://commons.wikimedia.org/wiki/Special:FilePath/Moscow%20Gorky%20Park%20Pushkinsky%20Bridge%2008-2016%20img3.jpg?width=960',rep:'weekly'},
 {t:'Растяжка перед сном',m:15,prio:'low',s:'22:15',dp:'n',img:'https://commons.wikimedia.org/wiki/Special:FilePath/Moscow%20Kremlin%20at%20night%20(7990921836).jpg?width=960'},
 {t:'Плавание 1 км',m:45,prio:'mid',s:'20:00',e:'20:45',dp:'e',rb:30,loc:'Бассейн «Олимпийский», проспект Мира',geo:{lat:55.7797,lon:37.6322},subs:['Разминка 200 м','Кроль 600 м','Заминка'],img:'https://commons.wikimedia.org/wiki/Special:FilePath/Moscow.%20Berezhkovskaya%20Embankment%20P5150163%202750.jpg?width=960'},
@@ -103,7 +103,7 @@ var T={
 {t:'Скакалка 10 минут',m:10,prio:'mid',s:'12:15',dp:'d',rb:10}],
 'Учёба':[
 {t:'Английский: 20 новых слов',m:25,prio:'mid',s:'13:00',dp:'d',rep:'daily',subs:['Карточки','Повторение','Диктант']},
-{t:'Курс по продажам: урок 5',m:60,prio:'high',s:'16:00',e:'17:00',dp:'d',links:['https://example.com/course'],nx:['Конспект в заметки']},
+{t:'Курс по продажам: урок 5',m:60,prio:'high',star:true,s:'16:00',e:'17:00',dp:'d',links:['https://example.com/course'],nx:['Конспект в заметки']},
 {t:'Прочитать 30 страниц',m:40,prio:'low',s:'21:30',dp:'e',n:'Книга «Атомные привычки»',img:'https://commons.wikimedia.org/wiki/Special:FilePath/Moscow%20RSL%20main%20building%20asv2019-06%20img1.jpg?width=960'},
 {t:'Конспект лекции',m:30,prio:'mid',s:'18:30',dp:'e',n:'Выписать три главные мысли',subs:['Тезисы','Примеры'],img:'https://commons.wikimedia.org/wiki/Special:FilePath/Moscow%20State%20University%20crop.jpg?width=960'},
 {t:'Сдать задание по курсу',m:50,prio:'high',s:'19:30',e:'20:20',dp:'e',rb:60,links:['https://example.com/homework'],subs:['Проверить ответы','Загрузить файл'],img:'https://commons.wikimedia.org/wiki/Special:FilePath/Moscow%20Russian%20State%20Library%202026-10%2006.jpg?width=960'}],
@@ -134,7 +134,7 @@ for(var o=-9;o<=-1;o++){var d=day(o);
 var tz=3;if(S.waves&&S.waves[0]&&S.waves[0].tz!=null)tz=S.waves[0].tz;
 var W={id:'wdemo',kind:'own',name:'ПРИМЕР',dirs:['Фокус и работа','Спорт','Учёба'],dk:['focus','sport','study'],blocks:['Фокус','Спорт','Учёба','Работа'],start:start,tz:tz,tasks:T,done:done,hs:hs,hq:hq,ht:ht,habits:H,gc:'#8E88C4',gi:'🚀'};
 if(S.dm==null)S.dm=2;if(S.em==null)S.em=1;if(S.wv==null)S.wv=3;if(S.wd==null)S.wd=2;
-var VER=5,old=(S.waves||[]).filter(function(w){return w.id==='wdemo'})[0]; W.ver=VER; window.__arqDW=JSON.stringify(W); S.waves=(S.waves||[]).filter(function(w){return w.id!=='wdemo'}).concat([W]);
+var VER=6,old=(S.waves||[]).filter(function(w){return w.id==='wdemo'})[0]; W.ver=VER; window.__arqDW=JSON.stringify(W); S.waves=(S.waves||[]).filter(function(w){return w.id!=='wdemo'}).concat([W]);
 if(isEx||!raw){S.waveCur='wdemo';S.waveOpen=true;S.mode='day';S.at=Date.now();}
 localStorage.setItem(K,JSON.stringify(S));
 }catch(e){}})();
@@ -2554,7 +2554,7 @@ const shortD = (s) => { let r = DCK.s.get(s); if (r === undefined) { const d = p
             const hm = (n) => { n = ((n % 1440) + 1440) % 1440; return String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0'); };
             const dn = cur.done || {};
             const all = []; info.blocks.forEach(bl => bl.items.forEach(it => all.push(it))); info.once.forEach(it => all.push(Object.assign({ once: true }, it)));
-            const topOf = (it) => it.tm && it.tm.top !== undefined ? !!it.tm.top : !!(it.once && it.star);
+            const topOf = (it) => it.tm && it.tm.top !== undefined ? !!it.tm.top : !!((it.once || (cur && cur.id === 'wdemo')) && it.star);
             const remOf = (it) => { const x = it.x; if (!x) return ''; if (x.rt) return x.rt; if (x.rb != null && x.rb !== '' && x.s) return hm(mm(x.s) - (+x.rb)); return ''; };
             const rekey = (w, f) => { const re = (o) => { if (!o) return o; const n = {}; Object.keys(o).forEach(k => { const p = k.split('|'); if (p[1] === 'O') { const r = f(p[2], +p[3]); if (r === null) return; p[2] = r[0]; p[3] = r[1]; n[p.join('|')] = o[k]; } else n[k] = o[k]; }); return n; }; return Object.assign({}, w, { done: re(w.done), miss: re(w.miss), tm: re(w.tm) }); };
             const patchTk = (it, fn) => patchW(cur.id, w => { const tk = Object.assign({}, w.tasks || {}); tk[it.b] = (tk[it.b] || []).map((x, j) => j === it.i ? fn(Object.assign({}, x)) : x); return Object.assign({}, w, { tasks: tk }); });
