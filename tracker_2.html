@@ -2887,7 +2887,9 @@ setInterval(function(){if(!p){if(!document.body)return;mk()}p.textContent="ARQON
 <style>.aiT.aiX::before{content:"";display:inline-block;width:16px;height:16px;flex:none;background:currentColor;-webkit-mask:var(--ai) center/contain no-repeat;mask:var(--ai) center/contain no-repeat}.aiT.aiX::after{content:attr(data-v)}.aiT.aiX[data-v=""]::after{display:none}.aiT.aiX.ai-none{display:inline-flex}.aiT.aiX.ai-none::before{display:none}</style>
 <style id="arqPanel">
 .tkRow,.tkRow *,.tkRow *::before,.tkRow *::after{transition:none !important;animation:none !important}.tkRow:active,.tkRow *:active{transform:none !important;opacity:1 !important}.arqRip{display:none !important}
-.tkRow.tkSel{border-color:var(--accent) !important;background:color-mix(in srgb,var(--accent) 9%,var(--card)) !important}
+.tkRow.tkSel{border-color:var(--accent) !important}
+.tkRow.tkSel::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 30%,transparent),color-mix(in srgb,var(--accent) 11%,transparent));transform-origin:left center;animation:tkFill .5s cubic-bezier(.22,.8,.3,1) both !important}
+@keyframes tkFill{from{transform:scaleX(0);opacity:.4}to{transform:scaleX(1);opacity:1}}
 .tkPn{position:fixed;z-index:2000;right:16px;top:50%;transform:translateY(-50%);width:min(340px,calc(100vw - 32px));aspect-ratio:3/5;max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:#141416;isolation:isolate;border:1px solid var(--line2);border-radius:22px;box-shadow:0 24px 60px -22px rgba(0,0,0,.75);overflow:hidden;animation:tkPnIn .3s cubic-bezier(.22,.8,.3,1)}
 @keyframes tkPnIn{from{opacity:0;transform:translateY(-50%) translateX(28px)}to{opacity:1;transform:translateY(-50%)}}
 .tkPnH{display:flex;align-items:center;gap:10px;padding:14px 14px 12px 16px;border-bottom:1px solid var(--line);flex:none}
