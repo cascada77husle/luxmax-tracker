@@ -177,7 +177,7 @@ document.addEventListener('pointerdown',function(ev){if(ev.button!==0||rs)return
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="sync.js"></script>
 <script src="demo.js"></script>
-<script src="glavnoe.js?v=34"></script>
+<script src="glavnoe.js?v=35"></script>
 <script src="app-update.js"></script>
 <script>try{var tg=window.Telegram&&Telegram.WebApp;if(tg){tg.ready();tg.expand();try{tg.disableVerticalSwipes()}catch(e){}try{tg.setHeaderColor('#0b0c10');tg.setBackgroundColor('#0b0c10')}catch(e){}}}catch(e){}
 if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
@@ -2930,6 +2930,21 @@ html.lt .wkWx{filter:invert(1) hue-rotate(180deg)}
 .tkRow.tkSel::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--accent) 42%,transparent) 0,color-mix(in srgb,var(--accent) 16%,transparent) 42%,transparent 78%),repeating-linear-gradient(115deg,transparent 0 9px,color-mix(in srgb,var(--accent) 7%,transparent) 9px 10px);transform-origin:left center;animation:tkFill .5s cubic-bezier(.22,.8,.3,1) both !important}
 .tkRow.tkSel::after{content:'';position:absolute;top:0;bottom:0;left:0;width:46%;z-index:0;pointer-events:none;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.22) 50%,transparent 80%);transform:translateX(-120%) skewX(-18deg);animation:tkSheen .95s cubic-bezier(.3,.7,.3,1) .12s both !important}
 @keyframes tkFill{from{transform:scaleX(0);opacity:.4}to{transform:scaleX(1);opacity:1}}@keyframes tkSheen{from{transform:translateX(-120%) skewX(-18deg);opacity:1}to{transform:translateX(330%) skewX(-18deg);opacity:0}}
+html body button.arqCk{transition:background-color .35s ease,border-color .35s ease,transform .25s ease !important}
+html body .pg button.arqCk:active{transform:scale(.92) !important}
+html body button.arqCk.arqOn{animation:arqCkSoft .5s ease both !important}
+html body button.arqCk.arqOn::before{display:none !important}
+html body .tkGrid .tkRow button.arqCk.arqOn.arqOn.arqOn,html body .arqTop button.arqCk.arqOn.arqOn.arqOn{background:var(--ok) !important;border-color:var(--ok) !important}
+html body button.arqCk.arqOn svg{opacity:1 !important;animation:none !important}
+html body button.arqCk.arqOn svg path{stroke-dasharray:24;animation:arqTickSoft .5s .08s ease both !important}
+html body button.arqCk.arqOff svg{opacity:0 !important;transition:opacity .35s ease !important}
+@keyframes arqCkSoft{0%{transform:scale(.9)}100%{transform:scale(1)}}
+@keyframes arqTickSoft{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+html.bz .arqCk,html.bz .arqCk *{animation-play-state:running !important}
+@media (min-width:761px){html body .arqMain .arqAn.arqHm{height:min(calc(100vh - 96px),940px) !important;min-height:0 !important}}
+html body .arqHm .arqHmG{grid-template-rows:repeat(var(--wk),minmax(8px,1fr)) !important;gap:5px !important}
+html body .arqHm .arqHmG i{aspect-ratio:auto !important;height:100% !important;max-height:34px !important}
+html body .arqHm .arqHmM{gap:5px !important}
 .tkPn{position:fixed;z-index:2000;right:16px;top:50%;transform:translateY(-50%);width:min(440px,calc(100vw - 32px));aspect-ratio:3/5;max-height:calc(100vh - 32px);display:flex;flex-direction:column;background:#141416;isolation:isolate;border:1.5px solid rgba(255,255,255,.2);border-radius:24px;box-shadow:0 0 0 1px rgba(0,0,0,.55),0 0 0 8px rgba(0,0,0,.2),0 34px 90px -12px rgba(0,0,0,.85),0 0 60px rgba(0,0,0,.45),inset 0 0 44px rgba(0,0,0,.38);overflow:hidden;animation:tkPnIn .34s cubic-bezier(.22,.8,.3,1)}
 html.lt .tkPn{border-color:rgba(255,255,255,.62);box-shadow:0 0 0 1px rgba(255,255,255,.7),0 0 0 8px rgba(255,255,255,.2),0 34px 90px -12px rgba(255,255,255,.75),0 0 60px rgba(255,255,255,.4),inset 0 0 44px rgba(255,255,255,.3)}
 .tkPn.tkPnOut{pointer-events:none;animation:tkPnOut .26s cubic-bezier(.4,0,.8,.4) both}
