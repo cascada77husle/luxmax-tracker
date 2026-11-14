@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<style id="arqSplashCss">html{background:#09090A}#arqSplash{position:fixed;inset:0;z-index:2147483000;background:#09090A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .5s ease}#arqSplash.off{opacity:0;pointer-events:none}.arqSpW{font:600 20px/1 system-ui,-apple-system,sans-serif;letter-spacing:.5em;padding-left:.5em;color:#E6E9E7}.arqSpB{width:120px;height:2px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}.arqSpB i{display:block;width:40%;height:100%;background:linear-gradient(90deg,transparent,#B9C9BD,transparent);animation:arqSp 1.2s ease-in-out infinite}@keyframes arqSp{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
+html.arqBoot .tkRow,html.arqBoot .tkCat,html.arqBoot .arqNav button{animation:none !important}
+.arqPh{background:rgba(255,255,255,.05)}.arqPh img{opacity:0;transition:opacity .5s ease}.arqPh img.ok{opacity:1}
+@media (max-width:760px){.tkCat{content-visibility:auto;contain-intrinsic-size:auto 330px}}</style>
 <script>(function(){if(!/[?&]debug=1/.test(location.search))return;
 var D=window.__arqDg={t0:Date.now(),js:{n:0,ms:0,mx:0,big:0,bigMs:0,last:null},ls:{n:0,ms:0,mx:0,bytes:0,ev:[],last:null},net:{ev:[],inflight:0,maxIn:0,dups:0,seen:{},lastAt:{},stale:0,fail:0,ms:[],sizes:[]},ss:[],lt:[],loaf:[],top:{},ev:[],stT:0,stN:0};
 var now=function(){return performance.now()},oj=JSON.stringify,os=Storage.prototype.setItem,of=window.fetch;
@@ -494,6 +498,7 @@ html .tkGrid.tkBoard .tkCat:has(.tkXb) .tkRow:not(:has(.tkXb)){padding-top:4px !
 <script>(function(){var f=function(n){if(n.nodeType!==1)return;var l=n.tagName==="IMG"?[n]:n.querySelectorAll?[].slice.call(n.querySelectorAll("img,iframe")):[];if(n.tagName==="IFRAME")l.push(n);l.forEach(function(e){if(!e.hasAttribute("loading"))e.setAttribute("loading","lazy");if(e.tagName==="IMG"&&!e.hasAttribute("decoding"))e.setAttribute("decoding","async")})};new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(f)})}).observe(document.documentElement,{childList:true,subtree:true})})()</script>
 </head>
 <body>
+<div id="arqSplash"><div class="arqSpW">ARQON</div><div class="arqSpB"><i></i></div></div><script>(function(){var d=document,sp=d.getElementById("arqSplash"),t0=Date.now(),done=0;function fin(){if(done)return;done=1;requestAnimationFrame(function(){requestAnimationFrame(function(){sp.className="off";setTimeout(function(){sp.remove()},650)})})}function chk(){var ok=d.querySelector(".pg")&&d.querySelector(".arqNav button[data-glnav]");if(ok&&Date.now()-t0>350)setTimeout(fin,120);else if(Date.now()-t0>5000)fin();else setTimeout(chk,60)}chk();d.addEventListener("load",function(e){var t=e.target;if(t&&t.tagName==="IMG")t.classList.add("ok")},true)})()</script>
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
