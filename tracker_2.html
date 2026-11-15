@@ -293,7 +293,7 @@ if(ch)localStorage.setItem('arq:remf',JSON.stringify(f.slice(-200)))}catch(e){}}
 var td=function(){return new Date().toISOString().slice(0,10)};
 function mk(t,st,h){var e=document.createElement(t);if(st)e.style.cssText=st;if(h!=null)e.textContent=h;return e}
 function init(){if(document.getElementById('arqFocus'))return;
-var wrap=mk('div','position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:25;display:flex;flex-direction:column;align-items:flex-end;gap:8px');wrap.id='arqFocus';
+var wrap=mk('div','position:fixed;left:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:25;display:flex;flex-direction:column;align-items:flex-start;gap:8px');wrap.id='arqFocus';
 var panel=mk('div','display:none;flex-direction:column;align-items:center;gap:16px;width:280px;box-sizing:border-box;padding:22px 18px 18px;border-radius:28px;background-color:#0a0b0e;background-image:radial-gradient(110% 80% at 0% 0%,rgba(255,255,255,.06),transparent 58%);border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 60px rgba(0,0,0,.65);color:#f1f2f5;font-family:inherit');
 var ringW=mk('div','position:relative;width:196px;height:196px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px');
 ringW.innerHTML='<svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)" aria-hidden="true"><circle cx="50" cy="50" r="48.6" fill="none" stroke="rgba(255,255,255,.13)" stroke-width=".5"></circle><circle id="arqFR" cx="50" cy="50" r="48.6" fill="none" stroke="#f1f2f5" stroke-width=".9" stroke-linecap="round" stroke-dasharray="0 305.4"></circle></svg>';
@@ -321,8 +321,48 @@ function shw(on){panel.style.display=on?'flex':'none';render()}
 fab.onclick=function(){shw(panel.style.display==='none')};cl.onclick=function(){shw(false)};
 row.appendChild(go);row.appendChild(rs);row.appendChild(cl);ringW.appendChild(big);ringW.appendChild(lab);panel.appendChild(ringW);panel.appendChild(row);panel.appendChild(pr);panel.appendChild(sub);wrap.appendChild(panel);wrap.appendChild(fab);document.body.appendChild(wrap);
 if(S().end)run();render();
-var st=document.createElement('style');st.textContent='@media (min-width:1000px){#arqFocus{bottom:24px !important;right:24px !important}}';document.head.appendChild(st)}
+var st=document.createElement('style');st.textContent='@media (min-width:1000px){#arqFocus{bottom:24px !important;left:244px !important;right:auto !important}}';document.head.appendChild(st)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()}catch(e){}})();</script>
+<script>/* ARQON ИИ-помощник: глянцевый робот, отдельный блок, не зависит от остального кода */
+(function(){try{
+function init(){if(document.getElementById('arqAiBotWrap'))return;
+var wrap=document.createElement('div');wrap.id='arqAiBotWrap';
+wrap.style.cssText='position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:center;justify-content:center;cursor:pointer';
+wrap.setAttribute('role','button');wrap.setAttribute('aria-label','ИИ-помощник ARQON');wrap.tabIndex=0;
+wrap.innerHTML='<span class="arqAiBotGlow" style="position:absolute;inset:-18px;border-radius:50%;pointer-events:none;z-index:-1"></span><span class="arqAiBotFl" style="display:flex">'+
+'<svg width="58" height="84" viewBox="0 0 64 92" aria-hidden="true">'+
+'<defs><linearGradient id="arqBotHeadG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfcfd"/><stop offset=".45" stop-color="#e2e4e8"/><stop offset="1" stop-color="#aab0ba"/></linearGradient>'+
+'<linearGradient id="arqBotTorsoG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f4f6"/><stop offset=".5" stop-color="#d5d8dc"/><stop offset="1" stop-color="#a6abb5"/></linearGradient></defs>'+
+'<ellipse cx="20" cy="8" rx="9" ry="3.6" fill="#fff" opacity=".4" transform="rotate(-18 20 8)"/>'+
+'<rect x="12" y="2" width="40" height="34" rx="17" fill="url(#arqBotHeadG)" stroke="#9aa0ab" stroke-width="1"/>'+
+'<circle cx="24" cy="19" r="6.2" fill="#14161a"/><circle cx="40" cy="19" r="6.2" fill="#14161a"/>'+
+'<circle class="arqBotPupL" cx="24" cy="19" r="2.6" fill="var(--sage)"/><circle class="arqBotPupR" cx="40" cy="19" r="2.6" fill="var(--sage)"/>'+
+'<rect class="arqBotLidL" x="17.6" y="12.6" width="12.8" height="6.4" rx="3.2" fill="url(#arqBotHeadG)"/>'+
+'<rect class="arqBotLidR" x="33.6" y="12.6" width="12.8" height="6.4" rx="3.2" fill="url(#arqBotHeadG)"/>'+
+'<rect x="27" y="33" width="10" height="7" rx="2" fill="url(#arqBotHeadG)" stroke="#9aa0ab" stroke-width=".8"/>'+
+'<rect x="4" y="39" width="56" height="50" rx="20" fill="url(#arqBotTorsoG)" stroke="#9aa0ab" stroke-width="1"/>'+
+'<ellipse cx="16" cy="47" rx="13" ry="5.5" fill="#fff" opacity=".22" transform="rotate(-16 16 47)"/>'+
+'<rect x="12" y="52" width="40" height="27" rx="10" fill="#0d0f13" stroke="var(--sage)" stroke-width="1.2"/>'+
+'<text x="32" y="64.5" text-anchor="middle" font-family="Archivo,system-ui,sans-serif" font-size="10" font-weight="800" fill="var(--sage)">ИИ</text>'+
+'<text x="32" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5.6" font-weight="700" letter-spacing=".4" fill="#bfe9db">ПОМОЩНИК</text>'+
+'</svg></span>';
+wrap.onclick=function(){var t=document.querySelector('.arqAiTrigger');if(t)t.click()};
+wrap.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wrap.click()}};
+document.body.appendChild(wrap);
+var st=document.createElement('style');st.textContent='#arqAiBotWrap .arqAiBotGlow{background:radial-gradient(circle,rgba(var(--sage-rgb),.4),transparent 70%);opacity:0;animation:arqBotPulse 2.6s ease-in-out infinite}'+
+'#arqAiBotWrap .arqAiBotFl{animation:arqBotFloat 4s ease-in-out infinite}'+
+'#arqAiBotWrap .arqBotPupL,#arqAiBotWrap .arqBotPupR{animation:arqBotLook 7s ease-in-out infinite}'+
+'#arqAiBotWrap .arqBotLidL,#arqAiBotWrap .arqBotLidR{transform-origin:50% 0%;animation:arqBotBlink 5s ease-in-out infinite}'+
+'#arqAiBotWrap:hover .arqAiBotFl{transform:translateY(-3px) scale(1.03)}'+
+'@keyframes arqBotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}'+
+'@keyframes arqBotLook{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}50%{transform:translateX(0)}75%{transform:translateX(2px)}}'+
+'@keyframes arqBotBlink{0%,90%,100%{transform:scaleY(0)}94%{transform:scaleY(1)}}'+
+'@keyframes arqBotPulse{0%,100%{opacity:0}50%{opacity:1}}'+
+'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:24px !important}}'+
+'@media (prefers-reduced-motion:reduce){#arqAiBotWrap .arqAiBotGlow,#arqAiBotWrap .arqAiBotFl,#arqAiBotWrap .arqBotPupL,#arqAiBotWrap .arqBotPupR,#arqAiBotWrap .arqBotLidL,#arqAiBotWrap .arqBotLidR{animation:none !important}}';
+document.head.appendChild(st)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()
+}catch(e){}})();</script>
 <script>(function(){try{var D=188.5,st={n:null,t:null,disp:0,raf:0,t0:0,from:0,txt:''};
 function q(){return document.querySelector('circle[stroke="url(#arqRG3)"]')}
 function tx(c){var b=c&&c.closest('.arqHmR');return b&&b.querySelector('b span')}
@@ -1458,7 +1498,7 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
       <sc-for list="{{navItems}}" as="n" hint-placeholder-count="5"><button type="button" class="arqNb" onClick="{{n.pick}}" aria-current="{{n.cur}}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:{{n.bg}};border-radius:12px;padding:8px 2px;color:{{n.fg}};font-size:11px;font-weight:{{n.w}};transition:background-color .35s ease,color .3s ease,transform .2s ease"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path data-d="{{n.icon}}"></path></svg><span style="white-space:nowrap;line-height:1.25">{{n.name}}</span></button></sc-for>
     </nav>
     <div class="arqWv"><span>Волны</span><sc-for list="{{navWaves}}" as="w" hint-placeholder-count="3"><button type="button" class="arqWc {{w.cls}}" onClick="{{w.pick}}" style="--g:{{w.dot}};box-shadow:{{w.ring}}"><span class="arqWc-ic"><span class="wvic"><i class="ai {{w.iconK}}"></i></span></span><span class="arqWc-tx"><b>{{w.name}}</b><span>{{w.day}}</span></span></button></sc-for></div>
-    <button type="button" class="arqAiBot" onClick="{{aiOpen}}" aria-label="ИИ-помощник ARQON"><span class="arqAiBotGlow"></span><span class="arqAiBotIc"><svg width="58" height="84" viewBox="0 0 72 104" fill="none" aria-hidden="true"><rect x="16" y="4" width="40" height="32" rx="15" fill="var(--bg)" stroke="var(--line2)" stroke-width="1.6"/><rect x="20" y="17" width="32" height="10" rx="5" fill="var(--ink)"/><rect class="arqAiBotEye" x="24.5" y="20.6" width="23" height="3" rx="1.5" fill="var(--sage)"/><rect x="29" y="35" width="14" height="7" rx="2" fill="var(--bg)" stroke="var(--line2)" stroke-width="1.4"/><rect x="4" y="42" width="64" height="58" rx="22" fill="var(--bg)" stroke="var(--line2)" stroke-width="1.6"/><path d="M12 50q8-7 16-1" stroke="var(--line2)" stroke-width="1.3" stroke-linecap="round" opacity=".6"/><path d="M60 50q-8-7-16-1" stroke="var(--line2)" stroke-width="1.3" stroke-linecap="round" opacity=".6"/><rect x="13" y="57" width="46" height="29" rx="11" fill="var(--accent-soft)" stroke="var(--accent-line)" stroke-width="1.3"/><text x="36" y="71" text-anchor="middle" font-family="Archivo,system-ui,sans-serif" font-size="11" font-weight="800" fill="var(--accent-text)">ИИ</text><text x="36" y="81.5" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="6.3" font-weight="700" letter-spacing=".4" fill="var(--accent-text)">ПОМОЩНИК</text></svg></span></button>
+    <button type="button" class="arqAiTrigger" onClick="{{aiOpen}}" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;padding:0;margin:0;border:0;opacity:0;pointer-events:none"></button>
   </div>
 </div>
 </x-dc>
@@ -2942,15 +2982,7 @@ html.lt .wkWx{filter:invert(1) hue-rotate(180deg)}
 <style id="arqPanel">
 .arqCk.arqOn{background:var(--ok) !important;border-color:var(--ok) !important;animation:arqCkPop .46s cubic-bezier(.3,.9,.4,1)}.arqCk.arqOn::before{content:'';position:absolute;inset:-1px;border-radius:inherit;border:2px solid var(--ok);pointer-events:none;animation:arqCkRing .6s ease-out forwards}.arqCk.arqOn svg{opacity:1 !important;stroke-dasharray:24;animation:arqTick .3s .08s cubic-bezier(.4,.1,.3,1) both}.arqCk.arqOff{background:transparent !important;border-color:var(--line2) !important}.arqCk.arqOff svg{opacity:0 !important;transition:opacity .15s}@keyframes arqCkPop{0%{transform:scale(.86)}55%{transform:scale(1.08)}100%{transform:scale(1)}}@keyframes arqCkRing{from{transform:scale(1);opacity:.8}to{transform:scale(1.9);opacity:0}}.arqCk{transition:background-color .18s ease,border-color .18s ease}
 .arqPay{position:fixed;inset:0;z-index:2600;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:20px}.arqPayC{width:min(340px,100%);box-sizing:border-box;background:var(--card);border:1px solid var(--line2);border-radius:22px;box-shadow:0 24px 60px -20px #000;padding:22px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;animation:arqPayIn .28s cubic-bezier(.2,.8,.3,1) both}.arqPayC b{font-family:'Archivo',system-ui,sans-serif;font-size:19px;color:var(--ink)}.arqPayC span{font-size:14px;line-height:1.45;color:var(--muted)}.arqPayB{margin-top:6px;width:100%;min-height:44px;border:0;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;font-size:15px;cursor:pointer}.arqPayX{background:transparent;border:0;color:var(--muted);font-size:13px;cursor:pointer;min-height:32px}@keyframes arqPayIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}.arqPay{animation:arqPayBg .26s ease both}@keyframes arqPayBg{from{opacity:0}to{opacity:1}}.arqPay.arqPayOut{pointer-events:none;animation:arqPayBgOut .28s ease both}.arqPay.arqPayOut .arqPayC{animation:arqPayOutC .28s cubic-bezier(.4,0,.8,.4) both}@keyframes arqPayBgOut{from{opacity:1}to{opacity:0}}@keyframes arqPayOutC{from{opacity:1;transform:none}to{opacity:0;transform:translateY(12px) scale(.97)}}
-.arqAiBot{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:28;display:flex;align-items:center;justify-content:center;padding:12px 8px 12px 14px;border:1.5px solid var(--line2);border-right:0;border-radius:30px 0 0 30px;background:var(--card);color:var(--accent-text);cursor:pointer;box-shadow:-10px 0 26px -12px rgba(0,0,0,.45),0 0 0 1px var(--line);overflow:visible}
-.arqAiBot:hover{transform:translateY(-50%) translateX(-7px)}
-.arqAiBotGlow{position:absolute;inset:-16px 8px -16px -16px;border-radius:44px 0 0 44px;background:radial-gradient(circle at 30% 50%,rgba(var(--sage-rgb),.42),transparent 70%);opacity:0;animation:arqAiPulseBg 2.6s ease-in-out infinite;pointer-events:none;z-index:-1}
-.arqAiBotIc{display:flex;animation:arqAiBotFloat 3.6s ease-in-out infinite}
-.arqAiBotEye{animation:arqAiEyeGlow 2.4s ease-in-out infinite;transform-origin:center}
-@keyframes arqAiBotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes arqAiEyeGlow{0%,100%{opacity:.55;filter:drop-shadow(0 0 2px rgba(var(--sage-rgb),.5))}50%{opacity:1;filter:drop-shadow(0 0 6px rgba(var(--sage-rgb),.95))}}
-@keyframes arqAiPulseBg{0%,100%{opacity:0}50%{opacity:1}}
-@media (max-width:480px){.arqAiBot{padding:9px 6px 9px 10px}.arqAiBot .arqAiBotIc svg{width:48px;height:auto}}
+
 .arqAiBd{position:fixed;inset:0;z-index:2650;background:rgba(0,0,0,.5)}
 .arqAiPn{position:fixed;z-index:2660;right:16px;left:16px;bottom:88px;margin:0 auto;width:min(336px,calc(100vw - 32px));box-sizing:border-box;background:var(--card);border:1px solid var(--line2);border-radius:22px;box-shadow:0 30px 70px -20px rgba(0,0,0,.85);padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;animation:arqAiIn .3s cubic-bezier(.22,.8,.3,1) both}
 @media (min-width:1000px){.arqAiPn{right:92px;left:auto;margin:0;bottom:24px}}
