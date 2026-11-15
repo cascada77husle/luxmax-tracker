@@ -541,6 +541,7 @@ function onClick(e){var hh=e.target.closest&&e.target.closest(".gl-h,.gl-sec");i
  tick()}
 document.addEventListener("click",function(e){var t=e.target;if(!t||!t.closest)return;
  if(t.closest("[data-glnav]")){e.stopPropagation();e.preventDefault();if(!on){var dbn=nativeBtn("Dashboard");if(dbn)dbn.click()}setOn(true);return}
+ if(t.closest(".arqAiTrigger")||t.closest("#arqAiBotWrap"))return;
  if(on&&!busy&&t.closest(".arqNav"))setOn(false)},true);
 window.__gl={tick:tick,setOn:setOn};
 (function(){if(window.__glAutoFired)return;var n=0,iv=setInterval(function(){n++;try{var b=nativeBtn("Dashboard")||document.querySelector("[data-gldash]");if(b||n>70){clearInterval(iv);if(b&&b.getAttribute("aria-current")==="page"&&!on&&!busy){window.__glAutoFired=true;setOn(true)}}}catch(e){clearInterval(iv)}},100)})();
