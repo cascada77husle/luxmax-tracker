@@ -327,39 +327,35 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 (function(){try{
 function init(){if(document.getElementById('arqAiBotWrap'))return;
 var wrap=document.createElement('div');wrap.id='arqAiBotWrap';
-wrap.style.cssText='position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:center;justify-content:center;cursor:pointer';
+wrap.style.cssText='position:fixed;right:-6px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:flex-end;gap:4px;cursor:pointer';
 wrap.setAttribute('role','button');wrap.setAttribute('aria-label','ИИ-помощник ARQON');wrap.tabIndex=0;
-wrap.innerHTML='<span class="arqAiBotGlow" style="position:absolute;inset:-18px;border-radius:50%;pointer-events:none;z-index:-1"></span><span class="arqAiBotFl" style="display:flex">'+
-'<svg width="58" height="84" viewBox="0 0 64 92" aria-hidden="true">'+
-'<defs><linearGradient id="arqBotHeadG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfcfd"/><stop offset=".45" stop-color="#e2e4e8"/><stop offset="1" stop-color="#aab0ba"/></linearGradient>'+
-'<linearGradient id="arqBotTorsoG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f4f6"/><stop offset=".5" stop-color="#d5d8dc"/><stop offset="1" stop-color="#a6abb5"/></linearGradient></defs>'+
-'<ellipse cx="20" cy="8" rx="9" ry="3.6" fill="#fff" opacity=".4" transform="rotate(-18 20 8)"/>'+
-'<rect x="12" y="2" width="40" height="34" rx="17" fill="url(#arqBotHeadG)" stroke="#9aa0ab" stroke-width="1"/>'+
-'<circle cx="24" cy="19" r="6.2" fill="#14161a"/><circle cx="40" cy="19" r="6.2" fill="#14161a"/>'+
-'<circle class="arqBotPupL" cx="24" cy="19" r="2.6" fill="var(--sage)"/><circle class="arqBotPupR" cx="40" cy="19" r="2.6" fill="var(--sage)"/>'+
-'<rect class="arqBotLidL" x="17.6" y="12.6" width="12.8" height="6.4" rx="3.2" fill="url(#arqBotHeadG)"/>'+
-'<rect class="arqBotLidR" x="33.6" y="12.6" width="12.8" height="6.4" rx="3.2" fill="url(#arqBotHeadG)"/>'+
-'<rect x="27" y="33" width="10" height="7" rx="2" fill="url(#arqBotHeadG)" stroke="#9aa0ab" stroke-width=".8"/>'+
-'<rect x="4" y="39" width="56" height="50" rx="20" fill="url(#arqBotTorsoG)" stroke="#9aa0ab" stroke-width="1"/>'+
-'<ellipse cx="16" cy="47" rx="13" ry="5.5" fill="#fff" opacity=".22" transform="rotate(-16 16 47)"/>'+
-'<rect x="12" y="52" width="40" height="27" rx="10" fill="#0d0f13" stroke="var(--sage)" stroke-width="1.2"/>'+
-'<text x="32" y="64.5" text-anchor="middle" font-family="Archivo,system-ui,sans-serif" font-size="10" font-weight="800" fill="var(--sage)">ИИ</text>'+
-'<text x="32" y="74" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="5.6" font-weight="700" letter-spacing=".4" fill="#bfe9db">ПОМОЩНИК</text>'+
-'</svg></span>';
+wrap.innerHTML='<span class="arqAiBotTag">ИИ помощник</span><span style="position:relative;display:flex">'+
+'<span class="arqAiBotGlow" style="position:absolute;inset:-20px;border-radius:50%;pointer-events:none;z-index:-1"></span><span class="arqAiBotFl" style="display:flex">'+
+'<svg width="68" height="96" viewBox="0 0 84 118" aria-hidden="true">'+
+'<defs><linearGradient id="arqBotHeadG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#e6e8ec"/><stop offset="1" stop-color="#aeb4bd"/></linearGradient>'+
+'<linearGradient id="arqBotTorsoG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f7f9"/><stop offset=".5" stop-color="#d9dbdf"/><stop offset="1" stop-color="#aab0ba"/></linearGradient></defs>'+
+'<rect x="6" y="36" width="72" height="78" rx="30" fill="url(#arqBotTorsoG)" stroke="#9aa0ab" stroke-width="1"/>'+
+'<ellipse cx="22" cy="46" rx="16" ry="7" fill="#fff" opacity=".24" transform="rotate(-16 22 46)"/>'+
+'<rect x="16" y="2" width="52" height="40" rx="20" fill="url(#arqBotHeadG)" stroke="#9aa0ab" stroke-width="1"/>'+
+'<ellipse cx="27" cy="10" rx="11" ry="4.2" fill="#fff" opacity=".45" transform="rotate(-18 27 10)"/>'+
+'<rect x="24" y="19" width="36" height="16" rx="8" fill="#0d0f13"/>'+
+'<g class="arqAiBotEyes"><circle class="arqAiBotEye" cx="33.5" cy="27" r="4.3" fill="var(--sage)"></circle><circle class="arqAiBotEye" cx="50.5" cy="27" r="4.3" fill="var(--sage)"></circle></g>'+
+'</svg></span></span>';
 wrap.onclick=function(){var t=document.querySelector('.arqAiTrigger');if(t)t.click()};
 wrap.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wrap.click()}};
 document.body.appendChild(wrap);
-var st=document.createElement('style');st.textContent='#arqAiBotWrap .arqAiBotGlow{background:radial-gradient(circle,rgba(var(--sage-rgb),.4),transparent 70%);opacity:0;animation:arqBotPulse 2.6s ease-in-out infinite}'+
+var st=document.createElement('style');st.textContent='#arqAiBotWrap .arqAiBotTag{writing-mode:vertical-rl;transform:rotate(180deg);background:linear-gradient(180deg,rgba(22,24,28,.94),rgba(10,11,14,.94));color:var(--sage);font:700 11px/1 "Archivo",system-ui,sans-serif;letter-spacing:.5px;padding:11px 6px;border-radius:12px;border:1px solid rgba(var(--sage-rgb),.35);box-shadow:0 8px 20px -8px rgba(0,0,0,.6);white-space:nowrap;margin-bottom:18px}'+
+'#arqAiBotWrap .arqAiBotGlow{background:radial-gradient(circle,rgba(var(--sage-rgb),.4),transparent 70%);opacity:0;animation:arqBotPulse 2.6s ease-in-out infinite}'+
 '#arqAiBotWrap .arqAiBotFl{animation:arqBotFloat 4s ease-in-out infinite}'+
-'#arqAiBotWrap .arqBotPupL,#arqAiBotWrap .arqBotPupR{animation:arqBotLook 7s ease-in-out infinite}'+
-'#arqAiBotWrap .arqBotLidL,#arqAiBotWrap .arqBotLidR{transform-origin:50% 0%;animation:arqBotBlink 5s ease-in-out infinite}'+
+'#arqAiBotWrap .arqAiBotEyes{animation:arqBotLook 7s ease-in-out infinite;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 4px rgba(var(--sage-rgb),.85))}'+
+'#arqAiBotWrap .arqAiBotEye{transform-box:fill-box;transform-origin:center;animation:arqBotBlink 5s ease-in-out infinite}'+
 '#arqAiBotWrap:hover .arqAiBotFl{transform:translateY(-3px) scale(1.03)}'+
 '@keyframes arqBotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}'+
-'@keyframes arqBotLook{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}50%{transform:translateX(0)}75%{transform:translateX(2px)}}'+
-'@keyframes arqBotBlink{0%,90%,100%{transform:scaleY(0)}94%{transform:scaleY(1)}}'+
+'@keyframes arqBotLook{0%,100%{transform:translateX(0)}25%{transform:translateX(-2.4px)}50%{transform:translateX(0)}75%{transform:translateX(2.4px)}}'+
+'@keyframes arqBotBlink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}'+
 '@keyframes arqBotPulse{0%,100%{opacity:0}50%{opacity:1}}'+
-'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:24px !important}}'+
-'@media (prefers-reduced-motion:reduce){#arqAiBotWrap .arqAiBotGlow,#arqAiBotWrap .arqAiBotFl,#arqAiBotWrap .arqBotPupL,#arqAiBotWrap .arqBotPupR,#arqAiBotWrap .arqBotLidL,#arqAiBotWrap .arqBotLidR{animation:none !important}}';
+'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:6px !important}}'+
+'@media (prefers-reduced-motion:reduce){#arqAiBotWrap .arqAiBotGlow,#arqAiBotWrap .arqAiBotFl,#arqAiBotWrap .arqAiBotEyes,#arqAiBotWrap .arqAiBotEye{animation:none !important}}';
 document.head.appendChild(st)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()
 }catch(e){}})();</script>
@@ -1471,16 +1467,12 @@ body{overscroll-behavior-y:none;padding-bottom:env(safe-area-inset-bottom)}
 <div class="arqAiPn" style="display:{{aiD}}" role="dialog" aria-label="ИИ-помощник ARQON">
   <div class="arqAiHd"><span class="arqAiHdIc"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg></span><b>ИИ-помощник ARQON</b><button type="button" class="arqAiX" onClick="{{aiClose}}" aria-label="Закрыть">×</button></div>
   <div class="arqAiBody">
-    <button type="button" class="{{aiOrbCls}}" onClick="{{aiMicToggle}}" aria-label="Голосовой ввод"><span class="arqAiOrbRing arqAiOrbRing1"></span><span class="arqAiOrbRing arqAiOrbRing2"></span><span class="arqAiOrbRing arqAiOrbRing3"></span><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg></button>
-    <span class="arqAiStatus">{{aiStatus}}</span>
-    <span class="arqAiTease">Скоро сможет управлять всем приложением: задачами, привычками, финансами и волной — голосом.</span>
+    <sc-for list="{{aiMsgs}}" as="m" hint-placeholder-count="1"><div class="{{m.cls}}">{{m.t}}</div></sc-for>
   </div>
   <div class="arqAiRow">
     <input type="text" class="arqAiInp" value="{{aiTx}}" onInput="{{aiTxInput}}" placeholder="Напишите, что сделать…" aria-label="Сообщение ИИ-помощнику">
-    <button type="button" class="{{aiMicCls}}" onClick="{{aiMicToggle}}" aria-label="Голосовой ввод"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3z"/><path d="M19 11a7 7 0 01-14 0M12 18v3"/></svg></button>
     <button type="button" class="arqAiSend" onClick="{{aiSend}}" style="opacity:{{aiSendOp}};pointer-events:{{aiSendPe}}" aria-label="Отправить"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div>
-  <div class="arqAiHint" style="display:{{aiHintD}}">Голосовой ИИ-помощник скоро заработает — оформление уже готово ✨</div>
 </div>
 <sc-for list="{{tkPL}}" as="it" hint-placeholder-count="1"><aside class="tkPn" role="dialog" aria-label="Задача"><div class="tkPnH"><button type="button" class="arqCk" onClick="{{it.tgl}}" aria-label="Выполнено" style="cursor:pointer;width:26px;height:26px;border-radius:8px;border:1.5px solid {{it.bb}};background:{{it.box}};color:var(--on-accent);display:flex;align-items:center;justify-content:center;padding:0;flex:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:{{it.tick}}"><path d="M5 12l4 4L19 7"/></svg></button><span class="tkPnT" style="text-decoration:{{it.deco}};color:{{it.fg}}">{{it.t}}</span><button type="button" class="tkPnX" onClick="{{it.tkx}}" aria-label="Закрыть">×</button></div><div class="tkPnB">
 <div style="display:{{it.hasChips}};flex-wrap:wrap;gap:5px"><sc-for list="{{it.chips}}" as="c" hint-placeholder-count="3"><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:{{c.bg}};color:{{c.fg}};white-space:nowrap;display:inline-flex;align-items:center;gap:5px"><i class="ai {{c.k}}"></i>{{c.txt}}</span></sc-for></div>
@@ -2747,7 +2739,7 @@ const shortD = (s) => { let r = DCK.s.get(s); if (r === undefined) { const d = p
             closeDay: () => { const dn = info.once.filter(it => dn0[it.key]).length, tot = info.once.length, pc = tot ? Math.round(dn / tot * 100) : 0; this.set({ vToast: tot ? 'День закрыт: сделано ' + dn + ' из ' + tot + (pc >= 80 ? '. День засчитан (порог 80%).' : '. Этого достаточно, день не потерян. Остаток предложу разобрать завтра утром.') : 'Сегодня без дел: это тоже нормально.' }); },
             revD: left.length ? 'flex' : 'none', revN: left.length, revOpen: () => this.set({ shT: 'review' }),
             toastD: L.vToast ? 'block' : 'none', toast: L.vToast || '', payD: L.vPayOn ? 'flex' : 'none', payClose: () => this.set({ vPayOn: false }), payGo: () => { const u = 'https://t.me/ARQONx_bot'; this.set({ vPayOn: false }); try { const tg = window.Telegram && window.Telegram.WebApp; if (tg && tg.openTelegramLink) tg.openTelegramLink(u); else window.open(u, '_blank'); } catch (e) { window.open(u, '_blank'); } },
-            aiD: L.aiOpen ? 'flex' : 'none', aiOpen: () => this.set({ aiOpen: true, aiListening: false, aiHint: false }), aiClose: () => this.set({ aiOpen: false, aiListening: false }), aiListening: !!L.aiListening, aiOrbCls: L.aiListening ? 'arqAiOrb arqAiOrbOn' : 'arqAiOrb', aiStatus: L.aiListening ? 'Слушаю…' : (L.aiTx || '').trim() ? '' : 'Нажмите на круг и скажите, что сделать', aiMicCls: L.aiListening ? 'arqAiMic arqAiMicOn' : 'arqAiMic', aiMicToggle: () => this.set({ aiListening: !this.L.aiListening, aiHint: false }), aiTx: L.aiTx || '', aiTxInput: (e) => this.set({ aiTx: e.target.value }), aiSendOp: (L.aiTx || '').trim() ? 1 : .35, aiSendPe: (L.aiTx || '').trim() ? 'auto' : 'none', aiSend: () => { if (!(this.L.aiTx || '').trim()) return; this.set({ aiTx: '', aiListening: false, aiHint: true }); setTimeout(() => { if (this.L.aiOpen) this.set({ aiHint: false }); }, 2600); }, aiHintD: L.aiHint ? 'flex' : 'none',
+            aiD: L.aiOpen ? 'flex' : 'none', aiOpen: () => this.set({ aiOpen: true }), aiClose: () => this.set({ aiOpen: false }), aiTx: L.aiTx || '', aiTxInput: (e) => this.set({ aiTx: e.target.value }), aiSendOp: (L.aiTx || '').trim() ? 1 : .35, aiSendPe: (L.aiTx || '').trim() ? 'auto' : 'none', aiMsgs: (L.aiMsgs || [{ who: 'bot', t: 'Привет! Я — ИИ-помощник ARQON. Совсем скоро смогу управлять задачами, привычками, финансами и волной — пока просто показываю, как будет выглядеть чат 👋' }]).map((m) => ({ cls: m.who === 'me' ? 'arqAiMsg arqAiMsgMe' : 'arqAiMsg arqAiMsgBot', t: m.t })), aiSend: () => { var tx = (this.L.aiTx || '').trim(); if (!tx) return; var def = [{ who: 'bot', t: 'Привет! Я — ИИ-помощник ARQON. Совсем скоро смогу управлять задачами, привычками, финансами и волной — пока просто показываю, как будет выглядеть чат 👋' }]; var ms = (this.L.aiMsgs || def).slice(); ms.push({ who: 'me', t: tx }); this.set({ aiTx: '', aiMsgs: ms }); var self = this; setTimeout(() => { if (!self.L.aiOpen) return; var m2 = (self.L.aiMsgs || def).slice(); m2.push({ who: 'bot', t: 'Скоро смогу отвечать по-настоящему — а пока просто демонстрирую интерфейс чата 🙂' }); self.set({ aiMsgs: m2 }); }, 650); },
             laterD: later.length ? 'flex' : 'none',
             laterList: later.map(x => ({ t: x.t, lbl: full ? 'Нет места' : 'На сегодня', op: full ? .45 : 1, today: () => { if (!full) setOnly(x.b, x.i, wDate); }, del: () => setOnly(x.b, x.i, null) })),
             shL: shT ? [1] : [], shD: shT ? 'flex' : 'none', shAn: L.shCl ? 'sbOut .22s ease both' : 'sbIn .22s ease both', shAnI: L.shCl ? 'spOut .24s cubic-bezier(.4,0,1,1) both' : 'spIn .34s cubic-bezier(.22,.8,.3,1) both', shClose: closeSh, shStop: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
@@ -2984,32 +2976,22 @@ html.lt .wkWx{filter:invert(1) hue-rotate(180deg)}
 .arqPay{position:fixed;inset:0;z-index:2600;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:20px}.arqPayC{width:min(340px,100%);box-sizing:border-box;background:var(--card);border:1px solid var(--line2);border-radius:22px;box-shadow:0 24px 60px -20px #000;padding:22px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;animation:arqPayIn .28s cubic-bezier(.2,.8,.3,1) both}.arqPayC b{font-family:'Archivo',system-ui,sans-serif;font-size:19px;color:var(--ink)}.arqPayC span{font-size:14px;line-height:1.45;color:var(--muted)}.arqPayB{margin-top:6px;width:100%;min-height:44px;border:0;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;font-size:15px;cursor:pointer}.arqPayX{background:transparent;border:0;color:var(--muted);font-size:13px;cursor:pointer;min-height:32px}@keyframes arqPayIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}.arqPay{animation:arqPayBg .26s ease both}@keyframes arqPayBg{from{opacity:0}to{opacity:1}}.arqPay.arqPayOut{pointer-events:none;animation:arqPayBgOut .28s ease both}.arqPay.arqPayOut .arqPayC{animation:arqPayOutC .28s cubic-bezier(.4,0,.8,.4) both}@keyframes arqPayBgOut{from{opacity:1}to{opacity:0}}@keyframes arqPayOutC{from{opacity:1;transform:none}to{opacity:0;transform:translateY(12px) scale(.97)}}
 
 .arqAiBd{position:fixed;inset:0;z-index:2650;background:rgba(0,0,0,.5)}
-.arqAiPn{position:fixed;z-index:2660;right:16px;left:16px;bottom:88px;margin:0 auto;width:min(336px,calc(100vw - 32px));box-sizing:border-box;background:var(--card);border:1px solid var(--line2);border-radius:22px;box-shadow:0 30px 70px -20px rgba(0,0,0,.85);padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;animation:arqAiIn .3s cubic-bezier(.22,.8,.3,1) both}
-@media (min-width:1000px){.arqAiPn{right:92px;left:auto;margin:0;bottom:24px}}
+.arqAiPn{position:fixed;z-index:2660;right:12px;left:auto;bottom:calc(192px + env(safe-area-inset-bottom,0px));margin:0;width:min(336px,calc(100vw - 24px));max-height:min(420px,calc(100vh - 220px));box-sizing:border-box;background:var(--card);border:1px solid var(--line2);border-radius:22px;box-shadow:0 30px 70px -20px rgba(0,0,0,.85);padding:14px 14px 14px;display:flex;flex-direction:column;gap:10px;animation:arqAiIn .3s cubic-bezier(.22,.8,.3,1) both}
+@media (min-width:1000px){.arqAiPn{right:104px;bottom:24px}}
 @keyframes arqAiIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
 .arqAiHd{display:flex;align-items:center;gap:8px}
 .arqAiHdIc{display:flex;color:var(--accent-text)}
 .arqAiHd b{flex:1;font-family:'Archivo',system-ui,sans-serif;font-size:15px;font-weight:700;color:var(--ink)}
 .arqAiX{border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;width:28px;height:28px;border-radius:8px;flex:none;padding:0;display:flex;align-items:center;justify-content:center}
 .arqAiX:hover{background:var(--accent-soft)}
-.arqAiBody{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 4px 2px;text-align:center}
-.arqAiOrb{position:relative;width:64px;height:64px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--sage) 65%,white),var(--sage) 62%);color:var(--on-accent);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(var(--sage-rgb),.6);flex:none;padding:0}
-.arqAiOrbRing{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(var(--sage-rgb),.45);opacity:0;pointer-events:none}
-.arqAiOrbOn .arqAiOrbRing1{animation:arqAiRing 1.8s ease-out infinite}
-.arqAiOrbOn .arqAiOrbRing2{animation:arqAiRing 1.8s ease-out .5s infinite}
-.arqAiOrbOn .arqAiOrbRing3{animation:arqAiRing 1.8s ease-out 1s infinite}
-.arqAiOrbOn{animation:arqAiOrbPulse 1.4s ease-in-out infinite}
-@keyframes arqAiRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.9);opacity:0}}
-@keyframes arqAiOrbPulse{0%,100%{box-shadow:0 10px 24px -8px rgba(var(--sage-rgb),.6)}50%{box-shadow:0 10px 32px -4px rgba(var(--sage-rgb),.9)}}
-.arqAiStatus{font-size:12.5px;color:var(--muted);min-height:16px}
-.arqAiTease{font-size:11.5px;line-height:1.4;color:var(--muted);opacity:.75;max-width:270px}
-.arqAiRow{display:flex;align-items:center;gap:6px}
+.arqAiBody{display:flex;flex-direction:column;gap:8px;padding:4px 2px;overflow-y:auto;flex:1;min-height:80px;max-height:260px}
+.arqAiMsg{max-width:84%;font-size:13.5px;line-height:1.45;padding:9px 13px;border-radius:16px;word-break:break-word;animation:arqAiIn .25s ease both}
+.arqAiMsgBot{align-self:flex-start;background:var(--field);color:var(--ink);border-bottom-left-radius:5px}
+.arqAiMsgMe{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:5px}
+.arqAiRow{display:flex;align-items:center;gap:6px;flex:none}
 .arqAiInp{flex:1;min-width:0;border:1px solid var(--line2);border-radius:999px;background:var(--field);color:var(--ink);font-size:13.5px;padding:9px 14px}
-.arqAiMic{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line2);background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
-.arqAiMicOn{border-color:rgba(var(--sage-rgb),.6);color:var(--accent-text);background:var(--accent-soft);animation:arqAiOrbPulse 1.4s ease-in-out infinite}
 .arqAiSend{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s;padding:0}
-.arqAiHint{font-size:12px;color:var(--accent-text);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:8px 10px;text-align:center;animation:arqAiIn .25s ease both}
-@media (prefers-reduced-motion:reduce){.arqAiBotGlow,.arqAiBotIc,.arqAiBotEye,.arqAiOrbOn,.arqAiOrbOn .arqAiOrbRing1,.arqAiOrbOn .arqAiOrbRing2,.arqAiOrbOn .arqAiOrbRing3,.arqAiMicOn{animation:none !important}}
+@media (prefers-reduced-motion:reduce){.arqAiBotGlow,.arqAiMsg{animation:none !important}}
 html .arqHmG,html.lt .arqHmG{filter:none !important;position:relative}
 .tkRow,.tkRow *,.tkRow *::before,.tkRow *::after{transition:none !important;animation:none !important}.tkRow:active,.tkRow *:active{transform:none !important;opacity:1 !important}.arqRip{display:none !important}
 .tkRow.tkSel{border-color:color-mix(in srgb,var(--accent) 80%,transparent) !important;border-left-width:4px !important;box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 28%,transparent),0 10px 24px -12px color-mix(in srgb,var(--accent) 70%,transparent),inset 0 0 26px color-mix(in srgb,var(--accent) 13%,transparent) !important}
