@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ARQON — Админка</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#0C0D0E;color:#E7E8E5;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+  body{display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:420px;background:#17191B;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:26px;box-shadow:0 30px 70px -20px rgba(0,0,0,.8)}
+  h1{font-size:18px;margin:0 0 4px;letter-spacing:.02em}
+  .sub{color:#A1A6A5;font-size:13px;margin:0 0 22px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-radius:14px;background:#202326;border:1px solid rgba(255,255,255,.06);margin-bottom:16px}
+  .row b{font-size:14.5px}
+  .row span{display:block;color:#A1A6A5;font-size:12.5px;margin-top:2px}
+  .sw{position:relative;width:52px;height:30px;border-radius:999px;background:#34393D;border:0;cursor:pointer;flex:none;transition:background .25s ease}
+  .sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+  .sw.on{background:#D9534F}
+  .sw.on i{transform:translateX(22px)}
+  .status{display:flex;align-items:center;gap:8px;font-size:13px;color:#A1A6A5;margin-bottom:18px;min-height:18px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#6FCF8F;flex:none}
+  .dot.off{background:#6FCF8F}
+  .dot.on{background:#D9534F}
+  .tokenBox{margin-top:8px}
+  .tokenBox label{display:block;font-size:12.5px;color:#A1A6A5;margin-bottom:6px}
+  .tokenBox input{width:100%;background:#202326;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;color:#E7E8E5;font-size:13px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:999px;background:#A6B4A5;color:#0C0D0E;font-weight:700;font-size:13.5px;padding:10px 18px;cursor:pointer;margin-top:10px}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.15);color:#E7E8E5}
+  .msg{font-size:12.5px;margin-top:10px;min-height:16px}
+  .msg.err{color:#E8847C}
+  .msg.ok{color:#8FCB9F}
+  .lock{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:40px 10px}
+  .lock svg{opacity:.5}
+  a{color:#A6B4A5}
+</style>
+</head>
+<body>
+<div class="card" id="app"></div>
+<script>
+(function(){
+  var REPO = 'cascada77husle/luxmax-tracker';
+  var FILE = 'status.json';
+  var KEY_PARAM = 'arqon-owner-7391';
+  var qs = new URLSearchParams(location.search);
+  if (qs.get('key') === KEY_PARAM) { try { localStorage.setItem('tracker:owner','1'); } catch(e){} }
+  var isOwner = false;
+  try { isOwner = localStorage.getItem('tracker:owner') === '1'; } catch(e){}
+
+  var app = document.getElementById('app');
+
+  if (!isOwner) {
+    app.innerHTML = '<div class="lock">'+
+      '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'+
+      '<h1>Доступ закрыт</h1>'+
+      '<span class="sub">Эта страница только для владельца.</span>'+
+      '</div>';
+    return;
+  }
+
+  app.innerHTML =
+    '<h1>Технические работы</h1>'+
+    '<p class="sub">Управление доступностью ARQON для всех пользователей</p>'+
+    '<div class="status" id="st"><span class="dot" id="dot"></span><span id="stText">Проверяю статус…</span></div>'+
+    '<div class="row">'+
+      '<div><b>Режим техработ</b><span>Показывать всем экран «временно недоступен»</span></div>'+
+      '<button class="sw" id="sw" aria-label="Переключить"><i></i></button>'+
+    '</div>'+
+    '<div class="msg" id="msg"></div>'+
+    '<div class="tokenBox" id="tokenBox" style="display:none">'+
+      '<label>GitHub-токен (classic, scope repo) — вводится один раз</label>'+
+      '<input type="password" id="tok" placeholder="ghp_...">'+
+      '<button class="btn" id="saveTok">Сохранить токен</button>'+
+    '</div>'+
+    '<button class="btn ghost" id="changeTok" style="margin-top:14px">Сменить токен</button>';
+
+  var dot = document.getElementById('dot');
+  var stText = document.getElementById('stText');
+  var sw = document.getElementById('sw');
+  var msg = document.getElementById('msg');
+  var tokenBox = document.getElementById('tokenBox');
+  var tokInput = document.getElementById('tok');
+
+  function getToken(){ try { return localStorage.getItem('arqon:ghtoken') || ''; } catch(e){ return ''; } }
+  function setToken(v){ try { localStorage.setItem('arqon:ghtoken', v); } catch(e){} }
+
+  function showMsg(text, ok){
+    msg.textContent = text;
+    msg.className = 'msg ' + (ok ? 'ok' : 'err');
+  }
+
+  function render(on){
+    sw.className = 'sw' + (on ? ' on' : '');
+    dot.className = 'dot ' + (on ? 'on' : 'off');
+    stText.textContent = on ? 'Сейчас: техработы включены — сайт недоступен пользователям' : 'Сейчас: сайт работает в обычном режиме';
+  }
+
+  function loadStatus(){
+    return fetch(FILE + '?t=' + Date.now(), {cache:'no-store'})
+      .then(function(r){ return r.json(); })
+      .then(function(j){ render(!!j.maintenance); return !!j.maintenance; })
+      .catch(function(){ stText.textContent = 'Не удалось получить статус'; });
+  }
+
+  function apiHeaders(){
+    return { 'Authorization': 'token ' + getToken(), 'Accept': 'application/vnd.github+json' };
+  }
+
+  function toggle(){
+    var token = getToken();
+    if (!token) { tokenBox.style.display = 'block'; showMsg('Сначала вставь GitHub-токен ниже', false); return; }
+    var wantOn = !sw.classList.contains('on');
+    sw.disabled = true;
+    showMsg('Сохраняю…', true);
+    fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, { headers: apiHeaders(), cache:'no-store' })
+      .then(function(r){ if (!r.ok) throw new Error('read:' + r.status); return r.json(); })
+      .then(function(cur){
+        var newContent = JSON.stringify({ maintenance: wantOn }, null, 2) + '\n';
+        var b64 = btoa(unescape(encodeURIComponent(newContent)));
+        return fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+          method: 'PUT',
+          headers: Object.assign({'Content-Type':'application/json'}, apiHeaders()),
+          body: JSON.stringify({
+            message: wantOn ? 'Включить режим техработ' : 'Выключить режим техработ',
+            content: b64,
+            sha: cur.sha
+          })
+        });
+      })
+      .then(function(r){ if (!r.ok) return r.json().then(function(j){ throw new Error(j.message || ('write:' + r.status)); }); return r.json(); })
+      .then(function(){
+        render(wantOn);
+        showMsg(wantOn ? 'Готово: техработы включены' : 'Готово: сайт снова доступен', true);
+      })
+      .catch(function(e){
+        showMsg('Ошибка: ' + e.message + '. Проверь токен (нужен доступ repo).', false);
+      })
+      .finally(function(){ sw.disabled = false; });
+  }
+
+  document.getElementById('saveTok').addEventListener('click', function(){
+    var v = tokInput.value.trim();
+    if (!v) return;
+    setToken(v);
+    tokenBox.style.display = 'none';
+    showMsg('Токен сохранён в этом браузере', true);
+  });
+  document.getElementById('changeTok').addEventListener('click', function(){
+    tokenBox.style.display = tokenBox.style.display === 'none' ? 'block' : 'none';
+  });
+  sw.addEventListener('click', toggle);
+
+  if (!getToken()) tokenBox.style.display = 'block';
+  loadStatus();
+})();
+</script>
+</body>
+</html>
