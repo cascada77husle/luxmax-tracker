@@ -323,39 +323,40 @@ row.appendChild(go);row.appendChild(rs);row.appendChild(cl);ringW.appendChild(bi
 if(S().end)run();render();
 var st=document.createElement('style');st.textContent='@media (min-width:1000px){#arqFocus{bottom:24px !important;left:244px !important;right:auto !important}}';document.head.appendChild(st)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()}catch(e){}})();</script>
-<script>/* ARQON ИИ-помощник: глянцевый робот, отдельный блок, не зависит от остального кода */
+<script>/* ARQON ИИ-помощник: хромированный робот по референсу, статично (анимации позже) */
 (function(){try{
 function init(){if(document.getElementById('arqAiBotWrap'))return;
 var wrap=document.createElement('div');wrap.id='arqAiBotWrap';
 wrap.style.cssText='position:fixed;right:-6px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:flex-end;gap:4px;cursor:pointer';
 wrap.setAttribute('role','button');wrap.setAttribute('aria-label','ИИ-помощник ARQON');wrap.tabIndex=0;
-wrap.innerHTML='<span class="arqAiBotTag">ИИ помощник</span><span style="position:relative;display:flex">'+
-'<span class="arqAiBotGlow" style="position:absolute;inset:-20px;border-radius:50%;pointer-events:none;z-index:-1"></span><span class="arqAiBotFl" style="display:flex">'+
-'<svg width="68" height="96" viewBox="0 0 84 118" aria-hidden="true">'+
-'<defs><linearGradient id="arqBotHeadG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#e6e8ec"/><stop offset="1" stop-color="#aeb4bd"/></linearGradient>'+
-'<linearGradient id="arqBotTorsoG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f7f9"/><stop offset=".5" stop-color="#d9dbdf"/><stop offset="1" stop-color="#aab0ba"/></linearGradient></defs>'+
-'<rect x="6" y="36" width="72" height="78" rx="30" fill="url(#arqBotTorsoG)" stroke="#9aa0ab" stroke-width="1"/>'+
-'<ellipse cx="22" cy="46" rx="16" ry="7" fill="#fff" opacity=".24" transform="rotate(-16 22 46)"/>'+
-'<rect x="16" y="2" width="52" height="40" rx="20" fill="url(#arqBotHeadG)" stroke="#9aa0ab" stroke-width="1"/>'+
-'<ellipse cx="27" cy="10" rx="11" ry="4.2" fill="#fff" opacity=".45" transform="rotate(-18 27 10)"/>'+
-'<rect x="24" y="19" width="36" height="16" rx="8" fill="#0d0f13"/>'+
-'<g class="arqAiBotEyes"><circle class="arqAiBotEye" cx="33.5" cy="27" r="4.3" fill="var(--sage)"></circle><circle class="arqAiBotEye" cx="50.5" cy="27" r="4.3" fill="var(--sage)"></circle></g>'+
-'</svg></span></span>';
+wrap.innerHTML='<span class="arqAiBotTag">ИИ помощник</span>'+
+'<svg width="72" height="104" viewBox="0 0 84 118" aria-hidden="true">'+
+'<defs>'+
+'<linearGradient id="arqBotChrome" x1="0" y1="0" x2="1" y2="1">'+
+'<stop offset="0" stop-color="#f5f6f8"/>'+
+'<stop offset=".2" stop-color="#c9cdd3"/>'+
+'<stop offset=".38" stop-color="#f0f1f3"/>'+
+'<stop offset=".58" stop-color="#9aa0a8"/>'+
+'<stop offset=".78" stop-color="#e4e6e9"/>'+
+'<stop offset="1" stop-color="#7c828a"/>'+
+'</linearGradient>'+
+'<linearGradient id="arqBotChromeHi" x1="0" y1="0" x2="1" y2="0">'+
+'<stop offset="0" stop-color="#fff" stop-opacity="0"/>'+
+'<stop offset=".5" stop-color="#fff" stop-opacity=".55"/>'+
+'<stop offset="1" stop-color="#fff" stop-opacity="0"/>'+
+'</linearGradient>'+
+'</defs>'+
+'<path d="M20,4 L64,4 L74,18 L74,32 L84,44 L84,100 Q84,114 70,114 L14,114 Q0,114 0,100 L0,44 L10,32 L10,18 Z" fill="url(#arqBotChrome)" stroke="#6b7078" stroke-width="1"/>'+
+'<rect x="17" y="8" width="11" height="100" fill="url(#arqBotChromeHi)" opacity=".55"/>'+
+'<rect x="27" y="30" width="9" height="20" rx="4" fill="#15171b"/>'+
+'<rect x="48" y="30" width="9" height="20" rx="4" fill="#15171b"/>'+
+'</svg>';
 wrap.onclick=function(){var t=document.querySelector('.arqAiTrigger');if(t)t.click()};
 wrap.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wrap.click()}};
 document.body.appendChild(wrap);
 var st=document.createElement('style');st.textContent='#arqAiBotWrap .arqAiBotTag{writing-mode:vertical-rl;transform:rotate(180deg);background:linear-gradient(180deg,rgba(22,24,28,.94),rgba(10,11,14,.94));color:var(--sage);font:700 11px/1 "Archivo",system-ui,sans-serif;letter-spacing:.5px;padding:11px 6px;border-radius:12px;border:1px solid rgba(var(--sage-rgb),.35);box-shadow:0 8px 20px -8px rgba(0,0,0,.6);white-space:nowrap;margin-bottom:18px}'+
-'#arqAiBotWrap .arqAiBotGlow{background:radial-gradient(circle,rgba(var(--sage-rgb),.4),transparent 70%);opacity:0;animation:arqBotPulse 2.6s ease-in-out infinite}'+
-'#arqAiBotWrap .arqAiBotFl{animation:arqBotFloat 4s ease-in-out infinite}'+
-'#arqAiBotWrap .arqAiBotEyes{animation:arqBotLook 7s ease-in-out infinite;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 4px rgba(var(--sage-rgb),.85))}'+
-'#arqAiBotWrap .arqAiBotEye{transform-box:fill-box;transform-origin:center;animation:arqBotBlink 5s ease-in-out infinite}'+
-'#arqAiBotWrap:hover .arqAiBotFl{transform:translateY(-3px) scale(1.03)}'+
-'@keyframes arqBotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}'+
-'@keyframes arqBotLook{0%,100%{transform:translateX(0)}25%{transform:translateX(-2.4px)}50%{transform:translateX(0)}75%{transform:translateX(2.4px)}}'+
-'@keyframes arqBotBlink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}'+
-'@keyframes arqBotPulse{0%,100%{opacity:0}50%{opacity:1}}'+
-'html.lt #arqAiBotWrap{filter:invert(1) hue-rotate(180deg)}'+'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:6px !important}}'+
-'@media (prefers-reduced-motion:reduce){#arqAiBotWrap .arqAiBotGlow,#arqAiBotWrap .arqAiBotFl,#arqAiBotWrap .arqAiBotEyes,#arqAiBotWrap .arqAiBotEye{animation:none !important}}';
+'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:6px !important}}'+
+'html.lt #arqAiBotWrap{filter:invert(1) hue-rotate(180deg)}';
 document.head.appendChild(st)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()
 }catch(e){}})();</script>
