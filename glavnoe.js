@@ -135,7 +135,7 @@ var css=[
 ".gl-tl .gl-ic{width:16px;height:16px;color:var(--muted)}",
 ".gl-tl b{display:block;font-size:15px;font-weight:600;margin-top:4px}",
 ".gl-nt{font-size:11px;color:var(--muted)}",
-"[data-glon] .pg>*:not(:first-child):not(.gl-page):not(.arqAn):not(.arqAiBd){display:none!important}","[data-glon] .pg>.arqAn{display:flex!important}","[data-gldash]{display:none!important}","[data-glon] .pg>.arqAn{align-items:stretch!important;min-width:0;max-width:100%;box-sizing:border-box;overflow:hidden}","[data-glon] .arqAn>*{min-width:0!important;max-width:100%!important;box-sizing:border-box}","[data-glon] .arqAn>div:last-child{overflow-x:auto;scrollbar-width:none}",
+"[data-glon] .pg>*:not(:first-child):not(.gl-page):not(.arqAn):not(.arqAiBd):not(.arqAiPn){display:none!important}","[data-glon] .pg>.arqAn{display:flex!important}","[data-gldash]{display:none!important}","[data-glon] .pg>.arqAn{align-items:stretch!important;min-width:0;max-width:100%;box-sizing:border-box;overflow:hidden}","[data-glon] .arqAn>*{min-width:0!important;max-width:100%!important;box-sizing:border-box}","[data-glon] .arqAn>div:last-child{overflow-x:auto;scrollbar-width:none}",
 "[data-glon] .pg>:first-child h1>*{display:none}",
 "[data-glon] .pg>:first-child h1:after{content:\"Главное\"}",
 "[data-glon] .pg{min-height:0!important;padding-bottom:0!important}",
