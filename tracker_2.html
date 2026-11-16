@@ -327,9 +327,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 (function(){try{
 function init(){if(document.getElementById('arqAiBotWrap'))return;
 var wrap=document.createElement('div');wrap.id='arqAiBotWrap';
-wrap.style.cssText='position:fixed;right:-6px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:flex-end;gap:4px;pointer-events:auto;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1)';wrap.setAttribute('role','button');wrap.setAttribute('aria-label','ИИ-помощник ARQON');wrap.tabIndex=0;wrap.onclick=function(){if(document.body.classList.contains('arqAiOn')){var c=document.querySelector('.arqAiX');if(c)c.click()}else{var t=document.querySelector('.arqAiTrigger');if(t)t.click()}};wrap.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wrap.click()}};
+wrap.style.cssText='position:fixed;right:-10px;bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:flex-end;gap:4px;pointer-events:auto;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.56,.64,1)';wrap.setAttribute('role','button');wrap.setAttribute('aria-label','ИИ-помощник ARQON');wrap.tabIndex=0;wrap.onclick=function(){if(document.body.classList.contains('arqAiOn')){var c=document.querySelector('.arqAiX');if(c)c.click()}else{var t=document.querySelector('.arqAiTrigger');if(t)t.click()}};wrap.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wrap.click()}};
 
-wrap.innerHTML='<img src="arqai-robot-feathered2.png" alt="" width="151" height="167" style="display:block;width:151px;height:167px;pointer-events:none;user-select:none" draggable="false">';
+wrap.innerHTML='<img src="arqai-robot-feathered2.png" alt="" width="190" height="210" style="display:block;width:190px;height:210px;pointer-events:none;user-select:none" draggable="false">';
 '<svg width="72" height="104" viewBox="0 0 84 118" aria-hidden="true">'+
 '<defs>'+
 '<linearGradient id="arqBotChrome" x1="0" y1="0" x2="1" y2="1">'+
