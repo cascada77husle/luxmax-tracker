@@ -1519,7 +1519,7 @@ class Component extends DCLogic {
     return { ops: [], plans: [], accounts: [], goals: [], debts: [] };
     })();
     const DIARY = (() => { const base = { sleep: 7, sleepq: 7, energy: 6, mood: 7, stress: 4, meditation: 5, steps: 6200, reading: 10, screen: 3 }, out = {}; for (let k = 0; k <= 6; k++) { if (k === 3) continue; const d = new Date(2026, 9, 19 - k), key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'), o = {}; Object.keys(base).forEach((id, i) => { const j = k === 0 ? 0 : ((k * 7 + i * 3) % 5) - 2, b0 = base[id]; o[id] = id === 'sleep' ? b0 + j * 0.5 : id === 'steps' ? b0 + j * 1100 : id === 'reading' ? Math.max(0, b0 + j * 3) : id === 'meditation' ? Math.max(0, b0 + j * 2) : id === 'screen' ? Math.max(1, b0 + j * 0.5) : Math.max(1, Math.min(10, b0 + j)); }); out[key] = o; } return out; })();
-    return { ready: false, mode: 'dash', prev: 'dash', menu: '', createKind: '', createText: '', notice: null, openSec: {}, dayCfgOpen: false, projNew: false, dayTab: 'today', diaryLib: false, peek: '', cardEdit: false, card: { hue: -1, pat: 0, ear: -1, eyes: 0, glasses: false, acc: 0 }, seen: {}, howOpen: '', fixes: [], dsub: 'main', ltab: 'blocks', stTab: 'study', widgets: [], gallery: false, cat: 'Все', edit: false,
+    return { ready: false, mode: (function(){try{return localStorage.getItem('trk-mode')||'dash'}catch(e){return 'dash'}})(), prev: 'dash', menu: '', createKind: '', createText: '', notice: null, openSec: {}, dayCfgOpen: false, projNew: false, dayTab: 'today', diaryLib: false, peek: '', cardEdit: false, card: { hue: -1, pat: 0, ear: -1, eyes: 0, glasses: false, acc: 0 }, seen: {}, howOpen: '', fixes: [], dsub: 'main', ltab: 'blocks', stTab: 'study', widgets: [], gallery: false, cat: 'Все', edit: false,
     daySecs: [{ id: 'tasks', on: true }, { id: 'schedule', on: true }, { id: 'water', on: true }, { id: 'habits', on: true }], water: 0, hab: [],
     wcTab: 'now', wproj: [], wpAct: '', wpIn: '', waves: [], waveCur: '', wz: { open: false }, wDate: '2026-10-19', wb: null, wbSel: 'Тело', wbText: '', wbNote: '', sec: { food: false, sport: true, projects: true, money: true, study: true, lang: true }, customs: [], newItem: '',
     tasks: [], newToday: '',
@@ -1555,7 +1555,7 @@ class Component extends DCLogic {
     };
   }
   fixInit(o) { o.projList = o.projList.map(p => Object.assign({}, p, { key: this.pfKey(p.name) })); return o; }
-  set(p) { const L0 = this.L; if (p) { const WK = (m) => 'dash'; const ck = WK(L0.mode); if (p.mode && WK(p.mode) !== ck) { const ws = Object.assign({}, L0.wsets, { [ck]: L0.widgets }); p = Object.assign({}, p, { wsets: ws, widgets: ws[WK(p.mode)] || [] }); } else if (p.widgets) { p = Object.assign({}, p, { wsets: Object.assign({}, L0.wsets, { [ck]: p.widgets }) }); } } if (p && p.mode && p.mode !== L0.mode && !(L0.seen && L0.seen['how:' + L0.mode]) && !(p.seen)) p = Object.assign({}, p, { seen: Object.assign({}, L0.seen, { ['how:' + L0.mode]: true }) }); this.setState(Object.assign({}, this.L, p, { ready: true })); if (!p || this.__pers(p)) this.saveSoon(); }
+  set(p) { const L0 = this.L; if (p) { const WK = (m) => 'dash'; const ck = WK(L0.mode); if (p.mode && WK(p.mode) !== ck) { const ws = Object.assign({}, L0.wsets, { [ck]: L0.widgets }); p = Object.assign({}, p, { wsets: ws, widgets: ws[WK(p.mode)] || [] }); } else if (p.widgets) { p = Object.assign({}, p, { wsets: Object.assign({}, L0.wsets, { [ck]: p.widgets }) }); } } if (p && p.mode && p.mode !== L0.mode && !(L0.seen && L0.seen['how:' + L0.mode]) && !(p.seen)) p = Object.assign({}, p, { seen: Object.assign({}, L0.seen, { ['how:' + L0.mode]: true }) }); this.setState(Object.assign({}, this.L, p, { ready: true })); if (p && p.mode) { try { localStorage.setItem('trk-mode', p.mode); } catch (e) {} } if (!p || this.__pers(p)) this.saveSoon(); }
   __pers(p) { let K = Component.__ks; if (!K) { K = Component.__ks = new Set(Component.KEYS().concat(['wsets', 'widgets'])); } for (const k in p) { if (K.has(k)) return true; } return false; }
   static KEYS() { return ['projList', 'tasks', 'notes', 'ops', 'plans', 'accounts', 'goals', 'debts', 'limits', 'mcfg', 'acfg', 'linked', 'pf', 'widgets', 'wsets', 'daySecs', 'customs', 'water', 'hab', 'diary', 'added', 'sec', 'fixes', 'nid', 'uname', 'skin', 'card', 'waves', 'waveCur', 'dashWp', 'hmAdd', 'dTab', 'waAdd', 'fnAdd', 'bzAdd', 'fnMode', 'fnOff', 'fnAcc', 'bzMode', 'bzOff', 'seen', 'dLim', 'wproj', 'wpAct', 'tkSub', 'tkZ', 'tkOrd', 'tkSz', 'tkPos']; }
   static TOOL(w, k) { if (!w) return true; if (w.kind === 'own') { const d = w.dk || []; if (k === 'sport') return d.indexOf('body') >= 0; if (k === 'food') return d.indexOf('food') >= 0; if (k === 'diary') return d.indexOf('sleep') >= 0 || d.indexOf('health') >= 0; return true; } if (w.tpl === 'discipline') return k === 'diary' || k === 'today'; return true; }
@@ -1766,7 +1766,7 @@ class Component extends DCLogic {
     const fm = (x) => String(Math.round(x * 10) / 10).replace('.', ',');
     const TYPEL = { n: 'Число', c: 'Счётчик', k: 'Галочка', s: 'Оценка 1–10', t: 'Заметка' };
     const WHERE = {
-      'Сон и энергия': 'На карточку сна и энергии на дашборде, в график недели и в сводку: так видно, как сон влияет на настроение и фокус.',
+      'Сон и энергия': 'На карточку сна и энергии на главной, в график недели и в сводку: так видно, как сон влияет на настроение и фокус.',
       'Питание и вода': 'В итог дня в разделе «Питание», в виджет «Калории и БЖУ» и в недельную сводку по питанию.',
       'Тренировки': 'В виджет «Тренировки недели», в личные рекорды и в общий балл дня.',
       'Тело и здоровье': 'В график динамики и недельный отчёт. Вес и замеры сравниваются с вашей целью.',
@@ -1870,7 +1870,7 @@ class Component extends DCLogic {
     const topicSecs = [fixedOn('Календарь', 'Задачи, вода и привычки по дням', 'Всегда открыт', ICON.schedule, 'var(--accent)', 'var(--accent-soft)')].concat(Component.TOOL(wcT, 'diary') ? [fixedOn('Дневник дня', 'Мелкие показатели за день', 'Тема', ICON.metrics, 'var(--cat-blue)', 'color-mix(in srgb,var(--cat-blue) 13%,var(--card))')] : [], pageSecsAll.filter(p => p.where.indexOf('Тема') === 0));
     const partSecs = PARTS.map(p => { const on = !!(L.daySecs.find(s => s.id === p[0]) || {}).on; return Object.assign({ name: p[1], desc: p[2], where: 'Страница «Моя волна»', color: p[3], soft: p[4], icon: ICON[p[0]] }, secBtn(on, () => this.set({ daySecs: this.L.daySecs.map(s => s.id === p[0] ? { id: s.id, on: !s.on } : s) }))); });
     // tabs
-    const WGC = ['#8E88C4', '#7FA6B8', '#86B49E', '#C9AB76', '#B98BA0', '#C69A78', '#C48A8A', '#78AFA6'], WIC = ['🌊', '🔥', '🚀', '🌿', '⭐', '💎', '🎯', '🌙', '☀️', '⚡', '🧠', '🏆'], WIK = { '🌊': 'ai-wave', '🔥': 'ai-fire', '🚀': 'ai-rocket', '🌿': 'ai-leaf', '⭐': 'ai-star', '💎': 'ai-gem', '🎯': 'ai-target', '🌙': 'ai-moon', '☀️': 'ai-sun', '⚡': 'ai-bolt', '🧠': 'ai-brain', '🏆': 'ai-trophy' }, wik = (e) => WIK[e] || 'ai-wave', wHash = (q) => { const z = String(q); let h = 0; for (let k = 0; k < z.length; k++) h = (h * 31 + z.charCodeAt(k)) >>> 0; return h; }; const TABS2 = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['me', 'Мой прогресс']]; if (L.sec.money) TABS2.push(['money', 'Экономика']);
+    const WGC = ['#8E88C4', '#7FA6B8', '#86B49E', '#C9AB76', '#B98BA0', '#C69A78', '#C48A8A', '#78AFA6'], WIC = ['🌊', '🔥', '🚀', '🌿', '⭐', '💎', '🎯', '🌙', '☀️', '⚡', '🧠', '🏆'], WIK = { '🌊': 'ai-wave', '🔥': 'ai-fire', '🚀': 'ai-rocket', '🌿': 'ai-leaf', '⭐': 'ai-star', '💎': 'ai-gem', '🎯': 'ai-target', '🌙': 'ai-moon', '☀️': 'ai-sun', '⚡': 'ai-bolt', '🧠': 'ai-brain', '🏆': 'ai-trophy' }, wik = (e) => WIK[e] || 'ai-wave', wHash = (q) => { const z = String(q); let h = 0; for (let k = 0; k < z.length; k++) h = (h * 31 + z.charCodeAt(k)) >>> 0; return h; }; const TABS2 = [['dash', 'Главная'], ['day', 'Моя волна'], ['me', 'Мой прогресс']]; if (L.sec.money) TABS2.push(['money', 'Экономика']);
     
     const special = L.mode === 'library' || L.mode === 'guide';
     const legacyProj = !special && (L.mode === 'projects' || L.mode === 'biz'), mode = special ? L.mode : (legacyProj || L.mode === 'study') ? 'day' : (TABS2.some(m => m[0] === L.mode) ? L.mode : 'dash');
@@ -1880,7 +1880,7 @@ class Component extends DCLogic {
     const isCust = mode.charAt(0) === 'c' && !!cust;
     const ci = isCust ? parseInt(mode.slice(1), 10) : 0;
     const INTRO = {
-      dash: 'Дашборд показывает итоги. Здесь ничего не нужно вводить: карточки сами берут данные из других страниц. «Настроить» меняет порядок и размер, «Добавить виджет» открывает список всего, что можно показать, включая финансы и аналитику.',
+      dash: 'Главная показывает итоги. Здесь ничего не нужно вводить: карточки сами берут данные из других страниц. «Настроить» меняет порядок и размер, «Добавить виджет» открывает список всего, что можно показать, включая финансы и аналитику.',
       day: 'Ваш день на одной странице: задачи, расписание, показатели и привычки. Отмечайте сделанное, остальное считается само. Какие части показывать, выбираете вы.',
       food: 'Записывайте, что ели. Трекер считает калории, белки, жиры и углеводы и сравнивает с вашей нормой.',
       sport: 'Тренировки: упражнения, подходы и кардио. Видны рекорды и объём за неделю.',
@@ -1998,7 +1998,7 @@ class Component extends DCLogic {
       addOp: l_addOp, delOp: l_delOp, togglePlan: l_togglePlan, addPlan: l_addPlan, delPlan: l_delPlan, addAccount: l_addAccount, updAccount: l_updAccount, delAccount: l_delAccount, importOps: l_importOps, setLimits: l_setLimits, setMcfg: l_setMcfg, setAcfg: l_setAcfg, acfg: L.acfg || {}, newMonth: l_newMonth, linkProject: l_linkProject, moneyProjects, pfMap: L.pf || {}, pfSums, linkedMap: L.linked || {}, pfSet: l_pfSet, reportProjects: l_report, limits: LIM, mcfg: (L.mcfg && Object.keys(L.mcfg).length) ? L.mcfg : null, setGoals: (g2) => this.set({ goals: g2 }), setDebts: (d2) => this.set({ debts: d2 }),
       modes: TABS2.map(m => ({ name: m[1], bg: mode === m[0] ? 'var(--accent)' : 'transparent', fg: mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
 
-      bsOn: false, bsTabs: [], pageTitle: ({ dash: 'Dashboard', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: 'Курсы и обучение', _study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Dashboard',
+      bsOn: false, bsTabs: [], pageTitle: ({ dash: 'Главная', day: 'Моя волна', me: 'Мой прогресс', projects: 'Проекты', biz: 'Бизнес', money: 'Экономика', study: 'Курсы и обучение', _study: L.sec.study && L.sec.lang ? 'Курсы' : L.sec.study ? 'Курсы' : 'Языки', library: 'Библиотека', guide: 'Как пользоваться' })[mode] || 'Главная',
       showBack: special || mode === 'me',
       menuCreate: L.menu === 'create', menuMore: L.menu === 'more', menuClose: () => this.set({ menu: '', createKind: '', createText: '', createDate: '', createTime: '', createP: '', createBody: '' }),
       createForm: L.menu === 'create' && !!L.createKind, createList: L.menu === 'create' && !L.createKind,
@@ -2046,7 +2046,7 @@ class Component extends DCLogic {
         return MI;
       })(),
       navItems: (() => {
-        const NV = [['dash', 'Dashboard', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'], ['day', 'Моя волна', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4']]
+        const NV = [['dash', 'Главная', 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'], ['day', 'Моя волна', 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4']]
           .concat(L.sec.money ? [['money', 'Экономика', 'M4 7h16v12H4zM4 7l3-3h10l3 3M15 13h2']] : []);
         const act = mode === 'me' ? 'dash' : (mode === 'day' && L.waveOpen) ? '' : mode;
         return NV.map(n => ({ name: n[1], icon: n[2], cur: act === n[0] ? 'page' : 'false', bg: act === n[0] ? 'var(--accent-soft)' : 'transparent', fg: act === n[0] ? 'var(--accent-text)' : 'var(--muted)', w: act === n[0] ? 700 : 600, pick: () => this.set(Object.assign({}, n[0] === 'day' ? { mode: 'day', menu: '', waveOpen: false } : { mode: n[0], menu: '' })) }));
@@ -2819,7 +2819,7 @@ const shortD = (s) => { let r = DCK.s.get(s); if (r === undefined) { const d = p
         return out;
       })()),
       modeAnim: 'modeIn' + Math.max(0, ['dash', 'day', 'food', 'sport', 'projects', 'money', 'study', 'library', 'guide', 'wave', 'finance', 'settings', 'cab', 'other'].indexOf(mode)),
-      isDash: mode === 'dash', emptyTitle: mode === 'projects' ? 'Проекты пока пустые' : mode === 'biz' ? 'Бизнес пока пустой' : 'Дашборд пока пустой', isDay: mode === 'day', isFood: mode === 'food', isSport: mode === 'sport', isProjects: mode === 'projects', isMoney: mode === 'money', isStudy: mode === 'study', isLibrary: mode === 'library', isGuide: mode === 'guide', isCustom: isCust,
+      isDash: mode === 'dash', emptyTitle: mode === 'projects' ? 'Проекты пока пустые' : mode === 'biz' ? 'Бизнес пока пустой' : 'Главная пока пустая', isDay: mode === 'day', isFood: mode === 'food', isSport: mode === 'sport', isProjects: mode === 'projects', isMoney: mode === 'money', isStudy: mode === 'study', isLibrary: mode === 'library', isGuide: mode === 'guide', isCustom: isCust,
       inTabs: !special, inLib: special, libTitle: mode === 'guide' ? 'Как пользоваться' : 'Библиотека', intro: INTRO[mode] || '',
       openLibrary: () => this.set({ mode: 'library', ltab: 'sections', prev: special ? this.L.prev : mode }), openGuide: () => this.set({ mode: 'guide', prev: special ? this.L.prev : mode }), goBack: () => this.set({ mode: this.L.mode === 'me' ? 'dash' : (this.L.prev || 'dash'), menu: '' }),
       libBtnBg: mode === 'library' ? 'var(--accent)' : 'var(--card)', libBtnFg: mode === 'library' ? 'var(--on-accent)' : 'var(--accent-text)', guideBtnBg: mode === 'guide' ? 'var(--accent)' : 'var(--card)', guideBtnFg: mode === 'guide' ? 'var(--on-accent)' : 'var(--ink)',
@@ -2838,7 +2838,7 @@ const shortD = (s) => { let r = DCK.s.get(s); if (r === undefined) { const d = p
     Object.assign(EXTRA, EXTRA1);
 
     const n = L.widgets.filter(w => CAT.some(c => c[0] === w.id)).length, hasW = n > 0, hasAny = hasW || (L.dashWp || []).length > 0 || !!L.hmAdd || !!L.waAdd || !!L.fnAdd || !!L.bzAdd;
-    const MODES = [['dash', 'Дашборд'], ['day', 'Моя волна'], ['library', 'Библиотека']];
+    const MODES = [['dash', 'Главная'], ['day', 'Моя волна'], ['library', 'Библиотека']];
     const BASE = {
       modes: MODES.map(m => ({ name: m[1], bg: L.mode === m[0] ? 'var(--accent)' : 'transparent', fg: L.mode === m[0] ? 'var(--on-accent)' : 'var(--muted)', pick: () => this.set(Object.assign({}, m[0] === 'day' ? { mode: 'day' } : { mode: m[0] })) })),
       isDash: L.mode === 'dash', isDay: L.mode === 'day', isProjects: false, isLibrary: L.mode === 'library',
@@ -2848,10 +2848,10 @@ const shortD = (s) => { let r = DCK.s.get(s); if (r === undefined) { const d = p
       pwOn: !!L.peekWave && (L.waves || []).some(w => w.id === L.peekWave), pwClose: () => this.set({ peekWave: '' }),
       pwName: (((L.waves || []).find(w => w.id === L.peekWave)) || { name: '' }).name, pwSub: (((L.waves || []).find(w => w.id === L.peekWave)) || { kind: 'own' }).kind === 'own' ? 'Свой план' : 'Курс',
       pwCells: Array.from({ length: 112 }, (_, i) => { const v = (i * 7 + (i >> 3) * 3) % 11, lv = i > 100 ? 0 : v > 8 ? 4 : v > 6 ? 3 : v > 4 ? 2 : v > 2 ? 1 : 0; return { bg: lv ? 'color-mix(in srgb,var(--ok) ' + [0, 30, 50, 75, 100][lv] + '%,var(--card))' : 'color-mix(in srgb,var(--ink) 9%,transparent)' }; }),
-      pwBtn: (L.dashWp || []).indexOf(L.peekWave) >= 0 ? 'Убрать с дашборда' : 'Добавить на дашборд', pwBg: (L.dashWp || []).indexOf(L.peekWave) >= 0 ? 'var(--ok-soft)' : 'var(--accent)', pwFg: (L.dashWp || []).indexOf(L.peekWave) >= 0 ? 'var(--ok)' : 'var(--on-accent)',
+      pwBtn: (L.dashWp || []).indexOf(L.peekWave) >= 0 ? 'Убрать с главной' : 'Добавить на главную', pwBg: (L.dashWp || []).indexOf(L.peekWave) >= 0 ? 'var(--ok-soft)' : 'var(--accent)', pwFg: (L.dashWp || []).indexOf(L.peekWave) >= 0 ? 'var(--ok)' : 'var(--on-accent)',
       pwToggle: () => { const id = this.L.peekWave, on = (this.L.dashWp || []).indexOf(id) >= 0; this.set({ dashWp: on ? (this.L.dashWp || []).filter(x => x !== id) : (this.L.dashWp || []).concat([id]) }); },
       peekOn: !!L.peek && CAT.some(c => c[0] === L.peek), pv: (() => { const o = {}; CAT.forEach(c => { o[c[0]] = L.peek === c[0]; }); return o; })(),
-      peekName: (CAT.find(c => c[0] === L.peek) || ['', ''])[1], peekAddText: idx(L.peek) >= 0 ? 'Убрать с дашборда' : 'Добавить на дашборд', peekBg: idx(L.peek) >= 0 ? 'var(--bad-soft)' : 'var(--accent)', peekFg: idx(L.peek) >= 0 ? 'var(--bad)' : 'var(--on-accent)',
+      peekName: (CAT.find(c => c[0] === L.peek) || ['', ''])[1], peekAddText: idx(L.peek) >= 0 ? 'Убрать с главной' : 'Добавить на главную', peekBg: idx(L.peek) >= 0 ? 'var(--bad-soft)' : 'var(--accent)', peekFg: idx(L.peek) >= 0 ? 'var(--bad)' : 'var(--on-accent)',
       pkOverlay: L.peekOut ? 'pkOut .22s ease both' : 'pkIn .28s ease both', pkCard: L.peekOut ? 'pkCardOut .22s ease both' : 'pkCardIn .42s cubic-bezier(.22,.8,.3,1) both',
       addOverlay: L.addOut ? 'pkOut .22s ease both' : 'pkIn .28s ease both', addCard: L.addOut ? 'pkCardOut .22s ease both' : 'pkCardIn .42s cubic-bezier(.22,.8,.3,1) both',
       addClose: () => { if (this.L.addOut) return; this.set({ addOut: true }); setTimeout(() => this.set({ dayTab: 'today', addOut: false }), 230); },
@@ -2864,7 +2864,7 @@ const shortD = (s) => { let r = DCK.s.get(s); if (r === undefined) { const d = p
       bpGo: () => { this.set({ bizPickOut: true }); setTimeout(() => this.set({ bizPick: false, bizPickOut: false, peek: '', gallery: false, mode: 'day', dayTab: 'projects' }), 230); },
       peekToggle: () => { const id = this.L.peek, c = CAT.find(x => x[0] === id); if (!c) return; const has = this.L.widgets.some(w => w.id === id); if (id === 'bizan' && !has) { this.set({ bizPick: true }); return; } this.set({ widgets: has ? this.L.widgets.filter(w => w.id !== id) : this.L.widgets.concat([{ id, size: c[7] }]) }); },
       openGallery: () => this.set({ gallery: true, gSec: '' }), closeGallery: () => { this.set({ gallery: false, galOut: true }); setTimeout(() => this.set({ galOut: false, gSec: '' }), 620); },
-      templates, cats, gallery, wid, countText: 'На дашборде ' + window.__wp(n),
+      templates, cats, gallery, wid, countText: 'На главной ' + window.__wp(n),
       toggleEdit: () => this.set({ edit: !this.L.edit }), editText: L.edit ? 'Готово' : 'Настроить', editBg: L.edit ? 'var(--accent)' : 'var(--card)', editFg: L.edit ? 'var(--on-accent)' : 'var(--ink)', editBorder: L.edit ? 'var(--accent)' : 'var(--line2)', editDisplay: L.edit ? 'flex' : 'none',
       clearAll: () => this.leave(this.L.widgets.map(w => w.id), true),
       presets: [preset('Минимум', ['tasks', 'habits', 'water']), preset('Деловой день', ['tasks', 'schedule', 'habits']), preset('Со здоровьем', ['tasks', 'water', 'habits']), preset('Всё сразу', ['tasks', 'schedule', 'water', 'habits'])],
