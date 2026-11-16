@@ -3,7 +3,7 @@
    дублируется на сервер и подтягивается на другом устройстве. Без сервера всё работает как раньше. */
 (function () {
   try {
-    var API = window.TRACKER_API || 'https://api.45-67-56-65.sslip.io';
+        var API = window.TRACKER_API || 'https://luxmax-bot-production-26691cbd.up.railway.app';
     var tg = window.Telegram && window.Telegram.WebApp, init = tg && tg.initData, WK = 'arqon:web', web = '';
     try { web = window.localStorage.getItem(WK) || ''; } catch (e) { web = ''; }
     /* Вход из обычного браузера: ссылка из бота (#login=…) меняется на сессионный токен, дальше он заменяет initData. */
