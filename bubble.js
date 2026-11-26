@@ -54,6 +54,9 @@ var css=[
 '#arqBub .e::before,#arqBub .e::after,#arqBub .e ~ .e::after{background:#141516!important}',
 '#arqBub .tx{font-weight:600!important;font-size:13px!important;letter-spacing:0!important}',
 '#arqBub .br{background:rgba(231,232,229,.5)!important;height:2px!important}',
+'#arqBub .tl{display:block!important;right:22px;bottom:-7px;width:12px;height:12px;background:#141516!important;border-right:1px solid rgba(255,255,255,.1)!important;border-bottom:1px solid rgba(255,255,255,.1)!important;transform:rotate(45deg);border-bottom-right-radius:3px}',
+'#arqBub.m-happy .e::before{transform:translateY(46%)}',
+'#arqBub .e{width:25px;height:29px}',
 '@media (prefers-reduced-motion:reduce){#arqBub{animation:none}}'
 ].join('\n');
 var T=[],eyes=[],bub=null,txt=null,cur='';
