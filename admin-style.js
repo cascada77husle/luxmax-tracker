@@ -28,8 +28,13 @@ var css=[
 '.arqHdr h1[data-cap]::after{content:"— " attr(data-cap);display:block;margin-top:5px;font:600 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.16em;color:var(--muted);-webkit-text-fill-color:var(--muted);text-transform:uppercase}',
 '[data-adm-c="1"]{border-radius:22px!important;outline:1px solid var(--line);outline-offset:-1px}',
 '@media (min-width:900px){html .arqNav{border-right:0!important;background:var(--bg)!important}html .arqNav::before{content:"";position:absolute;left:12px;right:10px;top:12px;bottom:12px;border:1px solid var(--line);border-radius:24px;background:var(--card);z-index:-1;pointer-events:none}}',
-'html body .pg > .arqHdr.arqHdr[style]{background:color-mix(in srgb,var(--bg) 90%,transparent)!important}',
-'[data-adm="1"]{border-radius:12px!important}'
+'html body .pg > .arqHdr.arqHdr[style]{background:var(--bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}',
+'[data-adm="1"]{border-radius:12px!important}',
+'@media (min-width:900px){html .arqNav::before{border-color:rgba(255,255,255,.13);background:color-mix(in srgb,var(--bg) 92%,#fff)}}',
+'@media (min-width:1100px){html .pg{max-width:none!important;margin-left:0!important;margin-right:0!important;zoom:1.12}}',
+'html .arqHdr h1[data-cap]{font-size:30px!important}html .arqHdr h1[data-cap]::after{font-size:12px}',
+'[data-adm-c=1]:not(:has(>img,>canvas,>video)){background:var(--card)!important;background-image:none!important;box-shadow:none!important}',
+'html.mono canvas:not(.arqWn):not(#arqWaves){filter:grayscale(1)}'
 ].join('\n');
 function inject(){if(document.getElementById('arqAdmCss'))return;var s=document.createElement('style');s.id='arqAdmCss';s.textContent=css;document.head.appendChild(s)}
 function wd(){var h=document.querySelector('.wkHd');if(!h)return;var w=h.querySelector('[data-dc-tpl="282"]'),t=h.querySelector('.wkDt');if(!w||!t)return;var x=(w.textContent||'').trim();var M={'понедельник':'Пн','вторник':'Вт','среда':'Ср','четверг':'Чт','пятница':'Пт','суббота':'Сб','воскресенье':'Вс'};if(x)t.setAttribute('data-wd',M[x.toLowerCase()]||x.slice(0,2))}
