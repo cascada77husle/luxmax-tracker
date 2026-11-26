@@ -58,7 +58,7 @@ function scan(){try{wd()}catch(e){}try{hideDup();cap();cards()}catch(e){}var bs=
   if(r.height<28||r.height>64){b.setAttribute('data-adm','0');continue}
   var br=parseFloat(getComputedStyle(b).borderTopLeftRadius)||0;
   b.setAttribute('data-adm',br>=r.height/2-1?'1':'0')}}
-var tm=0;function later(){clearTimeout(tm);tm=setTimeout(function(){try{scan()}catch(e){}},500)}
+var tm=0;function later(){clearTimeout(tm);tm=setTimeout(function(){if(document.hidden)return;try{scan()}catch(e){}},900)}
 inject();later();
 if(window.MutationObserver)new MutationObserver(later).observe(document.body||document.documentElement,{childList:true,subtree:true});
 document.addEventListener('click',later,true);
