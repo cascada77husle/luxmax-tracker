@@ -5,7 +5,7 @@ var css=[
 '#arqAiBotWrap>img{display:none!important}',
 '#arqBub{position:relative;width:200px;animation:arqBubFl 4.2s ease-in-out infinite;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}',
 '@keyframes arqBubFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}',
-'#arqBub .bb{position:relative;padding:13px 14px 12px;border-radius:22px 22px 6px 22px;background:#17191b;border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;gap:9px;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.3px);background-size:9px 9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}',
+'html.lt #arqBub .bb{transition:none}#arqBub .bb{position:relative;padding:13px 14px 12px;border-radius:22px 22px 6px 22px;background:#17191b;border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;gap:9px;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.3px);background-size:9px 9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}',
 '#arqBub .tl{position:absolute;right:20px;bottom:-6px;width:11px;height:11px;background:#17191b;border-right:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16);transform:rotate(45deg);border-bottom-right-radius:3px}',
 '#arqBub .ey{position:relative;display:flex;gap:11px}',
 '#arqBub .e{position:relative;display:block;width:23px;height:27px;border-radius:50%;background:#e7e8e5;overflow:hidden;transition:transform .09s ease-in}',
@@ -19,7 +19,6 @@ var css=[
 '#arqBub .st{position:absolute;pointer-events:none;color:#a6b4a5;animation:arqBubTw 3.2s ease-in-out infinite}',
 '#arqBub .s1{right:-9px;top:-15px;width:21px;height:21px}#arqBub .s2{left:-11px;top:9px;width:11px;height:11px;color:#e7e8e5;animation-delay:-1.1s}#arqBub .s3{right:-13px;bottom:14px;width:9px;height:9px;animation-delay:-2s}#arqBub .s4{left:38px;top:-13px;width:8px;height:8px;color:#e7e8e5;animation-delay:-.6s}',
 '@keyframes arqBubTw{0%,100%{transform:scale(.55) rotate(0deg);opacity:.5}50%{transform:scale(1) rotate(45deg);opacity:1}}',
-'html.lt #arqBub{filter:invert(1) hue-rotate(180deg)}',
 '@media (prefers-reduced-motion:reduce){#arqBub{animation:none}}'
 ].join('\n');
 var T=[],eyes=[],bub=null,txt=null,cur='';
