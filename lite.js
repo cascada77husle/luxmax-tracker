@@ -12,6 +12,8 @@ var css=[
 'html.lite body::before,html.lite body::after,html.lite #root::before,html.lite #root::after,html.lite .pg::before,html.lite .pg::after{display:none!important;background:none!important}',
 'html.lite [style*="blur("]{filter:none!important}',
 'html.lite [data-lgl]{background-image:none!important}',
+'html.lite [data-lgt=d]{background-color:rgba(255,255,255,.07)!important}html.lite [data-lgt=l]{background-color:#e9eaec!important}',
+'html.lite body,html.lite html{background-image:none!important}',
 /* шапка */
 '.arqIc{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border-radius:12px!important;border:1px solid rgba(255,255,255,.16)!important;background:rgba(255,255,255,.05)!important;display:inline-flex!important;align-items:center;justify-content:center;transition:background .2s,border-color .2s,transform .15s}',
 '.arqIc:hover{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.3)!important}.arqIc:active{transform:scale(.94)}',
@@ -54,7 +56,8 @@ function scanInline(){var all=document.querySelectorAll('[style*="shadow"]'),i=0
    if(cs.boxShadow&&cs.boxShadow!=='none'&&neon(cs.boxShadow))e.style.setProperty('box-shadow','none','important');}
   if(i<all.length)setTimeout(step,16)})()}
 /* ---- фон: радиальные градиенты и сетка в контейнерах верхних уровней ---- */
-function tagBg(){var q=document.querySelectorAll('body,body>*,body>*>*,body>*>*>*,.pg,.arqNav');for(var i=0;i<q.length;i++){var e=q[i];if(e.hasAttribute('data-lgl'))continue;var bi=getComputedStyle(e).backgroundImage;if(bi&&/radial-gradient|repeating/.test(bi))e.setAttribute('data-lgl','1')}}
+function lum(c){var m=(c||'').match(/[\d.]+/g);if(!m||m.length<3)return 1;return(.299*m[0]+.587*m[1]+.114*m[2])/255}
+function tagBg(){if(!R.classList.contains('lite'))return;var q=document.querySelectorAll('body *'),i=0;(function step(){var n=0;while(i<q.length&&n<150){var e=q[i++];n++;if(e.__lgd)continue;e.__lgd=1;var rc=e.getBoundingClientRect();if(rc.width<24||rc.height<14)continue;var s=getComputedStyle(e),bi=s.backgroundImage;if(!bi||bi==='none'||!/gradient/.test(bi)||/url\(/.test(bi))continue;e.setAttribute('data-lgl','1');var bc=s.backgroundColor;if(bc==='transparent'||/,\s*0\)$/.test(bc))e.setAttribute('data-lgt',lum(s.color)<.45?'l':'d')}if(i<q.length)setTimeout(step,24)})()}
 /* ---- шапка: тумблер и иконки ---- */
 function findCreate(){var bs=document.querySelectorAll('button');for(var i=0;i<bs.length;i++){var b=bs[i];if(/^\+?\s*Создать$/.test(b.textContent.trim())&&!b.closest('.gl-page')&&b.id!=='arqLiteTg')return b}return null}
 function inject(){css0();var c=findCreate();if(!c||!c.parentNode)return;var p=c.parentNode,gp=p.parentNode,row=gp&&getComputedStyle(gp).display==='flex'?gp:p;
