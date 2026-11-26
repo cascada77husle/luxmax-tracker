@@ -27,13 +27,22 @@ function walk(rules,out){for(var i=0;i<rules.length;i++){var r=rules[i];
  if(r.type===1){if(r.selectorText&&r.selectorText.indexOf('.hbS')>=0)continue;var st=r.style,dc=[];for(var j=0;j<st.length;j++){var p=st[j];var v=st.getPropertyValue(p),nv=recol(v);if(nv!==v)dc.push(p+':'+nv+' !important')}if(dc.length)out.push(r.selectorText+'{'+dc.join(';')+'}')}
  else if((r.type===4||r.type===12)&&r.cssRules){var inn=[];walk(r.cssRules,inn);if(inn.length)out.push((r.type===4?'@media ':'@supports ')+r.conditionText+'{'+inn.join('')+'}')}}}
 function isMine(n){return n&&n.id&&/^arqPal/.test(n.id)}
-function run(){if(!TA)return;var out=[],ss=document.styleSheets;
- for(var i=0;i<ss.length;i++){var sh=ss[i];if(isMine(sh.ownerNode))continue;try{walk(sh.cssRules,out)}catch(e){}}
- var s=sty('arqPalOv');s.textContent=out.join('\n');document.head.appendChild(s);
- var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.closest&&el.closest('#arqPalP'))continue;var cur=el.getAttribute('style');if(el.closest&&el.closest('.hbS')){if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}continue}var base=(el.__p1!==undefined&&cur===el.__p1)?el.__p0:cur;var nv=recol(base);if(nv!==cur)el.setAttribute('style',nv);if(nv!==base){el.__p0=base;el.__p1=nv}else{el.__p0=undefined;el.__p1=undefined}}
- var AT=['fill','stroke','stop-color'],sv=document.querySelectorAll('svg [fill],svg [stroke],svg [stop-color]');for(var q=0;q<sv.length;q++){var se=sv[q];if(se.closest&&se.closest('#arqPalP'))continue;if(se.closest&&se.closest('.hbS')){if(se.__q){for(var an0 in se.__q)se.setAttribute(an0,se.__q[an0].o);se.__q=null}continue}for(var u=0;u<AT.length;u++){var an=AT[u],av=se.getAttribute(an);if(!av)continue;var Q=se.__q||(se.__q={});var rec=Q[an];var b2=(rec&&av===rec.n)?rec.o:av;var n2=recol(b2);if(n2!==av)se.setAttribute(an,n2);if(n2!==b2)Q[an]={o:b2,n:n2};else delete Q[an]}}}
+var ver=0,sg='',busyR=0,AT3=['fill','stroke','stop-color'];
+function sig(){var ss=document.styleSheets,s=ss.length+':';for(var i=0;i<ss.length;i++){try{s+=ss[i].cssRules.length+','}catch(e){s+='x,'}}return s}
+function walkAll(){var out=[],ss=document.styleSheets;for(var i=0;i<ss.length;i++){var sh=ss[i];if(isMine(sh.ownerNode))continue;try{walk(sh.cssRules,out)}catch(e){}}var s=sty('arqPalOv');s.textContent=out.join('\n');document.head.appendChild(s)}
+function svgPass(panel,hb){var sv=document.querySelectorAll('svg [fill],svg [stroke],svg [stop-color]');for(var q=0;q<sv.length;q++){var se=sv[q];if(panel&&panel.contains(se))continue;var inh=false;for(var h=0;h<hb.length;h++)if(hb[h].contains(se)){inh=true;break}
+ if(inh){if(se.__q){for(var an0 in se.__q)se.setAttribute(an0,se.__q[an0].o);se.__q=null}continue}
+ for(var u=0;u<AT3.length;u++){var an=AT3[u],av=se.getAttribute(an);if(!av)continue;var Q=se.__q||(se.__q={});var rec=Q[an];var b2=(rec&&av===rec.n)?rec.o:av;var n2=recol(b2);if(n2!==av)se.setAttribute(an,n2);if(n2!==b2)Q[an]={o:b2,n:n2};else delete Q[an]}}}
+function attrs(){var panel=document.getElementById('arqPalP'),hb=document.querySelectorAll('.hbS'),els=document.querySelectorAll('[style]'),k=0,my=++busyR,v=ver;
+ function inHb(el){for(var i=0;i<hb.length;i++)if(hb[i].contains(el))return true;return false}
+ (function step(){if(my!==busyR||!TA)return;var end=Math.min(els.length,k+250);for(;k<end;k++){var el=els[k];if(panel&&panel.contains(el))continue;var cur=el.getAttribute('style');if(!cur)continue;
+  if(inHb(el)){if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined;el.__s=undefined}continue}
+  if(el.__v===v&&el.__s===cur)continue;
+  var base=(el.__p1!==undefined&&cur===el.__p1)?el.__p0:cur;var nv=recol(base);if(nv!==cur)el.setAttribute('style',nv);if(nv!==base){el.__p0=base;el.__p1=nv}else{el.__p0=undefined;el.__p1=undefined}el.__v=v;el.__s=nv}
+  if(k<els.length)setTimeout(step,10);else svgPass(panel,hb)})()}
+function run(){if(!TA)return;var s=sig();if(s!==sg){sg=s;walkAll()}attrs()}
 function later(ms){clearTimeout(rt);rt=setTimeout(run,ms)}
-function startRe(c,mono){var A=h2r(c.a),o=rgb2hsl(A[0],A[1],A[2]);var was=!!TA;TA={h:o[0],s:o[1],mono:!!mono};later(was?220:0);if(!was){setTimeout(run,1200);setTimeout(run,3500)}
+function startRe(c,mono){var A=h2r(c.a),o=rgb2hsl(A[0],A[1],A[2]);var was=!!TA;TA={h:o[0],s:o[1],mono:!!mono};ver++;sg='';later(was?220:0);if(!was){setTimeout(run,1200);setTimeout(run,3500)}
  if(!mo&&window.MutationObserver){mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes;for(var j=0;j<a.length;j++){if(a[j].tagName==='STYLE'&&!isMine(a[j])){later(250);return}}}});mo.observe(document.head,{childList:true});document.addEventListener('click',function(){if(TA)later(500)},true)}}
 function stopRe(){TA=null;var s=document.getElementById('arqPalOv');if(s)s.textContent='';var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}}var sv=document.querySelectorAll('svg *');for(var q=0;q<sv.length;q++){var se=sv[q];if(se.__q){for(var an in se.__q)se.setAttribute(an,se.__q[an].o);se.__q=null}}}
 function apply(c){var s=sty('arqPalCss');if(!c){s.textContent='';R.classList.remove('arqC');stopRe();return}
