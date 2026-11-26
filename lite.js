@@ -14,7 +14,7 @@ var css=[
 'html.lite [data-lgt=d]{background-color:rgba(255,255,255,.07)!important}html.lite [data-lgt=l]{background-color:#e9eaec!important}',
 'html.lite:root:root:root,html.lite:root body{background-image:none!important}',
 'html.lite canvas.arqWn{display:none!important}',
-'html.lite .arqWc::before,html.lite .arqWc::after,html.lite .arqAiHd::before,html.lite .arqAiHd::after,html.lite button.fnChip::after,html.lite div[style*="minmax(170px"]>div::before{background-image:none!important}','html.lite .arqRip{display:none!important}',
+'html.noTr #arqAiBotWrap,html.noTr canvas{visibility:hidden!important}','html.lite .arqAn::before,html.lite .arqAn::after,html.lite .arqWc::before,html.lite .arqWc::after,html.lite .arqAiHd::before,html.lite .arqAiHd::after,html.lite button.fnChip::after,html.lite div[style*="minmax(170px"]>div::before{background-image:none!important}','html.lite .arqRip{display:none!important}',
 'html.lite .arqNav{background:#141618!important}',
 /* шапка */
 '.arqIc{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border-radius:12px!important;border:1px solid rgba(255,255,255,.16)!important;background:rgba(255,255,255,.05)!important;display:inline-flex!important;align-items:center;justify-content:center;transition:background .2s,border-color .2s,transform .15s}',
