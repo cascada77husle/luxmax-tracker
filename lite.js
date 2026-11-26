@@ -79,7 +79,7 @@ function showLd(){if(ld)return;ld=document.createElement('div');ld.id='arqLd';ld
 function hideLd(){var e=ld;if(!e)return;ld=null;e.classList.add('out');setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},340)}
 function settle(minMs,maxMs,cb){var t0=Date.now(),last=Date.now(),mo=new MutationObserver(function(){last=Date.now()});mo.observe(document.body,{childList:true,subtree:true,attributes:true,characterData:true});
  (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=380)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
-function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/(^|\s)День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|ПЛАН|Сегодня/.test(tx)&&!/Главное|Экономика|Моя волна|Создать/.test(tx)&&n.tagName!=='BODY')return n;
+function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|ПЛАН|Сегодня/.test(tx)&&!/Главное|Экономика|Моя волна|Создать/.test(tx)&&n.tagName!=='BODY')return n;
   n=n.parentElement;i++}return null}
 window.addEventListener('click',function(e){if(byp||!e.isTrusted||ld)return;if(e.target&&e.target.closest&&e.target.closest('#arqLiteTg,#thTg,.gl-page'))return;var g=gate(e.target);if(!g)return;
  e.stopImmediatePropagation();e.preventDefault();showLd();var tg=e.target;
