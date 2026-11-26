@@ -35,7 +35,14 @@ var css=[
 '#arqLd.out{opacity:0;transition:opacity .3s ease}',
 '#arqLd i{width:38px;height:38px;border-radius:50%;border:3px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.9);animation:arqLdSp .8s linear infinite}',
 '#arqLd span{font:600 12px/1 Archivo,system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}',
-'@keyframes arqLdSp{to{transform:rotate(360deg)}}'
+'@keyframes arqLdSp{to{transform:rotate(360deg)}}',
+/* единая фирменная загрузка ARQON (и для #arqLd, и для #glLoad) */
+'html #arqLd,html #glLoad{gap:22px!important}',
+'html #arqLd span,html #glLoad span{order:1;font-size:0!important;letter-spacing:0!important;animation:arqLdPulse 2.4s ease-in-out infinite}',
+'html #arqLd span::before,html #glLoad span::before{content:"ARQON";display:block;font:800 26px/1 Archivo,system-ui,sans-serif;letter-spacing:.5em;margin-right:-.5em;color:var(--ink,#e7e8e5)}',
+'html #arqLd i,html #glLoad i{order:2;position:relative;overflow:hidden;width:120px!important;height:2px!important;border:0!important;border-radius:2px!important;background:rgba(255,255,255,.12)!important;animation:none!important}',
+'html #arqLd i::after,html #glLoad i::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:100%;border-radius:2px;background:#a6b4a5;animation:arqLdBar 1.1s ease-in-out infinite}',
+'@keyframes arqLdBar{to{left:100%}}@keyframes arqLdPulse{50%{opacity:.6}}'
 ].join('\n');
 function apply(v){R.classList.toggle('lite',v)}
 function css0(){if(!document.getElementById('arqLiteCss')){var s=document.createElement('style');s.id='arqLiteCss';s.textContent=css;document.head.appendChild(s)}}
@@ -78,12 +85,12 @@ var ld=null,byp=false;
 function showLd(){if(ld)return;ld=document.createElement('div');ld.id='arqLd';ld.innerHTML='<i></i><span>Загружаю</span>';document.body.appendChild(ld)}
 function hideLd(){var e=ld;if(!e)return;ld=null;e.classList.add('out');setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},340)}
 function settle(minMs,maxMs,cb){var t0=Date.now(),last=Date.now(),mo=new MutationObserver(function(){last=Date.now()});mo.observe(document.body,{childList:true,subtree:true,attributes:true,characterData:true});
- (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=380)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
+ (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=260)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
 function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|ПЛАН|Сегодня/.test(tx)&&!/Главное|Экономика|Моя волна|Создать/.test(tx)&&n.tagName!=='BODY')return n;
   n=n.parentElement;i++}return null}
 window.addEventListener('click',function(e){if(byp||!e.isTrusted||ld)return;if(e.target&&e.target.closest&&e.target.closest('#arqLiteTg,#thTg,.gl-page'))return;var g=gate(e.target);if(!g)return;
  e.stopImmediatePropagation();e.preventDefault();showLd();var tg=e.target;
- setTimeout(function(){byp=true;try{tg.click()}catch(x){}byp=false;settle(700,4500,hideLd)},70)},true);
+ setTimeout(function(){byp=true;try{tg.click()}catch(x){}byp=false;settle(450,1800,hideLd)},70)},true);
 apply(get());css0();
 var T=0,T2=0;
 function boot(){inject();scanSheets();tagBg();scanInline()}
