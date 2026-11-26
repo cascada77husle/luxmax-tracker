@@ -5,15 +5,20 @@ var css=[
 '#arqAiBotWrap>img{display:none!important}',
 '#arqBub{position:relative;width:200px;animation:arqBubFl 4.2s ease-in-out infinite;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}',
 '@keyframes arqBubFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}',
-'#arqBub .bb{position:relative;padding:13px 14px 12px;border-radius:22px 22px 6px 22px;background:#17191b;border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;gap:9px}',
+'#arqBub .bb{position:relative;padding:13px 14px 12px;border-radius:22px 22px 6px 22px;background:#17191b;border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;gap:9px;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.3px);background-size:9px 9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}',
 '#arqBub .tl{position:absolute;right:20px;bottom:-6px;width:11px;height:11px;background:#17191b;border-right:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16);transform:rotate(45deg);border-bottom-right-radius:3px}',
-'#arqBub .ey{display:flex;gap:11px}',
+'#arqBub .ey{position:relative;display:flex;gap:11px}',
 '#arqBub .e{position:relative;display:block;width:23px;height:27px;border-radius:50%;background:#e7e8e5;overflow:hidden;transition:transform .09s ease-in}',
 '#arqBub.bk .e{transform:scaleY(.08)}',
 '#arqBub .p{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#141618;transform:translate(var(--x,0px),var(--y,0px));transition:transform .24s cubic-bezier(.3,1.55,.5,1)}',
 '#arqBub .p::after{content:"";position:absolute;left:2px;top:2px;width:4px;height:4px;border-radius:50%;background:#e7e8e5}',
 '#arqBub .tx{font:700 13.5px/1.25 Archivo,system-ui,sans-serif;color:#e7e8e5;text-align:center;letter-spacing:.01em;transition:opacity .25s ease,transform .25s ease}',
 '#arqBub .tx.o{opacity:0;transform:translateY(3px)}',
+'#arqBub .ck{position:absolute;top:19px;width:10px;height:6px;border-radius:50%;background:#a6b4a5;opacity:.34}#arqBub .ck.l{left:-11px}#arqBub .ck.r{right:-11px}',
+'#arqBub .e{box-shadow:inset 0 -6px 0 rgba(166,180,165,.32)}',
+'#arqBub .st{position:absolute;pointer-events:none;color:#a6b4a5;animation:arqBubTw 3.2s ease-in-out infinite}',
+'#arqBub .s1{right:-9px;top:-15px;width:21px;height:21px}#arqBub .s2{left:-11px;top:9px;width:11px;height:11px;color:#e7e8e5;animation-delay:-1.1s}#arqBub .s3{right:-13px;bottom:14px;width:9px;height:9px;animation-delay:-2s}#arqBub .s4{left:38px;top:-13px;width:8px;height:8px;color:#e7e8e5;animation-delay:-.6s}',
+'@keyframes arqBubTw{0%,100%{transform:scale(.55) rotate(0deg);opacity:.5}50%{transform:scale(1) rotate(45deg);opacity:1}}',
 'html.lt #arqBub{filter:invert(1) hue-rotate(180deg)}',
 '@media (prefers-reduced-motion:reduce){#arqBub{animation:none}}'
 ].join('\n');
@@ -34,7 +39,7 @@ function blink(){if(!bub)return;bub.classList.add('bk');setTimeout(function(){if
 function loopBlink(){T.push(setTimeout(function(){blink();if(Math.random()<.22)setTimeout(blink,230);loopBlink()},2400+Math.random()*3200))}
 function mount(){var w=document.getElementById('arqAiBotWrap');if(!w||w.querySelector('#arqBub'))return;
  if(!document.getElementById('arqBubCss')){var s=document.createElement('style');s.id='arqBubCss';s.textContent=css;document.head.appendChild(s)}
- var d=document.createElement('div');d.id='arqBub';d.innerHTML='<div class="bb"><div class="ey"><i class="e"><b class="p"></b></i><i class="e"><b class="p"></b></i></div><div class="tx"></div></div><span class="tl"></span>';
+ var d=document.createElement('div');d.id='arqBub';d.innerHTML='<div class="bb"><div class="ey"><i class="ck l"></i><i class="ck r"></i><i class="e"><b class="p"></b></i><i class="e"><b class="p"></b></i></div><div class="tx"></div></div><span class="tl"></span><svg class="st s1" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg><svg class="st s2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg><svg class="st s3" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg><svg class="st s4" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg>';
  w.appendChild(d);bub=d;txt=d.querySelector('.tx');eyes=[].slice.call(d.querySelectorAll('.p'));setText(pick(),false);
  T.forEach(clearTimeout);T=[];loopLook();loopBlink()}
 setInterval(mount,1500);mount();
