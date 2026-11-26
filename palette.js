@@ -31,7 +31,7 @@ function isMine(n){return n&&n.id&&/^arqPal/.test(n.id)}
 var ver=0,sg='',busyR=0,AT3=['fill','stroke','stop-color'];
 function sig(){var ss=document.styleSheets,s=ss.length+':';for(var i=0;i<ss.length;i++){try{s+=ss[i].cssRules.length+','}catch(e){s+='x,'}}return s}
 function walkAll(){var out=[],ss=document.styleSheets;for(var i=0;i<ss.length;i++){var sh=ss[i];if(isMine(sh.ownerNode))continue;try{walk(sh.cssRules,out)}catch(e){}}var s=sty('arqPalOv');s.textContent=out.join('\n');document.head.appendChild(s)}
-function svgPass(panel,hb){var sv=document.querySelectorAll('svg [fill],svg [stroke],svg [stop-color]');for(var q=0;q<sv.length;q++){var se=sv[q];if(panel&&panel.contains(se))continue;var inh=false;for(var h=0;h<hb.length;h++)if(hb[h].contains(se)){inh=true;break}
+function svgPass(panel,hb){var sv=document.querySelectorAll('svg[fill],svg[stroke],svg[stop-color],svg [fill],svg [stroke],svg [stop-color]');for(var q=0;q<sv.length;q++){var se=sv[q];if(panel&&panel.contains(se))continue;var inh=false;for(var h=0;h<hb.length;h++)if(hb[h].contains(se)){inh=true;break}
  if(inh){if(se.__q){for(var an0 in se.__q)se.setAttribute(an0,se.__q[an0].o);se.__q=null}continue}
  for(var u=0;u<AT3.length;u++){var an=AT3[u],av=se.getAttribute(an);if(!av)continue;var Q=se.__q||(se.__q={});var rec=Q[an];var b2=(rec&&av===rec.n)?rec.o:av;var n2=recol(b2);if(n2!==av)se.setAttribute(an,n2);if(n2!==b2)Q[an]={o:b2,n:n2};else delete Q[an]}}}
 function attrs(){var panel=document.getElementById('arqPalP'),hb=document.querySelectorAll('.hbS'),els=document.querySelectorAll('[style]'),k=0,my=++busyR,v=ver;
