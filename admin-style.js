@@ -56,8 +56,8 @@ var css=[
 ,'html body .arqDrum *{backface-visibility:hidden;-webkit-backface-visibility:hidden}html body .ac-card{animation:none!important}html body .arqDrum{contain:paint}',
 'html body .arqEco .arqDrum div.arqBk .ac-card{transform:scale(.8)!important}',
 'html body .arqDrum .arqBk{backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}',
-'html body .pg :is(.wkC,.wvc,.tkCat,.arqAn,.arqHab,.arqBoxT,.arqTop){background:var(--card)!important;background-image:none!important;box-shadow:none!important}',
-'html body .pg .tkRow{background:var(--field)!important;background-image:none!important;box-shadow:none!important}'
+'html body .pg.pg.pg.pg :is(.wkC,.wvc,.tkCat,.arqAn,.arqHab,.arqBoxT,.arqTop){background:var(--card)!important;background-image:none!important;box-shadow:none!important}',
+'html body .pg.pg.pg.pg .tkRow{background:var(--field)!important;background-image:none!important;box-shadow:none!important}'
 ].join('\n');
 function inject(){if(document.getElementById('arqAdmCss'))return;var s=document.createElement('style');s.id='arqAdmCss';s.textContent=css;document.head.appendChild(s)}
 function wd(){var h=document.querySelector('.wkHd');if(!h)return;var w=h.querySelector('[data-dc-tpl="282"]'),t=h.querySelector('.wkDt');if(!w||!t)return;var x=(w.textContent||'').trim();var M={'понедельник':'Пн','вторник':'Вт','среда':'Ср','четверг':'Чт','пятница':'Пт','суббота':'Сб','воскресенье':'Вс'};if(x)t.setAttribute('data-wd',M[x.toLowerCase()]||x.slice(0,2))}
