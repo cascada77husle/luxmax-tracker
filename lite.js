@@ -6,6 +6,10 @@ function put(v){try{localStorage.setItem(K,v?'1':'0')}catch(e){}}
 var css=[
 /* всегда: без неоновых подсветок, робот чуть приглушён */
 'html [style*="drop-shadow"]{filter:none!important}',
+/* везде: без цветных свечений */
+'.gl-qb::after,html button.fnChip::after,html body .arqAn.arqHm::after,.arqWc::before,html div[style*="minmax(170px"]>div::before,html div[style*="minmax(170px"]>div:nth-child(3)::before{display:none!important}',
+/* скорость: изоляция отрисовки тяжёлых блоков */
+'.pCol,.pEv{contain:layout paint style}.pEv{content-visibility:auto}button.hbc,.arqCk{contain:layout style paint}.arqHm,.arqHab{content-visibility:auto;contain-intrinsic-size:auto 600px}',
 /* упрощённая версия: без свечения, теней, размытия, фонов и точечной сетки (анимации остаются) */
 'html.lite *,html.lite *::before,html.lite *::after{box-shadow:none!important;text-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}',
 'html.lite body::before,html.lite body::after,html.lite #root::before,html.lite #root::after,html.lite .pg::before,html.lite .pg::after{display:none!important;background:none!important}',
@@ -75,8 +79,8 @@ function showLd(){if(ld)return;ld=document.createElement('div');ld.id='arqLd';ld
 function hideLd(){var e=ld;if(!e)return;ld=null;e.classList.add('out');setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},340)}
 function settle(minMs,maxMs,cb){var t0=Date.now(),last=Date.now(),mo=new MutationObserver(function(){last=Date.now()});mo.observe(document.body,{childList:true,subtree:true,attributes:true,characterData:true});
  (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=380)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
-function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/(^|\s)День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|волн|Моя/i.test(tx)&&n.tagName!=='BODY')return n;
-  if(n.tagName==='BUTTON'&&/^(Моя волна|Экономика|Главная|Мой прогресс)$/.test(tx))return n;n=n.parentElement;i++}return null}
+function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/(^|\s)День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|ПЛАН|Сегодня/.test(tx)&&!/Главное|Экономика|Моя волна|Создать/.test(tx)&&n.tagName!=='BODY')return n;
+  n=n.parentElement;i++}return null}
 window.addEventListener('click',function(e){if(byp||!e.isTrusted||ld)return;if(e.target&&e.target.closest&&e.target.closest('#arqLiteTg,#thTg,.gl-page'))return;var g=gate(e.target);if(!g)return;
  e.stopImmediatePropagation();e.preventDefault();showLd();var tg=e.target;
  setTimeout(function(){byp=true;try{tg.click()}catch(x){}byp=false;settle(700,4500,hideLd)},70)},true);
