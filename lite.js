@@ -42,7 +42,7 @@ var css=[
 'html #arqLd span::before,html #glLoad span::before{content:"ARQON";display:block;font:800 26px/1 Archivo,system-ui,sans-serif;letter-spacing:.5em;margin-right:-.5em;color:var(--ink,#e7e8e5)}',
 'html #arqLd i,html #glLoad i{order:2;position:relative;overflow:hidden;width:120px!important;height:2px!important;border:0!important;border-radius:2px!important;background:rgba(255,255,255,.12)!important;animation:none!important}',
 'html #arqLd i::after,html #glLoad i::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:100%;border-radius:2px;background:#a6b4a5;animation:arqLdBar 1.1s ease-in-out infinite}',
-'@keyframes arqLdBar{to{left:100%}}@keyframes arqLdPulse{50%{opacity:.6}}'
+'#arqLd.off,#glLoad.off{opacity:0!important;pointer-events:none!important;transition:opacity .25s ease!important}','@keyframes arqLdBar{to{left:100%}}@keyframes arqLdPulse{50%{opacity:.6}}'
 ].join('\n');
 function apply(v){R.classList.toggle('lite',v)}
 function css0(){if(!document.getElementById('arqLiteCss')){var s=document.createElement('style');s.id='arqLiteCss';s.textContent=css;document.head.appendChild(s)}}
@@ -85,12 +85,12 @@ var ld=null,byp=false;
 function showLd(){if(ld)return;ld=document.createElement('div');ld.id='arqLd';ld.innerHTML='<i></i><span>Загружаю</span>';document.body.appendChild(ld)}
 function hideLd(){var e=ld;if(!e)return;ld=null;e.classList.add('out');setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},340)}
 function settle(minMs,maxMs,cb){var t0=Date.now(),last=Date.now(),mo=new MutationObserver(function(){last=Date.now()});mo.observe(document.body,{childList:true,subtree:true,attributes:true,characterData:true});
- (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=260)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
+ (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=200)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
 function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|ПЛАН|Сегодня/.test(tx)&&!/Главное|Экономика|Моя волна|Создать/.test(tx)&&n.tagName!=='BODY')return n;
   n=n.parentElement;i++}return null}
 window.addEventListener('click',function(e){if(byp||!e.isTrusted||ld)return;if(e.target&&e.target.closest&&e.target.closest('#arqLiteTg,#thTg,.gl-page'))return;var g=gate(e.target);if(!g)return;
  e.stopImmediatePropagation();e.preventDefault();showLd();var tg=e.target;
- setTimeout(function(){byp=true;try{tg.click()}catch(x){}byp=false;settle(450,1800,hideLd)},70)},true);
+ setTimeout(function(){byp=true;try{tg.click()}catch(x){}byp=false;settle(250,900,hideLd)},70)},true);
 apply(get());css0();
 var T=0,T2=0;
 function boot(){inject();scanSheets();tagBg();scanInline()}
@@ -115,4 +115,10 @@ function build(){try{if(done)return;var im=document.querySelector('#arqAiBotWrap
  x.putImageData(src,0,0);var u=c.toDataURL('image/png');var st=document.createElement('style');st.id='arqBotMatte';st.textContent='html.lite #arqAiBotWrap img{content:url('+u+')}';document.head.appendChild(st)}catch(e){}}
 function go(){try{build()}catch(e){}}
 var n=0,t=setInterval(function(){n++;go();if(done||n>40)clearInterval(t)},700);
+}catch(e){}})();
+
+/* ARQON: загрузка закрывает только правую часть (меню остаётся), и не дольше секунды */
+(function(){try{
+function place(el){try{var n=document.querySelector('.arqNav'),l=0,b=0;if(n){var r=n.getBoundingClientRect();if(r.width>0&&r.height>0){if(r.height>innerHeight*.5&&r.left<5&&r.width<innerWidth*.5)l=Math.round(r.right);else if(r.width>innerWidth*.6&&r.bottom>innerHeight-4)b=Math.round(innerHeight-r.top)}}el.style.left=l+'px';el.style.bottom=b+'px'}catch(e){}}
+new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes;for(var j=0;j<a.length;j++){var n=a[j];if(n&&(n.id==='arqLd'||n.id==='glLoad')){place(n);(function(x){setTimeout(function(){x.classList.add('off')},1000)})(n)}}}}).observe(document.body||document.documentElement,{childList:true});
 }catch(e){}})();
