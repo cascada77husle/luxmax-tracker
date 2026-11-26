@@ -15,9 +15,29 @@ function build(a,b){var A=h2r(a),B=h2r(b);if(!A||!B)return '';
 function sty(id){var s=document.getElementById(id);if(!s){s=document.createElement('style');s.id=id;document.head.appendChild(s)}return s}
 function load(){try{var j=JSON.parse(localStorage.getItem(K));if(j&&h2r(j.a)&&h2r(j.b))return j}catch(e){}return null}
 function save(c){try{if(c)localStorage.setItem(K,JSON.stringify(c));else localStorage.removeItem(K)}catch(e){}}
-function apply(c){var s=sty('arqPalCss');if(!c){s.textContent='';R.classList.remove('arqC');return}
+
+/* Перекраска всех «зелёных» цветов в стилях под выбранную палитру (тумблеры, кнопки, значки и т.д.) */
+var TA=null,mo=null,rt=0;
+function rgb2hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn,h=0,l=(mx+mn)/2,s=d?d/(1-Math.abs(2*l-1)):0;if(d){h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360}return [h,s,l]}
+function hsl2rgb(h,s,l){var c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2,r=0,g=0,b=0;if(h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x}return [(r+m)*255,(g+m)*255,(b+m)*255]}
+function mapc(r,g,b){var mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx-mn<8)return null;var o=rgb2hsl(r,g,b);if(o[0]<60||o[0]>190)return null;var nh=(TA.h+(o[0]-114)+360)%360,ns=Math.max(0,Math.min(1,o[1]*Math.max(.5,Math.min(3,TA.s/.085))));return hsl2rgb(nh,ns,o[2]).map(Math.round)}
+var RE=/#([0-9a-fA-F]{6})\b|rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)(?:\s*[,\/]\s*([\d.]+%?))?\s*\)/g;
+function recol(v){if(!TA||(v.indexOf('#')<0&&v.indexOf('rgb')<0))return v;return v.replace(RE,function(m,hx,r,g,b,a){var R,G,B;if(hx){var n=parseInt(hx,16);R=(n>>16)&255;G=(n>>8)&255;B=n&255}else{R=+r;G=+g;B=+b}var o=mapc(R,G,B);if(!o)return m;if(hx)return r2h(o);return a!==undefined?'rgba('+o[0]+','+o[1]+','+o[2]+','+a+')':'rgb('+o.join(',')+')'})}
+function walk(rules,out){for(var i=0;i<rules.length;i++){var r=rules[i];
+ if(r.type===1){var st=r.style,dc=[];for(var j=0;j<st.length;j++){var p=st[j];if(p.indexOf('--')===0)continue;var v=st.getPropertyValue(p),nv=recol(v);if(nv!==v)dc.push(p+':'+nv+' !important')}if(dc.length)out.push(r.selectorText+'{'+dc.join(';')+'}')}
+ else if((r.type===4||r.type===12)&&r.cssRules){var inn=[];walk(r.cssRules,inn);if(inn.length)out.push((r.type===4?'@media ':'@supports ')+r.conditionText+'{'+inn.join('')+'}')}}}
+function isMine(n){return n&&n.id&&/^arqPal/.test(n.id)}
+function run(){if(!TA)return;var out=[],ss=document.styleSheets;
+ for(var i=0;i<ss.length;i++){var sh=ss[i];if(isMine(sh.ownerNode))continue;try{walk(sh.cssRules,out)}catch(e){}}
+ var s=sty('arqPalOv');s.textContent=out.join('\n');document.head.appendChild(s);
+ var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.closest&&el.closest('#arqPalP'))continue;var cur=el.getAttribute('style');if(el.__p1!==undefined&&cur===el.__p1)continue;var nv=recol(cur);if(nv!==cur){el.__p0=cur;el.setAttribute('style',nv);el.__p1=nv}else{el.__p1=undefined}}}
+function later(ms){clearTimeout(rt);rt=setTimeout(run,ms)}
+function startRe(c){var A=h2r(c.a),o=rgb2hsl(A[0],A[1],A[2]);TA={h:o[0],s:o[1]};later(0);setTimeout(run,1200);setTimeout(run,3500);
+ if(!mo&&window.MutationObserver){mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes;for(var j=0;j<a.length;j++){if(a[j].tagName==='STYLE'&&!isMine(a[j])){later(250);return}}}});mo.observe(document.head,{childList:true});document.addEventListener('click',function(){if(TA)later(500)},true)}}
+function stopRe(){TA=null;var s=document.getElementById('arqPalOv');if(s)s.textContent='';var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}}}
+function apply(c){var s=sty('arqPalCss');if(!c){s.textContent='';R.classList.remove('arqC');stopRe();return}
  R.classList.remove('mono');try{localStorage.setItem('arqPal','sage')}catch(e){}
- s.textContent=build(c.a,c.b);R.classList.add('arqC')}
+ s.textContent=build(c.a,c.b);R.classList.add('arqC');startRe(c)}
 function mono(){apply(null);save(null);R.classList.add('mono');try{localStorage.setItem('arqPal','mono')}catch(e){}}
 function reset(){apply(null);save(null);R.classList.remove('mono');try{localStorage.setItem('arqPal','sage')}catch(e){}}
 apply(load());
@@ -25,7 +45,7 @@ var PCSS='#arqPalP{position:fixed;left:0;top:0;right:0;bottom:0;z-index:21474820
 +'#arqPalP .pn{width:100%;max-width:360px;background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;font:600 14px/1.3 Archivo,system-ui,sans-serif}'
 +'#arqPalP h3{margin:0;font:800 18px/1.2 Archivo,system-ui,sans-serif;letter-spacing:.02em}'
 +'#arqPalP .sw{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}'
-+'#arqPalP .sw button{height:40px;border-radius:50%;border:1px solid var(--line2);cursor:pointer;padding:0;color:var(--ink);font:700 11px Archivo,system-ui,sans-serif}'
++'#arqPalP .sw button{aspect-ratio:1/1;border-radius:50%;border:1px solid var(--line2);cursor:pointer;padding:0;color:var(--ink);font:700 11px Archivo,system-ui,sans-serif}'
 +'#arqPalP .sw button.on{outline:2px solid var(--ink);outline-offset:2px}'
 +'#arqPalP .rw{display:flex;align-items:center;justify-content:space-between;gap:10px}'
 +'#arqPalP input[type=color]{width:56px;height:34px;border:1px solid var(--line2);border-radius:10px;background:var(--field);padding:2px;cursor:pointer}'
