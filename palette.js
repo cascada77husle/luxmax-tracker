@@ -87,3 +87,18 @@ function open(){if(document.getElementById('arqPalP'))return;sty('arqPalPCss').t
  mark()}
 document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('#arqPal');if(!b)return;e.stopImmediatePropagation();e.preventDefault();open()},true);
 }catch(e){}})();
+
+/* ARQON: единый тон блоков — тёмные плашки с «чужим» фоном приводятся к цвету карточек дашборда. Только вид; откат: убрать этот блок. */
+(function(){try{
+var st=document.createElement('style');st.id='arqToneCss';st.textContent='html body .pg .arqTn{background-color:var(--card)!important}';document.head.appendChild(st);
+var tm=0;
+function scan(){tm=0;var pr=document.createElement('div');pr.style.cssText='position:fixed;left:-9px;top:-9px;width:1px;height:1px;background:var(--bg)';document.body.appendChild(pr);var bgc=getComputedStyle(pr).backgroundColor;pr.remove();
+ var els=document.querySelectorAll('.pg [style*="background"]'),n=Math.min(els.length,500);
+ for(var i=0;i<n;i++){var el=els[i];if(el.closest('.hbS,.ac-card,#arqBub,.arqNav,#arqPalP'))continue;var r=el.getBoundingClientRect();var on=false;
+  if(r.width>=80&&r.height>=36){var cs=getComputedStyle(el);if(cs.backgroundImage==='none'){var c=cs.backgroundColor;if(c!==bgc){var m=c.match(/[\d.]+/g);if(m&&m.length>=3&&(m.length<4||+m[3]===1)){var mx=Math.max(+m[0],+m[1],+m[2]);if(mx>=8&&mx<=75)on=true}}}}
+  if(on!==el.classList.contains('arqTn'))el.classList.toggle('arqTn',on)}}
+function later(ms){if(tm)clearTimeout(tm);tm=setTimeout(scan,ms)}
+if(window.MutationObserver)new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){if(ms[i].addedNodes.length){later(450);return}}}).observe(document.documentElement,{childList:true,subtree:true});
+document.addEventListener('click',function(){later(500)},true);
+setTimeout(scan,1500);
+}catch(e){}})();
