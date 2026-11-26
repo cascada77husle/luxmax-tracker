@@ -397,8 +397,8 @@ function render(m){
  var T=m.tasks,tdn=T.filter(function(x){return x.done}).length,hd=0,ha=m.hab.length;
  m.hab.forEach(function(r){if(r.cells[r.cells.length-1]==="d")hd++});
  window.__glScore=m.score;var evToday=m.evOn(t).length,sp=m.sport,spn=sp.sets?sp.sets[0]+" из "+sp.sets[1]:"";
- h.push('<div class="gl-hd"><div><p>Ваш личный центр продуктивности</p></div><button type="button" class="gl-sw" role="switch" aria-checked="'+(ex?"true":"false")+'" data-a="sw">Пример<i></i></button></div>');
- if(!ex&&!m.w)h.push('<div class="card gl-note" style="padding:10px 14px!important;font-size:13px;color:var(--muted)">Здесь пока нет ваших данных: все цифры считаются только по вашей волне и счетам. Создайте свою волну в «Моя волна» — или включите «Пример», чтобы посмотреть, как всё выглядит.</div>');
+ h.push('<div class="gl-hd"><div><p>Задачи, привычки и деньги</p></div><button type="button" class="gl-sw" role="switch" aria-checked="'+(ex?"true":"false")+'" data-a="sw">Пример<i></i></button></div>');
+ if(!ex&&!m.w)h.push('<div class="card gl-note" style="padding:10px 14px!important;font-size:13px;color:var(--muted)">Данных пока нет: цифры считаются по вашей волне и счетам. Создайте волну в «Моя волна» или включите «Пример».</div>');
  var Q=[["tasks","Задачи",ICON.tasks,T.length?tdn+" из "+T.length:"Открыть"],["cal","Календарь",ICON.cal,evToday?evToday+" на сегодня":"Расписание"],["habits","Привычки",ICON.habits,ha?hd+" из "+ha:"Открыть"],["sport","Спорт",ICON.sport,spn?"подходы "+spn:"Тренировки"],["eco","Финансы",ICON.fin,"Экономика"]];
  h.push('<div class="gl-q">'+Q.map(function(x,qi){var c=CT[x[0]==="eco"?"fin":x[0]];return '<button type="button" class="gl-qb" data-a="go:'+x[0]+'" style="--c:'+c+';--i:'+qi+'"><span class="ic">'+x[2]+'</span><span class="tx"><b>'+x[1]+'</b><small>'+x[3]+'</small></span></button>'}).join("")+'</div>');
  var da=T.length,dl=tdn,pct=da?Math.round(dl/da*100):0,wk=m.week,filled=wk>0?Math.max(1,Math.round(wk/100*7)):0;
@@ -436,7 +436,7 @@ function render(m){
   +mini("Питание, % нормы",fv,"%","в среднем "+fa+"%",fa>=85&&fa<=110)
   +mini("Мой вес",kv,"кг",kv.length>1?(kd>0?"+":"")+fmtN(kd)+" кг с начала":"одно измерение",false)+'</div>';
  sh+='<div class="gl-wi"><input type="text" inputmode="decimal" placeholder="Мой вес сегодня, кг" aria-label="Мой вес сегодня"><button type="button" class="gl-pill" data-a="kg">Записать</button></div>';
- if(!ex&&!lv.length&&!fv.length&&!kv.length)sh+='<div class="gl-nt" style="margin-top:8px">История копится по дням: заходите во вкладку «Спорт» — рабочие веса и питание запоминаются, вес вводите здесь.</div>';
+ if(!ex&&!lv.length&&!fv.length&&!kv.length)sh+='<div class="gl-nt" style="margin-top:8px">История копится по дням. Рабочие веса и питание запоминаются во вкладке «Спорт», вес вводится здесь.</div>';
  sh+='</div></div>';var SPT=sh+'</div>';
  var P=m.pr[ST.pr];
  var ph='<div class="card gl-prg"><div class="gl-h"><b><span class="gl-bub">'+ICON.bars+'</span>Прогресс</b>'+seg([["week","Неделя"],["month","Месяц"],["year","Год"]],ST.pr,"pr")+'</div><div class="gl-pr2"><div class="gl-prt">'+ring(P.v,104)+'<div><div class="gl-sub">Общий прогресс<br>за '+({week:"неделю",month:"месяц",year:"год"})[ST.pr]+'</div>'+(ex?'<div class="gl-up">↑ +'+P.d+'%</div>':'')+'</div></div><div class="gl-sp2">'+spark(P.s)+'</div></div>';
