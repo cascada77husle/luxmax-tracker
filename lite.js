@@ -13,7 +13,9 @@ var css=[
 'html.lite [style*="blur("]{filter:none!important}',
 'html.lite [data-lgl]{background-image:none!important}',
 'html.lite [data-lgt=d]{background-color:rgba(255,255,255,.07)!important}html.lite [data-lgt=l]{background-color:#e9eaec!important}',
-'html.lite body,html.lite html{background-image:none!important}',
+'html.lite,html.lite body{background-image:none!important}',
+'html.lite *:not(.gl-sbc)::before,html.lite *:not(.gl-sbc)::after{background-image:none!important}',
+'html.lite .arqNav{background:#141618!important}',
 /* шапка */
 '.arqIc{width:40px!important;height:40px!important;min-width:40px!important;padding:0!important;border-radius:12px!important;border:1px solid rgba(255,255,255,.16)!important;background:rgba(255,255,255,.05)!important;display:inline-flex!important;align-items:center;justify-content:center;transition:background .2s,border-color .2s,transform .15s}',
 '.arqIc:hover{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.3)!important}.arqIc:active{transform:scale(.94)}',
