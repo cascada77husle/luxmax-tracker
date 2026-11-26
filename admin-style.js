@@ -49,6 +49,8 @@ var css=[
 ,'@media (min-width:900px){html body .arqNav.arqNav::before{background:var(--card)!important;border-color:var(--line2)!important}}'
 ,'html.mono body .arqHmG,html.arqGrey body .arqHmG,html.mono body .arqHmK i,html.arqGrey body .arqHmK i{filter:grayscale(1) brightness(1.2)!important}'
 ,'html.mono body .tkGrid .tkCat::before,html.arqC body .tkGrid .tkCat::before{background:linear-gradient(180deg,var(--accent),rgba(var(--sage-rgb),.08))!important}'
+,'html body .aiT,html body button.arqCk,html body .arqHmK i{filter:none!important}'
+,'html,body{scroll-behavior:auto!important}html body .pg{overscroll-behavior:contain}'
 ].join('\n');
 function inject(){if(document.getElementById('arqAdmCss'))return;var s=document.createElement('style');s.id='arqAdmCss';s.textContent=css;document.head.appendChild(s)}
 function wd(){var h=document.querySelector('.wkHd');if(!h)return;var w=h.querySelector('[data-dc-tpl="282"]'),t=h.querySelector('.wkDt');if(!w||!t)return;var x=(w.textContent||'').trim();var M={'понедельник':'Пн','вторник':'Вт','среда':'Ср','четверг':'Чт','пятница':'Пт','суббота':'Сб','воскресенье':'Вс'};if(x)t.setAttribute('data-wd',M[x.toLowerCase()]||x.slice(0,2))}
