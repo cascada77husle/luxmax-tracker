@@ -23,7 +23,7 @@ function findCreate(){var bs=document.querySelectorAll('button');for(var i=0;i<b
 function inject(){css0();if(document.getElementById('arqLiteTg'))return;var c=findCreate();if(!c||!c.parentNode)return;
 var t=document.createElement('button');t.id='arqLiteTg';t.type='button';t.setAttribute('role','switch');t.setAttribute('aria-label','Упрощённая версия');t.setAttribute('aria-checked',R.classList.contains('lite')?'true':'false');t.innerHTML='<span>Упрощённая</span><i></i>';
 t.addEventListener('click',function(e){e.stopPropagation();e.preventDefault();var v=!R.classList.contains('lite');put(v);apply(v);t.setAttribute('aria-checked',v?'true':'false')},true);
-c.parentNode.insertBefore(t,c);try{c.parentNode.style.flexWrap='nowrap';c.parentNode.style.alignItems='center'}catch(e){}}
+var p=c.parentNode,gp=p.parentNode;if(gp&&getComputedStyle(gp).display==='flex'){gp.insertBefore(t,p);t.style.alignSelf='center'}else p.insertBefore(t,c)}
 apply(get());css0();
 var T=0;new MutationObserver(function(){if(T)return;T=setTimeout(function(){T=0;inject()},250)}).observe(document.documentElement,{childList:true,subtree:true});
 document.addEventListener('DOMContentLoaded',inject);setInterval(inject,3000);inject();
