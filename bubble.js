@@ -90,3 +90,46 @@ function set(){var b=document.getElementById('arqBub');if(!b)return;var m;do{m=M
 function loop(){set();setTimeout(loop,3500+Math.random()*3500)}
 setTimeout(loop,1500);
 }catch(e){}})();
+
+/* чатик v2: живее — пружинный вход, слежение за курсором, реакция на касание, печать фраз, подмигивание, точка «онлайн». Без свечений. */
+(function(){try{
+var css=[
+'#arqBub{animation:arqBubPop .75s cubic-bezier(.2,1.5,.4,1) both,arqBubFl 4.2s ease-in-out .75s infinite!important;transform-origin:85% 100%}',
+'@keyframes arqBubPop{0%{opacity:0;transform:translateY(24px) scale(.6) rotate(-4deg)}100%{opacity:1;transform:none}}',
+'#arqBub.jp{animation:arqBubJp .62s cubic-bezier(.3,1.4,.5,1) both!important}',
+'@keyframes arqBubJp{0%{transform:scale(1,1)}18%{transform:scale(1.07,.86) translateY(2px)}45%{transform:scale(.94,1.1) translateY(-16px) rotate(-3deg)}70%{transform:scale(1.04,.94) translateY(0) rotate(2deg)}100%{transform:none}}',
+'html body #arqBub .bb{background-color:var(--card)!important;border-color:color-mix(in srgb,var(--accent,#a6b4a5) 30%,rgba(255,255,255,.08))!important}',
+'html body #arqBub .tl{background:var(--card)!important;border-right-color:color-mix(in srgb,var(--accent,#a6b4a5) 30%,rgba(255,255,255,.08))!important;border-bottom-color:color-mix(in srgb,var(--accent,#a6b4a5) 30%,rgba(255,255,255,.08))!important}',
+'html body #arqBub .e::before,html body #arqBub .e::after,html body #arqBub .e ~ .e::after{background:var(--card)!important}',
+'#arqBub .dt{position:absolute;right:9px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--accent,#a6b4a5);z-index:3}',
+'#arqBub .dt::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--accent,#a6b4a5);animation:arqBubDt 2.4s ease-out infinite}',
+'@keyframes arqBubDt{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.8);opacity:0}}',
+'#arqBub .ey{transition:transform .3s ease}',
+'#arqBub:hover .ey{transform:translateY(-1px)}',
+'#arqBub.wk .e ~ .e{transform:scaleY(.1)!important}',
+'#arqBub .tx.ty::after{content:"";display:inline-block;width:2px;height:1em;margin-left:2px;vertical-align:-2px;background:var(--accent,#a6b4a5);animation:arqBubCr .6s steps(1) infinite}',
+'@keyframes arqBubCr{50%{opacity:0}}',
+'#arqBub .hp{position:absolute;left:50%;top:30%;width:14px;height:14px;margin:-7px 0 0 -7px;pointer-events:none;z-index:5;color:var(--accent,#a6b4a5);animation:arqBubHp 1s ease-out forwards}',
+'@keyframes arqBubHp{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-60px)) scale(1) rotate(var(--rt,20deg))}}',
+'@media (prefers-reduced-motion:reduce){#arqBub,#arqBub.jp{animation:none!important}#arqBub .dt::after,#arqBub .hp{animation:none}}'
+].join('\n');
+var R=['Привет!','Щекотно 🙂','Ага, я тут','Давай по плану','Ты молодец','Ещё один шаг','Вперёд!','Хороший день для дел','Я слежу за целями','Не сдаёмся'];
+var SH='<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.1C1 8.6 2.9 5 6.3 5c2 0 3.6 1.2 4.4 2.7h2.6C14.1 6.2 15.7 5 17.7 5c3.4 0 5.3 3.6 3.9 6.9C19.5 16.4 12 21 12 21z"/></svg>';
+var SS='<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg>';
+var tm=0,typing=false,fx=null;
+function B(){return document.getElementById('arqBub')}
+function ready(b){if(!document.getElementById('arqBubCss2')){var s=document.createElement('style');s.id='arqBubCss2';s.textContent=css;document.head.appendChild(s)}
+ if(!b.querySelector('.dt')){var d=document.createElement('i');d.className='dt';b.querySelector('.bb').appendChild(d)}}
+function typeIn(tx,full){if(typing)return;typing=true;tx.classList.add('ty');tx.textContent='';var i=0;(function step(){if(!tx.isConnected){typing=false;return}i++;tx.textContent=full.slice(0,i);if(i<full.length)setTimeout(step,26+Math.random()*22);else{tx.classList.remove('ty');typing=false}})()}
+function watch(){var b=B();if(!b||b.__w)return;b.__w=1;ready(b);var tx=b.querySelector('.tx');
+ new MutationObserver(function(){if(typing)return;var f=tx.textContent;if(f)typeIn(tx,f)}).observe(tx,{childList:true,characterData:true,subtree:true})}
+function hearts(b){for(var i=0;i<6;i++){var h=document.createElement('i');h.className='hp';h.innerHTML=i%2?SS:SH;h.style.setProperty('--dx',(Math.random()*90-45)+'px');h.style.setProperty('--dy',(-50-Math.random()*40)+'px');h.style.setProperty('--rt',(Math.random()*60-30)+'deg');h.style.animationDelay=(i*60)+'ms';b.appendChild(h);(function(x){setTimeout(function(){x.remove()},1300)})(h)}}
+document.addEventListener('click',function(e){var b=B();if(!b||!(e.target.closest&&e.target.closest('#arqBub')))return;b.classList.remove('jp');void b.offsetWidth;b.classList.add('jp');setTimeout(function(){b.classList.remove('jp')},700);hearts(b);
+ var tx=b.querySelector('.tx');if(tx&&!typing){var t=R[Math.floor(Math.random()*R.length)];tx.textContent=t}
+ b.classList.remove('m-angry','m-sad','m-neutral');b.classList.add('m-happy')},true);
+var raf=0,px=0,py=0;
+document.addEventListener('pointermove',function(e){px=e.clientX;py=e.clientY;if(raf)return;raf=requestAnimationFrame(function(){raf=0;var b=B();if(!b)return;var r=b.getBoundingClientRect();if(!r.width)return;var dx=px-(r.left+r.width/2),dy=py-(r.top+r.height/2),d=Math.sqrt(dx*dx+dy*dy)||1,k=Math.min(1,d/220);var x=Math.round(dx/d*5*k),y=Math.round(dy/d*4*k);var ps=b.querySelectorAll('.p');for(var i=0;i<ps.length;i++){ps[i].style.setProperty('--x',x+'px');ps[i].style.setProperty('--y',y+'px')}})},{passive:true});
+function wink(){var b=B();if(b&&!document.hidden){b.classList.add('wk');setTimeout(function(){b.classList.remove('wk')},380)}setTimeout(wink,9000+Math.random()*9000)}
+setTimeout(wink,7000);
+setInterval(watch,1200);watch();
+}catch(e){}})();
