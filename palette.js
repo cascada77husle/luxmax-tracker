@@ -20,7 +20,7 @@ function save(c){try{if(c)localStorage.setItem(K,JSON.stringify(c));else localSt
 var TA=null,mo=null,rt=0;
 function rgb2hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn,h=0,l=(mx+mn)/2,s=d?d/(1-Math.abs(2*l-1)):0;if(d){h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60;if(h<0)h+=360}return [h,s,l]}
 function hsl2rgb(h,s,l){var c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2,r=0,g=0,b=0;if(h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x}return [(r+m)*255,(g+m)*255,(b+m)*255]}
-function mapc(r,g,b){var mx=Math.max(r,g,b),mn=Math.min(r,g,b);var o=rgb2hsl(r,g,b);if(o[0]<60||o[0]>190)return null;if(mx-mn<(o[2]<.3?2:8))return null;var nh=(TA.h+(o[0]-114)+360)%360,ns=TA.mono?0:Math.max(0,Math.min(1,o[1]*Math.max(.5,Math.min(3,TA.s/.085))));return hsl2rgb(nh,ns,o[2]).map(Math.round)}
+function mapc(r,g,b){var mx=Math.max(r,g,b),mn=Math.min(r,g,b);var o=rgb2hsl(r,g,b);if(o[0]<60||o[0]>190)return null;if(mx-mn<(o[2]<.3?2:8))return null;var nh=(TA.h+(o[0]-114)+360)%360,ns=TA.mono?0:Math.max(0,Math.min(1,o[1]*Math.min(3,TA.s/.085)));return hsl2rgb(nh,ns,o[2]).map(Math.round)}
 var RE=/#([0-9a-fA-F]{6})\b|rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)(?:\s*[,\/]\s*([\d.]+%?))?\s*\)/g;
 function recol(v){if(!TA||(v.indexOf('#')<0&&v.indexOf('rgb')<0))return v;return v.replace(RE,function(m,hx,r,g,b,a){var R,G,B;if(hx){var n=parseInt(hx,16);R=(n>>16)&255;G=(n>>8)&255;B=n&255}else{R=+r;G=+g;B=+b}var o=mapc(R,G,B);if(!o)return m;if(hx)return r2h(o);return a!==undefined?'rgba('+o[0]+','+o[1]+','+o[2]+','+a+')':'rgb('+o.join(',')+')'})}
 function walk(rules,out){for(var i=0;i<rules.length;i++){var r=rules[i];
