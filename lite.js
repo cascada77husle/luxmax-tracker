@@ -13,7 +13,7 @@ var css=[
 'html.lite [style*="blur("]{filter:none!important}',
 'html.lite [data-lgl]{background-image:none!important}',
 'html.lite [data-lgt=d]{background-color:rgba(255,255,255,.07)!important}html.lite [data-lgt=l]{background-color:#e9eaec!important}',
-'html.lite,html.lite body{background-image:none!important}',
+'html.lite:root:root:root,html.lite:root body{background-image:none!important}',
 'html.lite *:not(.gl-sbc)::before,html.lite *:not(.gl-sbc)::after{background-image:none!important}',
 'html.lite .arqNav{background:#141618!important}',
 /* шапка */
