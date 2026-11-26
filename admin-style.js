@@ -32,7 +32,7 @@ var css=[
 '[data-adm="1"]{border-radius:12px!important}',
 '@media (min-width:900px){html .arqNav::before{border-color:rgba(255,255,255,.13);background:color-mix(in srgb,var(--bg) 92%,#fff)}}',
 '@media (min-width:1100px){html .pg{max-width:none!important;margin-left:0!important;margin-right:0!important;zoom:1.12}}',
-'html .arqHdr h1[data-cap]{font-size:30px!important}html .arqHdr h1[data-cap]::after{font-size:12px}',
+'html .arqHdr h1{font-size:30px!important}html .arqHdr h1[data-cap]::after{font-size:12px}',
 '[data-adm-c=1]:not(:has(>img,>canvas,>video)){background:var(--card)!important;background-image:none!important;box-shadow:none!important}',
 'html.mono canvas:not(.arqWn):not(#arqWaves){filter:grayscale(1)}'
 ].join('\n');
