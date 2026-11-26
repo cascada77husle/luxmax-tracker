@@ -133,3 +133,50 @@ function wink(){var b=B();if(b&&!document.hidden){b.classList.add('wk');setTimeo
 setTimeout(wink,7000);
 setInterval(watch,1200);watch();
 }catch(e){}})();
+
+/* чат-панель ИИ-помощника: плавное открытие, появление сообщений, «печатает…», подсказки, ответ на отправку (демо), подсветка кнопки. Без свечений. */
+(function(){try{
+var css=[
+'.arqAiPn{animation:arqAiOpen .38s cubic-bezier(.2,1.2,.3,1) both;transform-origin:90% 100%}',
+'@keyframes arqAiOpen{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}',
+'.arqAiMsg{animation:arqMsgIn .42s cubic-bezier(.2,1,.3,1) both;transform-origin:0 100%}',
+'.arqAiMsg.arqAiMsgMe{align-self:flex-end;margin-left:auto;max-width:84%;transform-origin:100% 100%;background:var(--accent)!important;color:var(--on-accent)!important;border-color:transparent!important;border-radius:16px 16px 4px 16px!important}',
+'@keyframes arqMsgIn{from{opacity:0;transform:translateY(10px) scale(.94)}to{opacity:1;transform:none}}',
+'.arqAiHdIc{position:relative}',
+'.arqAiHdIc::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1.5px solid var(--accent,#a6b4a5);animation:arqAiRing 2.8s ease-out infinite;pointer-events:none}',
+'@keyframes arqAiRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.55);opacity:0}}',
+'.arqAiHdIc svg{animation:arqAiSp 6s ease-in-out infinite}',
+'@keyframes arqAiSp{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(90deg) scale(1.12)}}',
+'.arqAiInp{transition:border-color .2s ease,background .2s ease}',
+'.arqAiInp:focus{outline:none!important;border-color:var(--accent-line,rgba(166,180,165,.4))!important}',
+'.arqAiSend{transition:transform .15s ease,background .25s ease,color .25s ease}.arqAiSend:active{transform:scale(.86)}',
+'.arqAiRow.has .arqAiSend{background:var(--accent)!important;color:var(--on-accent)!important}',
+'.arqAiRow.has .arqAiSend svg{animation:arqAiGo 1.6s ease-in-out infinite}',
+'@keyframes arqAiGo{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}',
+'.arqTy{display:inline-flex!important;gap:5px;align-items:center;padding:13px 15px!important;width:auto!important}',
+'.arqTy i{display:block;width:6px;height:6px;border-radius:50%;background:var(--muted,#8b8d90);animation:arqTyD 1.1s ease-in-out infinite}',
+'.arqTy i:nth-child(2){animation-delay:.15s}.arqTy i:nth-child(3){animation-delay:.3s}',
+'@keyframes arqTyD{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-4px);opacity:1}}',
+'.arqAiChips{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0 2px;animation:arqMsgIn .5s .15s cubic-bezier(.2,1,.3,1) both}',
+'.arqAiChips button{border:1px solid var(--line2);background:var(--field);color:var(--ink);border-radius:999px;padding:7px 12px;font:600 12px/1 Archivo,system-ui,sans-serif;cursor:pointer;transition:transform .15s ease,border-color .2s ease,background .2s ease}',
+'.arqAiChips button:hover{transform:translateY(-1px);border-color:var(--accent-line,rgba(166,180,165,.4))}.arqAiChips button:active{transform:scale(.95)}',
+'@media (prefers-reduced-motion:reduce){.arqAiPn,.arqAiMsg,.arqAiHdIc::after,.arqAiHdIc svg,.arqTy i,.arqAiChips{animation:none!important}}'
+].join('\n');
+var CH=['Что сегодня по плану?','Как мои привычки?','Сколько потратил за месяц?'];
+var RP=['Принял. Скоро научусь отвечать по делу.','Запомнил запрос: когда помощник заработает, начну с него.','Пока я учусь, загляни в «Главное»: там весь день на виду.','Хороший вопрос. Подключусь к твоим данным совсем скоро.'];
+var busy=false;
+function scroll(b){b.scrollTop=b.scrollHeight}
+function msg(b,cls,txt){var d=document.createElement('div');d.className='arqAiMsg '+cls;d.textContent=txt;b.appendChild(d);scroll(b);return d}
+function send(pn,txt){txt=(txt||'').trim();if(!txt||busy)return;var b=pn.querySelector('.arqAiBody'),inp=pn.querySelector('.arqAiInp'),row=pn.querySelector('.arqAiRow');if(!b)return;busy=true;
+ var ch=b.querySelector('.arqAiChips');if(ch)ch.remove();msg(b,'arqAiMsgMe',txt);if(inp){inp.value='';if(row)row.classList.remove('has')}
+ var ty=document.createElement('div');ty.className='arqAiMsg arqAiMsgBot arqTy';ty.innerHTML='<i></i><i></i><i></i>';setTimeout(function(){b.appendChild(ty);scroll(b)},350);
+ setTimeout(function(){ty.remove();msg(b,'arqAiMsgBot',RP[Math.floor(Math.random()*RP.length)]);busy=false},1500+Math.random()*700)}
+function wire(){var pn=document.querySelector('.arqAiPn');if(!pn||pn.__w)return;pn.__w=1;
+ if(!document.getElementById('arqBubCss3')){var s=document.createElement('style');s.id='arqBubCss3';s.textContent=css;document.head.appendChild(s)}
+ var b=pn.querySelector('.arqAiBody'),inp=pn.querySelector('.arqAiInp'),row=pn.querySelector('.arqAiRow'),sb=pn.querySelector('.arqAiSend');
+ if(b&&!b.querySelector('.arqAiChips')){var c=document.createElement('div');c.className='arqAiChips';for(var i=0;i<CH.length;i++){var x=document.createElement('button');x.type='button';x.textContent=CH[i];c.appendChild(x)}b.appendChild(c);
+  c.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('button');if(t)send(pn,t.textContent)})}
+ if(inp){inp.addEventListener('input',function(){if(row)row.classList.toggle('has',!!inp.value.trim())});inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(pn,inp.value)}})}
+ if(sb)sb.addEventListener('click',function(){if(inp)send(pn,inp.value)})}
+setInterval(wire,700);wire();
+}catch(e){}})();
