@@ -1,7 +1,7 @@
 /* ARQON: чатик-помощник вместо робота: парит, моргает, смотрит по сторонам, фраза меняется */
 (function(){try{
 var css=[
-'#arqAiBotWrap{right:14px!important;gap:0!important}',
+'#arqAiBotWrap{right:14px!important;gap:0!important;bottom:calc(92px + env(safe-area-inset-bottom,0px))!important}','@media (min-width:900px){#arqAiBotWrap{bottom:28px!important}}',
 '#arqAiBotWrap>img{display:none!important}',
 '#arqBub{position:relative;width:200px;animation:arqBubFl 4.2s ease-in-out infinite;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}',
 '@keyframes arqBubFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}',
