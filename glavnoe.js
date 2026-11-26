@@ -459,7 +459,7 @@ ldEl=document.createElement("div");ldEl.id="glLoad";ldEl.innerHTML="<i></i><span
 function hideLoad(){try{var e=ldEl;if(!e)return;clearTimeout(ldT);ldT=setTimeout(function(){e.classList.remove("on");setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);if(ldEl===e)ldEl=null},300)},380)}catch(x){}}
 function fr(f){setTimeout(f,40)}
 function go(t){
- if(busy)return;busy=true;showLoad();
+ if(busy)return;busy=true;if(t!=="dash"&&t!=="eco")showLoad();
  var cur=null;
  if(t==="dash"||t==="eco"){cur=nativeBtn(t==="dash"?"Dashboard":"Экономика");if(cur)cur.click();fr(function(){fin(cur)});return}
  cur=nativeBtn("Моя волна");if(cur)cur.click();
