@@ -87,3 +87,21 @@ new MutationObserver(function(){if(T)return;T=setTimeout(function(){T=0;inject()
 new MutationObserver(function(){if(T2)return;T2=setTimeout(function(){T2=0;scanSheets()},500)}).observe(document.head,{childList:true,subtree:true,characterData:true});
 document.addEventListener('DOMContentLoaded',boot);setTimeout(boot,1200);setTimeout(boot,4000);setInterval(function(){inject();scanSheets()},5000);boot();
 }catch(e){}})();
+
+/* ARQON: матовый робот для упрощённой версии (убираем глянец, приглушаем белое) */
+(function(){try{
+var done=false;
+function build(){try{if(done)return;var im=document.querySelector('#arqAiBotWrap img');if(!im||!im.complete||!im.naturalWidth)return;done=true;
+ var w=im.naturalWidth,h=im.naturalHeight,c=document.createElement('canvas');c.width=w;c.height=h;var x=c.getContext('2d');x.drawImage(im,0,0);
+ var src=x.getImageData(0,0,w,h),c2=document.createElement('canvas');c2.width=w;c2.height=h;var x2=c2.getContext('2d');x2.filter='blur(4px)';x2.drawImage(im,0,0);var bl=x2.getImageData(0,0,w,h).data,p=src.data;
+ for(var yy=0;yy<h;yy++)for(var xx=0;xx<w;xx++){var i=(yy*w+xx)*4,r=p[i],g=p[i+1],b=p[i+2],L=(r+g+b)/3,m=(bl[i]+bl[i+1]+bl[i+2])/3;
+  var s=(L-m-18)/40;s=s<0?0:s>1?1:s;
+  var dx=xx<168?168-xx:xx>252?xx-252:0,dy=yy<98?98-yy:yy>122?yy-122:0,dd=Math.sqrt(dx*dx+dy*dy),em=1-dd/14;em=em<0?0:em>1?1:em;s*=(1-em);
+  var lim=m*1.15,r2=r*(1-s)+Math.min(r,lim)*s,g2=g*(1-s)+Math.min(g,lim)*s,b2=b*(1-s)+Math.min(b,lim)*s;
+  var L2=(r2+g2+b2)/3;r2=L2+(r2-L2)*.45;g2=L2+(g2-L2)*.45;b2=L2+(b2-L2)*.45;
+  if(L2>150){var k=(150+(L2-150)*.55)/L2;r2*=k;g2*=k;b2*=k}
+  p[i]=r2*.985;p[i+1]=g2;p[i+2]=b2*.985}
+ x.putImageData(src,0,0);var u=c.toDataURL('image/png');var st=document.createElement('style');st.id='arqBotMatte';st.textContent='html.lite #arqAiBotWrap img{content:url('+u+')}';document.head.appendChild(st)}catch(e){}}
+function go(){try{build()}catch(e){}}
+var n=0,t=setInterval(function(){n++;go();if(done||n>40)clearInterval(t)},700);
+}catch(e){}})();
