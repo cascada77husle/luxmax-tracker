@@ -355,7 +355,7 @@ wrap.innerHTML='<img src="arqai-robot-feathered2.png" alt="" width="190" height=
 
 document.body.appendChild(wrap);
 var st=document.createElement('style');st.textContent='#arqAiBotWrap .arqAiBotTag{writing-mode:vertical-rl;transform:rotate(180deg);background:linear-gradient(180deg,rgba(22,24,28,.94),rgba(10,11,14,.94));color:var(--sage);font:700 11px/1 "Archivo",system-ui,sans-serif;letter-spacing:.5px;padding:11px 6px;border-radius:12px;border:1px solid rgba(var(--sage-rgb),.35);box-shadow:0 8px 20px -8px rgba(0,0,0,.6);white-space:nowrap;margin-bottom:18px}'+
-'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:6px !important}}'+'#arqAiBotWrap:active{transform:scale(.88) translateY(4px)}';
+'@media (min-width:1000px){#arqAiBotWrap{bottom:24px !important;right:6px !important}}'+'#arqAiBotWrap:active{transform:scale(.88) translateY(4px)}'+'@keyframes arqBotSway{0%,100%{transform:rotate(-2.2deg) translateY(0)}50%{transform:rotate(2.2deg) translateY(-6px)}}#arqAiBotWrap img{transform-origin:50% 100%;animation:arqBotSway 4.6s ease-in-out infinite;will-change:transform}@media (prefers-reduced-motion:reduce){#arqAiBotWrap img{animation:none}}';
 '';
 document.head.appendChild(st)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()
