@@ -111,6 +111,8 @@ var css=[
 '@keyframes arqBubCr{50%{opacity:0}}',
 '#arqBub .hp{position:absolute;left:50%;top:30%;width:14px;height:14px;margin:-7px 0 0 -7px;pointer-events:none;z-index:5;color:var(--accent,#a6b4a5);animation:arqBubHp 1s ease-out forwards}',
 '@keyframes arqBubHp{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-60px)) scale(1) rotate(var(--rt,20deg))}}',
+'html body #arqBub .st{display:block!important;color:var(--accent,#a6b4a5)}html body #arqBub .st.s2,html body #arqBub .st.s4{color:var(--ink,#e7e8e5)}',
+'#arqBub .s1{right:-10px;top:-17px;width:22px;height:22px}#arqBub .s2{left:-12px;top:10px;width:12px;height:12px}#arqBub .s3{right:-14px;bottom:16px;width:10px;height:10px}#arqBub .s4{left:34px;top:-15px;width:9px;height:9px}',
 '@media (prefers-reduced-motion:reduce){#arqBub,#arqBub.jp{animation:none!important}#arqBub .dt::after,#arqBub .hp{animation:none}}'
 ].join('\n');
 var R=['Привет!','Щекотно 🙂','Ага, я тут','Давай по плану','Ты молодец','Ещё один шаг','Вперёд!','Хороший день для дел','Я слежу за целями','Не сдаёмся'];
