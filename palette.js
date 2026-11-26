@@ -24,17 +24,18 @@ function mapc(r,g,b){var mx=Math.max(r,g,b),mn=Math.min(r,g,b);var o=rgb2hsl(r,g
 var RE=/#([0-9a-fA-F]{6})\b|rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)(?:\s*[,\/]\s*([\d.]+%?))?\s*\)/g;
 function recol(v){if(!TA||(v.indexOf('#')<0&&v.indexOf('rgb')<0))return v;return v.replace(RE,function(m,hx,r,g,b,a){var R,G,B;if(hx){var n=parseInt(hx,16);R=(n>>16)&255;G=(n>>8)&255;B=n&255}else{R=+r;G=+g;B=+b}var o=mapc(R,G,B);if(!o)return m;if(hx)return r2h(o);return a!==undefined?'rgba('+o[0]+','+o[1]+','+o[2]+','+a+')':'rgb('+o.join(',')+')'})}
 function walk(rules,out){for(var i=0;i<rules.length;i++){var r=rules[i];
- if(r.type===1){var st=r.style,dc=[];for(var j=0;j<st.length;j++){var p=st[j];if(p.indexOf('--')===0)continue;var v=st.getPropertyValue(p),nv=recol(v);if(nv!==v)dc.push(p+':'+nv+' !important')}if(dc.length)out.push(r.selectorText+'{'+dc.join(';')+'}')}
+ if(r.type===1){var st=r.style,dc=[];for(var j=0;j<st.length;j++){var p=st[j];var v=st.getPropertyValue(p),nv=recol(v);if(nv!==v)dc.push(p+':'+nv+' !important')}if(dc.length)out.push(r.selectorText+'{'+dc.join(';')+'}')}
  else if((r.type===4||r.type===12)&&r.cssRules){var inn=[];walk(r.cssRules,inn);if(inn.length)out.push((r.type===4?'@media ':'@supports ')+r.conditionText+'{'+inn.join('')+'}')}}}
 function isMine(n){return n&&n.id&&/^arqPal/.test(n.id)}
 function run(){if(!TA)return;var out=[],ss=document.styleSheets;
  for(var i=0;i<ss.length;i++){var sh=ss[i];if(isMine(sh.ownerNode))continue;try{walk(sh.cssRules,out)}catch(e){}}
  var s=sty('arqPalOv');s.textContent=out.join('\n');document.head.appendChild(s);
- var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.closest&&el.closest('#arqPalP'))continue;var cur=el.getAttribute('style');if(el.__p1!==undefined&&cur===el.__p1)continue;var nv=recol(cur);if(nv!==cur){el.__p0=cur;el.setAttribute('style',nv);el.__p1=nv}else{el.__p1=undefined}}}
+ var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.closest&&el.closest('#arqPalP'))continue;var cur=el.getAttribute('style');var base=(el.__p1!==undefined&&cur===el.__p1)?el.__p0:cur;var nv=recol(base);if(nv!==cur)el.setAttribute('style',nv);if(nv!==base){el.__p0=base;el.__p1=nv}else{el.__p0=undefined;el.__p1=undefined}}
+ var AT=['fill','stroke','stop-color'],sv=document.querySelectorAll('svg [fill],svg [stroke],svg [stop-color]');for(var q=0;q<sv.length;q++){var se=sv[q];if(se.closest&&se.closest('#arqPalP'))continue;for(var u=0;u<AT.length;u++){var an=AT[u],av=se.getAttribute(an);if(!av)continue;var Q=se.__q||(se.__q={});var rec=Q[an];var b2=(rec&&av===rec.n)?rec.o:av;var n2=recol(b2);if(n2!==av)se.setAttribute(an,n2);if(n2!==b2)Q[an]={o:b2,n:n2};else delete Q[an]}}}
 function later(ms){clearTimeout(rt);rt=setTimeout(run,ms)}
 function startRe(c,mono){var A=h2r(c.a),o=rgb2hsl(A[0],A[1],A[2]);var was=!!TA;TA={h:o[0],s:o[1],mono:!!mono};later(was?220:0);if(!was){setTimeout(run,1200);setTimeout(run,3500)}
  if(!mo&&window.MutationObserver){mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes;for(var j=0;j<a.length;j++){if(a[j].tagName==='STYLE'&&!isMine(a[j])){later(250);return}}}});mo.observe(document.head,{childList:true});document.addEventListener('click',function(){if(TA)later(500)},true)}}
-function stopRe(){TA=null;var s=document.getElementById('arqPalOv');if(s)s.textContent='';var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}}}
+function stopRe(){TA=null;var s=document.getElementById('arqPalOv');if(s)s.textContent='';var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}}var sv=document.querySelectorAll('svg *');for(var q=0;q<sv.length;q++){var se=sv[q];if(se.__q){for(var an in se.__q)se.setAttribute(an,se.__q[an].o);se.__q=null}}}
 function apply(c){var s=sty('arqPalCss');if(!c){s.textContent='';R.classList.remove('arqC');stopRe();return}
  R.classList.remove('mono');try{localStorage.setItem('arqPal','sage')}catch(e){}
  s.textContent=build(c.a,c.b);R.classList.add('arqC');startRe(c)}
@@ -67,7 +68,7 @@ function open(){if(document.getElementById('arqPalP'))return;sty('arqPalPCss').t
  var ia=ov.querySelector('#arqPa'),ib=ov.querySelector('#arqPb');
  function mark(){var c=load(),bs=ov.querySelectorAll('.sw button');for(var k=0;k<bs.length;k++){var on=false;if(c&&bs[k].getAttribute('data-i')!==null){var p=PR[+bs[k].getAttribute('data-i')];on=p[1].toLowerCase()===c.a.toLowerCase()&&p[2].toLowerCase()===c.b.toLowerCase()}bs[k].className=on?'on':''}}
  var lq=0;function live(){if(lq)return;lq=requestAnimationFrame(function(){lq=0;var c={a:ia.value,b:ib.value};apply(c);save(c);mark()})}
- ia.addEventListener('input',live);ib.addEventListener('input',live);
+ ia.addEventListener('change',live);ib.addEventListener('change',live);
  ov.addEventListener('click',function(e){var t=e.target;if(t===ov){ov.remove();return}var b=t.closest&&t.closest('button');if(!b)return;
   if(b.getAttribute('data-x')){ov.remove();return}
   if(b.getAttribute('data-r')){reset();ia.value='#a6b4a5';ib.value='#09090a';mark();return}
