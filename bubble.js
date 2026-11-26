@@ -22,7 +22,7 @@ var css=[
 '#arqBub .br{position:absolute;top:-8px;width:15px;height:5px;border-top:2px solid #a6b4a5;border-radius:50% 50% 0 0;opacity:.75;animation:arqBubBr 5.5s ease-in-out infinite}#arqBub .br.l{left:0;transform-origin:100% 100%}#arqBub .br.r{right:0;transform-origin:0 100%;animation-delay:-.4s}',
 '@keyframes arqBubBr{0%,70%,100%{transform:translateY(0) rotate(0)}78%,90%{transform:translateY(-2px) rotate(-6deg)}}',
 '#arqBub .ck{top:20px}',
-'#arqBub .br,#arqBub .ck{display:none!important}',
+'#arqBub .ck{display:none!important}',
 '#arqBub .bb::before{border-color:rgba(231,232,229,.22)}',
 '#arqBub .bb::after{content:"";position:absolute;inset:9px 12px;border-radius:12px;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,rgba(231,232,229,.11) 0 1px,transparent 1px 8px)}',
 '#arqBub .ey,#arqBub .tx{position:relative;z-index:1}',
@@ -32,6 +32,17 @@ var css=[
 '#arqBub .e::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;height:auto;background:#17191b;clip-path:polygon(0 0,100% 0,100% 46%)}',
 '#arqBub .e ~ .e::after{clip-path:polygon(0 0,100% 0,0 46%)}',
 'html.lt #arqBub .e::after,html.lt #arqBub .e ~ .e::after{background:#1a1c1e}',
+'#arqBub .e::after{z-index:2;transition:clip-path .45s ease}',
+'#arqBub .e::before{content:"";position:absolute;left:-15%;right:-15%;bottom:-6%;height:52%;border-radius:50%;background:#17191b;transform:translateY(110%);transition:transform .4s ease;z-index:1}',
+'html.lt #arqBub .e::before{background:#1a1c1e}',
+'#arqBub.m-neutral .e::after,#arqBub.m-happy .e::after{clip-path:polygon(0 0,100% 0,100% 0)}',
+'#arqBub.m-neutral .e ~ .e::after,#arqBub.m-happy .e ~ .e::after{clip-path:polygon(0 0,100% 0,0 0)}',
+'#arqBub.m-happy .e::before{transform:translateY(0)}',
+'#arqBub.m-angry .e::after,#arqBub.m-sad .e ~ .e::after{clip-path:polygon(0 0,100% 0,100% 46%)}',
+'#arqBub.m-angry .e ~ .e::after,#arqBub.m-sad .e::after{clip-path:polygon(0 0,100% 0,0 46%)}',
+'#arqBub .br{display:block;position:absolute;top:-10px;width:17px;height:3px;border:0;border-radius:3px;background:rgba(231,232,229,.72);opacity:1;animation:none;transform-origin:50% 50%;transform:translateY(var(--by,0px)) rotate(var(--r,0deg));transition:transform .45s cubic-bezier(.3,1.4,.5,1)}',
+'#arqBub .br.l{left:3px}#arqBub .br.r{right:3px;transform:translateY(var(--by,0px)) rotate(calc(var(--r,0deg) * -1))}',
+'#arqBub.m-angry{--r:17deg;--by:3px}#arqBub.m-happy{--r:-9deg;--by:-3px}#arqBub.m-sad{--r:-15deg;--by:0px}#arqBub.m-neutral{--r:0deg;--by:0px}',
 '#arqBub .st{position:absolute;pointer-events:none;color:#a6b4a5;animation:arqBubTw 3.2s ease-in-out infinite}',
 '#arqBub .s1{right:-9px;top:-15px;width:21px;height:21px}#arqBub .s2{left:-11px;top:9px;width:11px;height:11px;color:#e7e8e5;animation-delay:-1.1s}#arqBub .s3{right:-13px;bottom:14px;width:9px;height:9px;animation-delay:-2s}#arqBub .s4{left:38px;top:-13px;width:8px;height:8px;color:#e7e8e5;animation-delay:-.6s}',
 '@keyframes arqBubTw{0%,100%{transform:scale(.55) rotate(0deg);opacity:.5}50%{transform:scale(1) rotate(45deg);opacity:1}}',
@@ -59,4 +70,12 @@ function mount(){var w=document.getElementById('arqAiBotWrap');if(!w||w.querySel
  T.forEach(clearTimeout);T=[];loopLook();loopBlink()}
 setInterval(mount,1500);mount();
 setInterval(function(){if(!document.hidden&&bub)setText(pick(),true)},45000);
+}catch(e){}})();
+
+/* настроение чатика: глаза и брови меняются сами (то хмурый, то весёлый, то грустный) */
+(function(){try{
+var M=['m-neutral','m-happy','m-angry','m-sad','m-happy','m-neutral'],last='';
+function set(){var b=document.getElementById('arqBub');if(!b)return;var m;do{m=M[Math.floor(Math.random()*M.length)]}while(m===last);last=m;for(var i=0;i<M.length;i++)b.classList.remove(M[i]);b.classList.add(m)}
+function loop(){set();setTimeout(loop,3500+Math.random()*3500)}
+setTimeout(loop,1500);
 }catch(e){}})();
