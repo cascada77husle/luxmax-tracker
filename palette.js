@@ -59,11 +59,11 @@ function mono(){apply(null);save(null);R.classList.add('mono');try{localStorage.
 function reset(){apply(null);save(null);R.classList.remove('mono');try{localStorage.setItem('arqPal','sage')}catch(e){}}
 apply(load());try{if(!load()&&localStorage.getItem('arqPal')==='mono')startRe({a:'#EDEEEC'},true)}catch(e){}
 var PCSS='#arqPalP{position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147482000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}'
-+'#arqPalP .pn{width:100%;max-width:400px;background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:12px;font:600 14px/1.3 Archivo,system-ui,sans-serif;animation:arqPalIn .28s cubic-bezier(.2,.8,.2,1) both}'
++'#arqPalP .pn{width:100%;max-width:400px;background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:22px;padding:18px;display:flex;flex-direction:column;align-items:stretch;gap:12px;font:600 14px/1.3 Archivo,system-ui,sans-serif;animation:arqPalIn .28s cubic-bezier(.2,.8,.2,1) both}'
 +'@keyframes arqPalIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}'
 +'#arqPalP h3{margin:0;font:800 18px/1.2 Archivo,system-ui,sans-serif;letter-spacing:.02em}'
 +'#arqPalP .rt{color:var(--muted);font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-top:2px}'
-+'#arqPalP .sw{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}'
++'#arqPalP .sw{display:grid;width:100%;grid-template-columns:repeat(6,1fr);gap:8px}'
 +'#arqPalP .it{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}'
 +'#arqPalP .it span{font:600 10px/1.1 Archivo,system-ui,sans-serif;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}'
 +'#arqPalP .sw button{width:100%;aspect-ratio:1/1;border-radius:50%;border:1px solid var(--line2);cursor:pointer;padding:0;transition:transform .18s ease,outline-color .18s ease}'
