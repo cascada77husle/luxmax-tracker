@@ -449,13 +449,17 @@ function navEl(){return document.querySelector(".arqNav nav")}
 function nativeBtn(txt){var n=navEl();if(!n)return null;var b=n.querySelectorAll("button");for(var i=0;i<b.length;i++){if(!b[i].hasAttribute("data-glnav")&&b[i].textContent.trim()===txt)return b[i]}return null}
 function rowEl(){var bs=document.querySelectorAll("button");for(var i=0;i<bs.length;i++){var b=bs[i];if(b.textContent.trim()==="Задачи"&&!b.closest(".gl-page")&&b.parentElement&&/Календарь/.test(b.parentElement.textContent)&&b.parentElement.querySelectorAll("button").length>=3)return b.parentElement}return null}
 function waitFor(fn,ms,cb){var t0=Date.now();(function s(){var r=fn();if(r){cb(r);return}if(Date.now()-t0>ms)return;setTimeout(s,150)})()}
-function fin(cur){var n=navEl();if(n){var bs=n.querySelectorAll("button");for(var i=0;i<bs.length;i++)bs[i].__glc=undefined}
+function fin(cur){hideLoad();var n=navEl();if(n){var bs=n.querySelectorAll("button");for(var i=0;i<bs.length;i++)bs[i].__glc=undefined}
  setOn(false);
  if(n&&cur){var b2=n.querySelectorAll("button");for(var j=0;j<b2.length;j++){var x=b2[j];x.setAttribute("aria-current",x===cur?"page":"false")}}
  busy=false}
+var ldEl=null,ldT=0;
+function showLoad(){try{if(ldEl)return;if(!document.getElementById("gl-ld-css")){var s=document.createElement("style");s.id="gl-ld-css";s.textContent="#glLoad{position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483000;background:var(--bg,#0b0c10);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;transition:opacity .25s ease;pointer-events:all}#glLoad.on{opacity:1}#glLoad i{width:38px;height:38px;border-radius:50%;border:3px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.9);animation:glLdSp .8s linear infinite}#glLoad span{font:600 12px/1 Archivo,system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}@keyframes glLdSp{to{transform:rotate(360deg)}}";document.head.appendChild(s)}
+ldEl=document.createElement("div");ldEl.id="glLoad";ldEl.innerHTML="<i></i><span>Загружаю</span>";document.body.appendChild(ldEl);void ldEl.offsetWidth;ldEl.classList.add("on")}catch(e){}}
+function hideLoad(){try{var e=ldEl;if(!e)return;clearTimeout(ldT);ldT=setTimeout(function(){e.classList.remove("on");setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);if(ldEl===e)ldEl=null},300)},380)}catch(x){}}
 function fr(f){setTimeout(f,40)}
 function go(t){
- if(busy)return;busy=true;
+ if(busy)return;busy=true;showLoad();
  var cur=null;
  if(t==="dash"||t==="eco"){cur=nativeBtn(t==="dash"?"Dashboard":"Экономика");if(cur)cur.click();fr(function(){fin(cur)});return}
  cur=nativeBtn("Моя волна");if(cur)cur.click();
