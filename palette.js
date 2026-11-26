@@ -43,7 +43,7 @@ function attrs(){var panel=document.getElementById('arqPalP'),hb=document.queryS
   if(k<els.length)setTimeout(step,10);else svgPass(panel,hb)})()}
 function run(){if(!TA)return;var s=sig();if(s!==sg){sg=s;walkAll()}attrs()}
 function later(ms){clearTimeout(rt);rt=setTimeout(run,ms)}
-function startRe(c,mono){var A=h2r(c.a),o=rgb2hsl(A[0],A[1],A[2]);var was=!!TA;TA={h:o[0],s:o[1],mono:!!mono};ver++;fastStart();sg='';later(was?220:0);if(!was){setTimeout(run,1200);setTimeout(run,3500)}
+function startRe(c,mono){var A=h2r(c.a),o=rgb2hsl(A[0],A[1],A[2]);var was=!!TA;TA={h:o[0],s:o[1],mono:!!mono};ver++;fastStart();document.documentElement.classList.toggle('arqGrey',!!(mono||o[1]<.12));sg='';later(was?220:0);if(!was){setTimeout(run,1200);setTimeout(run,3500)}
  if(!mo&&window.MutationObserver){mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var a=ms[i].addedNodes;for(var j=0;j<a.length;j++){if(a[j].tagName==='STYLE'&&!isMine(a[j])){later(250);return}}}});mo.observe(document.head,{childList:true});document.addEventListener('click',function(){if(TA)later(500)},true)}}
 
 var fo=null;
@@ -51,7 +51,7 @@ function fastEl(el){if(el.nodeType!==1||!TA)return;if(el.closest&&(el.closest('#
  if(el.namespaceURI==='http://www.w3.org/2000/svg'){for(var u=0;u<AT3.length;u++){var an=AT3[u],av=el.getAttribute(an);if(!av)continue;var Q=el.__q||(el.__q={});var rec=Q[an];var b2=(rec&&av===rec.n)?rec.o:av;var n2=recol(b2);if(n2!==av)el.setAttribute(an,n2);if(n2!==b2)Q[an]={o:b2,n:n2};else delete Q[an]}}}
 function fastStart(){if(fo||!window.MutationObserver)return;fo=new MutationObserver(function(ms){if(!TA)return;for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==='attributes'){fastEl(m.target)}else{for(var j=0;j<m.addedNodes.length;j++){var n=m.addedNodes[j];if(n.nodeType!==1)continue;fastEl(n);var q=n.querySelectorAll('[style],[fill],[stroke],[stop-color]');for(var k=0;k<q.length;k++)fastEl(q[k])}}}fo.takeRecords()});fo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','fill','stroke','stop-color']})}
 function fastStop(){if(fo){fo.disconnect();fo=null}}
-function stopRe(){fastStop();TA=null;var s=document.getElementById('arqPalOv');if(s)s.textContent='';var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}}var sv=document.querySelectorAll('svg *');for(var q=0;q<sv.length;q++){var se=sv[q];if(se.__q){for(var an in se.__q)se.setAttribute(an,se.__q[an].o);se.__q=null}}}
+function stopRe(){fastStop();TA=null;document.documentElement.classList.remove('arqGrey');var s=document.getElementById('arqPalOv');if(s)s.textContent='';var els=document.querySelectorAll('[style]');for(var k=0;k<els.length;k++){var el=els[k];if(el.__p0!==undefined){el.setAttribute('style',el.__p0);el.__p0=undefined;el.__p1=undefined}}var sv=document.querySelectorAll('svg *');for(var q=0;q<sv.length;q++){var se=sv[q];if(se.__q){for(var an in se.__q)se.setAttribute(an,se.__q[an].o);se.__q=null}}}
 function apply(c){var s=sty('arqPalCss');if(!c){s.textContent='';R.classList.remove('arqC');stopRe();return}
  R.classList.remove('mono');try{localStorage.setItem('arqPal','sage')}catch(e){}
  s.textContent=build(c.a,c.b);R.classList.add('arqC');startRe(c)}
