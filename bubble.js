@@ -122,9 +122,10 @@ var tm=0,typing=false,fx=null;
 function B(){return document.getElementById('arqBub')}
 function ready(b){if(!document.getElementById('arqBubCss2')){var s=document.createElement('style');s.id='arqBubCss2';s.textContent=css;document.head.appendChild(s)}
  if(!b.querySelector('.dt')){var d=document.createElement('i');d.className='dt';b.querySelector('.bb').appendChild(d)}}
-function typeIn(tx,full){if(typing)return;typing=true;tx.classList.add('ty');tx.textContent='';var i=0;(function step(){if(!tx.isConnected){typing=false;return}i++;tx.textContent=full.slice(0,i);if(i<full.length)setTimeout(step,26+Math.random()*22);else{tx.classList.remove('ty');typing=false}})()}
+var lastFull='',tt=0;
+function typeIn(tx,full){clearTimeout(tt);typing=true;lastFull=full;tx.classList.add('ty');tx.textContent='';var i=0;tt=setTimeout(function step(){if(!tx.isConnected){typing=false;return}i++;tx.textContent=full.slice(0,i);if(i<full.length)tt=setTimeout(step,70+Math.random()*30);else{tx.classList.remove('ty');typing=false;if(tx.__mo)tx.__mo.takeRecords()}},450)}
 function watch(){var b=B();if(!b||b.__w)return;b.__w=1;ready(b);var tx=b.querySelector('.tx');
- new MutationObserver(function(){if(typing)return;var f=tx.textContent;if(f)typeIn(tx,f)}).observe(tx,{childList:true,characterData:true,subtree:true})}
+ tx.__mo=new MutationObserver(function(){if(typing)return;var f=tx.textContent;if(!f||f===lastFull)return;typeIn(tx,f)});tx.__mo.observe(tx,{childList:true,characterData:true,subtree:true})}
 function hearts(b){for(var i=0;i<6;i++){var h=document.createElement('i');h.className='hp';h.innerHTML=i%2?SS:SH;h.style.setProperty('--dx',(Math.random()*90-45)+'px');h.style.setProperty('--dy',(-50-Math.random()*40)+'px');h.style.setProperty('--rt',(Math.random()*60-30)+'deg');h.style.animationDelay=(i*60)+'ms';b.appendChild(h);(function(x){setTimeout(function(){x.remove()},1300)})(h)}}
 document.addEventListener('click',function(e){var b=B();if(!b||!(e.target.closest&&e.target.closest('#arqBub')))return;b.classList.remove('jp');void b.offsetWidth;b.classList.add('jp');setTimeout(function(){b.classList.remove('jp')},700);hearts(b);
  var tx=b.querySelector('.tx');if(tx&&!typing){var t=R[Math.floor(Math.random()*R.length)];tx.textContent=t}
