@@ -89,7 +89,7 @@ function settle(minMs,maxMs,cb){var t0=Date.now(),last=Date.now(),mo=new Mutatio
  (function chk(){var now=Date.now();if((now-t0>=minMs&&now-last>=200)||now-t0>=maxMs){mo.disconnect();cb();return}setTimeout(chk,100)})()}
 function gate(el){var n=el,i=0;while(n&&n!==document.body&&i<7){var tx=(n.textContent||'').trim();if(tx.length<200&&/День\s+\d+/.test(tx)&&/ПРИМЕР|ОБРАЗЕЦ|ПЛАН|Сегодня/.test(tx)&&!/Главное|Экономика|Моя волна|Создать/.test(tx)&&n.tagName!=='BODY')return n;
   n=n.parentElement;i++}return null}
-window.addEventListener('click',function(e){if(byp||!e.isTrusted||ld)return;if(e.target&&e.target.closest&&e.target.closest('#arqLiteTg,#thTg,.gl-page'))return;var g=gate(e.target);if(!g)return;
+window.addEventListener('click',function(e){if(byp||!e.isTrusted||ld)return;if(e.target&&e.target.closest&&e.target.closest('#arqLiteTg,#thTg,.gl-page,[role=dialog],input,textarea,select,label'))return;var bt=e.target.closest&&e.target.closest('button');if(bt&&!(bt.textContent||'').trim()&&bt.getBoundingClientRect().width<64)return;var g=gate(e.target);if(!g)return;
  e.stopImmediatePropagation();e.preventDefault();showLd();var tg=e.target;
  setTimeout(function(){byp=true;try{tg.click()}catch(x){}byp=false;settle(250,900,hideLd)},70)},true);
 apply(get());css0();
