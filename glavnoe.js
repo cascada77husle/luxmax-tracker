@@ -346,6 +346,7 @@ function extras(){
  if(!window.__glCl){window.__glCl=1;if(!ls("arq:gl:c2")){try{localStorage.removeItem(SPK);var q0=shRead();q0.d={};ls(SHK,JSON.stringify(q0))}catch(e){}ls("arq:gl:c2","1")}}
  injectSupport();scrapeSport();
  var n=navEl();if(!n)return;var db=nativeBtn("Главная"),gb=n.querySelector("[data-glnav]");
+ if(gb&&!window.__glBoot){window.__glBoot=1;if(!/[?&]example/.test(location.search)){setTimeout(function(){try{if(!on&&!document.querySelector(".gl-page"))gb.click()}catch(e){}},500)}}
  if(db&&gb){var ds=db.querySelector("svg"),gs=gb.querySelector("svg");
   if(ds&&!ds.hasAttribute("data-gls")){ds.innerHTML=ICON.bars;ds.setAttribute("data-gls","1")}
   if(gs&&!gs.hasAttribute("data-gls")){gs.innerHTML=ICON.home;gs.setAttribute("data-gls","1")}}}
