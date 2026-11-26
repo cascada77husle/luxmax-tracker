@@ -27,7 +27,8 @@ var css=[
 '.arqHdr h1[data-cap]{overflow:visible!important;white-space:normal!important;line-height:1.15}',
 '.arqHdr h1[data-cap]::after{content:"— " attr(data-cap);display:block;margin-top:5px;font:600 11px/1 Archivo,system-ui,sans-serif;letter-spacing:.16em;color:var(--muted);-webkit-text-fill-color:var(--muted);text-transform:uppercase}',
 '[data-adm-c="1"]{border-radius:22px!important;outline:1px solid var(--line);outline-offset:-1px}',
-'@media (min-width:900px){html .arqNav{border-right:0!important;background:var(--bg)!important}html .arqNav::before{content:"";position:absolute;left:10px;right:8px;top:10px;bottom:10px;border:1px solid var(--line);border-radius:22px;background:var(--card);z-index:-1;pointer-events:none}}',
+'@media (min-width:900px){html .arqNav{border-right:0!important;background:var(--bg)!important}html .arqNav::before{content:"";position:absolute;left:12px;right:10px;top:12px;bottom:12px;border:1px solid var(--line);border-radius:24px;background:var(--card);z-index:-1;pointer-events:none}}',
+'html body .pg > .arqHdr.arqHdr[style]{background:color-mix(in srgb,var(--bg) 90%,transparent)!important}',
 '[data-adm="1"]{border-radius:12px!important}'
 ].join('\n');
 function inject(){if(document.getElementById('arqAdmCss'))return;var s=document.createElement('style');s.id='arqAdmCss';s.textContent=css;document.head.appendChild(s)}
