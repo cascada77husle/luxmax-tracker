@@ -456,7 +456,7 @@ function fin(cur){hideLoad();var n=navEl();if(n){var bs=n.querySelectorAll("butt
 var ldEl=null,ldT=0;
 function showLoad(){try{if(ldEl)return;if(!document.getElementById("gl-ld-css")){var s=document.createElement("style");s.id="gl-ld-css";s.textContent="#glLoad{position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483000;background:var(--bg,#0b0c10);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;transition:opacity .25s ease;pointer-events:all}#glLoad.on{opacity:1}#glLoad i{width:38px;height:38px;border-radius:50%;border:3px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.9);animation:glLdSp .8s linear infinite}#glLoad span{font:600 12px/1 Archivo,system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}@keyframes glLdSp{to{transform:rotate(360deg)}}";document.head.appendChild(s)}
 ldEl=document.createElement("div");ldEl.id="glLoad";ldEl.innerHTML="<i></i><span>Загружаю</span>";document.body.appendChild(ldEl);void ldEl.offsetWidth;ldEl.classList.add("on")}catch(e){}}
-function hideLoad(){try{var e=ldEl;if(!e)return;clearTimeout(ldT);ldT=setTimeout(function(){e.classList.remove("on");setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);if(ldEl===e)ldEl=null},300)},380)}catch(x){}}
+function hideLoad(){try{var e=ldEl;if(!e)return;clearTimeout(ldT);ldT=setTimeout(function(){e.classList.remove("on");setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);if(ldEl===e)ldEl=null},220)},80)}catch(x){}}
 function fr(f){setTimeout(f,40)}
 function go(t){
  if(busy)return;busy=true;if(t!=="dash"&&t!=="eco")showLoad();
