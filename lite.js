@@ -1,7 +1,7 @@
 /* ARQON: упрощённая версия, убрать неон, иконки шапки, экран загрузки при открытии волны. */
 (function(){try{
 var K='arq:lite',R=document.documentElement;
-function get(){try{return localStorage.getItem(K)==='1'}catch(e){return false}}
+function get(){return true}
 function put(v){try{localStorage.setItem(K,v?'1':'0')}catch(e){}}
 var css=[
 /* всегда: без неоновых подсветок, робот чуть приглушён */
@@ -30,6 +30,7 @@ var css=[
 '#arqLiteTg i:after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#9aa09b;transition:left .2s,background .2s}',
 'html.lite #arqLiteTg i{background:#a6b4a5}html.lite #arqLiteTg i:after{left:16px;background:#141618}',
 '@media (max-width:1180px){#arqLiteTg span{display:none}#arqLiteTg{padding:0 9px}}',
+'#arqLiteTg{display:none!important}',
 /* загрузка */
 '#arqLd{position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483000;background:var(--bg,#0b0c10);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:1;pointer-events:all}',
 '#arqLd.out{opacity:0;transition:opacity .3s ease}',
