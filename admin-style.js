@@ -62,7 +62,9 @@ var css=[
 'html body .pg span[data-arqdt]::after{content:attr(data-arqdt);font:600 30px/1 Inter,system-ui,sans-serif;color:var(--ink,#e7e8e5)}',
 'html body .pg span[data-arqdt] + span{border-left:1px solid var(--line2);padding-left:16px!important;margin-left:4px}',
 'html body .pg span[data-arqdt] + span b{font-size:22px!important}',
-'html body .arqHdr{padding-top:calc(12px + var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px) + var(--arq-tgtop,0px))!important;box-sizing:content-box}'
+'html body .arqHdr{padding-top:calc(12px + var(--tg-safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px) + var(--arq-tgtop,0px))!important;box-sizing:content-box}',
+'html body .arqHdr div:has(>button>svg>path:only-child){display:none!important}',
+'html body .arqHdr div:has(>button>svg>circle:nth-child(3):last-child){display:none!important}'
 ].join('\n');
 function inject(){if(document.getElementById('arqAdmCss'))return;var s=document.createElement('style');s.id='arqAdmCss';s.textContent=css;document.head.appendChild(s)}
 function wd(){var h=document.querySelector('.wkHd');if(!h)return;var w=h.querySelector('[data-dc-tpl="282"]'),t=h.querySelector('.wkDt');if(!w||!t)return;var x=(w.textContent||'').trim();var M={'понедельник':'Пн','вторник':'Вт','среда':'Ср','четверг':'Чт','пятница':'Пт','суббота':'Сб','воскресенье':'Вс'};if(x)t.setAttribute('data-wd',M[x.toLowerCase()]||x.slice(0,2))}
