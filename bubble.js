@@ -85,10 +85,20 @@ setInterval(function(){if(!document.hidden&&bub)setText(pick(),true)},45000);
 
 /* настроение чатика: глаза и брови меняются сами (то хмурый, то весёлый, то грустный) */
 (function(){try{
-var M=['m-neutral','m-happy','m-angry','m-sad','m-happy','m-neutral'],last='';
+var M=['m-neutral','m-happy','m-sur','m-slp','m-sus','m-wnk','m-joy','m-thk','m-wor','m-cool','m-sad','m-angry'],last='';
+var L0='polygon(0 0,100% 0,100% 0)',R0='polygon(0 0,100% 0,0 0)';function lid(c,l,r){return '#arqBub.'+c+' .e::after{clip-path:'+l+'}#arqBub.'+c+' .e ~ .e::after{clip-path:'+r+'}'}
+var C=[lid('m-sur',L0,R0),'#arqBub.m-sur .e{transform:scale(1.14)}#arqBub.m-sur .p{width:8px;height:8px;margin:-4px 0 0 -4px}#arqBub.m-sur{--r:0deg;--by:-5px}',
+lid('m-slp','polygon(0 0,100% 0,100% 58%,0 58%)','polygon(0 0,100% 0,100% 58%,0 58%)'),'#arqBub.m-slp{--r:0deg;--by:3px}',
+lid('m-sus','polygon(0 0,100% 0,100% 52%,0 52%)',R0),'#arqBub.m-sus .br.l{transform:translateY(3px) rotate(14deg)}#arqBub.m-sus .br.r{transform:translateY(-4px) rotate(-6deg)}',
+lid('m-wnk',L0,R0),'#arqBub.m-wnk .e ~ .e{transform:scaleY(.1)}#arqBub.m-wnk .e::before{transform:translateY(46%)}#arqBub.m-wnk{--r:-6deg;--by:-2px}',
+lid('m-joy',L0,R0),'#arqBub.m-joy .e::before{transform:translateY(8%)}#arqBub.m-joy{--r:-12deg;--by:-4px}',
+lid('m-thk','polygon(0 0,100% 0,100% 30%,0 30%)','polygon(0 0,100% 0,100% 30%,0 30%)'),'#arqBub.m-thk .br.l{transform:translateY(-4px) rotate(-8deg)}#arqBub.m-thk .br.r{transform:translateY(1px) rotate(0deg)}',
+lid('m-wor','polygon(0 0,100% 0,0 28%)','polygon(0 0,100% 0,100% 28%)'),'#arqBub.m-wor{--r:-15deg;--by:-3px}',
+lid('m-cool','polygon(0 0,100% 0,100% 38%,0 38%)','polygon(0 0,100% 0,100% 38%,0 38%)'),'#arqBub.m-cool{--r:0deg;--by:1px}'].join('\n');
+if(!document.getElementById('arqBubCss4')){var st4=document.createElement('style');st4.id='arqBubCss4';st4.textContent=C;document.head.appendChild(st4)}
 function set(){var b=document.getElementById('arqBub');if(!b)return;var m;do{m=M[Math.floor(Math.random()*M.length)]}while(m===last);last=m;for(var i=0;i<M.length;i++)b.classList.remove(M[i]);b.classList.add(m)}
-function loop(){set();setTimeout(loop,3500+Math.random()*3500)}
-
+function loop(){var has=!!document.getElementById('arqBub');if(has&&!document.hidden)set();setTimeout(loop,has?4000+Math.random()*3500:400)}
+loop();
 }catch(e){}})();
 
 /* чатик v2: живее — пружинный вход, слежение за курсором, реакция на касание, печать фраз, подмигивание, точка «онлайн». Без свечений. */
