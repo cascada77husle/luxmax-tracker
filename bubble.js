@@ -3,7 +3,7 @@
 var css=[
 '#arqAiBotWrap{right:14px!important;gap:0!important;bottom:calc(92px + env(safe-area-inset-bottom,0px))!important}','@media (min-width:900px){#arqAiBotWrap{bottom:28px!important}}',
 '#arqAiBotWrap>img{display:none!important}',
-'#arqBub{position:relative;width:200px;animation:arqBubFl 4.2s ease-in-out infinite;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}',
+'#arqBub{position:relative;width:200px;animation:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}',
 '@keyframes arqBubFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}',
 'html.lt #arqBub .bb{transition:none}#arqBub .bb{position:relative;padding:13px 14px 12px;border-radius:22px 22px 6px 22px;background:#17191b;border:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;gap:9px;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.3px);background-size:9px 9px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}',
 '#arqBub .tl{position:absolute;right:20px;bottom:-6px;width:11px;height:11px;background:#17191b;border-right:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.16);transform:rotate(45deg);border-bottom-right-radius:3px}',
@@ -79,7 +79,7 @@ function mount(){var w=document.getElementById('arqAiBotWrap');if(!w||w.querySel
  var d=document.createElement('div');d.id='arqBub';d.innerHTML='<div class="bb"><div class="ey"><i class="ck l"></i><i class="ck r"></i><i class="br l"></i><i class="br r"></i><i class="e"><b class="p"></b></i><i class="e"><b class="p"></b></i></div><div class="tx"></div></div><span class="tl"></span><svg class="st s1" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg><svg class="st s2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg><svg class="st s3" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg><svg class="st s4" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C12.9 7.2 16.8 11.1 24 12 16.8 12.9 12.9 16.8 12 24 11.1 16.8 7.2 12.9 0 12 7.2 11.1 11.1 7.2 12 0Z"/></svg>';
  w.appendChild(d);bub=d;txt=d.querySelector('.tx');eyes=[].slice.call(d.querySelectorAll('.p'));setText(pick(),false);
  T.forEach(clearTimeout);T=[];loopLook();loopBlink()}
-setInterval(mount,1500);mount();
+setInterval(function(){if(!document.hidden)mount()},2500);mount();
 setInterval(function(){if(!document.hidden&&bub)setText(pick(),true)},45000);
 }catch(e){}})();
 
@@ -88,13 +88,13 @@ setInterval(function(){if(!document.hidden&&bub)setText(pick(),true)},45000);
 var M=['m-neutral','m-happy','m-angry','m-sad','m-happy','m-neutral'],last='';
 function set(){var b=document.getElementById('arqBub');if(!b)return;var m;do{m=M[Math.floor(Math.random()*M.length)]}while(m===last);last=m;for(var i=0;i<M.length;i++)b.classList.remove(M[i]);b.classList.add(m)}
 function loop(){set();setTimeout(loop,3500+Math.random()*3500)}
-setTimeout(loop,1500);
+
 }catch(e){}})();
 
 /* чатик v2: живее — пружинный вход, слежение за курсором, реакция на касание, печать фраз, подмигивание, точка «онлайн». Без свечений. */
 (function(){try{
 var css=[
-'#arqBub{animation:arqBubPop .75s cubic-bezier(.2,1.5,.4,1) both,arqBubFl 4.2s ease-in-out .75s infinite!important;transform-origin:85% 100%}',
+'#arqBub{animation:none!important;transform-origin:85% 100%}',
 '@keyframes arqBubPop{0%{opacity:0;transform:translateY(24px) scale(.6) rotate(-4deg)}100%{opacity:1;transform:none}}',
 '#arqBub.jp{animation:arqBubJp .62s cubic-bezier(.3,1.4,.5,1) both!important}',
 '@keyframes arqBubJp{0%{transform:scale(1,1)}18%{transform:scale(1.07,.86) translateY(2px)}45%{transform:scale(.94,1.1) translateY(-16px) rotate(-3deg)}70%{transform:scale(1.04,.94) translateY(0) rotate(2deg)}100%{transform:none}}',
@@ -113,6 +113,7 @@ var css=[
 '@keyframes arqBubHp{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0px),var(--dy,-60px)) scale(1) rotate(var(--rt,20deg))}}',
 'html body #arqBub .st{display:block!important;color:var(--accent,#a6b4a5)}html body #arqBub .st.s2,html body #arqBub .st.s4{color:var(--ink,#e7e8e5)}',
 '#arqBub .s1{right:-10px;top:-17px;width:22px;height:22px}#arqBub .s2{left:-12px;top:10px;width:12px;height:12px}#arqBub .s3{right:-14px;bottom:16px;width:10px;height:10px}#arqBub .s4{left:34px;top:-15px;width:9px;height:9px}',
+'#arqBub,#arqBub.jp{animation:none!important}#arqBub .st,#arqBub .dt::after,.arqAiHdIc::after,.arqAiHdIc svg,.arqAiRow.has .arqAiSend svg,.arqAiPn,.arqAiMsg,.arqAiChips{animation:none!important}#arqBub .dt::after{display:none}',
 '@media (prefers-reduced-motion:reduce){#arqBub,#arqBub.jp{animation:none!important}#arqBub .dt::after,#arqBub .hp{animation:none}}'
 ].join('\n');
 var R=['Привет!','Щекотно 🙂','Ага, я тут','Давай по плану','Ты молодец','Ещё один шаг','Вперёд!','Хороший день для дел','Я слежу за целями','Не сдаёмся'];
@@ -127,14 +128,11 @@ function typeIn(tx,full){clearTimeout(tt);typing=true;lastFull=full;tx.classList
 function watch(){var b=B();if(!b||b.__w)return;b.__w=1;ready(b);var tx=b.querySelector('.tx');
  tx.__mo=new MutationObserver(function(){if(typing)return;var f=tx.textContent;if(!f||f===lastFull)return;typeIn(tx,f)});tx.__mo.observe(tx,{childList:true,characterData:true,subtree:true})}
 function hearts(b){for(var i=0;i<6;i++){var h=document.createElement('i');h.className='hp';h.innerHTML=i%2?SS:SH;h.style.setProperty('--dx',(Math.random()*90-45)+'px');h.style.setProperty('--dy',(-50-Math.random()*40)+'px');h.style.setProperty('--rt',(Math.random()*60-30)+'deg');h.style.animationDelay=(i*60)+'ms';b.appendChild(h);(function(x){setTimeout(function(){x.remove()},1300)})(h)}}
-document.addEventListener('click',function(e){var b=B();if(!b||!(e.target.closest&&e.target.closest('#arqBub')))return;b.classList.remove('jp');void b.offsetWidth;b.classList.add('jp');setTimeout(function(){b.classList.remove('jp')},700);hearts(b);
- var tx=b.querySelector('.tx');if(tx&&!typing){var t=R[Math.floor(Math.random()*R.length)];tx.textContent=t}
- b.classList.remove('m-angry','m-sad','m-neutral');b.classList.add('m-happy')},true);
 var raf=0,px=0,py=0;
 document.addEventListener('pointermove',function(e){px=e.clientX;py=e.clientY;if(raf)return;raf=requestAnimationFrame(function(){raf=0;var b=B();if(!b)return;var r=b.getBoundingClientRect();if(!r.width)return;var dx=px-(r.left+r.width/2),dy=py-(r.top+r.height/2),d=Math.sqrt(dx*dx+dy*dy)||1,k=Math.min(1,d/220);var x=Math.round(dx/d*5*k),y=Math.round(dy/d*4*k);var ps=b.querySelectorAll('.p');for(var i=0;i<ps.length;i++){ps[i].style.setProperty('--x',x+'px');ps[i].style.setProperty('--y',y+'px')}})},{passive:true});
 function wink(){var b=B();if(b&&!document.hidden){b.classList.add('wk');setTimeout(function(){b.classList.remove('wk')},380)}setTimeout(wink,9000+Math.random()*9000)}
-setTimeout(wink,7000);
-setInterval(watch,1200);watch();
+
+setInterval(function(){if(!document.hidden)watch()},2500);watch();
 }catch(e){}})();
 
 /* чат-панель ИИ-помощника: плавное открытие, появление сообщений, «печатает…», подсказки, ответ на отправку (демо), подсветка кнопки. Без свечений. */
@@ -181,11 +179,10 @@ function wire(){var pn=document.querySelector('.arqAiPn');if(!pn||pn.__w)return;
   c.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('button');if(t)send(pn,t.textContent)})}
  if(inp){inp.addEventListener('input',function(){if(row)row.classList.toggle('has',!!inp.value.trim())});inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(pn,inp.value)}})}
  if(sb)sb.addEventListener('click',function(){if(inp)send(pn,inp.value)})}
-setInterval(wire,700);wire();
+setInterval(function(){if(!document.hidden)wire()},1000);wire();
 }catch(e){}})();
 
-/* когда открыта панель чата, чатик прячется: он лежал поверх кнопки микрофона */
+/* панель чата не двигается */
 (function(){try{
-var s=document.createElement('style');s.textContent='html.arqChat .arqAiPn{translate:calc(-1*var(--arqShift,0px)) 0;transition:translate .3s ease}';document.head.appendChild(s);
-setInterval(function(){var p=document.querySelector('.arqAiPn');var rr=p&&p.getBoundingClientRect();var h=document.documentElement;var o=!!p&&rr.width>0&&getComputedStyle(p).visibility!=='hidden'&&+getComputedStyle(p).opacity>0.05;if(o){var bb=document.getElementById('arqBub');if(bb){var cur=parseFloat(h.style.getPropertyValue('--arqShift'))||0;var br=bb.getBoundingClientRect();var L=Math.max(0,Math.min(Math.round(rr.right+cur-br.left+10),Math.round(rr.left+cur-8)));if(Math.abs(L-cur)>2)h.style.setProperty('--arqShift',L+'px')}}if(h.classList.contains('arqChat')!==o)h.classList.toggle('arqChat',o)},300);
+var s=document.createElement('style');s.textContent='@media (min-width:900px){.arqAiPn{right:14px!important;left:auto!important;bottom:140px!important;max-height:min(420px,calc(100vh - 170px))!important}}.arqAiPn{translate:none!important}';document.head.appendChild(s);
 }catch(e){}})();
