@@ -102,3 +102,10 @@ if(window.MutationObserver)new MutationObserver(function(ms){for(var i=0;i<ms.le
 document.addEventListener('click',function(){later(500)},true);
 setTimeout(scan,1500);
 }catch(e){}})();
+
+/* Экономика: плитка с числом дня в шапке периода, как в «Моей волне» (число берётся из текста даты; стили в admin-style.js). */
+(function(){try{
+var re=/^[^,]+,\s*(\d{1,2})\s+[^\s]+$/;
+function mark(){var bs=document.querySelectorAll('.pg button');for(var i=0;i<bs.length;i++){var b=bs[i],f=b.firstElementChild;if(!f||!f.children.length)continue;var tile=f.firstElementChild,tx=tile&&tile.nextElementSibling;if(!tx)continue;var t=(tx.firstElementChild&&tx.firstElementChild.textContent||'').trim();var m=re.exec(t);if(!m)continue;if(!/День\s+\d+\s+из/.test(tx.textContent))continue;if(tile.getAttribute('data-arqdt')!==m[1])tile.setAttribute('data-arqdt',m[1])}}
+setInterval(mark,1000);setTimeout(mark,600);
+}catch(e){}})();
