@@ -109,3 +109,11 @@ var re=/^[^,]+,\s*(\d{1,2})\s+[^\s]+$/;
 function mark(){var bs=document.querySelectorAll('.pg button');for(var i=0;i<bs.length;i++){var b=bs[i],f=b.firstElementChild;if(!f||!f.children.length)continue;var tile=f.firstElementChild,tx=tile&&tile.nextElementSibling;if(!tx)continue;var t=(tx.firstElementChild&&tx.firstElementChild.textContent||'').trim();var m=re.exec(t);if(!m)continue;if(!/День\s+\d+\s+из/.test(tx.textContent))continue;if(tile.getAttribute('data-arqdt')!==m[1])tile.setAttribute('data-arqdt',m[1])}}
 setInterval(mark,1000);setTimeout(mark,600);
 }catch(e){}})();
+
+/* Telegram: в полноэкранном режиме свои кнопки Telegram лежат поверх верха страницы — шапка опускается ниже них (--arq-tgtop; сами отступы в admin-style.js). */
+(function(){try{
+var w=window.Telegram&&window.Telegram.WebApp;if(!w)return;
+function f(){var rs=document.documentElement.style;if(w.isFullscreen){var cs=getComputedStyle(document.documentElement);var has=parseFloat(cs.getPropertyValue('--tg-content-safe-area-inset-top'))>0||parseFloat(cs.getPropertyValue('--tg-safe-area-inset-top'))>0;if(!has)rs.setProperty('--arq-tgtop','56px');else rs.removeProperty('--arq-tgtop')}else rs.removeProperty('--arq-tgtop')}
+f();try{w.onEvent('fullscreenChanged',f);w.onEvent('safeAreaChanged',f);w.onEvent('contentSafeAreaChanged',f)}catch(e){}
+setInterval(f,2500);
+}catch(e){}})();
