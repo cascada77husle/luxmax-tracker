@@ -187,5 +187,5 @@ setInterval(wire,700);wire();
 /* когда открыта панель чата, чатик прячется: он лежал поверх кнопки микрофона */
 (function(){try{
 var s=document.createElement('style');s.textContent='html.arqChat #arqBub{transform:translateY(calc(-1*var(--arqLift,0px)))!important;transition:transform .3s ease}';document.head.appendChild(s);
-setInterval(function(){var p=document.querySelector('.arqAiPn');var rr=p&&p.getBoundingClientRect();var o=!!p&&rr.width>0&&getComputedStyle(p).visibility!=='hidden'&&+getComputedStyle(p).opacity>0.05;var h=document.documentElement;if(o)h.style.setProperty('--arqLift',Math.round(rr.height+14)+'px');if(h.classList.contains('arqChat')!==o)h.classList.toggle('arqChat',o)},300);
+setInterval(function(){var p=document.querySelector('.arqAiPn');var rr=p&&p.getBoundingClientRect();var o=!!p&&rr.width>0&&getComputedStyle(p).visibility!=='hidden'&&+getComputedStyle(p).opacity>0.05;var h=document.documentElement;if(o){var bb=document.getElementById('arqBub');if(bb){var cur=parseFloat(h.style.getPropertyValue('--arqLift'))||0;var br=bb.getBoundingClientRect();var L=Math.max(0,Math.round(br.bottom+cur-rr.top+8));if(Math.abs(L-cur)>2)h.style.setProperty('--arqLift',L+'px')}}if(h.classList.contains('arqChat')!==o)h.classList.toggle('arqChat',o)},300);
 }catch(e){}})();
