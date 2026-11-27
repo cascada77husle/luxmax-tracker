@@ -123,7 +123,7 @@ function B(){return document.getElementById('arqBub')}
 function ready(b){if(!document.getElementById('arqBubCss2')){var s=document.createElement('style');s.id='arqBubCss2';s.textContent=css;document.head.appendChild(s)}
  if(!b.querySelector('.dt')){var d=document.createElement('i');d.className='dt';b.querySelector('.bb').appendChild(d)}}
 var lastFull='',tt=0;
-function typeIn(tx,full){clearTimeout(tt);typing=true;lastFull=full;tx.classList.add('ty');tx.textContent='';var i=0;tt=setTimeout(function step(){if(!tx.isConnected){typing=false;return}i++;tx.textContent=full.slice(0,i);if(i<full.length)tt=setTimeout(step,70+Math.random()*30);else{tx.classList.remove('ty');typing=false;if(tx.__mo)tx.__mo.takeRecords()}},450)}
+function typeIn(tx,full){clearTimeout(tt);typing=true;lastFull=full;tx.classList.add('ty');tx.textContent='';var i=0;tt=setTimeout(function step(){if(!tx.isConnected){typing=false;return}i++;tx.textContent=full.slice(0,i);if(i<full.length)tt=setTimeout(step,42+Math.random()*22);else{tx.classList.remove('ty');typing=false;if(tx.__mo)tx.__mo.takeRecords()}},220)}
 function watch(){var b=B();if(!b||b.__w)return;b.__w=1;ready(b);var tx=b.querySelector('.tx');
  tx.__mo=new MutationObserver(function(){if(typing)return;var f=tx.textContent;if(!f||f===lastFull)return;typeIn(tx,f)});tx.__mo.observe(tx,{childList:true,characterData:true,subtree:true})}
 function hearts(b){for(var i=0;i<6;i++){var h=document.createElement('i');h.className='hp';h.innerHTML=i%2?SS:SH;h.style.setProperty('--dx',(Math.random()*90-45)+'px');h.style.setProperty('--dy',(-50-Math.random()*40)+'px');h.style.setProperty('--rt',(Math.random()*60-30)+'deg');h.style.animationDelay=(i*60)+'ms';b.appendChild(h);(function(x){setTimeout(function(){x.remove()},1300)})(h)}}
@@ -182,4 +182,10 @@ function wire(){var pn=document.querySelector('.arqAiPn');if(!pn||pn.__w)return;
  if(inp){inp.addEventListener('input',function(){if(row)row.classList.toggle('has',!!inp.value.trim())});inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(pn,inp.value)}})}
  if(sb)sb.addEventListener('click',function(){if(inp)send(pn,inp.value)})}
 setInterval(wire,700);wire();
+}catch(e){}})();
+
+/* когда открыта панель чата, чатик прячется: он лежал поверх кнопки микрофона */
+(function(){try{
+var s=document.createElement('style');s.textContent='html.arqChat #arqBub{display:none!important}';document.head.appendChild(s);
+setInterval(function(){var p=document.querySelector('.arqAiPn');var o=!!p&&p.getBoundingClientRect().width>0;var h=document.documentElement;if(h.classList.contains('arqChat')!==o)h.classList.toggle('arqChat',o)},300);
 }catch(e){}})();
