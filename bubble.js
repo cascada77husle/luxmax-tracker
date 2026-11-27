@@ -210,6 +210,9 @@ var c=[
 'html .arqEco .arqDrum div:not(.zz) .ac-card{filter:none!important}',
 'html .arqEco .arqDrum #drRing>div[style*="opacity: 0.32"],html .arqEco .arqDrum #drRing>div[style*="opacity: 0;"]{visibility:hidden!important}',
 'html .arqEco .arqDrum #drRing{will-change:transform}',
+'html .tkCat .arqRh::after{transition:opacity .12s,transform .12s!important}',
+'html .tkCat .arqRh:hover::after{transition:opacity .15s ease 1s,transform .15s ease 1s!important}',
+'html .tkCat .arqRh:active::after{transition:none!important}',
 '#arqSplash.off *{animation:none!important}'
 ].join('\n');
 var st=document.createElement('style');st.id='arqBubCss5';st.textContent=c;document.head.appendChild(st);
