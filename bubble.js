@@ -194,7 +194,7 @@ setInterval(function(){if(!document.hidden)wire()},1000);wire();
 
 /* панель чата: на месте, с контуром, закрывается быстро; чатик парит всегда; починка Экономики и барабана */
 (function(){try{
-var BB='color-mix(in srgb,var(--card,#17191B) 80%,var(--ink,#E7E8E5) 20%)',BR='color-mix(in srgb,var(--ink,#E7E8E5) 52%,transparent)';
+var BB='color-mix(in srgb,var(--card,#17191B) 94%,var(--ink,#E7E8E5) 6%)',BR='color-mix(in srgb,var(--ink,#E7E8E5) 38%,transparent)';
 var c=[
 'html #arqBub{animation:arqBubFl 4.6s ease-in-out infinite!important;--bb:'+BB+'}',
 '@media (prefers-reduced-motion:reduce){html #arqBub{animation:arqBubFl 4.6s ease-in-out infinite!important}}',
@@ -203,7 +203,7 @@ var c=[
 'html body #arqBub .e::before,html body #arqBub .e::after,html body #arqBub .e ~ .e::after{background:var(--bb)!important}',
 '@media (min-width:900px){.arqAiPn{right:14px!important;left:auto!important;bottom:128px!important;max-height:min(420px,calc(100vh - 160px))!important}}',
 '@media (max-width:899px){.arqAiPn{bottom:calc(186px + env(safe-area-inset-bottom,0px))!important}}',
-'.arqAiPn{translate:none!important;background-color:'+BB+'!important;border:2px solid '+BR+'!important;will-change:opacity,transform;transition:opacity .16s ease-out,transform .16s ease-out,visibility 0s linear .16s!important}',
+'.arqAiPn{translate:none!important;background-color:'+BB+'!important;border:1.5px solid '+BR+'!important;will-change:opacity,transform;transition:opacity .16s ease-out,transform .16s ease-out,visibility 0s linear .16s!important}',
 'body.arqAiOn .arqAiPn{transition:opacity .2s ease-out,transform .2s cubic-bezier(.2,.9,.3,1),visibility 0s linear 0s!important}',
 'html .arqEco div[style*="repeat(3, minmax(0"] b,html .arqEco div[style*="repeat(3, minmax(0"] b span{font-size:15px!important;white-space:nowrap!important;letter-spacing:-.01em!important}',
 'html .arqEco .arqDrum{clip-path:none!important}',
